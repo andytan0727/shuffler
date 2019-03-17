@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import YoutubePlayerFrame from "./components/YoutubePlayer";
+import YoutubePlayerIFrame from "./components/YoutubePlayer";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <YoutubePlayerFrame />
+        <YoutubePlayerIFrame />
       </div>
     );
   }
