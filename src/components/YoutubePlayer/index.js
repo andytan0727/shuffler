@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
 
@@ -18,6 +19,11 @@ const YoutubePlayerIFrame = props => {
       />
     </div>
   );
+};
+
+YoutubePlayerIFrame.propTypes = {
+  playing: PropTypes.bool,
+  playerVars: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
