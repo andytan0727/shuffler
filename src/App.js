@@ -1,12 +1,19 @@
 import React, { Component } from "react";
-import YoutubePlayerIFrame from "./components/YoutubePlayer";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import MainPage from "./components/pages/MainPage";
+import YTPlayerPage from "./components/pages/YTPlayerPage";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <YoutubePlayerIFrame />
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Switch>
+            <Route path="/" exact component={MainPage} />
+            <Route path="/player" component={YTPlayerPage} />
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
 }
