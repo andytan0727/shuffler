@@ -13,7 +13,7 @@ const muiStyles = theme => ({
   }
 });
 
-const GetStartedLink = props => <Link to="/player" {...props} />;
+const GetStartedLink = props => <Link to="/playlistInput" {...props} />;
 
 const MainPage = props => {
   const { classes } = props;
