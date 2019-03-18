@@ -1,29 +1,32 @@
-@import '../../utils/styles/colors';
+@import "../../utils/styles/colors";
 
 .mainNavDiv {
-  .navbar {
+  nav {
     width: 100%;
-    // position: absolute;
-    // right: 5%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 10px 0;
+    padding: 15px 0;
     // background-color: $primary;
 
     a {
-      text-decoration: none;
-      font-family: "Roboto", sans-serif;
-      padding: 15px 15px;
-      // color: #fff;
       font-size: 18px;
-    }
+      font-family: "Roboto", sans-serif;
+      text-decoration: none;
+      padding: 15px 20px;
 
-    .logo {
-      // flex-grow: 1;
-      font-size: 25px;
-      width: 10em;
-      padding: 0 5%;
+      // Logo
+      &:first-child {
+        flex-grow: 1;
+        font-size: 25px;
+        width: 10em;
+        padding: 0 5%;
+      }
+
+
+      &:last-child {
+        padding-right: 5%;
+      }
     }
   }
 }
