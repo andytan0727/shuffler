@@ -1,0 +1,31 @@
+@import "../../../utils/styles/colors";
+
+.mainNavDiv {
+  nav {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px 0;
+    // background-color: $primary;
+
+    a {
+      font-size: 18px;
+      font-family: "Roboto", sans-serif;
+      text-decoration: none;
+      padding: 15px 20px;
+
+      // Logo
+      &:first-child {
+        flex-grow: 1;
+        font-size: 25px;
+        width: 10em;
+        padding: 0 5%;
+      }
+
+      &:last-child {
+        padding-right: 5%;
+      }
+    }
+  }
+}

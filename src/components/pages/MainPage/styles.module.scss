@@ -1,0 +1,66 @@
+@import "../../../utils/styles/colors";
+
+@mixin pgContent {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    font-size: 30px;
+    font-family: "Roboto", sans-serif;
+  }
+}
+
+.mainPgDiv {
+  .mainPgContent1 {
+    @include pgContent();
+    // background-color: #e1e2e1;
+    // background-color: $primary;
+    background-color: white;
+
+    p {
+      // color: white;
+      font-size: 50px;
+      margin-top: -20%;
+    }
+
+    // .list {
+    //   display: flex;
+    //   flex-direction: row;
+    //   justify-content: flex-end;
+    //   align-items: center;
+    //   list-style-type: none;
+
+    //   li {
+    //     display: inline-block;
+    //     padding: 0 30px;
+    //   }
+    // }
+  }
+
+  .mainPgContent2 {
+    @include pgContent();
+    background-color: #f5f5f6;
+  }
+
+  .mainPgContent3 {
+    @include pgContent();
+    background-color: #919192;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    .copyright {
+    }
+  }
+}
