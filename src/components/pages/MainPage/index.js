@@ -1,9 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import TopBar from "../../TopBar";
 import PlaylistInput from "../../PlaylistInput";
+
+import Fab from "@material-ui/core/Fab";
+import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles.module.scss";
 
-const MainPage = () => {
+const muiStyles = theme => ({
+  fab: {
+    borderRadius: 0
+  }
+});
+
+const GetStartedLink = props => <Link to="/player" {...props} />;
+
+const MainPage = props => {
+  const { classes } = props;
   return (
     <div className={styles.mainPgDiv}>
       <header>
@@ -11,6 +24,17 @@ const MainPage = () => {
       </header>
       <div className={styles.mainPgContent1}>
         <p>Randomize your YouTube Playlist</p>
+        {/* <Button variant="contained" color="primary">Get Started</Button> */}
+        <Fab
+          variant="extended"
+          color="primary"
+          aria-label="Get-Started"
+          className={classes.fab}
+          component={GetStartedLink}
+          onClick={() => console.log('clicked')}
+        >
+          Get Started
+        </Fab>
       </div>
       <div className={styles.mainPgContent2}>
         <p>Try to "real" random</p>
@@ -35,4 +59,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default withStyles(muiStyles)(MainPage);
