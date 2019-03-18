@@ -1,0 +1,29 @@
+@import '../../utils/styles/colors';
+
+.mainNavDiv {
+  .navbar {
+    width: 100%;
+    // position: absolute;
+    // right: 5%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 0;
+    // background-color: $primary;
+
+    a {
+      text-decoration: none;
+      font-family: "Roboto", sans-serif;
+      padding: 15px 15px;
+      // color: #fff;
+      font-size: 18px;
+    }
+
+    .logo {
+      // flex-grow: 1;
+      font-size: 25px;
+      width: 10em;
+      padding: 0 5%;
+    }
+  }
+}

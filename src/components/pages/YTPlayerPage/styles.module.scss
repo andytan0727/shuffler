@@ -1,4 +1,6 @@
-$primaryColor: #c62adc;
+@import "../../../utils/styles/colors";
+
+// $primaryColor: #c62adc;
 
 .ytPlayerDiv {
   height: 100%;
@@ -14,17 +16,16 @@ $primaryColor: #c62adc;
 
     button {
       background-color: white;
-      color: $primaryColor;
-      border: 2px solid lighten($primaryColor, 35%);
+      color: $primaryLight;
+      border: 2px solid lighten($primaryLight, 35%);
       border-radius: 10px;
       font-size: 20px;
       margin: 0 10px;
       padding: 0.25em 1.5em;
-      
     }
 
     button:hover {
-      background-color: lighten($primaryColor, 40%);
+      background-color: lighten($primaryLight, 40%);
     }
   }
 }
