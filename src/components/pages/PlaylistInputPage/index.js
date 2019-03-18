@@ -1,9 +1,10 @@
 import React from "react";
-import PlaylistAppBar from "./PlaylistAppBar";
+import PlaylistAppBar from "../../BarComponents/PlaylistAppBar";
 
 const PlaylistInputPage = props => {
   return (
     <div>
+      <PlaylistAppBar />
       <p>hello</p>
     </div>
   );

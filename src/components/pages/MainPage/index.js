@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import TopBar from "../../TopBar";
-import PlaylistInput from "../../PlaylistInput";
+import TopBar from "../../BarComponents/TopBar";
+import PlaylistInput from "../../InputComponents/PlaylistInput";
 
 import Fab from "@material-ui/core/Fab";
 import { withStyles } from "@material-ui/core/styles";
@@ -31,7 +31,7 @@ const MainPage = props => {
           aria-label="Get-Started"
           className={classes.fab}
           component={GetStartedLink}
-          onClick={() => console.log('clicked')}
+          onClick={() => console.log("clicked")}
         >
           Get Started
         </Fab>
