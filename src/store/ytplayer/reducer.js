@@ -4,8 +4,8 @@ import { TOGGLE_YT_PLAYING } from "../../utils/constants/actionConstants";
 const initialState = {
   playing: false,
   playerVars: {
-    autoplay: 1,
-    fs: 1 // prevent fullscreen
+    autoplay: 0,
+    fs: 0 // prevent fullscreen
   }
 };
 
