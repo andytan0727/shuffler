@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 
 // dispatch
 import { setPlaylistId, addFetchedData } from "../../../store/ytapi/action";
-import { addPlaylistItems } from "../../../store/ytplaylist/action";
+import { addPlaylist } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
 
@@ -34,7 +34,7 @@ const PlaylistInput = props => {
     // dispatch
     setPlaylistId,
     addFetchedData,
-    addPlaylistItems
+    addPlaylist
   } = props;
 
   const handlePlaylistIdChange = e => {
@@ -43,6 +43,8 @@ const PlaylistInput = props => {
 
   const handleRequest = async e => {
     e.preventDefault();
+
+    const items = [];
 
     // if (playlistId) {
     //   try {
@@ -70,8 +72,8 @@ const PlaylistInput = props => {
         fields,
         apiKey
       });
+      items.push(...data.items);
       let count = 2;
-      addPlaylistItems(data.items);
 
       while (data.nextPageToken) {
         console.log(data.nextPageToken);
@@ -82,7 +84,7 @@ const PlaylistInput = props => {
           fields,
           apiKey
         });
-        addPlaylistItems(data.items);
+        items.push(...data.items);
         console.log(`push ${count}`);
         count++;
 
@@ -91,7 +93,11 @@ const PlaylistInput = props => {
           break;
         }
       }
-      console.log("finished");
+      console.log("finished. Add playlist to redux store");
+      addPlaylist({
+        id: playlistId,
+        items
+      });
     } catch (err) {
       console.log("Error in axios request!");
       console.log(err);
@@ -152,6 +158,6 @@ export default connect(
   {
     setPlaylistId,
     addFetchedData,
-    addPlaylistItems
+    addPlaylist
   }
 )(MUIPlaylistInput);
