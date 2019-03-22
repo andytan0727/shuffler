@@ -1,0 +1,17 @@
+.playlistInPgDiv {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  height: 100vh;
+
+  .inputDiv {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+  }
+
+  section {
+    width: 35%;
+  }
+}
