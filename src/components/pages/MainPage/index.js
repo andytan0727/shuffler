@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Fab from "@material-ui/core/Fab";
+import { withStyles } from "@material-ui/core/styles";
 import TopBar from "../../BarComponents/TopBar";
 import PlaylistInput from "../../InputComponents/PlaylistInput";
 
-import Fab from "@material-ui/core/Fab";
-import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles.module.scss";
 
 const muiStyles = theme => ({
@@ -24,7 +24,6 @@ const MainPage = props => {
       </header>
       <div className={styles.mainPgContent1}>
         <p>Randomize your YouTube Playlist</p>
-        {/* <Button variant="contained" color="primary">Get Started</Button> */}
         <Fab
           variant="extended"
           color="primary"
@@ -43,18 +42,6 @@ const MainPage = props => {
       <div className={styles.mainPgContent3}>
         <p>Unleash your passion</p>
       </div>
-      <footer className={styles.footer}>
-        <div>
-          <section>
-            <ul>
-              <li>Home</li>
-              <li>Player</li>
-              <li>About</li>
-            </ul>
-          </section>
-        </div>
-        <div className={styles.copyright}>&copy; 2019 Andy Tan</div>
-      </footer>
     </div>
   );
 };

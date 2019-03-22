@@ -29,19 +29,6 @@
       font-size: 50px;
       margin-top: -20%;
     }
-
-    // .list {
-    //   display: flex;
-    //   flex-direction: row;
-    //   justify-content: flex-end;
-    //   align-items: center;
-    //   list-style-type: none;
-
-    //   li {
-    //     display: inline-block;
-    //     padding: 0 30px;
-    //   }
-    // }
   }
 
   .mainPgContent2 {
@@ -52,15 +39,5 @@
   .mainPgContent3 {
     @include pgContent();
     background-color: #919192;
-  }
-
-  .footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-
-    .copyright {
-    }
   }
 }
