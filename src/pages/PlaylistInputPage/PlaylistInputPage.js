@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
-import PlaylistAppBar from "../../BarComponents/PlaylistAppBar";
-import TopBar from "../../BarComponents/TopBar";
-import PlaylistInput from "../../InputComponents/PlaylistInput";
-import SongChips from "../../Chips/SongChips";
+import PlaylistAppBar from "../../components/BarComponents/PlaylistAppBar";
+import PlaylistInput from "../../components/InputComponents/PlaylistInput";
+import SongChips from "../../components/Chips/SongChips";
 
+import { shufflePlaylist } from "../../store/ytplaylist/action";
 import styles from "./styles.module.scss";
 
 const muiStyles = theme => ({
@@ -21,25 +22,30 @@ const muiStyles = theme => ({
   }
 });
 
-const CtrlBtnGroup = ({ handleSwipeDivIdxChange }) => (
+const CtrlBtnGroup = connect(
+  null,
+  {
+    shufflePlaylist
+  }
+)(({ shufflePlaylist, handleSwipeDivIdxChange }) => (
   <React.Fragment>
-    {/* <Button variant="contained" color="secondary" aria-label="play">
-      Play
-    </Button> */}
-    {/* <Button variant="contained" color="secondary" aria-label="shuffle">
-      Shuffle
-    </Button> */}
-    <Fab variant="extended" color="secondary" aria-label="play">
+    <Fab variant="extended" size="medium" color="secondary" aria-label="play">
       Play
     </Fab>
-    <Fab variant="extended" color="secondary" aria-label="shuffle">
+    <Fab
+      variant="extended"
+      size="medium"
+      color="secondary"
+      aria-label="shuffle"
+      onClick={shufflePlaylist}
+    >
       Shuffle
     </Fab>
 
     <Fab
       variant="extended"
       // color="secondary"
-      size="small"
+      size="medium"
       onClick={handleSwipeDivIdxChange.bind(this, 0)}
       aria-label="add-more"
     >
@@ -47,7 +53,7 @@ const CtrlBtnGroup = ({ handleSwipeDivIdxChange }) => (
       Add more
     </Fab>
   </React.Fragment>
-);
+));
 
 const PlaylistInputPage = props => {
   const { classes } = props;

@@ -1,5 +1,5 @@
 import React from "react";
-import YoutubePlayerIFrame from "../../YoutubePlayerIFrame";
+import YoutubePlayerIFrame from "../../components/YoutubePlayerIFrame";
 
 import styles from "./styles.module.scss";
 

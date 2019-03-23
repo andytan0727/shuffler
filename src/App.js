@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import MainPage from "./components/pages/MainPage";
-import PlaylistInputPage from "./components/pages/PlaylistInputPage";
-import YTPlayerPage from "./components/pages/YTPlayerPage";
-import PgFooter from "./components/pages/PgFooter";
+import MainPage from "./pages/MainPage";
+import PlaylistInputPage from "./pages/PlaylistInputPage";
+import YTPlayerPage from "./pages/YTPlayerPage";
+import PgFooter from "./pages/PgFooter";
 
 import "./App.scss";
 
