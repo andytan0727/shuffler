@@ -25,14 +25,14 @@ const muiStyles = theme => ({
   }
 });
 
-const SongChips = props => {
+const SongList = props => {
   const {
     ytplaylist: { playlists },
     classes
   } = props;
 
   return (
-    <div className={styles.songChipsDiv}>
+    <div className={styles.songListDiv}>
       {playlists.length !== 0 && (
         <List className={classes.list}>
           {playlists.map(playlist =>
@@ -54,12 +54,12 @@ const SongChips = props => {
   );
 };
 
-SongChips.propTypes = {
+SongList.propTypes = {
   playlists: PropTypes.array,
   classes: PropTypes.object.isRequired
 };
 
-const StyledSongChips = withStyles(muiStyles)(SongChips);
+const StyledSongList = withStyles(muiStyles)(SongList);
 
 const mapStateToProps = ({ ytplaylist }) => ({
   ytplaylist
@@ -68,4 +68,4 @@ const mapStateToProps = ({ ytplaylist }) => ({
 export default connect(
   mapStateToProps,
   {}
-)(StyledSongChips);
+)(StyledSongList);
