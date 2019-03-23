@@ -1,13 +1,18 @@
 import produce from "immer";
-import { ADD_PLAYLIST } from "../../utils/constants/actionConstants";
+import {
+  ADD_PLAYLIST,
+  SHUFFLE_PLAYLIST
+} from "../../utils/constants/actionConstants";
+import shuffle from "lodash.shuffle";
 
 const initialState = {
   playlists: [
     // {
     //   id: "",
-    //   items: []
+    //   items: [{}]
     // }
-  ]
+  ],
+  listToPlay: []
 };
 
 export const ytplaylist = produce((draft, action) => {
@@ -25,6 +30,17 @@ export const ytplaylist = produce((draft, action) => {
 
       // if the playlist is unique then push it to redux store
       draft.playlists.push(playlistToAdd);
+      draft.listToPlay.push(...playlistToAdd.items);
+      return draft;
+    }
+
+    case SHUFFLE_PLAYLIST: {
+      const songToShuffle = draft.playlists
+        .map(playlist => playlist.items)
+        .reduce((acc, curSong) => acc.concat(curSong));
+
+      draft.listToPlay = shuffle(songToShuffle);
+
       return draft;
     }
 

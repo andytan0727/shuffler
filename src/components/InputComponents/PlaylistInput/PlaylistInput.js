@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 // dispatch
-import { setPlaylistId, addFetchedData } from "../../../store/ytapi/action";
+import { setPlaylistId, fetchPlaylistData } from "../../../store/ytapi/action";
 import { addPlaylist } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
@@ -35,7 +35,7 @@ const PlaylistInput = props => {
 
     // dispatch
     setPlaylistId,
-    addFetchedData,
+    fetchPlaylistData,
     addPlaylist
   } = props;
 
@@ -67,19 +67,21 @@ const PlaylistInput = props => {
      * API MOCK TESTING IN LOCAL ENV
      */
     try {
-      let data = await addFetchedData("data1.json", {
+      let data = await fetchPlaylistData("data1.json", {
         part,
         maxResults,
         playlistId,
         fields,
         apiKey
       });
+      // swipe to ctrl btn group
+      handleSwipeDivIdxChange(1);
       items.push(...data.items);
       let count = 2;
 
       while (data.nextPageToken) {
         console.log(data.nextPageToken);
-        data = await addFetchedData(`data${count}.json`, {
+        data = await fetchPlaylistData(`data${count}.json`, {
           part,
           maxResults,
           playlistId,
@@ -100,9 +102,6 @@ const PlaylistInput = props => {
         id: playlistId,
         items
       });
-
-      // swipe to ctrl btn group
-      handleSwipeDivIdxChange(1);
     } catch (err) {
       console.log("Error in axios request!");
       console.log(err);
@@ -144,7 +143,7 @@ PlaylistInput.propTypes = {
     fields: PropTypes.string
   }),
   setPlaylistId: PropTypes.func.isRequired,
-  addFetchedData: PropTypes.func.isRequired,
+  fetchPlaylistData: PropTypes.func.isRequired,
   addPlaylist: PropTypes.func.isRequired
 };
 
@@ -158,7 +157,7 @@ export default connect(
   mapStateToProps,
   {
     setPlaylistId,
-    addFetchedData,
+    fetchPlaylistData,
     addPlaylist
   }
 )(MUIPlaylistInput);
