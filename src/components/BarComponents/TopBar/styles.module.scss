@@ -6,26 +6,31 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 15px 0;
+    padding: 0px 0;
+    border-bottom: 2px solid $primary;
     // background-color: $primary;
+
+    .logo {
+      height: 70px;
+    }
 
     a {
       font-size: 18px;
+      color: $primary;
       font-family: "Roboto", sans-serif;
       text-decoration: none;
       padding: 15px 20px;
 
-      // Logo
-      &:first-child {
-        flex-grow: 1;
-        font-size: 25px;
-        width: 10em;
-        padding: 0 5%;
-      }
+      // &:first-child {
+      //   flex-grow: 1;
+      //   font-size: 25px;
+      //   width: 10em;
+      //   padding: 0 5%;
+      // }
 
-      &:last-child {
-        padding-right: 5%;
-      }
+      // &:last-child {
+      //   padding-right: 5%;
+      // }
     }
   }
 }

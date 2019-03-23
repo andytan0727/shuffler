@@ -20,14 +20,18 @@
 .mainPgDiv {
   .mainPgContent1 {
     @include pgContent();
-    // background-color: #e1e2e1;
-    // background-color: $primary;
     background-color: white;
+    // justify-content: flex-start;
+
+    .logo {
+      margin-top: -10%;
+      margin-bottom: -50px;
+    }
 
     p {
       // color: white;
       font-size: 50px;
-      margin-top: -20%;
+      // margin-top: -20%;
     }
   }
 
