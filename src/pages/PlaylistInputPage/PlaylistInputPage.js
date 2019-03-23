@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
+import { Link } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
@@ -29,7 +30,14 @@ const CtrlBtnGroup = connect(
   }
 )(({ shufflePlaylist, handleSwipeDivIdxChange }) => (
   <React.Fragment>
-    <Fab variant="extended" size="medium" color="secondary" aria-label="play">
+    <Fab
+      variant="extended"
+      size="medium"
+      color="secondary"
+      component={Link}
+      to={"/player"}
+      aria-label="play"
+    >
       Play
     </Fab>
     <Fab
