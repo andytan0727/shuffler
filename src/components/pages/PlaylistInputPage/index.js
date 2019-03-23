@@ -1,13 +1,3 @@
-import React from "react";
-import PlaylistAppBar from "../../BarComponents/PlaylistAppBar";
-
-const PlaylistInputPage = props => {
-  return (
-    <div>
-      <PlaylistAppBar />
-      <p>hello</p>
-    </div>
-  );
-};
+import PlaylistInputPage from "./PlaylistInputPage";
 
 export default PlaylistInputPage;

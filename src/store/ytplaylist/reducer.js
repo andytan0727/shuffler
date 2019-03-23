@@ -1,25 +1,30 @@
 import produce from "immer";
-import { ADD_PLAYLIST_ITEMS } from "../../utils/constants/actionConstants";
+import { ADD_PLAYLIST } from "../../utils/constants/actionConstants";
 
 const initialState = {
-  items: []
+  playlists: [
+    // {
+    //   id: "",
+    //   items: []
+    // }
+  ]
 };
 
 export const ytplaylist = produce((draft, action) => {
   switch (action.type) {
-    case ADD_PLAYLIST_ITEMS: {
-      const itemsToAdd = action.payload.items;
-      const isItemExists = draft.items.some(
-        item => item.id === itemsToAdd[0].id
+    case ADD_PLAYLIST: {
+      const playlistToAdd = action.payload.playlist;
+      const isPlaylistExists = draft.playlists.some(
+        playlist => playlist.id === playlistToAdd.id
       );
 
-      // return if items arr already contains any item from itemsToAdd arr
-      if (isItemExists) {
-        return draft;
+      // return if playlist exists
+      if (isPlaylistExists) {
+        return;
       }
 
-      // if the itemsToAdd is unique then push all its elem to items arr
-      draft.items.push(...itemsToAdd);
+      // if the playlist is unique then push it to redux store
+      draft.playlists.push(playlistToAdd);
       return draft;
     }
 

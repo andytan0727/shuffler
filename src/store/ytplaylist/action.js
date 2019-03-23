@@ -1,15 +1,15 @@
-import { ADD_PLAYLIST_ITEMS } from "../../utils/constants/actionConstants";
+import { ADD_PLAYLIST } from "../../utils/constants/actionConstants";
 
 /**
  * Add fetched playlist items to Redux store
- * @param {*} items An array of playlist items from YouTube Data API
+ * @param {object} playlist An object of playlist id and items from YouTube Data API
  * @returns action object for redux store
  */
-const addPlaylistItems = items => ({
-  type: ADD_PLAYLIST_ITEMS,
+const addPlaylist = playlist => ({
+  type: ADD_PLAYLIST,
   payload: {
-    items
+    playlist
   }
 });
 
-export { addPlaylistItems };
+export { addPlaylist };
