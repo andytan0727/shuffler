@@ -4,20 +4,27 @@ import { connect } from "react-redux";
 import YouTube from "react-youtube";
 import Button from "@material-ui/core/Button";
 
-import { setCurSongIdx } from "../../store/ytplayer/action";
+import { toggleYTPlaying, setCurSongIdx } from "../../store/ytplayer/action";
 
 import styles from "./styles.module.scss";
 
 const VideoPlayer = props => {
-  const { curSongIdx, playerVars, listToPlay, setCurSongIdx } = props;
+  const {
+    playing,
+    curSongIdx,
+    playerVars,
+    listToPlay,
+    toggleYTPlaying,
+    setCurSongIdx
+  } = props;
   const ytPlayer = useRef(null);
 
-  const handlePause = e => {
-    e.preventDefault();
-
-    if (ytPlayer) {
-      ytPlayer.current.internalPlayer.pauseVideo();
+  const handlePrevious = () => {
+    if (curSongIdx > 0) {
+      setCurSongIdx(curSongIdx - 1);
+      return;
     }
+    alert("This is the first video");
   };
 
   const handlePlay = e => {
@@ -25,16 +32,21 @@ const VideoPlayer = props => {
 
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.playVideo();
+      toggleYTPlaying();
     }
   };
 
-  const handleNext = e => {
+  const handlePause = e => {
     e.preventDefault();
 
     if (ytPlayer) {
-      console.log(ytPlayer.current.internalPlayer);
-      setCurSongIdx(curSongIdx + 1);
+      ytPlayer.current.internalPlayer.pauseVideo();
+      toggleYTPlaying();
     }
+  };
+
+  const handleNext = () => {
+    setCurSongIdx(curSongIdx + 1);
   };
 
   useEffect(() => {
@@ -45,7 +57,7 @@ const VideoPlayer = props => {
 
   return (
     <React.Fragment>
-      {listToPlay.length && (
+      {listToPlay.length !== 0 && (
         <div id={"player"}>
           <YouTube
             ref={ytPlayer}
@@ -56,25 +68,37 @@ const VideoPlayer = props => {
                 // list: "PL6nn1koAbIR_g6wG0CV2p-LgaOw2Lp9ON"
               }
             }}
-            onReady={() => alert("ready")}
+            onReady={toggleYTPlaying}
+            onEnd={handleNext} // defaults -> noop
           />
           <div className={styles.ctrlBtnGroup}>
             <Button
               variant="outlined"
               color="primary"
-              aria-label="play"
-              onClick={handlePlay}
+              aria-label="previous"
+              onClick={handlePrevious}
             >
-              Play
+              Previous
             </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              aria-label="pause"
-              onClick={handlePause}
-            >
-              Pause
-            </Button>
+            {!playing ? (
+              <Button
+                variant="outlined"
+                color="primary"
+                aria-label="play"
+                onClick={handlePlay}
+              >
+                Play
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                color="primary"
+                aria-label="pause"
+                onClick={handlePause}
+              >
+                Pause
+              </Button>
+            )}
             <Button
               variant="outlined"
               color="primary"
@@ -91,10 +115,11 @@ const VideoPlayer = props => {
 };
 
 VideoPlayer.propTypes = {
-  playing: PropTypes.bool,
-  curSongIdx: PropTypes.number,
+  playing: PropTypes.bool.isRequired,
+  curSongIdx: PropTypes.number.isRequired,
   playerVars: PropTypes.object.isRequired,
   listToPlay: PropTypes.array,
+  toggleYTPlaying: PropTypes.func.isRequired,
   setCurSongIdx: PropTypes.func.isRequired
 };
 
@@ -114,6 +139,7 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
+    toggleYTPlaying,
     setCurSongIdx
   }
 )(VideoPlayer);

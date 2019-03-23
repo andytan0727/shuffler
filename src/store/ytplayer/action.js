@@ -1,4 +1,11 @@
-import { SET_CURRENT_SONG_IDX } from "../../utils/constants/actionConstants";
+import {
+  TOGGLE_YT_PLAYING,
+  SET_CURRENT_SONG_IDX
+} from "../../utils/constants/actionConstants";
+
+const toggleYTPlaying = () => ({
+  type: TOGGLE_YT_PLAYING
+});
 
 const setCurSongIdx = songIdx => ({
   type: SET_CURRENT_SONG_IDX,
@@ -7,4 +14,4 @@ const setCurSongIdx = songIdx => ({
   }
 });
 
-export { setCurSongIdx };
+export { toggleYTPlaying, setCurSongIdx };
