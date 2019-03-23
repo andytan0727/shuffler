@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -25,41 +25,39 @@ const muiStyles = theme => ({
   }
 });
 
-const SongChips = props => {
+const SongList = props => {
   const {
-    ytplaylist: { playlists },
+    ytplaylist: { listToPlay },
     classes
   } = props;
 
   return (
-    <div className={styles.songChipsDiv}>
-      {playlists.length !== 0 && (
+    <div className={styles.songListDiv}>
+      {listToPlay.length !== 0 && (
         <List className={classes.list}>
-          {playlists.map(playlist =>
-            playlist.items.map(item => (
-              <ListItem key={item.id}>
-                <Checkbox checked={false} tabIndex={-1} disableRipple />
-                <ListItemText primary={item.snippet.title} />
-                <ListItemSecondaryAction>
-                  <IconButton aria-label="Delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))
-          )}
+          {listToPlay.map(song => (
+            <ListItem key={song.id}>
+              <Checkbox checked={false} tabIndex={-1} disableRipple />
+              <ListItemText primary={song.snippet.title} />
+              <ListItemSecondaryAction>
+                <IconButton aria-label="Delete">
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
         </List>
       )}
     </div>
   );
 };
 
-SongChips.propTypes = {
-  playlists: PropTypes.array,
+SongList.propTypes = {
+  listToPlay: PropTypes.array,
   classes: PropTypes.object.isRequired
 };
 
-const StyledSongChips = withStyles(muiStyles)(SongChips);
+const StyledSongList = withStyles(muiStyles)(SongList);
 
 const mapStateToProps = ({ ytplaylist }) => ({
   ytplaylist
@@ -68,4 +66,4 @@ const mapStateToProps = ({ ytplaylist }) => ({
 export default connect(
   mapStateToProps,
   {}
-)(StyledSongChips);
+)(StyledSongList);

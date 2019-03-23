@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
 import { withStyles } from "@material-ui/core/styles";
-import TopBar from "../../BarComponents/TopBar";
-import PlaylistInput from "../../InputComponents/PlaylistInput";
+import TopBar from "../../components/BarComponents/TopBar";
+import PlaylistInput from "../../components/InputComponents/PlaylistInput";
 
 import styles from "./styles.module.scss";
 

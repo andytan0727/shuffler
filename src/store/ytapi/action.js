@@ -1,6 +1,6 @@
 import {
   SET_PLAYLIST_ID,
-  ADD_FETCHED_DATA
+  FETCH_PLAYLIST_DATA
 } from "../../utils/constants/actionConstants";
 import { fetchPlaylistItems } from "../../utils/helper/fetchHelper";
 
@@ -18,12 +18,12 @@ const setPlaylistId = playlistId => ({
  * @param {object} params Extra params for request
  * @returns dispatch function for redux thunk
  */
-const addFetchedData = (url, params) => {
+const fetchPlaylistData = (url, params) => {
   return async dispatch => {
     try {
       const data = await fetchPlaylistItems(url, params);
       dispatch({
-        type: ADD_FETCHED_DATA,
+        type: FETCH_PLAYLIST_DATA,
         payload: {
           data
         }
@@ -35,4 +35,4 @@ const addFetchedData = (url, params) => {
   };
 };
 
-export { setPlaylistId, addFetchedData };
+export { setPlaylistId, fetchPlaylistData };

@@ -1,7 +1,7 @@
 import produce from "immer";
 import {
   SET_PLAYLIST_ID,
-  ADD_FETCHED_DATA
+  FETCH_PLAYLIST_DATA
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -26,7 +26,7 @@ export const ytapi = produce((draft, action) => {
       return draft;
     }
 
-    case ADD_FETCHED_DATA: {
+    case FETCH_PLAYLIST_DATA: {
       const dataToAdd = action.payload.data;
       const isDataFetched = draft.playlistItems.fetchedData.some(
         data => data.items[0].id === dataToAdd.items[0].id
