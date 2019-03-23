@@ -1,15 +1,21 @@
 @import "../../utils/styles/colors";
 
 .ctrlBtnGroup {
+  height: 3.5em;
   display: flex;
   justify-content: center;
-  margin-top: 5px;
+  align-items: center;
+  margin-top: -5px;
+  // background-color: $primaryLight;
 
   button {
     // background-color: white;
     // color: $primaryLight;
     // border: 2px solid lighten($primaryLight, 35%);
     border-radius: 10px;
+    // border: 3px solid white;
+    // color: white;
+    // font-weight: bold;
     margin: 0 10px;
     padding: 0.25em 1.5em;
   }
