@@ -8,6 +8,7 @@ import "./index.scss";
 // MUI styles
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import purple from "@material-ui/core/colors/purple";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -22,6 +23,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Provider store={store}>
+      <CssBaseline />
       <App />
     </Provider>
   </MuiThemeProvider>,
