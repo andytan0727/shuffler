@@ -1,9 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 // dispatch
 import { setPlaylistId, addFetchedData } from "../../../store/ytapi/action";
@@ -14,13 +14,15 @@ import styles from "./styles.module.scss";
 const muiStyles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    marginRight: 20,
+    marginBottom: 20
   }
 });
 
 const PlaylistInput = props => {
   const {
     classes,
+    handleSwipeDivIdxChange,
 
     // states
     ytapi: {
@@ -98,6 +100,9 @@ const PlaylistInput = props => {
         id: playlistId,
         items
       });
+
+      // swipe to ctrl btn group
+      handleSwipeDivIdxChange(1);
     } catch (err) {
       console.log("Error in axios request!");
       console.log(err);
@@ -109,10 +114,10 @@ const PlaylistInput = props => {
     <div className={styles.playlistDiv}>
       <TextField
         id="outlined-playlist-and-song"
-        label="Playlist or Song"
+        label="Playlist or Song Url"
         className={classes.textField}
         margin="normal"
-        variant="outlined"
+        // variant="standard"
         onChange={handlePlaylistIdChange}
       />
       <Button
@@ -121,10 +126,26 @@ const PlaylistInput = props => {
         aria-label="Start"
         onClick={handleRequest}
       >
-        Start
+        GO
       </Button>
     </div>
   );
+};
+
+PlaylistInput.propTypes = {
+  classes: PropTypes.object.isRequired,
+  handleSwipeDivIdxChange: PropTypes.func.isRequired,
+  apiKey: PropTypes.string,
+  playlistItems: PropTypes.object,
+  options: PropTypes.shape({
+    part: PropTypes.string.isRequired,
+    maxResults: PropTypes.string.isRequired,
+    playlistId: PropTypes.string,
+    fields: PropTypes.string
+  }),
+  setPlaylistId: PropTypes.func.isRequired,
+  addFetchedData: PropTypes.func.isRequired,
+  addPlaylist: PropTypes.func.isRequired
 };
 
 const MUIPlaylistInput = withStyles(muiStyles)(PlaylistInput);
