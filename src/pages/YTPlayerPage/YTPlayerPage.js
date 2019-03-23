@@ -1,24 +1,43 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import TopBar from "../../components/BarComponents/TopBar";
 import VideoPlayer from "../../components/VideoPlayer";
 
 import styles from "./styles.module.scss";
 
-const YTPlayerPage = () => {
+const YTPlayerPage = props => {
+  const {
+    ytplayer: { curSongIdx },
+    ytplaylist: { listToPlay }
+  } = props;
+
   return (
     <React.Fragment>
       <TopBar />
       <div className={styles.ytPlayerDiv}>
-        <h1>Youtube</h1>
+        <h3>
+          {listToPlay.length !== 0
+            ? listToPlay[curSongIdx].snippet.title
+            : "No Video Selected"}
+        </h3>
         <VideoPlayer />
-        <div className={styles.ctrlBtnGroup}>
-          <button>Play</button>
-          <button>Random</button>
-          <button>Shuffle</button>
-        </div>
       </div>
     </React.Fragment>
   );
 };
 
-export default YTPlayerPage;
+YTPlayerPage.propTypes = {
+  ytplayer: PropTypes.object,
+  ytplaylist: PropTypes.object
+};
+
+const mapStateToProps = ({ ytplayer, ytplaylist }) => ({
+  ytplayer,
+  ytplaylist
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(YTPlayerPage);

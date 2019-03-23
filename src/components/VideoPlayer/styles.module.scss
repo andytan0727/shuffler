@@ -1,0 +1,16 @@
+@import "../../utils/styles/colors";
+
+.ctrlBtnGroup {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+
+  button {
+    // background-color: white;
+    // color: $primaryLight;
+    // border: 2px solid lighten($primaryLight, 35%);
+    border-radius: 10px;
+    margin: 0 10px;
+    padding: 0.25em 1.5em;
+  }
+}

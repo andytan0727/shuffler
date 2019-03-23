@@ -1,29 +1,39 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
+import Button from "@material-ui/core/Button";
+
+import { setCurSongIdx } from "../../store/ytplayer/action";
+
+import styles from "./styles.module.scss";
 
 const VideoPlayer = props => {
-  const { playerVars, listToPlay } = props;
+  const { curSongIdx, playerVars, listToPlay, setCurSongIdx } = props;
   const ytPlayer = useRef(null);
-  const [curSongIdx, setCurSongIdx] = useState(0);
 
-  const handlePause = () => {
+  const handlePause = e => {
+    e.preventDefault();
+
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.pauseVideo();
     }
   };
 
-  const handlePlay = () => {
+  const handlePlay = e => {
+    e.preventDefault();
+
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.playVideo();
     }
   };
 
-  const handleNext = () => {
+  const handleNext = e => {
+    e.preventDefault();
+
     if (ytPlayer) {
       console.log(ytPlayer.current.internalPlayer);
-      setCurSongIdx(prevSongIdx => prevSongIdx + 1);
+      setCurSongIdx(curSongIdx + 1);
     }
   };
 
@@ -48,9 +58,32 @@ const VideoPlayer = props => {
             }}
             onReady={() => alert("ready")}
           />
-          <button onClick={handlePause}>Pause</button>
-          <button onClick={handlePlay}>Play</button>
-          <button onClick={handleNext}>Next</button>
+          <div className={styles.ctrlBtnGroup}>
+            <Button
+              variant="outlined"
+              color="primary"
+              aria-label="play"
+              onClick={handlePlay}
+            >
+              Play
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              aria-label="pause"
+              onClick={handlePause}
+            >
+              Pause
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              aria-label="next"
+              onClick={handleNext}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       )}
     </React.Fragment>
@@ -59,17 +92,20 @@ const VideoPlayer = props => {
 
 VideoPlayer.propTypes = {
   playing: PropTypes.bool,
+  curSongIdx: PropTypes.number,
   playerVars: PropTypes.object.isRequired,
-  listToPlay: PropTypes.array
+  listToPlay: PropTypes.array,
+  setCurSongIdx: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
   const {
-    ytplayer: { playing, playerVars },
+    ytplayer: { playing, curSongIdx, playerVars },
     ytplaylist: { listToPlay }
   } = state;
   return {
     playing,
+    curSongIdx,
     playerVars,
     listToPlay
   };
@@ -77,5 +113,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {}
+  {
+    setCurSongIdx
+  }
 )(VideoPlayer);

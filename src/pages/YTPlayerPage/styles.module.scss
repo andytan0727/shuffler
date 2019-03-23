@@ -3,29 +3,9 @@
 // $primaryColor: #c62adc;
 
 .ytPlayerDiv {
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   margin-top: -20px;
-
-  .ctrlBtnGroup {
-    display: flex;
-    margin-top: 10px;
-
-    button {
-      background-color: white;
-      color: $primaryLight;
-      border: 2px solid lighten($primaryLight, 35%);
-      border-radius: 10px;
-      font-size: 20px;
-      margin: 0 10px;
-      padding: 0.25em 1.5em;
-    }
-
-    button:hover {
-      background-color: lighten($primaryLight, 40%);
-    }
-  }
 }
