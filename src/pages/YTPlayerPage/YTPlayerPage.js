@@ -1,16 +1,18 @@
 import React from "react";
-import YoutubePlayerIFrame from "../../components/YoutubePlayerIFrame";
+import TopBar from "../../components/BarComponents/TopBar";
+import VideoPlayer from "../../components/VideoPlayer";
 
 import styles from "./styles.module.scss";
 
 const YTPlayerPage = () => {
   return (
     <React.Fragment>
+      <TopBar />
       <div className={styles.ytPlayerDiv}>
         <h1>Youtube</h1>
-        <YoutubePlayerIFrame />
+        <VideoPlayer />
         <div className={styles.ctrlBtnGroup}>
-          <button>Loop</button>
+          <button>Play</button>
           <button>Random</button>
           <button>Shuffle</button>
         </div>
