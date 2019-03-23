@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -27,27 +27,25 @@ const muiStyles = theme => ({
 
 const SongList = props => {
   const {
-    ytplaylist: { playlists },
+    ytplaylist: { listToPlay },
     classes
   } = props;
 
   return (
     <div className={styles.songListDiv}>
-      {playlists.length !== 0 && (
+      {listToPlay.length !== 0 && (
         <List className={classes.list}>
-          {playlists.map(playlist =>
-            playlist.items.map(item => (
-              <ListItem key={item.id}>
-                <Checkbox checked={false} tabIndex={-1} disableRipple />
-                <ListItemText primary={item.snippet.title} />
-                <ListItemSecondaryAction>
-                  <IconButton aria-label="Delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))
-          )}
+          {listToPlay.map(song => (
+            <ListItem key={song.id}>
+              <Checkbox checked={false} tabIndex={-1} disableRipple />
+              <ListItemText primary={song.snippet.title} />
+              <ListItemSecondaryAction>
+                <IconButton aria-label="Delete">
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
         </List>
       )}
     </div>
@@ -55,7 +53,7 @@ const SongList = props => {
 };
 
 SongList.propTypes = {
-  playlists: PropTypes.array,
+  listToPlay: PropTypes.array,
   classes: PropTypes.object.isRequired
 };
 
