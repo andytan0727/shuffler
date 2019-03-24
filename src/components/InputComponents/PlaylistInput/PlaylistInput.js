@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
@@ -6,7 +6,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 // dispatch
-import { setPlaylistId, fetchPlaylistData } from "../../../store/ytapi/action";
+import {
+  setPlaylistId,
+  fetchPlaylistData,
+  addFetchedItemId
+} from "../../../store/ytapi/action";
 import { addPlaylist } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
@@ -30,16 +34,19 @@ const PlaylistInput = props => {
       playlistItems,
       playlistItems: {
         options: { part, maxResults, playlistId, fields }
-      }
+      },
+      fetchedItemsId
     },
 
     // dispatch
     setPlaylistId,
     fetchPlaylistData,
+    addFetchedItemId,
     addPlaylist
   } = props;
+  const idInput = useRef(null);
 
-  const handlePlaylistIdChange = e => {
+  const handlePlaylistInputChange = e => {
     setPlaylistId(e.target.value);
   };
 
@@ -47,6 +54,16 @@ const PlaylistInput = props => {
     e.preventDefault();
 
     const items = [];
+
+    if (idInput && !idInput.current.value) {
+      alert("Please don't submit empty input");
+      return;
+    }
+
+    if (fetchedItemsId.includes(playlistId)) {
+      alert("Please enter new playlistId / song Url");
+      return;
+    }
 
     // if (playlistId) {
     //   try {
@@ -66,7 +83,9 @@ const PlaylistInput = props => {
     /**
      * API MOCK TESTING IN LOCAL ENV
      */
+
     try {
+      // fetch and add data to Redux store
       let data = await fetchPlaylistData("data1.json", {
         part,
         maxResults,
@@ -80,7 +99,6 @@ const PlaylistInput = props => {
       let count = 2;
 
       while (data.nextPageToken) {
-        console.log(data.nextPageToken);
         data = await fetchPlaylistData(`data${count}.json`, {
           part,
           maxResults,
@@ -89,7 +107,6 @@ const PlaylistInput = props => {
           apiKey
         });
         items.push(...data.items);
-        console.log(`push ${count}`);
         count++;
 
         if (count > 5) {
@@ -97,11 +114,16 @@ const PlaylistInput = props => {
           break;
         }
       }
-      console.log("finished. Add playlist to redux store");
       addPlaylist({
         id: playlistId,
         items
       });
+
+      // Add fetched playlist id to fetchedItemsId array
+      addFetchedItemId(playlistId);
+
+      // clear input
+      setPlaylistId("");
     } catch (err) {
       console.log("Error in axios request!");
       console.log(err);
@@ -112,12 +134,13 @@ const PlaylistInput = props => {
   return (
     <div className={styles.playlistDiv}>
       <TextField
+        inputRef={idInput}
         id="outlined-playlist-and-song"
         label="Playlist or Song Url"
         className={classes.textField}
         margin="normal"
-        // variant="standard"
-        onChange={handlePlaylistIdChange}
+        value={playlistId}
+        onChange={handlePlaylistInputChange}
       />
       <Button
         variant="contained"
@@ -133,7 +156,7 @@ const PlaylistInput = props => {
 
 PlaylistInput.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleSwipeDivIdxChange: PropTypes.func.isRequired,
+  handleSwipeDivIdxChange: PropTypes.func,
   apiKey: PropTypes.string,
   playlistItems: PropTypes.object,
   options: PropTypes.shape({
@@ -144,6 +167,8 @@ PlaylistInput.propTypes = {
   }),
   setPlaylistId: PropTypes.func.isRequired,
   fetchPlaylistData: PropTypes.func.isRequired,
+  fetchedItemsId: PropTypes.array,
+  addFetchedItemId: PropTypes.func.isRequired,
   addPlaylist: PropTypes.func.isRequired
 };
 
@@ -158,6 +183,7 @@ export default connect(
   {
     setPlaylistId,
     fetchPlaylistData,
+    addFetchedItemId,
     addPlaylist
   }
 )(MUIPlaylistInput);

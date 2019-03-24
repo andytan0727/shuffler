@@ -1,7 +1,8 @@
 import produce from "immer";
 import {
   SET_PLAYLIST_ID,
-  FETCH_PLAYLIST_DATA
+  FETCH_PLAYLIST_DATA,
+  ADD_FETCHED_ITEM_ID
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -16,7 +17,8 @@ const initialState = {
       fields: ["items", "nextPageToken", "pageInfo"]
     },
     fetchedData: []
-  }
+  },
+  fetchedItemsId: []
 };
 
 export const ytapi = produce((draft, action) => {
@@ -39,7 +41,18 @@ export const ytapi = produce((draft, action) => {
 
       // proceed if data is new and fresh
       draft.playlistItems.fetchedData.push(dataToAdd);
+
       return draft;
+    }
+
+    case ADD_FETCHED_ITEM_ID: {
+      console.log('hihih');
+      const playlistIdToAdd = action.payload.id;
+
+      // push fetched playlist id to fetched items array if not exists
+      if (!draft.fetchedItemsId.includes(playlistIdToAdd)) {
+        draft.fetchedItemsId.push(playlistIdToAdd);
+      }
     }
 
     default: {

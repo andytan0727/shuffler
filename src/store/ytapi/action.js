@@ -1,6 +1,7 @@
 import {
   SET_PLAYLIST_ID,
-  FETCH_PLAYLIST_DATA
+  FETCH_PLAYLIST_DATA,
+  ADD_FETCHED_ITEM_ID
 } from "../../utils/constants/actionConstants";
 import { fetchPlaylistItems } from "../../utils/helper/fetchHelper";
 
@@ -35,4 +36,17 @@ const fetchPlaylistData = (url, params) => {
   };
 };
 
-export { setPlaylistId, fetchPlaylistData };
+/**
+ *
+ * Add fetched playlist's to Redux store
+ * @param {string} id fetched item(playlist) id
+ * @returns action object for Redux
+ */
+const addFetchedItemId = id => ({
+  type: ADD_FETCHED_ITEM_ID,
+  payload: {
+    id
+  }
+});
+
+export { setPlaylistId, fetchPlaylistData, addFetchedItemId };
