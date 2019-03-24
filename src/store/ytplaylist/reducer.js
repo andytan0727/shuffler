@@ -1,4 +1,5 @@
 import produce from "immer";
+import uniqBy from "lodash.uniqby";
 import {
   ADD_PLAYLIST,
   SHUFFLE_PLAYLIST
@@ -31,6 +32,9 @@ export const ytplaylist = produce((draft, action) => {
       // if the playlist is unique then push it to redux store
       draft.playlists.push(playlistToAdd);
       draft.listToPlay.push(...playlistToAdd.items);
+
+      // make sure only add unique song
+      draft.listToPlay = uniqBy(draft.listToPlay, "id");
       return draft;
     }
 
