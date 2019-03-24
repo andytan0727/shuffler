@@ -4,6 +4,9 @@ $mobile-width: 300px;
 
 .mainNavDiv {
   nav {
+    position: fixed;
+    top: 0%;
+    background-color: rgba(#ffffff, .9);
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -31,7 +34,19 @@ $mobile-width: 300px;
 
       &:first-child {
         padding: 10px 0;
+        flex-grow: 1;
       }
+
+      &:last-child {
+        margin-right: 15px;
+      }
+
+
+      &:nth-child(n + 2):hover {
+        background-color: $secondaryLight;
+        color: white;
+      }
+
     }
   }
 }

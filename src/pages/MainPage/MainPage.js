@@ -56,13 +56,6 @@ const MainPage = props => {
           </Button>
         </MuiThemeProvider>
       </div>
-      <div className={styles.mainPgContent2}>
-        <p>Try to "real" random</p>
-        <PlaylistInput />
-      </div>
-      <div className={styles.mainPgContent3}>
-        <p>Unleash your passion</p>
-      </div>
     </div>
   );
 };

@@ -19,23 +19,16 @@ $mobile-width: 400px;
   .mainPgContent1 {
     @include pgContent();
     background-color: white;
-    // justify-content: flex-start;
 
     .logo {
-      margin-top: -10%;
-      margin-bottom: -50px;
-
-      @media (max-width: $mobile-width) {
-        margin-top: -50%;
-        // transform: translateY(-50%);
-        // margin-bottom: -50px;
-      }
+      margin-bottom: -40px;
     }
 
     p {
       font-size: 50px;
 
       @media (max-width: $mobile-width) {
+        width: 90%;
         font-size: 30px;
         text-align: center;
       }

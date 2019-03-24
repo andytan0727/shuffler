@@ -1,6 +1,7 @@
 .playlistInPgDiv {
   display: flex;
   justify-content: space-around;
+  // align-items: center;
   height: 100vh;
 
   .inputDiv {
@@ -8,6 +9,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: absolute;
+    top: 15%;
     // align-items: center;
 
     .swipeableDiv {

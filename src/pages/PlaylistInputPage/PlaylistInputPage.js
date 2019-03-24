@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
+import TopBar from "../../components/BarComponents/TopBar";
 import PlaylistAppBar from "../../components/BarComponents/PlaylistAppBar";
 import PlaylistInput from "../../components/InputComponents/PlaylistInput";
 import SongList from "../../components/ListComponents/SongList";
@@ -73,8 +74,8 @@ const PlaylistInputPage = props => {
 
   return (
     <React.Fragment>
-      <PlaylistAppBar />
-      {/* <TopBar /> */}
+      {/* <PlaylistAppBar /> */}
+      <TopBar />
       <div className={styles.playlistInPgDiv}>
         <div className={styles.inputDiv}>
           <SwipeableViews
