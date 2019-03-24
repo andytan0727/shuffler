@@ -1,5 +1,7 @@
 @import "../../utils/styles/colors";
 
+$mobile-width: 400px;
+
 @mixin pgContent {
   height: 100vh;
   display: flex;
@@ -8,10 +10,6 @@
   align-items: center;
 
   p {
-    // position: absolute;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
     font-size: 30px;
     font-family: "Roboto", sans-serif;
   }
@@ -26,12 +24,21 @@
     .logo {
       margin-top: -10%;
       margin-bottom: -50px;
+
+      @media (max-width: $mobile-width) {
+        margin-top: -50%;
+        // transform: translateY(-50%);
+        // margin-bottom: -50px;
+      }
     }
 
     p {
-      // color: white;
       font-size: 50px;
-      // margin-top: -20%;
+
+      @media (max-width: $mobile-width) {
+        font-size: 30px;
+        text-align: center;
+      }
     }
   }
 

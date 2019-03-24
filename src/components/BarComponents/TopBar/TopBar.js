@@ -8,7 +8,9 @@ const TopBar = () => {
   return (
     <div className={styles.mainNavDiv}>
       <nav>
-        <ShufflerTextLogo className={styles.logo} />
+        <Link to="/">
+          <ShufflerTextLogo className={styles.logo} />
+        </Link>
         {/* <Link to="/">Logo</Link> */}
 
         <Link to="/playlistInput">Playlist</Link>
