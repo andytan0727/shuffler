@@ -1,10 +1,12 @@
 import produce from "immer";
 import uniqBy from "lodash.uniqby";
+import shuffle from "lodash.shuffle";
 import {
   ADD_PLAYLIST,
   SHUFFLE_PLAYLIST
 } from "../../utils/constants/actionConstants";
-import shuffle from "lodash.shuffle";
+
+import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
 
 const initialState = {
   playlists: [
@@ -35,15 +37,37 @@ export const ytplaylist = produce((draft, action) => {
 
       // make sure only add unique song
       draft.listToPlay = uniqBy(draft.listToPlay, "id");
+
+      // add to indexedDB as well
+      draft.playlists.forEach(playlist => {
+        dbPlaylist
+          .setItem(playlist.id, playlist)
+          .then(() =>
+            console.log(
+              `successfully added playlist-${playlist.id} to playlistDB`
+            )
+          )
+          .catch(err => console.error(err));
+      });
+
+      dbSongList
+        .setItem("listToPlay", draft.listToPlay)
+        .then(() => console.log("successfully added listToPlay to songListDB"))
+        .catch(err => console.log(err));
+
       return draft;
     }
 
     case SHUFFLE_PLAYLIST: {
-      const songToShuffle = draft.playlists
-        .map(playlist => playlist.items)
-        .reduce((acc, curSong) => acc.concat(curSong));
+      if (draft.listToPlay.length) {
+        draft.listToPlay = shuffle(draft.listToPlay);
 
-      draft.listToPlay = shuffle(songToShuffle);
+        // add to indexedDB as well
+        dbSongList
+          .setItem("listToPlay", draft.listToPlay)
+          .then(() => console.log("add shuffled listToPlay to songListDB"))
+          .catch(err => console.error(err));
+      }
 
       return draft;
     }
