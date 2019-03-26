@@ -83,6 +83,8 @@ const PlaylistInput = props => {
     /**
      * API MOCK TESTING IN LOCAL ENV
      */
+    // swipe to ctrl btn group first for better UX
+    handleSwipeDivIdxChange(1);
 
     try {
       // fetch and add data to Redux store
@@ -93,8 +95,7 @@ const PlaylistInput = props => {
         fields,
         apiKey
       });
-      // swipe to ctrl btn group
-      handleSwipeDivIdxChange(1);
+
       items.push(...data.items);
       let count = 2;
 
@@ -115,12 +116,18 @@ const PlaylistInput = props => {
         }
       }
       addPlaylist({
-        id: playlistId,
-        items
+        persist: true,
+        playlist: {
+          id: playlistId,
+          items
+        }
       });
 
       // Add fetched playlist id to fetchedItemsId array
-      addFetchedItemId(playlistId);
+      addFetchedItemId({
+        persist: true,
+        id: playlistId
+      });
 
       // clear input
       setPlaylistId("");

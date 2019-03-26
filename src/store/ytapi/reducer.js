@@ -48,6 +48,7 @@ export const ytapi = produce((draft, action) => {
     }
 
     case ADD_FETCHED_ITEM_ID: {
+      const persist = action.payload.persist;
       const playlistIdToAdd = action.payload.id;
 
       // push fetched playlist id to fetched items array if not exists
@@ -59,12 +60,14 @@ export const ytapi = produce((draft, action) => {
         draft.fetchedItemsId = updatedFetchedItemsId;
 
         // add to indexedDB as well
-        dbFetchedItem
-          .setItem("fetchedItems", draft.fetchedItemsId)
-          .then(() =>
-            console.log("successfully added fetchedItemsId to playlistDB")
-          )
-          .catch(err => console.log(err));
+        if (persist) {
+          dbFetchedItem
+            .setItem("fetchedItems", updatedFetchedItemsId)
+            .then(() =>
+              console.log("successfully added fetchedItemsId to playlistDB")
+            )
+            .catch(err => console.log(err));
+        }
       }
 
       return draft;

@@ -3,12 +3,14 @@ import uniqBy from "lodash.uniqby";
 import shuffle from "lodash.shuffle";
 import {
   ADD_PLAYLIST,
-  SHUFFLE_PLAYLIST
+  SHUFFLE_PLAYLIST,
+  SET_LOADED_FROM_DB
 } from "../../utils/constants/actionConstants";
 
 import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
 
 const initialState = {
+  loadedFromDB: false,
   playlists: [
     // {
     //   id: "",
@@ -20,8 +22,14 @@ const initialState = {
 
 export const ytplaylist = produce((draft, action) => {
   switch (action.type) {
+    case SET_LOADED_FROM_DB: {
+      draft.loadedFromDB = true;
+      return draft;
+    }
+
     case ADD_PLAYLIST: {
       const playlistToAdd = action.payload.playlist;
+      const persist = action.payload.persist;
       const isPlaylistExists = draft.playlists.some(
         playlist => playlist.id === playlistToAdd.id
       );
@@ -31,29 +39,37 @@ export const ytplaylist = produce((draft, action) => {
         return;
       }
 
-      // if the playlist is unique then push it to redux store
-      draft.playlists.push(playlistToAdd);
-      draft.listToPlay.push(...playlistToAdd.items);
+      // if the playlist is unique then assign it to redux store
+      const updatedPlaylists = [...draft.playlists, playlistToAdd];
+      const updatedListToPlay = uniqBy(
+        [...draft.listToPlay, ...playlistToAdd.items],
+        "id"
+      );
+      draft.playlists = updatedPlaylists;
 
       // make sure only add unique song
-      draft.listToPlay = uniqBy(draft.listToPlay, "id");
+      draft.listToPlay = updatedListToPlay;
 
       // add to indexedDB as well
-      draft.playlists.forEach(playlist => {
-        dbPlaylist
-          .setItem(playlist.id, playlist)
-          .then(() =>
-            console.log(
-              `successfully added playlist-${playlist.id} to playlistDB`
+      if (persist) {
+        updatedPlaylists.forEach(playlist => {
+          dbPlaylist
+            .setItem(playlist.id, playlist)
+            .then(() =>
+              console.log(
+                `successfully added playlist-${playlist.id} to playlistDB`
+              )
             )
-          )
-          .catch(err => console.error(err));
-      });
+            .catch(err => console.error(err));
+        });
 
-      dbSongList
-        .setItem("listToPlay", draft.listToPlay)
-        .then(() => console.log("successfully added listToPlay to songListDB"))
-        .catch(err => console.log(err));
+        dbSongList
+          .setItem("listToPlay", updatedListToPlay)
+          .then(() =>
+            console.log("successfully added listToPlay to songListDB")
+          )
+          .catch(err => console.log(err));
+      }
 
       return draft;
     }

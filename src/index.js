@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
 import store from "./store";
+import { hydrateRedux } from "./utils/helper/hydrateReduxHelper";
 import "./index.scss";
 
 // MUI styles
@@ -29,6 +30,9 @@ ReactDOM.render(
   </MuiThemeProvider>,
   document.getElementById("root")
 );
+
+// Hydrate Redux if data is persisted to indexedDB before
+hydrateRedux(store);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
