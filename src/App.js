@@ -1,23 +1,27 @@
-import React, { Component } from "react";
+import React, { Component, Suspense, lazy } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import MainPage from "./pages/MainPage";
-import PlaylistInputPage from "./pages/PlaylistInputPage";
-import YTPlayerPage from "./pages/YTPlayerPage";
-import PgFooter from "./pages/PgFooter";
+// import PgFooter from "./pages/PgFooter";
 
 import "./App.scss";
+
+const MainPage = lazy(() => import("./pages/MainPage"));
+const PlaylistInputPage = lazy(() => import("./pages/PlaylistInputPage"));
+const YTPlayerPage = lazy(() => import("./pages/YTPlayerPage"));
+const PgFooter = lazy(() => import("./pages/PgFooter"));
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-          <Switch>
-            <Route path="/" exact component={MainPage} />
-            <Route path="/player" component={YTPlayerPage} />
-            <Route path="/playlistInput" component={PlaylistInputPage} />
-          </Switch>
-          <PgFooter />
+          <Suspense fallback={<div>loading...</div>}>
+            <Switch>
+              <Route path="/" exact component={MainPage} />
+              <Route path="/player" component={YTPlayerPage} />
+              <Route path="/playlistInput" component={PlaylistInputPage} />
+            </Switch>
+            <PgFooter />
+          </Suspense>
         </div>
       </BrowserRouter>
     );
