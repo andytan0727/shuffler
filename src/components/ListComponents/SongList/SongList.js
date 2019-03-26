@@ -33,7 +33,7 @@ const SongList = props => {
 
   return (
     <div className={styles.songListDiv}>
-      {listToPlay.length !== 0 && (
+      {listToPlay.length !== 0 ? (
         <List className={classes.list}>
           {listToPlay.map(song => (
             <ListItem key={song.id}>
@@ -47,6 +47,10 @@ const SongList = props => {
             </ListItem>
           ))}
         </List>
+      ) : (
+        <div>
+          <h3>No Playlist</h3>
+        </div>
       )}
     </div>
   );
