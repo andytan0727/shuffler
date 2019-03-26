@@ -22,6 +22,8 @@ const theme = createMuiTheme({
         border: 0,
         color: "white",
         padding: "0 30px",
+        fontSize: "18px",
+        height: "3em",
         boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)"
       }
     }
@@ -40,7 +42,7 @@ const MainPage = props => {
         <p>Randomize your YouTube Playlist</p>
         <MuiThemeProvider theme={theme}>
           <Button
-            size="large"
+            // size="large"
             aria-label="Get-Started"
             className={classes.fab}
             component={GetStartedLink}
