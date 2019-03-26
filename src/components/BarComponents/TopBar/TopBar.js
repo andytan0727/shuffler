@@ -10,9 +10,10 @@ import { withStyles } from "@material-ui/core/styles";
 import { ReactComponent as ShufflerTextLogo } from "../../../assets/shufflerTextLogo.svg";
 import styles from "./styles.module.scss";
 
-const muiStyles = () => ({
+const muiStyles = theme => ({
   menuAnchor: {
-    textDecoration: "none"
+    textDecoration: "none",
+    color: theme.palette.primary.main
   }
 });
 
