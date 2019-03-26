@@ -39,6 +39,18 @@ const MainPage = props => {
     <div className={styles.mainPgDiv}>
       <div className={styles.mainPgContent1}>
         <ShufflerLogo className={styles.logo} />
+        <svg
+          className={styles.pulse}
+          viewBox="0 0 1100 1100"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle id="Oval" cx="550" cy="550" r="400" />
+          <circle id="Oval" cx="550" cy="550" r="450" />
+          <circle id="Oval" cx="550" cy="550" r="500" />
+          <circle id="Oval" cx="550" cy="550" r="550" />
+          <circle id="Oval" cx="550" cy="550" r="580" />
+        </svg>
         <p>Randomize your YouTube Playlist</p>
         <MuiThemeProvider theme={theme}>
           <Button

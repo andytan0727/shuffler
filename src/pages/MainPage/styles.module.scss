@@ -15,7 +15,50 @@ $mobile-width: 400px;
   }
 }
 
+.pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 30rem;
+
+  circle {
+    fill: #fca2f0;
+    transform: scale(0);
+    opacity: 0;
+    transform-origin: 50% 50%;
+    animation: pulse 4s cubic-bezier(0.5, 0.5, 0, 1);
+    animation-iteration-count: infinite;
+
+    &:nth-child(2) {
+      fill: #d1a9bd;
+      animation: pulse 4s .75s cubic-bezier(0.5, 0.5, 0, 1);
+      animation-iteration-count: infinite;
+    }
+
+    &:nth-child(3) {
+      fill: #8ea8fd;
+      animation: pulse 4s 1.5s cubic-bezier(0.5, 0.5, 0, 1);
+      animation-iteration-count: infinite;
+    }
+
+    &:nth-child(4) {
+      fill: #eecc83;
+      animation: pulse 4s 2.25s cubic-bezier(0.5, 0.5, 0, 1);
+      animation-iteration-count: infinite;
+    }
+
+    &:nth-child(5) {
+      fill: #99d476;
+      animation: pulse 4s 3s cubic-bezier(0.5, 0.5, 0, 1);
+      animation-iteration-count: infinite;
+    }
+  }
+}
+
 .mainPgDiv {
+  z-index: -1;
+
   .mainPgContent1 {
     @include pgContent();
     background-color: white;
@@ -40,6 +83,7 @@ $mobile-width: 400px;
     }
 
     a {
+      z-index: 2;
       &:hover {
         animation-duration: 1.2s;
         animation-name: scaleButton;
@@ -48,6 +92,16 @@ $mobile-width: 400px;
         animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
       }
     }
+  }
+}
+
+@keyframes pulse {
+  25% {
+    opacity: 0.35;
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 
