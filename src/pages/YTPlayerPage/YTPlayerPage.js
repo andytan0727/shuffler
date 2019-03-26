@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import TopBar from "../../components/BarComponents/TopBar";
 import VideoPlayer from "../../components/VideoPlayer";
 
 import styles from "./styles.module.scss";
@@ -14,7 +13,6 @@ const YTPlayerPage = props => {
 
   return (
     <React.Fragment>
-      <TopBar />
       <div className={styles.ytPlayerDiv}>
         <h3>
           {listToPlay.length !== 0

@@ -1,11 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import TopBar from "../../components/BarComponents/TopBar";
-import PlaylistInput from "../../components/InputComponents/PlaylistInput";
 
 import { ReactComponent as ShufflerLogo } from "../../assets/shuffler-logo.svg";
 import styles from "./styles.module.scss";
@@ -38,9 +35,6 @@ const MainPage = props => {
   const { classes } = props;
   return (
     <div className={styles.mainPgDiv}>
-      <header>
-        <TopBar />
-      </header>
       <div className={styles.mainPgContent1}>
         <ShufflerLogo className={styles.logo} />
         <p>Randomize your YouTube Playlist</p>
@@ -50,7 +44,6 @@ const MainPage = props => {
             aria-label="Get-Started"
             className={classes.fab}
             component={GetStartedLink}
-            onClick={() => console.log("clicked")}
           >
             Get Started
           </Button>

@@ -4,12 +4,9 @@ import { connect } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { Link } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
-import TopBar from "../../components/BarComponents/TopBar";
-import PlaylistAppBar from "../../components/BarComponents/PlaylistAppBar";
 import PlaylistInput from "../../components/InputComponents/PlaylistInput";
 import SongList from "../../components/ListComponents/SongList";
 
@@ -24,12 +21,7 @@ const muiStyles = theme => ({
   }
 });
 
-const CtrlBtnGroup = connect(
-  null,
-  {
-    shufflePlaylist
-  }
-)(({ shufflePlaylist, handleSwipeDivIdxChange }) => (
+const CtrlBtnGroup = ({ shufflePlaylist, handleSwipeDivIdxChange }) => (
   <React.Fragment>
     <Fab
       variant="extended"
@@ -62,11 +54,11 @@ const CtrlBtnGroup = connect(
       Add more
     </Fab>
   </React.Fragment>
-));
+);
 
 const PlaylistInputPage = props => {
-  const { classes } = props;
-  const [swipeDivIdx, setSwipeDivIdx] = useState(0);
+  const { classes, loadedFromDB, shufflePlaylist } = props;
+  const [swipeDivIdx, setSwipeDivIdx] = useState(Number(loadedFromDB));
 
   const handleSwipeDivIdxChange = value => {
     setSwipeDivIdx(value);
@@ -74,8 +66,6 @@ const PlaylistInputPage = props => {
 
   return (
     <React.Fragment>
-      {/* <PlaylistAppBar /> */}
-      <TopBar />
       <div className={styles.playlistInPgDiv}>
         <div className={styles.inputDiv}>
           <SwipeableViews
@@ -85,7 +75,10 @@ const PlaylistInputPage = props => {
           >
             <PlaylistInput handleSwipeDivIdxChange={handleSwipeDivIdxChange} />
             <div className={styles.ctrlButtonsDiv}>
-              <CtrlBtnGroup handleSwipeDivIdxChange={handleSwipeDivIdxChange} />
+              <CtrlBtnGroup
+                handleSwipeDivIdxChange={handleSwipeDivIdxChange}
+                shufflePlaylist={shufflePlaylist}
+              />
             </div>
           </SwipeableViews>
           <Divider variant="middle" className={classes.divider} />
@@ -97,11 +90,25 @@ const PlaylistInputPage = props => {
 };
 
 CtrlBtnGroup.propTypes = {
-  handleSwipeDivIdxChange: PropTypes.func.isRequired
+  handleSwipeDivIdxChange: PropTypes.func.isRequired,
+  shufflePlaylist: PropTypes.func
 };
 
 PlaylistInputPage.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  loadedFromDB: PropTypes.bool.isRequired,
+  shufflePlaylist: PropTypes.func
 };
 
-export default withStyles(muiStyles)(PlaylistInputPage);
+const mapStateToProps = ({ ytplaylist: { loadedFromDB } }) => ({
+  loadedFromDB
+});
+
+const StyledPlaylistInputPage = withStyles(muiStyles)(PlaylistInputPage);
+
+export default connect(
+  mapStateToProps,
+  {
+    shufflePlaylist
+  }
+)(StyledPlaylistInputPage);
