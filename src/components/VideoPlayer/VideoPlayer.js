@@ -2,7 +2,11 @@ import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import SkipNextIcon from "@material-ui/icons/SkipNext";
+import PauseIcon from "@material-ui/icons/Pause";
 
 import { toggleYTPlaying, setCurSongIdx } from "../../store/ytplayer/action";
 
@@ -72,41 +76,21 @@ const VideoPlayer = props => {
             onEnd={handleNext} // defaults -> noop
           />
           <div className={styles.ctrlBtnGroup}>
-            <Button
-              variant="outlined"
-              color="primary"
-              aria-label="previous"
-              onClick={handlePrevious}
-            >
-              Previous
-            </Button>
+            <IconButton aria-label="Previous" onClick={handlePrevious}>
+              <SkipPreviousIcon />
+            </IconButton>
             {!playing ? (
-              <Button
-                variant="outlined"
-                color="primary"
-                aria-label="play"
-                onClick={handlePlay}
-              >
-                Play
-              </Button>
+              <IconButton aria-label="Play" onClick={handlePlay}>
+                <PlayArrowIcon className={styles.playPauseIcon} />
+              </IconButton>
             ) : (
-              <Button
-                variant="outlined"
-                color="primary"
-                aria-label="pause"
-                onClick={handlePause}
-              >
-                Pause
-              </Button>
+              <IconButton aria-label="Play" onClick={handlePause}>
+                <PauseIcon className={styles.playPauseIcon} />
+              </IconButton>
             )}
-            <Button
-              variant="outlined"
-              color="primary"
-              aria-label="next"
-              onClick={handleNext}
-            >
-              Next
-            </Button>
+            <IconButton aria-label="Next" onClick={handleNext}>
+              <SkipNextIcon />
+            </IconButton>
           </div>
         </div>
       )}
