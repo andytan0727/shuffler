@@ -13,6 +13,8 @@ const muiStyles = theme => ({
   tab: {
     marginTop: -10,
     width: 500,
+    height: '70vh',
+    overflowY: 'hidden',
     background: theme.palette.background.paper
   }
 });
