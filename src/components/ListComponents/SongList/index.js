@@ -1,3 +1,3 @@
-import SongList from "./SongList";
+import SavedPlaylist from "./SongList";
 
-export default SongList;
+export default SavedPlaylist;

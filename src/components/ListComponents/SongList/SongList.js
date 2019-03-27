@@ -1,25 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { FixedSizeList } from "react-window";
 import { withStyles } from "@material-ui/core/styles";
-
-import { FixedSizeList as List } from "react-window";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import styles from "./styles.module.scss";
 
-const muiStyles = theme => ({
-  list: {
-    maxWidth: "60vw",
-    maxHeight: "65vh",
-    backgroundColor: theme.palette.background.paper,
-    position: "absolute",
-    left: "50%",
-    transform: "translateX(-50%)",
-    overflow: "auto"
-  }
-});
-
-class ListItem extends React.PureComponent {
+class FixedSizeListItem extends React.PureComponent {
   render() {
     const { index, style, data } = this.props;
 
@@ -31,41 +26,76 @@ class ListItem extends React.PureComponent {
   }
 }
 
-const SongList = props => {
+const CollapseListItem = props => {
+  const { playlist } = props;
+  const [open, setOpen] = useState(false);
+
+  const handleClick = (e, id) => {
+    setOpen(prevOpen => !prevOpen);
+  };
+
+  return (
+    <React.Fragment>
+      <ListItem button onClick={handleClick}>
+        <ListItemText>
+          {playlist.name
+            ? playlist.name
+            : `${playlist.items[0].snippet.channelTitle}'s Playlist - ${
+                playlist.id
+              }`}
+        </ListItemText>
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button>
+            <FixedSizeList
+              height={350}
+              className={styles.songList}
+              itemCount={playlist.items.length}
+              itemSize={65}
+              itemData={playlist.items}
+              itemKey={(index, data) => data[index].id}
+              width={400}
+            >
+              {FixedSizeListItem}
+            </FixedSizeList>
+          </ListItem>
+        </List>
+      </Collapse>
+    </React.Fragment>
+  );
+};
+
+const SavedPlaylist = props => {
   const {
-    ytplaylist: { listToPlay },
-    classes
+    ytplaylist: { playlists }
   } = props;
 
   return (
-    <div className={styles.songListDiv}>
-      {listToPlay.length !== 0 ? (
+    <React.Fragment>
+      {playlists.length !== 0 ? (
         <List
-          height={350}
-          className={styles.songList}
-          itemCount={listToPlay.length}
-          itemSize={65}
-          itemData={listToPlay}
-          itemKey={(index, data) => data[index].id}
-          width={400}
+          component="nav"
+
+          // className={classes.root}
         >
-          {ListItem}
+          {playlists.map(playlist => (
+            <CollapseListItem key={playlist.id} playlist={playlist} />
+          ))}
         </List>
       ) : (
         <div>
           <h3>No Playlist</h3>
         </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 
-SongList.propTypes = {
-  listToPlay: PropTypes.array,
-  classes: PropTypes.object.isRequired
+SavedPlaylist.propTypes = {
+  listToPlay: PropTypes.array
 };
-
-const StyledSongList = withStyles(muiStyles)(SongList);
 
 const mapStateToProps = ({ ytplaylist }) => ({
   ytplaylist
@@ -74,4 +104,4 @@ const mapStateToProps = ({ ytplaylist }) => ({
 export default connect(
   mapStateToProps,
   {}
-)(StyledSongList);
+)(SavedPlaylist);
