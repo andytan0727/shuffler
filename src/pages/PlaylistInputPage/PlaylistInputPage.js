@@ -9,7 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
 import PlaylistInput from "../../components/InputComponents/PlaylistInput";
 import SongListTabs from "../../components/TabsComponents/SongListTabs";
-import SavedPlaylist from "../../components/ListComponents/SongList";
+import SavedPlaylist from "../../components/ListComponents/SavedPlaylist";
 
 import { shufflePlaylist } from "../../store/ytplaylist/action";
 import styles from "./styles.module.scss";
