@@ -1,7 +1,8 @@
 import {
   ADD_PLAYLIST,
   SHUFFLE_PLAYLIST,
-  SET_LOADED_FROM_DB
+  SET_LOADED_FROM_DB,
+  ADD_LIST_TO_PLAY
 } from "../../utils/constants/actionConstants";
 
 /**
@@ -36,4 +37,18 @@ const setLoadedFromDB = () => ({
   type: SET_LOADED_FROM_DB
 });
 
-export { addPlaylist, shufflePlaylist, setLoadedFromDB };
+/**
+ * Add video to listToPlay
+ * @param {boolean} persist persist to indexedDB
+ * @param {object} listToAdd An array of video to add
+ * @returns ADD_LIST_TO_PLAY action object for redux store
+ */
+const addListToPlay = ({ persist, listToAdd }) => ({
+  type: ADD_LIST_TO_PLAY,
+  payload: {
+    persist,
+    listToAdd
+  }
+});
+
+export { addPlaylist, shufflePlaylist, setLoadedFromDB, addListToPlay };

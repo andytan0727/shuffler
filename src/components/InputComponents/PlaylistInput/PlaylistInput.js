@@ -11,7 +11,7 @@ import {
   fetchPlaylistData,
   addFetchedItemId
 } from "../../../store/ytapi/action";
-import { addPlaylist } from "../../../store/ytplaylist/action";
+import { addPlaylist, addListToPlay } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
 
@@ -42,7 +42,8 @@ const PlaylistInput = props => {
     setPlaylistId,
     fetchPlaylistData,
     addFetchedItemId,
-    addPlaylist
+    addPlaylist,
+    addListToPlay
   } = props;
   const idInput = useRef(null);
 
@@ -115,6 +116,8 @@ const PlaylistInput = props => {
           break;
         }
       }
+
+      // add new playlist fetched to Redux
       addPlaylist({
         persist: true,
         playlist: {
@@ -123,7 +126,13 @@ const PlaylistInput = props => {
         }
       });
 
-      // Add fetched playlist id to fetchedItemsId array
+      // add newly fetched playlist's song to listToPlay
+      addListToPlay({
+        persist: true,
+        listToAdd: items
+      })
+
+      // add fetched playlist id to fetchedItemsId array
       addFetchedItemId({
         persist: true,
         id: playlistId
@@ -191,6 +200,7 @@ export default connect(
     setPlaylistId,
     fetchPlaylistData,
     addFetchedItemId,
-    addPlaylist
+    addPlaylist,
+    addListToPlay
   }
 )(MUIPlaylistInput);

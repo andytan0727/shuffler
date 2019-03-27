@@ -1,10 +1,11 @@
-import produce from "immer";
+import produce, { original } from "immer";
 import uniqBy from "lodash.uniqby";
 import shuffle from "lodash.shuffle";
 import {
   ADD_PLAYLIST,
   SHUFFLE_PLAYLIST,
-  SET_LOADED_FROM_DB
+  SET_LOADED_FROM_DB,
+  ADD_LIST_TO_PLAY
 } from "../../utils/constants/actionConstants";
 
 import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
@@ -28,9 +29,10 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case ADD_PLAYLIST: {
+      const prevPlaylists = original(draft.playlists);
       const playlistToAdd = action.payload.playlist;
       const persist = action.payload.persist;
-      const isPlaylistExists = draft.playlists.some(
+      const isPlaylistExists = prevPlaylists.some(
         playlist => playlist.id === playlistToAdd.id
       );
 
@@ -40,29 +42,48 @@ export const ytplaylist = produce((draft, action) => {
       }
 
       // if the playlist is unique then assign it to redux store
-      const updatedPlaylists = [...draft.playlists, playlistToAdd];
-      const updatedListToPlay = uniqBy(
-        [...draft.listToPlay, ...playlistToAdd.items],
-        "id"
-      );
-      draft.playlists = updatedPlaylists;
+      const updatedPlaylists = !persist
+        ? [...prevPlaylists, playlistToAdd]
+        : [
+            ...prevPlaylists,
+            {
+              ...playlistToAdd,
+              saved: true
+            }
+          ];
 
-      // make sure only add unique song
-      draft.listToPlay = updatedListToPlay;
+      draft.playlists = updatedPlaylists;
 
       // add to indexedDB as well
       if (persist) {
+        console.log(updatedPlaylists);
         updatedPlaylists.forEach(playlist => {
           dbPlaylist
             .setItem(playlist.id, playlist)
-            .then(() =>
+            .then(() => {
               console.log(
                 `successfully added playlist-${playlist.id} to playlistDB`
-              )
-            )
+              );
+            })
             .catch(err => console.error(err));
         });
+      }
 
+      return draft;
+    }
+
+    case ADD_LIST_TO_PLAY: {
+      const listToAdd = action.payload.listToAdd;
+      const persist = action.payload.persist;
+
+      // make sure only add unique song
+      const updatedListToPlay = uniqBy(
+        [...draft.listToPlay, ...listToAdd],
+        "id"
+      );
+      draft.listToPlay = updatedListToPlay;
+
+      if (persist) {
         dbSongList
           .setItem("listToPlay", updatedListToPlay)
           .then(() =>
