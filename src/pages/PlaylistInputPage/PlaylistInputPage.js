@@ -8,7 +8,8 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
 import PlaylistInput from "../../components/InputComponents/PlaylistInput";
-import SongList from "../../components/ListComponents/SongList";
+import SongListTabs from "../../components/TabsComponents/SongListTabs";
+import SavedPlaylist from "../../components/ListComponents/SongList";
 
 import { shufflePlaylist } from "../../store/ytplaylist/action";
 import styles from "./styles.module.scss";
@@ -82,7 +83,10 @@ const PlaylistInputPage = props => {
             </div>
           </SwipeableViews>
           <Divider variant="middle" className={classes.divider} />
-          <SongList />
+          <div className={styles.songListTabsDiv}>
+            <SongListTabs FirstTabComponent={SavedPlaylist} />
+          </div>
+          {/* <SongList /> */}
         </div>
       </div>
     </React.Fragment>
