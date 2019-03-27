@@ -8,6 +8,7 @@ const PgNavbar = lazy(() => import("./pages/PgNavbar"));
 const MainPage = lazy(() => import("./pages/MainPage"));
 const PlaylistInputPage = lazy(() => import("./pages/PlaylistInputPage"));
 const YTPlayerPage = lazy(() => import("./pages/YTPlayerPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 const PgFooter = lazy(() => import("./pages/PgFooter"));
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
               <Route path="/" exact component={MainPage} />
               <Route path="/player" component={YTPlayerPage} />
               <Route path="/playlistInput" component={PlaylistInputPage} />
+              <Route path="/about" component={AboutPage} />
             </Switch>
             <PgFooter />
           </Suspense>
