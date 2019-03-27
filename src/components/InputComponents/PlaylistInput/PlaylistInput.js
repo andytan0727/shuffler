@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CancelIcon from "@material-ui/icons/Cancel";
+import SearchIcon from "@material-ui/icons/Search";
 
 // dispatch
 import {
@@ -18,7 +20,7 @@ import styles from "./styles.module.scss";
 const muiStyles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
-    marginRight: 20,
+    marginRight: 10,
     marginBottom: 20
   }
 });
@@ -130,7 +132,7 @@ const PlaylistInput = props => {
       addListToPlay({
         persist: true,
         listToAdd: items
-      })
+      });
 
       // add fetched playlist id to fetchedItemsId array
       addFetchedItemId({
@@ -158,14 +160,15 @@ const PlaylistInput = props => {
         value={playlistId}
         onChange={handlePlaylistInputChange}
       />
-      <Button
-        variant="contained"
-        color="secondary"
-        aria-label="Start"
-        onClick={handleRequest}
+      <IconButton aria-label="search" onClick={handleRequest}>
+        <SearchIcon />
+      </IconButton>
+      <IconButton
+        aria-label="cancel"
+        onClick={handleSwipeDivIdxChange.bind(this, 1)}
       >
-        GO
-      </Button>
+        <CancelIcon />
+      </IconButton>
     </div>
   );
 };
