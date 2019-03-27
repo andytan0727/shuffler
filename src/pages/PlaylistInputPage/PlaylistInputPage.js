@@ -10,11 +10,12 @@ import { withStyles } from "@material-ui/core/styles";
 import PlaylistInput from "../../components/InputComponents/PlaylistInput";
 import SongListTabs from "../../components/TabsComponents/SongListTabs";
 import SavedPlaylist from "../../components/ListComponents/SavedPlaylist";
+import CombinedPlaylist from "../../components/ListComponents/CombinedPlaylist";
 
 import { shufflePlaylist } from "../../store/ytplaylist/action";
 import styles from "./styles.module.scss";
 
-const muiStyles = theme => ({
+const muiStyles = () => ({
   divider: {
     width: "100%",
     marginLeft: 0,
@@ -84,9 +85,11 @@ const PlaylistInputPage = props => {
           </SwipeableViews>
           <Divider variant="middle" className={classes.divider} />
           <div className={styles.songListTabsDiv}>
-            <SongListTabs FirstTabComponent={SavedPlaylist} />
+            <SongListTabs
+              FirstTabComponent={SavedPlaylist}
+              SecondTabComponent={CombinedPlaylist}
+            />
           </div>
-          {/* <SongList /> */}
         </div>
       </div>
     </React.Fragment>

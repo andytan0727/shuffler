@@ -57,7 +57,9 @@ const SongListTabs = props => {
         <TabContainer dir={theme.direction}>
           <FirstTabComponent />
         </TabContainer>
-        <TabContainer dir={theme.direction}>Item Two</TabContainer>
+        <TabContainer dir={theme.direction}>
+          <SecondTabComponent />
+        </TabContainer>
       </SwipeableViews>
     </div>
   );
@@ -66,8 +68,14 @@ const SongListTabs = props => {
 SongListTabs.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-  FirstTabComponent: PropTypes.func.isRequired,
-  SecondTabComponent: PropTypes.node
+  FirstTabComponent: PropTypes.oneOfType([
+    PropTypes.node.isRequired,
+    PropTypes.func.isRequired
+  ]),
+  SecondTabComponent: PropTypes.oneOfType([
+    PropTypes.node.isRequired,
+    PropTypes.func.isRequired
+  ])
 };
 
 export default withStyles(muiStyles, { withTheme: true })(SongListTabs);
