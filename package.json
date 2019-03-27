@@ -18,12 +18,15 @@
     "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.8",
     "react-swipeable-views": "^0.13.1",
+    "react-window": "^1.7.1",
     "react-youtube": "^7.9.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-https:win": "set HTTPS=true&&yarn start",
+    "start-https:bash": "HTTPS=true yarn start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

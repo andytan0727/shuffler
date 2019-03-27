@@ -6485,6 +6485,11 @@ mem@^4.0.0:
     mimic-fn "^1.0.0"
     p-is-promise "^2.0.0"
 
+"memoize-one@>=3.1.1 <6":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.0.1.tgz#35a709ffb6e5f0cb79f9679a96f09ec3a35addfa"
+  integrity sha512-S3plzyksLOSF4pkf1Xlb7mA8ZRKZlgp3ebg7rULbfwPT8Ww7uZz5CbLgRKaR92GeXpsNiFbfCRWf/uOrCYIbRg==
+
 memory-fs@^0.4.0, memory-fs@~0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/memory-fs/-/memory-fs-0.4.1.tgz#3a9a20b8462523e447cfbc7e8bb80ed667bfc552"
@@ -8666,6 +8671,14 @@ react-transition-group@^2.2.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
+
+react-window@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.7.1.tgz#c1db640415b97b85bc0a1c66eb82dadabca39b86"
+  integrity sha512-y4/Qc98agCtHulpeI5b6K2Hh8J7TeZIfvccBVesfqOFx4CS+TSUpnJl1/ipeXzhfvzPwvVEmaU/VosQ6O5VhTg==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    memoize-one ">=3.1.1 <6"
 
 react-youtube@^7.9.0:
   version "7.9.0"
