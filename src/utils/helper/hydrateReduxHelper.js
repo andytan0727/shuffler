@@ -1,5 +1,9 @@
-import { dbPlaylist, dbFetchedItem } from "./dbHelper";
-import { addPlaylist, setLoadedFromDB } from "../../store/ytplaylist/action";
+import { dbPlaylist, dbFetchedItem, dbSongList } from "./dbHelper";
+import {
+  addPlaylist,
+  addListToPlay,
+  setLoadedFromDB
+} from "../../store/ytplaylist/action";
 import { addFetchedItemId } from "../../store/ytapi/action";
 
 /**
@@ -13,14 +17,14 @@ export const hydrateRedux = async store => {
     const fetchedItemsIdArr = await dbFetchedItem.getItem("fetchedItems");
 
     if (!fetchedItemsIdArr || !fetchedItemsIdArr.length) {
-      throw new Error("fetchedItemsId is not found in indexedDB");
+      throw new Error("fetchedItemsId not found in indexedDB");
     }
 
     fetchedItemsIdArr.forEach(itemId => {
       store.dispatch(
         addFetchedItemId({
           persist: false,
-          itemId
+          id: itemId
         })
       );
     });
@@ -28,7 +32,7 @@ export const hydrateRedux = async store => {
     // hydrate playlist
     const dbPlaylistKeys = await dbPlaylist.keys();
     if (!dbPlaylistKeys.length) {
-      throw new Error("Playlist is not found in indexedDB");
+      throw new Error("Playlist not found in indexedDB");
     }
 
     await dbPlaylist.iterate((value, _) => {
@@ -40,6 +44,19 @@ export const hydrateRedux = async store => {
         })
       );
     });
+
+    // hydrate list to play
+    const dbSongListArr = await dbSongList.getItem("listToPlay");
+    if (!dbSongListArr || !dbSongListArr.length) {
+      throw new Error("SongList to play not found in indexedDB");
+    }
+
+    store.dispatch(
+      addListToPlay({
+        persist: false,
+        listToAdd: dbSongListArr
+      })
+    );
 
     console.log("Successfully hydrates Redux with stored indexedDB data");
 
