@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { FixedSizeList } from "react-window";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -9,20 +8,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import VideoList from "../VideoList";
 
-import styles from "./styles.module.scss";
-
-class FixedSizeListItem extends React.PureComponent {
-  render() {
-    const { index, style, data } = this.props;
-
-    return (
-      <div className={styles.listItem} style={style}>
-        {data[index].snippet.title}
-      </div>
-    );
-  }
-}
+// import styles from "./styles.module.scss";
 
 const CollapseListItem = props => {
   const { playlist } = props;
@@ -47,17 +35,7 @@ const CollapseListItem = props => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem button>
-            <FixedSizeList
-              height={350}
-              className={styles.songList}
-              itemCount={playlist.items.length}
-              itemSize={65}
-              itemData={playlist.items}
-              itemKey={(index, data) => data[index].id}
-              width={400}
-            >
-              {FixedSizeListItem}
-            </FixedSizeList>
+            <VideoList items={playlist.items} />
           </ListItem>
         </List>
       </Collapse>
@@ -73,11 +51,7 @@ const SavedPlaylist = props => {
   return (
     <React.Fragment>
       {playlists.length !== 0 ? (
-        <List
-          component="nav"
-
-          // className={classes.root}
-        >
+        <List component="nav">
           {playlists.map(playlist => (
             <CollapseListItem key={playlist.id} playlist={playlist} />
           ))}
@@ -91,8 +65,12 @@ const SavedPlaylist = props => {
   );
 };
 
+CollapseListItem.propTypes = {
+  playlist: PropTypes.object.isRequired
+};
+
 SavedPlaylist.propTypes = {
-  listToPlay: PropTypes.array
+  ytplaylist: PropTypes.object.isRequired
 };
 
 const mapStateToProps = ({ ytplaylist }) => ({
