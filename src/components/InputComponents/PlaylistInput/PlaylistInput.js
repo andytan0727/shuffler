@@ -56,13 +56,24 @@ const PlaylistInput = props => {
   const handleRequest = async e => {
     e.preventDefault();
 
+    const listRegex = /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:list)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/;
+
+    const vidRegex = /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:v)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/;
+
+    const requestId = listRegex.exec(playlistId)[1];
+
     if (idInput && !idInput.current.value) {
       alert("Please don't submit empty input");
       return;
     }
 
-    if (fetchedItemsId.includes(playlistId)) {
-      alert("Please enter new playlistId / video url");
+    if (fetchedItemsId.includes(requestId)) {
+      alert("Please enter new playlist / video url");
+      return;
+    }
+
+    if (!requestId) {
+      alert("Please enter valid playlist url");
       return;
     }
 
@@ -77,7 +88,7 @@ const PlaylistInput = props => {
       let data = await fetchPlaylistData(apiBaseUrl, {
         part,
         maxResults,
-        playlistId,
+        playlistId: requestId,
         fields,
         apiKey
       });
@@ -95,7 +106,7 @@ const PlaylistInput = props => {
         data = await fetchPlaylistData(apiBaseUrl, {
           part,
           maxResults,
-          playlistId,
+          playlistId: requestId,
           fields,
           pageToken: data.nextPageToken,
           apiKey
@@ -108,7 +119,7 @@ const PlaylistInput = props => {
       addPlaylist({
         persist: true,
         playlist: {
-          id: playlistId,
+          id: requestId,
           items
         }
       });
@@ -122,7 +133,7 @@ const PlaylistInput = props => {
       // add fetched playlist id to fetchedItemsId array
       addFetchedItemId({
         persist: true,
-        id: playlistId
+        id: requestId
       });
 
       // clear input
@@ -142,7 +153,7 @@ const PlaylistInput = props => {
     //   let data = await fetchPlaylistData("data1.json", {
     //     part,
     //     maxResults,
-    //     playlistId,
+    //     requestId,
     //     fields,
     //     apiKey
     //   });
@@ -154,7 +165,7 @@ const PlaylistInput = props => {
     //     data = await fetchPlaylistData(`data${count}.json`, {
     //       part,
     //       maxResults,
-    //       playlistId,
+    //       requestId,
     //       fields,
     //       apiKey
     //     });
@@ -171,7 +182,7 @@ const PlaylistInput = props => {
     //   addPlaylist({
     //     persist: true,
     //     playlist: {
-    //       id: playlistId,
+    //       id: requestId,
     //       items
     //     }
     //   });
@@ -185,7 +196,7 @@ const PlaylistInput = props => {
     //   // add fetched playlist id to fetchedItemsId array
     //   addFetchedItemId({
     //     persist: true,
-    //     id: playlistId
+    //     id:requestId
     //   });
 
     //   // clear input
