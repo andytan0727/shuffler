@@ -1,17 +1,18 @@
 .playlistInPgDiv {
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
+  // justify-content: space-around;
   // align-items: center;
+  // margin-top: 20%;
   height: 100vh;
 
   .inputDiv {
-    width: 100%;
+    min-width: 40vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: absolute;
+    position: relative;
     top: 15%;
-    // align-items: center;
 
     .swipeableDiv {
       width: 100%;
@@ -22,7 +23,6 @@
       height: 100%;
       display: flex;
       align-items: center;
-      // justify-content: space-evenly;
       justify-content: center;
 
       button,
@@ -30,12 +30,26 @@
         margin-right: 30px;
       }
     }
+
+    .songListTabsDiv {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+    }
   }
 
-  .songListTabsDiv {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
+  .guideDiv {
+    width: 40%;
+    height: 500px;
+    padding-right: 70px;
+    position: relative;
+    top: 15%;
+    flex-grow: 1;
+    overflow: auto;
+
+    ul {
+      list-style-type: decimal;
+    }
   }
 }
