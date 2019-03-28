@@ -1,14 +1,14 @@
 import {
-  SET_PLAYLIST_ID,
+  SET_PLAYLIST_URL,
   FETCH_PLAYLIST_DATA,
   ADD_FETCHED_ITEM_ID
 } from "../../utils/constants/actionConstants";
 import { fetchPlaylistItems } from "../../utils/helper/fetchHelper";
 
-const setPlaylistId = playlistId => ({
-  type: SET_PLAYLIST_ID,
+const setPlaylistUrl = playlistUrl => ({
+  type: SET_PLAYLIST_URL,
   payload: {
-    playlistId
+    playlistUrl
   }
 });
 
@@ -51,4 +51,4 @@ const addFetchedItemId = ({persist, id}) => ({
   }
 });
 
-export { setPlaylistId, fetchPlaylistData, addFetchedItemId };
+export { setPlaylistUrl, fetchPlaylistData, addFetchedItemId };

@@ -9,7 +9,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 // dispatch
 import {
-  setPlaylistId,
+  setPlaylistUrl,
   fetchPlaylistData,
   addFetchedItemId
 } from "../../../store/ytapi/action";
@@ -33,15 +33,16 @@ const PlaylistInput = props => {
     // states
     ytapi: {
       apiKey,
+      playlistUrl,
       playlistItems: {
         apiBaseUrl,
-        options: { part, maxResults, playlistId, fields }
+        options: { part, maxResults, fields }
       },
       fetchedItemsId
     },
 
     // dispatch
-    setPlaylistId,
+    setPlaylistUrl,
     fetchPlaylistData,
     addFetchedItemId,
     addPlaylist,
@@ -50,7 +51,7 @@ const PlaylistInput = props => {
   const idInput = useRef(null);
 
   const handlePlaylistInputChange = e => {
-    setPlaylistId(e.target.value);
+    setPlaylistUrl(e.target.value);
   };
 
   const handleRequest = async e => {
@@ -60,7 +61,7 @@ const PlaylistInput = props => {
 
     const vidRegex = /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:v)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/;
 
-    const requestId = listRegex.exec(playlistId)[1];
+    const requestId = listRegex.exec(playlistUrl)[1];
 
     if (idInput && !idInput.current.value) {
       alert("Please don't submit empty input");
@@ -137,7 +138,7 @@ const PlaylistInput = props => {
       });
 
       // clear input
-      setPlaylistId("");
+      setPlaylistUrl("");
     } catch (err) {
       console.log("Error in axios request!");
       console.log(err);
@@ -200,7 +201,7 @@ const PlaylistInput = props => {
     //   });
 
     //   // clear input
-    //   setPlaylistId("");
+    //   setPlaylistUrl("");
     // } catch (err) {
     //   console.log("Error in axios request!");
     //   console.log(err);
@@ -216,7 +217,7 @@ const PlaylistInput = props => {
         label="Playlist url"
         className={classes.textField}
         margin="normal"
-        value={playlistId}
+        value={playlistUrl}
         onChange={handlePlaylistInputChange}
       />
       <IconButton aria-label="search" onClick={handleRequest}>
@@ -237,13 +238,13 @@ PlaylistInput.propTypes = {
   handleSwipeDivIdxChange: PropTypes.func,
   apiKey: PropTypes.string,
   apiBaseUrl: PropTypes.string,
+  playlistUrl: PropTypes.string,
   options: PropTypes.shape({
     part: PropTypes.string.isRequired,
     maxResults: PropTypes.string.isRequired,
-    playlistId: PropTypes.string,
     fields: PropTypes.string
   }),
-  setPlaylistId: PropTypes.func.isRequired,
+  setPlaylistUrl: PropTypes.func.isRequired,
   fetchPlaylistData: PropTypes.func.isRequired,
   fetchedItemsId: PropTypes.array,
   addFetchedItemId: PropTypes.func.isRequired,
@@ -259,7 +260,7 @@ const mapStateToProps = ({ ytapi }) => ({
 export default connect(
   mapStateToProps,
   {
-    setPlaylistId,
+    setPlaylistUrl,
     fetchPlaylistData,
     addFetchedItemId,
     addPlaylist,

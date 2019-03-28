@@ -1,6 +1,6 @@
 import produce from "immer";
 import {
-  SET_PLAYLIST_ID,
+  SET_PLAYLIST_URL,
   FETCH_PLAYLIST_DATA,
   ADD_FETCHED_ITEM_ID
 } from "../../utils/constants/actionConstants";
@@ -10,6 +10,7 @@ import { dbFetchedItem } from "../../utils/helper/dbHelper";
 const initialState = {
   // still inspectable in client-side through console
   apiKey: process.env.REACT_APP_API_KEY,
+  playlistUrl: "",
   playlistItems: {
     apiBaseUrl: "https://www.googleapis.com/youtube/v3/playlistItems",
     options: {
@@ -25,8 +26,8 @@ const initialState = {
 
 export const ytapi = produce((draft, action) => {
   switch (action.type) {
-    case SET_PLAYLIST_ID: {
-      draft.playlistItems.options.playlistId = action.payload.playlistId;
+    case SET_PLAYLIST_URL: {
+      draft.playlistUrl = action.payload.playlistUrl;
       return draft;
     }
 
