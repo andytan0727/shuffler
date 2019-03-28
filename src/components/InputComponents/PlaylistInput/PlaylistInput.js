@@ -33,8 +33,8 @@ const PlaylistInput = props => {
     // states
     ytapi: {
       apiKey,
-      playlistItems,
       playlistItems: {
+        apiBaseUrl,
         options: { part, maxResults, playlistId, fields }
       },
       fetchedItemsId
@@ -56,67 +56,52 @@ const PlaylistInput = props => {
   const handleRequest = async e => {
     e.preventDefault();
 
-    const items = [];
-
     if (idInput && !idInput.current.value) {
       alert("Please don't submit empty input");
       return;
     }
 
     if (fetchedItemsId.includes(playlistId)) {
-      alert("Please enter new playlistId / song Url");
+      alert("Please enter new playlistId / video url");
       return;
     }
 
-    // if (playlistId) {
-    //   try {
-    //     const data = await fetchPlaylistItems(playlistItems.apiBaseUrl, {
-    //       part,
-    //       maxResults,
-    //       playlistId,
-    //       fields,
-    //       apiKey
-    //     });
-    //     console.log(data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
+    // array to store requested videos
+    const items = [];
 
-    /**
-     * API MOCK TESTING IN LOCAL ENV
-     */
     // swipe to ctrl btn group first for better UX
     handleSwipeDivIdxChange(1);
 
+    // Real request
     try {
-      // fetch and add data to Redux store
-      let data = await fetchPlaylistData("data1.json", {
+      let data = await fetchPlaylistData(apiBaseUrl, {
         part,
         maxResults,
         playlistId,
         fields,
         apiKey
       });
-
       items.push(...data.items);
       let count = 2;
 
       while (data.nextPageToken) {
-        data = await fetchPlaylistData(`data${count}.json`, {
+        if (count > 5) {
+          alert(
+            "Number of videos in your playlist exceeded limit set by us (250 videos/playlist)"
+          );
+          break;
+        }
+
+        data = await fetchPlaylistData(apiBaseUrl, {
           part,
           maxResults,
           playlistId,
           fields,
+          pageToken: data.nextPageToken,
           apiKey
         });
         items.push(...data.items);
         count++;
-
-        if (count > 5) {
-          console.log("nextPageToken failed");
-          break;
-        }
       }
 
       // add new playlist fetched to Redux
@@ -147,14 +132,77 @@ const PlaylistInput = props => {
       console.log(err);
       alert("Error! Please try again");
     }
+    // }
+
+    /**
+     * API MOCK TESTING IN LOCAL ENV
+     */
+    // try {
+    //   // fetch and add data to Redux store
+    //   let data = await fetchPlaylistData("data1.json", {
+    //     part,
+    //     maxResults,
+    //     playlistId,
+    //     fields,
+    //     apiKey
+    //   });
+
+    //   items.push(...data.items);
+    //   let count = 2;
+
+    //   while (data.nextPageToken) {
+    //     data = await fetchPlaylistData(`data${count}.json`, {
+    //       part,
+    //       maxResults,
+    //       playlistId,
+    //       fields,
+    //       apiKey
+    //     });
+    //     items.push(...data.items);
+    //     count++;
+
+    //     if (count > 5) {
+    //       console.log("nextPageToken failed");
+    //       break;
+    //     }
+    //   }
+
+    //   // add new playlist fetched to Redux
+    //   addPlaylist({
+    //     persist: true,
+    //     playlist: {
+    //       id: playlistId,
+    //       items
+    //     }
+    //   });
+
+    //   // add newly fetched playlist's song to listToPlay
+    //   addListToPlay({
+    //     persist: true,
+    //     listToAdd: items
+    //   });
+
+    //   // add fetched playlist id to fetchedItemsId array
+    //   addFetchedItemId({
+    //     persist: true,
+    //     id: playlistId
+    //   });
+
+    //   // clear input
+    //   setPlaylistId("");
+    // } catch (err) {
+    //   console.log("Error in axios request!");
+    //   console.log(err);
+    //   alert("Error! Please try again");
+    // }
   };
 
   return (
     <div className={styles.playlistDiv}>
       <TextField
         inputRef={idInput}
-        id="outlined-playlist-and-song"
-        label="Playlist or Song Url"
+        id="outlined-playlist-and-video"
+        label="Playlist url"
         className={classes.textField}
         margin="normal"
         value={playlistId}
@@ -177,7 +225,7 @@ PlaylistInput.propTypes = {
   classes: PropTypes.object.isRequired,
   handleSwipeDivIdxChange: PropTypes.func,
   apiKey: PropTypes.string,
-  playlistItems: PropTypes.object,
+  apiBaseUrl: PropTypes.string,
   options: PropTypes.shape({
     part: PropTypes.string.isRequired,
     maxResults: PropTypes.string.isRequired,
