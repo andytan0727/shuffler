@@ -27,7 +27,7 @@ const TabContainer = ({ children, dir }) => (
 
 const SongListTabs = props => {
   const { classes, theme, FirstTabComponent, SecondTabComponent } = props;
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
 
   const handleChange = (event, value) => {
     setValue(value);
