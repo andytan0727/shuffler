@@ -35,7 +35,7 @@ const CollapseListItem = props => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem button>
-            <VideoList items={playlist.items} />
+            <VideoList items={playlist.items} height={200} />
           </ListItem>
         </List>
       </Collapse>

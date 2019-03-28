@@ -7,14 +7,14 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 
-// import styles from "./styles.module.scss";
+import styles from "./styles.module.scss";
 
 const muiStyles = theme => ({
   tab: {
     marginTop: -10,
     width: 500,
-    height: '70vh',
-    overflowY: 'hidden',
+    height: "70vh",
+    overflowY: "auto",
     background: theme.palette.background.paper
   }
 });
@@ -38,7 +38,7 @@ const SongListTabs = props => {
   };
 
   return (
-    <div className={classes.tab}>
+    <div className={`${classes.tab} ${styles.tab}`}>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
