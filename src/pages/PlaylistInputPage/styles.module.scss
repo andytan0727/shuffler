@@ -1,10 +1,13 @@
+@import "../../utils/styles/variables";
+
 .playlistInPgDiv {
   display: flex;
   flex-direction: row;
-  // justify-content: space-around;
-  // align-items: center;
-  // margin-top: 20%;
   height: 100vh;
+
+  @media screen and (max-width: $mobile-width) {
+    flex-direction: column;
+  }
 
   .inputDiv {
     min-width: 40vw;
@@ -13,6 +16,11 @@
     justify-content: center;
     position: relative;
     top: 15%;
+
+    @media (max-width: $tablet-width) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
     .swipeableDiv {
       width: 100%;
@@ -28,6 +36,11 @@
       button,
       a {
         margin-right: 30px;
+
+        @media screen and (max-width: $mobile-width) {
+          margin-right: 15px;
+          font-size: 10px;
+        }
       }
     }
 
@@ -39,9 +52,18 @@
     }
   }
 
+  .helpButton {
+    position: absolute;
+    top: 100px;
+
+    @media screen and (max-width: $mobile-width) {
+      top: 60px; 
+    }
+  }
+
   .guideDiv {
     width: 40%;
-    height: 500px;
+    height: 80vh;
     padding-right: 70px;
     position: relative;
     top: 15%;
