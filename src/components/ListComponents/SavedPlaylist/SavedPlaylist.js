@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -15,6 +16,7 @@ import VideoList from "../VideoList";
 const CollapseListItem = props => {
   const { playlist } = props;
   const [open, setOpen] = useState(false);
+  const matchesMobile = useMediaQuery("(max-width: 420px)");
 
   const handleClick = e => {
     setOpen(prevOpen => !prevOpen);
@@ -35,7 +37,11 @@ const CollapseListItem = props => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem button>
-            <VideoList items={playlist.items} height={200} />
+            {matchesMobile ? (
+              <VideoList items={playlist.items} width={200} height={200} />
+            ) : (
+              <VideoList items={playlist.items} height={200} />
+            )}
           </ListItem>
         </List>
       </Collapse>

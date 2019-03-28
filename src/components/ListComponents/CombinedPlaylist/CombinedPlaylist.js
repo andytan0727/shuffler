@@ -1,18 +1,23 @@
 import React, { lazy, Suspense } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-// import VideoList from "../VideoList";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 
 const LazyVideoList = lazy(() => import("../VideoList"));
 
 const CombinedPlaylist = props => {
   const { listToPlay } = props;
+  const matchesMobile = useMediaQuery("(max-width: 420px)");
 
   return (
     <React.Fragment>
       {listToPlay.length ? (
         <Suspense fallback={<div>loading playlist...</div>}>
-          <LazyVideoList items={listToPlay} />
+          {matchesMobile ? (
+            <LazyVideoList items={listToPlay} width={250} />
+          ) : (
+            <LazyVideoList items={listToPlay} />
+          )}
         </Suspense>
       ) : (
         <div>
