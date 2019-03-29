@@ -18,7 +18,7 @@ class FixedSizeListItem extends React.PureComponent {
 
 const getItemKey = (index, data) => data[index].id;
 
-const VideoList = ({ items, width, height }) => (
+const VideoList = ({ items, width, height, children }) => (
   <FixedSizeList
     height={height || 350}
     className={styles.songList}
@@ -28,14 +28,15 @@ const VideoList = ({ items, width, height }) => (
     itemKey={getItemKey}
     width={width || 400}
   >
-    {FixedSizeListItem}
+    {children ? children : FixedSizeListItem}
   </FixedSizeList>
 );
 
 VideoList.propTypes = {
   items: PropTypes.array.isRequired,
-  width: PropTypes.number,
-  height: PropTypes.number
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  height: PropTypes.number,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
 };
 
 export default VideoList;
