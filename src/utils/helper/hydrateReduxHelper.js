@@ -1,10 +1,9 @@
-import { dbPlaylist, dbFetchedItem, dbSongList } from "./dbHelper";
+import { dbPlaylist, dbSongList } from "./dbHelper";
 import {
   addPlaylist,
   addListToPlay,
   setLoadedFromDB
 } from "../../store/ytplaylist/action";
-import { addFetchedItemId } from "../../store/ytapi/action";
 
 /**
  * Hydrate states stored in indexedDB to Redux
@@ -13,22 +12,6 @@ import { addFetchedItemId } from "../../store/ytapi/action";
  */
 export const hydrateRedux = async store => {
   try {
-    // hydrate fetchedItemsId
-    const fetchedItemsIdArr = await dbFetchedItem.getItem("fetchedItems");
-
-    if (!fetchedItemsIdArr || !fetchedItemsIdArr.length) {
-      throw new Error("fetchedItemsId not found in indexedDB");
-    }
-
-    fetchedItemsIdArr.forEach(itemId => {
-      store.dispatch(
-        addFetchedItemId({
-          persist: false,
-          id: itemId
-        })
-      );
-    });
-
     // hydrate playlist
     const dbPlaylistKeys = await dbPlaylist.keys();
     if (!dbPlaylistKeys.length) {

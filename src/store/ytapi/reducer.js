@@ -5,8 +5,6 @@ import {
   ADD_FETCHED_ITEM_ID
 } from "../../utils/constants/actionConstants";
 
-import { dbFetchedItem } from "../../utils/helper/dbHelper";
-
 const initialState = {
   // still inspectable in client-side through console
   apiKey: process.env.REACT_APP_API_KEY,
@@ -49,7 +47,6 @@ export const ytapi = produce((draft, action) => {
     }
 
     case ADD_FETCHED_ITEM_ID: {
-      const persist = action.payload.persist;
       const playlistIdToAdd = action.payload.id;
 
       // push fetched playlist id to fetched items array if not exists
@@ -59,16 +56,6 @@ export const ytapi = produce((draft, action) => {
           playlistIdToAdd
         ];
         draft.fetchedItemsId = updatedFetchedItemsId;
-
-        // add to indexedDB as well
-        if (persist) {
-          dbFetchedItem
-            .setItem("fetchedItems", updatedFetchedItemsId)
-            .then(() =>
-              console.log("successfully added fetchedItemsId to playlistDB")
-            )
-            .catch(err => console.log(err));
-        }
       }
 
       return draft;

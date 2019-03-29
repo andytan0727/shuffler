@@ -133,7 +133,6 @@ const PlaylistInput = props => {
 
       // add fetched playlist id to fetchedItemsId array
       addFetchedItemId({
-        persist: true,
         id: requestId
       });
 
@@ -196,7 +195,6 @@ const PlaylistInput = props => {
 
     //   // add fetched playlist id to fetchedItemsId array
     //   addFetchedItemId({
-    //     persist: true,
     //     id:requestId
     //   });
 

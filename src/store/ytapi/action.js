@@ -39,14 +39,12 @@ const fetchPlaylistData = (url, params) => {
 /**
  *
  * Add fetched playlist's to Redux store
- * @param {boolean} persist persist to indexedDB
  * @param {string} id fetched item(playlist) id
  * @returns action object for Redux
  */
-const addFetchedItemId = ({persist, id}) => ({
+const addFetchedItemId = ({ id }) => ({
   type: ADD_FETCHED_ITEM_ID,
   payload: {
-    persist,
     id
   }
 });
