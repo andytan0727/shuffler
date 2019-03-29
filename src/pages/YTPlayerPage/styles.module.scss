@@ -1,12 +1,34 @@
 @import "../../utils/styles/colors";
+@import "../../utils/styles/variables";
 
 // $primaryColor: #c62adc;
 
 .ytPlayerDiv {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  // margin-top: -20px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 3fr 2fr;
+  grid-column-gap: 2em;
+  grid-template-areas: "player playlist";
+
+  @media screen and (max-width: $mobile-width) {
+    grid-auto-rows: auto;
+    grid-template-columns: auto;
+    grid-template-areas:
+      "player"
+      "playlist";
+  }
+
+  .player {
+    grid-area: player;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .playlist {
+    grid-area: playlist;
+    display: flex;
+    justify-content: center;
+  }
 }

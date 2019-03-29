@@ -12,8 +12,8 @@ const YTPlayerPage = props => {
   } = props;
 
   return (
-    <React.Fragment>
-      <div className={styles.ytPlayerDiv}>
+    <div className={styles.ytPlayerDiv}>
+      <div className={styles.player}>
         <h3>
           {listToPlay.length !== 0
             ? listToPlay[curSongIdx].snippet.title
@@ -21,7 +21,7 @@ const YTPlayerPage = props => {
         </h3>
         <VideoPlayer />
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -1,3 +1,23 @@
 .App {
-  height: 100vh;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+
+  .App-header {
+    grid-area: header;
+  }
+
+  .App-main {
+    min-height: 100vh;
+    grid-area: main;
+  }
+
+  .App-footer {
+    grid-area: footer;
+  }
 }

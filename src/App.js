@@ -17,14 +17,20 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Suspense fallback={<div>loading...</div>}>
-            <PgNavbar />
-            <Switch>
-              <Route path="/" exact component={MainPage} />
-              <Route path="/player" component={YTPlayerPage} />
-              <Route path="/playlistInput" component={PlaylistInputPage} />
-              <Route path="/about" component={AboutPage} />
-            </Switch>
-            <PgFooter />
+            <div className="App-header">
+              <PgNavbar />
+            </div>
+            <div className="App-main">
+              <Switch>
+                <Route path="/" exact component={MainPage} />
+                <Route path="/player" component={YTPlayerPage} />
+                <Route path="/playlistInput" component={PlaylistInputPage} />
+                <Route path="/about" component={AboutPage} />
+              </Switch>
+            </div>
+            <div className="App-footer">
+              <PgFooter />
+            </div>
           </Suspense>
         </div>
       </BrowserRouter>

@@ -1,19 +1,6 @@
 @import "../../utils/styles/colors";
 @import "../../utils/styles/variables";
 
-@mixin pgContent {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  p {
-    font-size: 30px;
-    font-family: "Roboto", sans-serif;
-  }
-}
-
 .pulse {
   position: absolute;
   top: 50%;
@@ -56,40 +43,42 @@
 }
 
 .mainPgDiv {
+  min-height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   z-index: -1;
 
-  .mainPgContent1 {
-    @include pgContent();
-    background-color: white;
+  animation-duration: 0.5s;
+  animation-name: animateLogo;
+  animation-timing-function: linear;
+  animation-iteration-count: initial;
 
-    animation-duration: 0.5s;
-    animation-name: animateLogo;
-    animation-timing-function: linear;
-    animation-iteration-count: initial;
+  .logo {
+    margin-bottom: -40px;
+  }
 
-    .logo {
-      margin-bottom: -40px;
+  p {
+    font-size: 50px;
+    font-family: "Roboto", sans-serif;
+    text-align: center;
+
+    @media (max-width: $mobile-width) {
+      width: 90%;
+      font-size: 30px;
     }
+  }
 
-    p {
-      font-size: 50px;
-      text-align: center;
-
-      @media (max-width: $mobile-width) {
-        width: 90%;
-        font-size: 30px;
-      }
-    }
-
-    a {
-      z-index: 2;
-      &:hover {
-        animation-duration: 1.2s;
-        animation-name: scaleButton;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-        animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
-      }
+  a {
+    z-index: 2;
+    &:hover {
+      animation-duration: 1.2s;
+      animation-name: scaleButton;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
     }
   }
 }
