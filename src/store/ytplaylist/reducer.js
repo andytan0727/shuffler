@@ -5,7 +5,8 @@ import {
   ADD_PLAYLIST,
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
-  ADD_LIST_TO_PLAY
+  ADD_LIST_TO_PLAY,
+  CLEAR_LIST_TO_PLAY
 } from "../../utils/constants/actionConstants";
 
 import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
@@ -56,7 +57,6 @@ export const ytplaylist = produce((draft, action) => {
 
       // add to indexedDB as well
       if (persist) {
-        console.log(updatedPlaylists);
         updatedPlaylists.forEach(playlist => {
           dbPlaylist
             .setItem(playlist.id, playlist)
@@ -91,6 +91,19 @@ export const ytplaylist = produce((draft, action) => {
           )
           .catch(err => console.log(err));
       }
+
+      return draft;
+    }
+
+    case CLEAR_LIST_TO_PLAY: {
+      draft.listToPlay = [];
+
+      // clear indexedDB as well
+      dbSongList
+        .removeItem("listToPlay")
+        .then(() =>
+          console.log("successfully removed listToPlay in songListDB")
+        );
 
       return draft;
     }

@@ -2,7 +2,8 @@ import {
   ADD_PLAYLIST,
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
-  ADD_LIST_TO_PLAY
+  ADD_LIST_TO_PLAY,
+  CLEAR_LIST_TO_PLAY
 } from "../../utils/constants/actionConstants";
 
 /**
@@ -51,4 +52,12 @@ const addListToPlay = ({ persist, listToAdd }) => ({
   }
 });
 
-export { addPlaylist, shufflePlaylist, setLoadedFromDB, addListToPlay };
+/**
+ * Clear current playing playlist
+ * @returns CLEAR_LIST_TO_PLAY action object for redux store
+ */
+const clearListToPlay = () => ({
+  type: CLEAR_LIST_TO_PLAY
+});
+
+export { addPlaylist, shufflePlaylist, setLoadedFromDB, addListToPlay, clearListToPlay };
