@@ -6,15 +6,19 @@ import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMe
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Collapse from "@material-ui/core/Collapse";
+import Checkbox from "@material-ui/core/Checkbox";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import VideoList from "../VideoList";
 
+import { setCheckedPlaylists } from "../../../store/ytplaylist/action";
+
 // import styles from "./styles.module.scss";
 
 const CollapseListItem = props => {
-  const { playlist } = props;
+  const { playlist, checkedPlaylists, setCheckedPlaylists } = props;
   const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
@@ -22,9 +26,23 @@ const CollapseListItem = props => {
     setOpen(prevOpen => !prevOpen);
   };
 
+  const handleToggle = value => () => {
+    const currentIndex = checkedPlaylists.indexOf(value);
+    const newChecked = [...checkedPlaylists];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setCheckedPlaylists(newChecked);
+  };
+
   return (
     <React.Fragment>
       <ListItem button onClick={handleClick}>
+        {open ? <ExpandLess /> : <ExpandMore />}
         <ListItemText>
           {playlist.name
             ? playlist.name
@@ -32,11 +50,16 @@ const CollapseListItem = props => {
                 playlist.id
               }`}
         </ListItemText>
-        {open ? <ExpandLess /> : <ExpandMore />}
+        <ListItemSecondaryAction>
+          <Checkbox
+            onChange={handleToggle(playlist.id)}
+            checked={checkedPlaylists.indexOf(playlist.id) !== -1}
+          />
+        </ListItemSecondaryAction>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button>
+          <ListItem>
             {matchesMobile ? (
               <VideoList items={playlist.items} width={200} height={200} />
             ) : (
@@ -51,7 +74,8 @@ const CollapseListItem = props => {
 
 const SavedPlaylist = props => {
   const {
-    ytplaylist: { playlists }
+    ytplaylist: { playlists, checkedPlaylists },
+    setCheckedPlaylists
   } = props;
 
   return (
@@ -59,7 +83,12 @@ const SavedPlaylist = props => {
       {playlists.length !== 0 ? (
         <List component="nav">
           {playlists.map(playlist => (
-            <CollapseListItem key={playlist.id} playlist={playlist} />
+            <CollapseListItem
+              key={playlist.id}
+              playlist={playlist}
+              checkedPlaylists={checkedPlaylists}
+              setCheckedPlaylists={setCheckedPlaylists}
+            />
           ))}
         </List>
       ) : (
@@ -72,7 +101,9 @@ const SavedPlaylist = props => {
 };
 
 CollapseListItem.propTypes = {
-  playlist: PropTypes.object.isRequired
+  playlist: PropTypes.object.isRequired,
+  checkedPlaylists: PropTypes.array.isRequired,
+  setCheckedPlaylists: PropTypes.func.isRequired
 };
 
 SavedPlaylist.propTypes = {
@@ -85,5 +116,7 @@ const mapStateToProps = ({ ytplaylist }) => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  {
+    setCheckedPlaylists
+  }
 )(SavedPlaylist);

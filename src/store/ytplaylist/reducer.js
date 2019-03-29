@@ -3,6 +3,8 @@ import uniqBy from "lodash.uniqby";
 import shuffle from "lodash.shuffle";
 import {
   ADD_PLAYLIST,
+  REMOVE_PLAYLIST,
+  SET_CHECKED_PLAYLISTS,
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
   ADD_LIST_TO_PLAY,
@@ -13,6 +15,7 @@ import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
 
 const initialState = {
   loadedFromDB: false,
+  checkedPlaylists: [], // pushed playlistId from checkbox in SavedPlaylist
   playlists: [
     // {
     //   id: "",
@@ -72,20 +75,64 @@ export const ytplaylist = produce((draft, action) => {
       return draft;
     }
 
+    case REMOVE_PLAYLIST: {
+      if (!draft.checkedPlaylists.length) {
+        alert("No playlist to remove");
+        return draft;
+      }
+
+      // keep a original copy to prevent isArray error
+      const playlistsToRemove = original(draft.checkedPlaylists);
+
+      const updatedPlaylist = draft.playlists.filter(
+        playlist => !playlistsToRemove.includes(playlist.id)
+      );
+
+      draft.playlists = updatedPlaylist;
+
+      // remove from indexedDB as well
+      playlistsToRemove.forEach(playlistId => {
+        dbPlaylist
+          .removeItem(playlistId)
+          .then(() =>
+            console.log(`successfully removed playlist-${playlistId}`)
+          )
+          .catch(err =>
+            console.log("Error in removing playlist from indexedDB")
+          );
+      });
+
+      return draft;
+    }
+
+    case SET_CHECKED_PLAYLISTS: {
+      draft.checkedPlaylists = action.payload.checkedPlaylists;
+
+      return draft;
+    }
+
     case ADD_LIST_TO_PLAY: {
       const listToAdd = action.payload.listToAdd;
       const persist = action.payload.persist;
+      const checked = action.payload.checked;
 
       // make sure only add unique song
-      const updatedListToPlay = uniqBy(
-        [...draft.listToPlay, ...listToAdd],
-        "id"
-      );
-      draft.listToPlay = updatedListToPlay;
+      const updatedListToPlay = checked
+        ? [
+            ...draft.listToPlay,
+            ...draft.playlists
+              .filter(playlist => draft.checkedPlaylists.includes(playlist.id))
+              .flatMap(filteredPlaylist => filteredPlaylist.items)
+          ]
+        : [...draft.listToPlay, ...listToAdd];
+
+      const uniqueListToPlay = uniqBy(updatedListToPlay, "id");
+
+      draft.listToPlay = uniqueListToPlay;
 
       if (persist) {
         dbSongList
-          .setItem("listToPlay", updatedListToPlay)
+          .setItem("listToPlay", uniqueListToPlay)
           .then(() =>
             console.log("successfully added listToPlay to songListDB")
           )

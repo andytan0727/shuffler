@@ -1,5 +1,7 @@
 import {
   ADD_PLAYLIST,
+  REMOVE_PLAYLIST,
+  SET_CHECKED_PLAYLISTS,
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
   ADD_LIST_TO_PLAY,
@@ -17,6 +19,26 @@ const addPlaylist = ({ persist, playlist }) => ({
   payload: {
     persist,
     playlist
+  }
+});
+
+/**
+ * Remove checked playlist in checkedPlaylists array
+ * @returns REMOVE_PLAYLIST action object for redux store
+ */
+const removePlaylist = () => ({
+  type: REMOVE_PLAYLIST
+});
+
+/**
+ * Set checked playlist in Redux store
+ * @param {array} checkedPlaylists checkedPlaylists in SavedPlaylist component
+ * @returns SET_CHECKED_PLAYLISTS action object for redux store
+ */
+const setCheckedPlaylists = checkedPlaylists => ({
+  type: SET_CHECKED_PLAYLISTS,
+  payload: {
+    checkedPlaylists
   }
 });
 
@@ -40,13 +62,16 @@ const setLoadedFromDB = () => ({
 
 /**
  * Add video to listToPlay
+ * @param {boolean} checked use checkedPlaylists in Redux store if true
  * @param {boolean} persist persist to indexedDB
  * @param {object} listToAdd An array of video to add
+
  * @returns ADD_LIST_TO_PLAY action object for redux store
  */
-const addListToPlay = ({ persist, listToAdd }) => ({
+const addListToPlay = ({ checked, persist, listToAdd }) => ({
   type: ADD_LIST_TO_PLAY,
   payload: {
+    checked,
     persist,
     listToAdd
   }
@@ -60,4 +85,12 @@ const clearListToPlay = () => ({
   type: CLEAR_LIST_TO_PLAY
 });
 
-export { addPlaylist, shufflePlaylist, setLoadedFromDB, addListToPlay, clearListToPlay };
+export {
+  addPlaylist,
+  removePlaylist,
+  setCheckedPlaylists,
+  shufflePlaylist,
+  setLoadedFromDB,
+  addListToPlay,
+  clearListToPlay
+};
