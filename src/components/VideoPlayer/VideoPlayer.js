@@ -7,6 +7,7 @@ import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import PauseIcon from "@material-ui/icons/Pause";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 
 import { toggleYTPlaying, setCurSongIdx } from "../../store/ytplayer/action";
 
@@ -22,6 +23,7 @@ const VideoPlayer = props => {
     setCurSongIdx
   } = props;
   const ytPlayer = useRef(null);
+  const matchesMobile = useMediaQuery("(max-width: 420px)");
 
   const handlePrevious = () => {
     if (curSongIdx > 0) {
@@ -62,11 +64,13 @@ const VideoPlayer = props => {
   return (
     <React.Fragment>
       {listToPlay.length !== 0 && (
-        <div id={"player"}>
+        <div id="player" className={styles.playerWrapper}>
           <YouTube
             ref={ytPlayer}
             videoId={listToPlay[curSongIdx].snippet.resourceId.videoId}
             opts={{
+              width: matchesMobile ? 250 : 640,
+              height: matchesMobile ? 180 : 390,
               playerVars: {
                 ...playerVars
                 // list: "PL6nn1koAbIR_g6wG0CV2p-LgaOw2Lp9ON"
