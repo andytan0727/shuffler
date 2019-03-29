@@ -9,8 +9,8 @@ const initialState = {
   curSongIdx: 0,
   playerVars: {
     autoplay: 1,
-    controls: 0,
-    fs: 0, // prevent fullscreen
+    controls: 1,
+    fs: 1, // prevent fullscreen
     rel: 0,
     modestbranding: 1,
     loop: 0,
