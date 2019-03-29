@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,900");
-@import './utils/styles/colors';
+@import "./utils/styles/colors";
 
 @mixin background-size($cover) {
   -webkit-background-size: $cover;
@@ -20,6 +20,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  ::-moz-selection {
+    color: white;
+    background-color: lighten($primary, 15%);
+  }
+
+  ::selection {
+    color: white;
+    background-color: lighten($primary, 15%);
+  }
 
   &::-webkit-scrollbar {
     width: 15px;
