@@ -3,6 +3,33 @@
 
 // $primaryColor: #c62adc;
 
+// video divs
+.currentPlaylistItem {
+  display: grid;
+  grid-template-columns: 0.25fr 1fr 8fr;
+  grid-column-gap: 1em;
+  align-items: center;
+  border-bottom: 1px solid lighten(#222, 70%);
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    font-weight: bold;
+    background-color: $primaryLight;
+  }
+
+  img {
+    grid-column: 2 / 3;
+    border-radius: 50%;
+    width: 3em;
+    height: 3em;
+  }
+
+  span {
+    grid-column: 3 / 4;
+  }
+}
+
 .ytPlayerDiv {
   min-height: 100vh;
   display: grid;
@@ -29,6 +56,8 @@
   .playlist {
     grid-area: playlist;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
   }
 }

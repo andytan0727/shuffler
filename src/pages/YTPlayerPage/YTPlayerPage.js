@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import VideoPlayer from "../../components/VideoPlayer";
+import PlayerPageList from "./PlayerPageList";
 
 import styles from "./styles.module.scss";
 
@@ -20,6 +21,9 @@ const YTPlayerPage = props => {
             : "No Video Selected"}
         </h3>
         <VideoPlayer />
+      </div>
+      <div className={styles.playlist}>
+        <PlayerPageList />
       </div>
     </div>
   );
