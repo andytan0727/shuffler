@@ -52,14 +52,32 @@ const VideoPlayer = props => {
   };
 
   const handleNext = () => {
+    if (curSongIdx === listToPlay.length - 1) {
+      alert("You have reached last song in the playlist");
+      return;
+    }
+
     setCurSongIdx(curSongIdx + 1);
   };
 
+  const handleVideoError = e => {
+    switch (e.data) {
+      case 101:
+      case 150:
+        // skip to next song when video playback in iframe is prohibited
+        handleNext();
+        break;
+      default:
+        console.log("error code: " + e.data);
+    }
+  };
+
   useEffect(() => {
-    // return () => {
-    //   ytPlayer.current.internalPlayer.destroy();
-    // };
-  });
+    // Destroy player when unmount
+    return () => {
+      ytPlayer.current.internalPlayer.destroy();
+    };
+  }, []);
 
   return (
     <React.Fragment>
@@ -73,14 +91,18 @@ const VideoPlayer = props => {
               height: matchesMobile ? 180 : 390,
               playerVars: {
                 ...playerVars
-                // list: "PL6nn1koAbIR_g6wG0CV2p-LgaOw2Lp9ON"
               }
             }}
             onReady={toggleYTPlaying}
-            onEnd={handleNext} // defaults -> noop
+            onEnd={handleNext}
+            onError={handleVideoError}
           />
           <div className={styles.ctrlBtnGroup}>
-            <IconButton aria-label="Previous" onClick={handlePrevious}>
+            <IconButton
+              disabled={curSongIdx === 0}
+              aria-label="Previous"
+              onClick={handlePrevious}
+            >
               <SkipPreviousIcon />
             </IconButton>
             {!playing ? (
@@ -92,7 +114,11 @@ const VideoPlayer = props => {
                 <PauseIcon className={styles.playPauseIcon} />
               </IconButton>
             )}
-            <IconButton aria-label="Next" onClick={handleNext}>
+            <IconButton
+              disabled={curSongIdx === listToPlay.length - 1}
+              aria-label="Next"
+              onClick={handleNext}
+            >
               <SkipNextIcon />
             </IconButton>
           </div>
