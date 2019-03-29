@@ -9,7 +9,10 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import PauseIcon from "@material-ui/icons/Pause";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 
-import { toggleYTPlaying, setCurSongIdx } from "../../store/ytplayer/action";
+import {
+  setCurSongIdx,
+  setVideoPlaying
+} from "../../store/ytplayer/action";
 
 import styles from "./styles.module.scss";
 
@@ -19,8 +22,8 @@ const VideoPlayer = props => {
     curSongIdx,
     playerVars,
     listToPlay,
-    toggleYTPlaying,
-    setCurSongIdx
+    setCurSongIdx,
+    setVideoPlaying
   } = props;
   const ytPlayer = useRef(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
@@ -33,12 +36,15 @@ const VideoPlayer = props => {
     alert("This is the first video");
   };
 
+  const setPlaying = () => setVideoPlaying(true);
+
+  const setPause = () => setVideoPlaying(false);
+
   const handlePlay = e => {
     e.preventDefault();
 
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.playVideo();
-      toggleYTPlaying();
     }
   };
 
@@ -47,7 +53,6 @@ const VideoPlayer = props => {
 
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.pauseVideo();
-      toggleYTPlaying();
     }
   };
 
@@ -93,7 +98,9 @@ const VideoPlayer = props => {
                 ...playerVars
               }
             }}
-            onReady={toggleYTPlaying}
+            onReady={setPlaying}
+            onPlay={setPlaying}
+            onPause={setPause}
             onEnd={handleNext}
             onError={handleVideoError}
           />
@@ -133,8 +140,8 @@ VideoPlayer.propTypes = {
   curSongIdx: PropTypes.number.isRequired,
   playerVars: PropTypes.object.isRequired,
   listToPlay: PropTypes.array,
-  toggleYTPlaying: PropTypes.func.isRequired,
-  setCurSongIdx: PropTypes.func.isRequired
+  setCurSongIdx: PropTypes.func.isRequired,
+  setVideoPlaying: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -153,7 +160,7 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
-    toggleYTPlaying,
-    setCurSongIdx
+    setCurSongIdx,
+    setVideoPlaying
   }
 )(VideoPlayer);

@@ -1,7 +1,7 @@
 import produce from "immer";
 import {
-  TOGGLE_YT_PLAYING,
-  SET_CURRENT_SONG_IDX
+  SET_CURRENT_SONG_IDX,
+  SET_VIDEO_PLAYING
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -20,13 +20,13 @@ const initialState = {
 
 export const ytplayer = produce((draft, action) => {
   switch (action.type) {
-    case TOGGLE_YT_PLAYING: {
-      draft.playing = !draft.playing;
+    case SET_CURRENT_SONG_IDX: {
+      draft.curSongIdx = action.payload.songIdx;
       return draft;
     }
 
-    case SET_CURRENT_SONG_IDX: {
-      draft.curSongIdx = action.payload.songIdx;
+    case SET_VIDEO_PLAYING: {
+      draft.playing = action.payload.playing;
       return draft;
     }
 

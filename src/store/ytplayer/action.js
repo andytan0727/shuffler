@@ -1,11 +1,7 @@
 import {
-  TOGGLE_YT_PLAYING,
-  SET_CURRENT_SONG_IDX
+  SET_CURRENT_SONG_IDX,
+  SET_VIDEO_PLAYING
 } from "../../utils/constants/actionConstants";
-
-const toggleYTPlaying = () => ({
-  type: TOGGLE_YT_PLAYING
-});
 
 const setCurSongIdx = songIdx => ({
   type: SET_CURRENT_SONG_IDX,
@@ -14,4 +10,11 @@ const setCurSongIdx = songIdx => ({
   }
 });
 
-export { toggleYTPlaying, setCurSongIdx };
+const setVideoPlaying = playing => ({
+  type: SET_VIDEO_PLAYING,
+  payload: {
+    playing
+  }
+});
+
+export { setCurSongIdx, setVideoPlaying };
