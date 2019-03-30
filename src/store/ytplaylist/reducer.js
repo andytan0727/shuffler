@@ -130,6 +130,11 @@ export const ytplaylist = produce((draft, action) => {
 
       draft.listToPlay = uniqueListToPlay;
 
+      // clear checkedPlaylists as well if the item added was checked
+      if (checked) {
+        draft.checkedPlaylists = [];
+      }
+
       if (persist) {
         dbSongList
           .setItem("listToPlay", uniqueListToPlay)
