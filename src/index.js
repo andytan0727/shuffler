@@ -16,7 +16,7 @@ import * as serviceWorker from "./serviceWorker";
 const theme = createMuiTheme({
   palette: {
     primary: { main: purple[800] },
-    secondary: { main: purple['A200'] }
+    secondary: { main: purple["A200"] }
   },
   typography: { useNextVariants: true }
 });
@@ -37,4 +37,4 @@ hydrateRedux(store);
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();
