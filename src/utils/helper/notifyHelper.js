@@ -21,6 +21,15 @@ export const notify = (type, message) => {
       break;
     }
 
+    case "success": {
+      toast.success(message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 5000,
+        pauseOnFocusLoss: false
+      });
+      break;
+    }
+
     default: {
       return;
     }
