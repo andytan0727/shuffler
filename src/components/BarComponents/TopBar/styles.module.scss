@@ -5,6 +5,7 @@
   nav {
     width: 100%;
     background-color: white;
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -28,7 +29,6 @@
       color: $primary;
       font-family: "Roboto", sans-serif;
       text-decoration: none;
-      padding: 10px 20px;
 
       @media screen and (max-width: $mobile-width) {
         padding: 0;
@@ -43,6 +43,7 @@
       }
 
       &:nth-child(n + 2) {
+        padding: 0.4em 0.8em;
         @media screen and (max-width: $mobile-width) {
           display: none;
         }
