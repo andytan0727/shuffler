@@ -18,6 +18,7 @@
     "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.8",
     "react-swipeable-views": "^0.13.1",
+    "react-toastify": "^5.0.0-rc.3",
     "react-window": "^1.7.1",
     "react-youtube": "^7.9.0",
     "redux": "^4.0.1",
