@@ -1,6 +1,22 @@
 @import "../../../utils/styles/colors";
 @import "../../../utils/styles/variables";
 
+.githubLogo {
+  width: 50px;
+  height: 30px;
+
+  &:hover {
+    path {
+      fill: $primary;
+    }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    width: 20px;
+    height: 15px;
+  }
+}
+
 .mainNavDiv {
   nav {
     width: 100%;
@@ -10,13 +26,12 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
-    padding: 0px 0;
     border-bottom: 2px solid $primary;
     z-index: 2;
 
     .logo {
       width: 200px;
-      height: 55px;
+      height: 45px;
 
       @media (max-width: $mobile-width) {
         width: 120px;
@@ -38,17 +53,17 @@
         flex-grow: 1;
       }
 
-      &:nth-last-child(2) {
+      &:last-child {
         margin-right: 20px;
       }
 
-      &:nth-child(n + 2) {
+      &:not(:first-child) {
         padding: 0.4em 0.8em;
         @media screen and (max-width: $mobile-width) {
           display: none;
         }
 
-        &:hover {
+        &:not(:last-child):hover {
           background-color: $secondary;
           color: white;
         }
@@ -56,8 +71,6 @@
     }
 
     .menuButton {
-      display: none;
-
       @media (max-width: $mobile-width) {
         display: inline-flex;
         margin-right: 15px;
