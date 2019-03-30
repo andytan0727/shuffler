@@ -27,7 +27,7 @@ const YTPlayerPage = props => {
   return (
     <div className={styles.ytPlayerDiv}>
       <div className={styles.player}>
-        <h3>
+        <h3 className={styles.videoTitle}>
           {listToPlay.length !== 0
             ? listToPlay[curSongIdx].snippet.title
             : "No Video Selected To Play"}

@@ -54,7 +54,12 @@ const PlayerPageList = props => {
 
   return (
     <React.Fragment>
-      <h3>Currently playing: {`${curSongIdx + 1}/${listToPlay.length}`}</h3>
+      <h3>
+        <span role="img" aria-label="currently-playing">
+          📻
+        </span>
+        &nbsp;Currently playing: {`${curSongIdx + 1}/${listToPlay.length}`}
+      </h3>
       <VideoList items={listToPlay} width="80%" height={450}>
         {ConnectedPlaylistItem}
       </VideoList>
