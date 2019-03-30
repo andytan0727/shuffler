@@ -1,3 +1,4 @@
+@import "../../utils/styles/colors";
 @import "../../utils/styles/variables";
 
 .playlistInPgDiv {
@@ -57,7 +58,7 @@
     top: 100px;
 
     @media screen and (max-width: $mobile-width) {
-      top: 60px; 
+      top: 60px;
     }
   }
 
@@ -70,6 +71,10 @@
 
     ul {
       list-style-type: decimal;
+
+      ul {
+        list-style-type: circle;
+      }
     }
   }
 }
