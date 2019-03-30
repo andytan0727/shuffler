@@ -33,12 +33,12 @@ const muiStyles = theme => ({
   fabAdd: {
     position: "absolute",
     bottom: theme.spacing.unit,
-    right: "26%"
+    right: "23%"
   },
   fabDelete: {
     position: "absolute",
     bottom: theme.spacing.unit,
-    right: "15%"
+    right: "12%"
   }
 });
 
