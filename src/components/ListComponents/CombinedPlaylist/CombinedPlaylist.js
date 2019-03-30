@@ -16,7 +16,7 @@ const CombinedPlaylist = props => {
           {matchesMobile ? (
             <LazyVideoList items={listToPlay} width={250} />
           ) : (
-            <LazyVideoList items={listToPlay} />
+            <LazyVideoList items={listToPlay} width="90%" />
           )}
         </Suspense>
       ) : (
