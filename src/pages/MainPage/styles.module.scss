@@ -45,11 +45,15 @@
 .mainPgDiv {
   min-height: 100vh;
   background-color: white;
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  top: -10%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: min-content auto min-content;
   justify-content: center;
-  align-items: center;
-  z-index: -1;
+  align-content: center;
+  justify-items: center;
+  z-index: 1;
 
   animation-duration: 0.5s;
   animation-name: animateLogo;
@@ -57,13 +61,17 @@
   animation-iteration-count: initial;
 
   .logo {
-    margin-bottom: -40px;
+    position: relative;
+    margin-bottom: -3em;
+    align-self: center;
+    padding: 0 0;
   }
 
   p {
     font-size: 50px;
     font-family: "Roboto", sans-serif;
     text-align: center;
+    margin: 1em auto;
 
     @media (max-width: $mobile-width) {
       width: 90%;
@@ -72,7 +80,8 @@
   }
 
   a {
-    z-index: 2;
+    z-index: 3;
+
     &:hover {
       animation-duration: 1.2s;
       animation-name: scaleButton;
