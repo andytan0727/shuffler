@@ -12,6 +12,7 @@ import Zoom from "@material-ui/core/Zoom";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Swal from "sweetalert2";
 
 import {
   removePlaylist,
@@ -32,7 +33,7 @@ const muiStyles = theme => ({
   fabAdd: {
     position: "absolute",
     bottom: theme.spacing.unit,
-    right: "25%"
+    right: "26%"
   },
   fabDelete: {
     position: "absolute",
@@ -53,6 +54,7 @@ const SongListTabs = props => {
     theme,
     FirstTabComponent,
     SecondTabComponent,
+    checkedPlaylists,
     removePlaylist,
     addListToPlay,
     clearListToPlay
@@ -62,6 +64,13 @@ const SongListTabs = props => {
     enter: theme.transitions.duration.enteringScreen,
     exit: theme.transitions.duration.leavingScreen
   };
+  const customSwal = Swal.mixin({
+    customClass: {
+      confirmButton: styles.swalSuccessButton,
+      cancelButton: styles.swalCancelButton
+    },
+    buttonsStyling: false
+  });
 
   const handleChange = (event, value) => {
     setValue(value);
@@ -71,26 +80,73 @@ const SongListTabs = props => {
     setValue(index);
   };
 
-  const handleAddPlaylistToPlaying = () => {
+  const handleAddPlaylistToPlaying = async () => {
+    if (!checkedPlaylists.length) {
+      await customSwal.fire({
+        title: "No playlist has been selected!",
+        text: "Please select atleast one playlist!",
+        type: "warning"
+      });
+      return;
+    }
+
     addListToPlay({
       checked: true,
       persist: true
     });
+    await customSwal.fire(
+      "Added.",
+      "Playlist(s) that you selected has been added to playing list.",
+      "success"
+    );
   };
 
-  const handleRemovePlaylist = () => {
-    const remove = window.confirm(
-      "Are you sure you want to remove checked playlist(s)?"
-    );
+  const handleRemovePlaylist = async () => {
+    if (!checkedPlaylists.length) {
+      await customSwal.fire({
+        title: "No playlist has been selected!",
+        text: "Please select atleast one playlist!",
+        type: "warning"
+      });
+      return;
+    }
 
-    if (remove) {
+    const result = await customSwal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it please!",
+      cancelButtonText: "No!!!"
+    });
+
+    if (result.value) {
       removePlaylist();
+      await customSwal.fire(
+        "Deleted!",
+        "Playlist has been deleted.",
+        "success"
+      );
     }
   };
 
-  const handleClearListToPlay = () => {
-    if (window.confirm("Are you sure you want to clear playing list?")) {
+  const handleClearListToPlay = async () => {
+    const result = await customSwal.fire({
+      title: "Clear playing?",
+      text: "Are you sure?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, clear it please!",
+      cancelButtonText: "No!!!"
+    });
+
+    if (result.value) {
       clearListToPlay();
+      await customSwal.fire(
+        "Cleared!",
+        "Playing list has been cleared.",
+        "success"
+      );
     }
   };
 
@@ -186,9 +242,13 @@ SongListTabs.propTypes = {
   clearListToPlay: PropTypes.func.isRequired
 };
 
+const mapStateToProps = ({ ytplaylist: { checkedPlaylists } }) => ({
+  checkedPlaylists
+});
+
 export default withStyles(muiStyles, { withTheme: true })(
   connect(
-    null,
+    mapStateToProps,
     {
       removePlaylist,
       addListToPlay,

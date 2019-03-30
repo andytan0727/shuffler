@@ -1,4 +1,35 @@
-@import '../../utils/styles/colors';
+@import "../../utils/styles/colors";
+
+.swalSuccessButton {
+  background-color: $primaryLight;
+  color: #fff;
+  font-size: 1.025em;
+  font-weight: bold;
+  padding: 0.65em 2em;
+  border: none;
+  box-shadow: none;
+
+  &:hover {
+    background-color: $primaryDark;
+    transition: background-color 0.5s;
+  }
+}
+
+.swalCancelButton {
+  background-color: $error;
+  color: #fff;
+  font-size: 1.025em;
+  font-weight: bold;
+  padding: 0.65em 2em;
+  border: none;
+  box-shadow: none;
+  margin-left: 1.2em;
+
+  &:hover {
+    background-color: darken($error, 30%);
+    transition: background-color 0.5s;
+  }
+}
 
 .tab {
   &::-webkit-scrollbar {
