@@ -187,8 +187,8 @@ const SongListTabs = props => {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label="Saved" />
-          <Tab label="Playing" />
+          <Tab label="Saved 🎵" />
+          <Tab label="Playing 🎧" />
         </Tabs>
       </AppBar>
       <SwipeableViews

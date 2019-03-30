@@ -50,10 +50,9 @@ const MainPage = props => {
         <circle id="Oval" cx="700" cy="500" r="550" />
         <circle id="Oval" cx="750" cy="550" r="580" />
       </svg>
-      <p>Randomize your YouTube Playlist</p>
+      <p>Randomize your YouTube Playlist 🎶</p>
       <MuiThemeProvider theme={theme}>
         <Button
-          // size="large"
           aria-label="Get-Started"
           className={classes.fab}
           component={GetStartedLink}
