@@ -7,6 +7,8 @@ import IconButton from "@material-ui/core/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
 import SearchIcon from "@material-ui/icons/Search";
 
+import { notify } from "../../../utils/helper/notifyHelper";
+
 // dispatch
 import {
   setPlaylistUrl,
@@ -61,30 +63,28 @@ const PlaylistInput = props => {
 
     const vidRegex = /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:v)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/;
 
-    const requestId = listRegex.exec(playlistUrl)[1];
+    const regexResults = listRegex.exec(playlistUrl);
+
+    const requestId = regexResults && regexResults[1];
 
     if (idInput && !idInput.current.value) {
-      alert("Please don't submit empty input");
-      return;
-    }
-
-    if (fetchedItemsId.includes(requestId)) {
-      alert("Please enter new playlist / video url");
+      notify("warning", "⚠️ Please don't submit empty input");
       return;
     }
 
     if (!requestId) {
-      alert("Please enter valid playlist url");
+      notify("warning", "⚠️ Please enter a valid playlist url");
+      return;
+    }
+
+    if (fetchedItemsId.includes(requestId)) {
+      notify("warning", "⚠️ You searched this before");
       return;
     }
 
     // array to store requested videos
     const items = [];
 
-    // swipe to ctrl btn group first for better UX
-    handleSwipeDivIdxChange(1);
-
-    // Real request
     try {
       let data = await fetchPlaylistData(apiBaseUrl, {
         part,
@@ -138,73 +138,15 @@ const PlaylistInput = props => {
 
       // clear input
       setPlaylistUrl("");
+
+      handleSwipeDivIdxChange(1);
     } catch (err) {
-      console.log("Error in axios request!");
-      console.log(err);
-      alert("Error! Please try again");
+      notify("error", "❌ Error in requesting playlist!");
+      console.error(err);
+
+      // clear input
+      setPlaylistUrl("");
     }
-    // }
-
-    /**
-     * API MOCK TESTING IN LOCAL ENV
-     */
-    // try {
-    //   // fetch and add data to Redux store
-    //   let data = await fetchPlaylistData("data1.json", {
-    //     part,
-    //     maxResults,
-    //     requestId,
-    //     fields,
-    //     apiKey
-    //   });
-
-    //   items.push(...data.items);
-    //   let count = 2;
-
-    //   while (data.nextPageToken) {
-    //     data = await fetchPlaylistData(`data${count}.json`, {
-    //       part,
-    //       maxResults,
-    //       requestId,
-    //       fields,
-    //       apiKey
-    //     });
-    //     items.push(...data.items);
-    //     count++;
-
-    //     if (count > 5) {
-    //       console.log("nextPageToken failed");
-    //       break;
-    //     }
-    //   }
-
-    //   // add new playlist fetched to Redux
-    //   addPlaylist({
-    //     persist: true,
-    //     playlist: {
-    //       id: requestId,
-    //       items
-    //     }
-    //   });
-
-    //   // add newly fetched playlist's song to listToPlay
-    //   addListToPlay({
-    //     persist: true,
-    //     listToAdd: items
-    //   });
-
-    //   // add fetched playlist id to fetchedItemsId array
-    //   addFetchedItemId({
-    //     id:requestId
-    //   });
-
-    //   // clear input
-    //   setPlaylistUrl("");
-    // } catch (err) {
-    //   console.log("Error in axios request!");
-    //   console.log(err);
-    //   alert("Error! Please try again");
-    // }
   };
 
   return (
