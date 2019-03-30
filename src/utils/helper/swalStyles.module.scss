@@ -1,0 +1,34 @@
+@import '../styles/colors';
+
+.swalSuccessButton {
+  background-color: $primaryLight;
+  color: #fff;
+  font-size: 1.025em;
+  font-weight: bold;
+  padding: 0.65em 2em;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primaryDark;
+    transition: background-color 0.5s;
+  }
+}
+
+.swalCancelButton {
+  background-color: $error;
+  color: #fff;
+  font-size: 1.025em;
+  font-weight: bold;
+  padding: 0.65em 2em;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  margin-left: 1.2em;
+
+  &:hover {
+    background-color: darken($error, 30%);
+    transition: background-color 0.5s;
+  }
+}

@@ -1,7 +1,17 @@
+import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import swalStyles from "./swalStyles.module.scss";
 import "react-toastify/dist/ReactToastify.min.css";
 
-export const notify = (type, message) => {
+const customSwal = Swal.mixin({
+  customClass: {
+    confirmButton: swalStyles.swalSuccessButton,
+    cancelButton: swalStyles.swalCancelButton
+  },
+  buttonsStyling: false
+});
+
+const notify = (type, message) => {
   switch (type) {
     case "error": {
       toast.error(message, {
@@ -35,3 +45,5 @@ export const notify = (type, message) => {
     }
   }
 };
+
+export { customSwal, notify };
