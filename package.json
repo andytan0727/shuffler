@@ -21,7 +21,8 @@
     "react-window": "^1.7.1",
     "react-youtube": "^7.9.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "sweetalert2": "^8.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
