@@ -36,7 +36,7 @@ VideoList.propTypes = {
   items: PropTypes.array.isRequired,
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.number,
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func])
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
 export default VideoList;

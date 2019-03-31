@@ -12,23 +12,23 @@ import { ReactComponent as ShufflerTextLogo } from "../../../assets/shufflerText
 import { ReactComponent as GithubLogo } from "../../../assets/githubLogo.svg";
 import styles from "./styles.module.scss";
 
-const muiStyles = theme => ({
+const muiStyles = (theme) => ({
   menuAnchor: {
     textDecoration: "none",
-    color: theme.palette.primary.main
-  }
+    color: theme.palette.primary.main,
+  },
 });
 
-const TopBar = props => {
+const TopBar = (props) => {
   const { classes } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
-  const handleMenuButtonClick = e => {
+  const handleMenuButtonClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
 
-  const handleMenuClose = e => {
+  const handleMenuClose = (e) => {
     setAnchorEl(null);
   };
 
@@ -93,7 +93,7 @@ const TopBar = props => {
 };
 
 TopBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(muiStyles)(TopBar);

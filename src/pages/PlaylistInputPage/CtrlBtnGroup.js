@@ -49,7 +49,7 @@ const CtrlBtnGroup = ({ shufflePlaylist, handleSwipeDivIdxChange }) => (
 
 CtrlBtnGroup.propTypes = {
   handleSwipeDivIdxChange: PropTypes.func.isRequired,
-  shufflePlaylist: PropTypes.func
+  shufflePlaylist: PropTypes.func,
 };
 
 export default CtrlBtnGroup;

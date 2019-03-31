@@ -1,7 +1,7 @@
 import produce from "immer";
 import {
   SET_CURRENT_SONG_IDX,
-  SET_VIDEO_PLAYING
+  SET_VIDEO_PLAYING,
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -14,8 +14,8 @@ const initialState = {
     rel: 0,
     modestbranding: 1,
     loop: 0,
-    iv_load_policy: 3
-  }
+    iv_load_policy: 3,
+  },
 };
 
 export const ytplayer = produce((draft, action) => {

@@ -18,10 +18,10 @@ class CurrentPlaylistItem extends React.PureComponent {
 
       // Redux
       curSongIdx,
-      setCurSongIdx
+      setCurSongIdx,
     } = this.props;
 
-    const handleChangeVideo = e => {
+    const handleChangeVideo = (e) => {
       setCurSongIdx(index);
     };
 
@@ -42,14 +42,14 @@ class CurrentPlaylistItem extends React.PureComponent {
 const ConnectedPlaylistItem = connect(
   ({ ytplayer: { curSongIdx } }) => ({ curSongIdx }),
   {
-    setCurSongIdx
+    setCurSongIdx,
   }
 )(CurrentPlaylistItem);
 
-const PlayerPageList = props => {
+const PlayerPageList = (props) => {
   const {
     ytplaylist: { listToPlay },
-    ytplayer: { curSongIdx }
+    ytplayer: { curSongIdx },
   } = props;
 
   return (
@@ -72,17 +72,17 @@ ConnectedPlaylistItem.propTypes = {
   style: PropTypes.object,
   data: PropTypes.array,
   curSongIdx: PropTypes.number,
-  setCurSongIdx: PropTypes.func
+  setCurSongIdx: PropTypes.func,
 };
 
 PlayerPageList.propTypes = {
   ytplaylist: PropTypes.object.isRequired,
-  ytplayer: PropTypes.object.isRequired
+  ytplayer: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = ({ ytplaylist, ytplayer }) => ({
   ytplaylist,
-  ytplayer
+  ytplayer,
 });
 
 export default connect(mapStateToProps)(PlayerPageList);

@@ -6,9 +6,9 @@ import "react-toastify/dist/ReactToastify.min.css";
 const customSwal = Swal.mixin({
   customClass: {
     confirmButton: swalStyles.swalSuccessButton,
-    cancelButton: swalStyles.swalCancelButton
+    cancelButton: swalStyles.swalCancelButton,
   },
-  buttonsStyling: false
+  buttonsStyling: false,
 });
 
 const notify = (type, message) => {
@@ -17,7 +17,7 @@ const notify = (type, message) => {
       toast.error(message, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 3000,
-        pauseOnFocusLoss: false
+        pauseOnFocusLoss: false,
       });
       break;
     }
@@ -26,7 +26,7 @@ const notify = (type, message) => {
       toast.warning(message, {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 3000,
-        pauseOnFocusLoss: false
+        pauseOnFocusLoss: false,
       });
       break;
     }
@@ -35,7 +35,7 @@ const notify = (type, message) => {
       toast.success(message, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 5000,
-        pauseOnFocusLoss: false
+        pauseOnFocusLoss: false,
       });
       break;
     }

@@ -13,7 +13,7 @@ const logger = createLogger();
 const rootReducer = combineReducers({
   ytapi,
   ytplayer,
-  ytplaylist
+  ytplaylist,
 });
 
 const store =

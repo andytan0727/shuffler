@@ -7,10 +7,10 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { ReactComponent as ShufflerLogo } from "../../assets/shuffler-logo.svg";
 import styles from "./styles.module.scss";
 
-const muiStyles = theme => ({
+const muiStyles = (theme) => ({
   fab: {
-    borderRadius: 0
-  }
+    borderRadius: 0,
+  },
 });
 
 const theme = createMuiTheme({
@@ -24,16 +24,16 @@ const theme = createMuiTheme({
         padding: "0 30px",
         fontSize: "18px",
         height: "3em",
-        boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)"
-      }
-    }
+        boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+      },
+    },
   },
-  typography: { useNextVariants: true }
+  typography: { useNextVariants: true },
 });
 
-const GetStartedLink = props => <Link to="/playlistInput" {...props} />;
+const GetStartedLink = (props) => <Link to="/playlistInput" {...props} />;
 
-const MainPage = props => {
+const MainPage = (props) => {
   const { classes } = props;
   return (
     <div className={styles.mainPgDiv}>

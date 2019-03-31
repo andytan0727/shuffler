@@ -3,7 +3,7 @@ import { notify } from "./notifyHelper";
 import {
   addPlaylist,
   addListToPlay,
-  setLoadedFromDB
+  setLoadedFromDB,
 } from "../../store/ytplaylist/action";
 
 /**
@@ -11,7 +11,7 @@ import {
  *
  * @param {*} store Redux store
  */
-export const hydrateRedux = async store => {
+export const hydrateRedux = async (store) => {
   try {
     // hydrate playlist
     const dbPlaylistKeys = await dbPlaylist.keys();
@@ -24,7 +24,7 @@ export const hydrateRedux = async store => {
       store.dispatch(
         addPlaylist({
           persist: false,
-          playlist: value
+          playlist: value,
         })
       );
     });
@@ -41,7 +41,7 @@ export const hydrateRedux = async store => {
     store.dispatch(
       addListToPlay({
         persist: false,
-        listToAdd: dbSongListArr
+        listToAdd: dbSongListArr,
       })
     );
 

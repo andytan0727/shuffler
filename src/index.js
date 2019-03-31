@@ -16,9 +16,9 @@ import * as serviceWorker from "./serviceWorker";
 const theme = createMuiTheme({
   palette: {
     primary: { main: purple[800] },
-    secondary: { main: purple["A200"] }
+    secondary: { main: purple["A200"] },
   },
-  typography: { useNextVariants: true }
+  typography: { useNextVariants: true },
 });
 
 ReactDOM.render(

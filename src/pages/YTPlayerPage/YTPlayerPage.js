@@ -7,11 +7,11 @@ import { setCurSongIdx } from "../../store/ytplayer/action";
 
 import styles from "./styles.module.scss";
 
-const YTPlayerPage = props => {
+const YTPlayerPage = (props) => {
   const {
     ytplayer: { curSongIdx },
     ytplaylist: { listToPlay },
-    setCurSongIdx
+    setCurSongIdx,
   } = props;
 
   useEffect(() => {
@@ -43,17 +43,17 @@ const YTPlayerPage = props => {
 
 YTPlayerPage.propTypes = {
   ytplayer: PropTypes.object,
-  ytplaylist: PropTypes.object
+  ytplaylist: PropTypes.object,
 };
 
 const mapStateToProps = ({ ytplayer, ytplaylist }) => ({
   ytplayer,
-  ytplaylist
+  ytplaylist,
 });
 
 export default connect(
   mapStateToProps,
   {
-    setCurSongIdx
+    setCurSongIdx,
   }
 )(YTPlayerPage);

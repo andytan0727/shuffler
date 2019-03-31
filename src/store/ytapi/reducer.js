@@ -2,7 +2,7 @@ import produce from "immer";
 import {
   SET_PLAYLIST_URL,
   FETCH_PLAYLIST_DATA,
-  ADD_FETCHED_ITEM_ID
+  ADD_FETCHED_ITEM_ID,
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -15,11 +15,11 @@ const initialState = {
       part: "snippet",
       maxResults: "50",
       playlistId: "",
-      fields: ["items", "nextPageToken", "pageInfo"]
+      fields: ["items", "nextPageToken", "pageInfo"],
     },
-    fetchedData: []
+    fetchedData: [],
   },
-  fetchedItemsId: []
+  fetchedItemsId: [],
 };
 
 export const ytapi = produce((draft, action) => {
@@ -32,7 +32,7 @@ export const ytapi = produce((draft, action) => {
     case FETCH_PLAYLIST_DATA: {
       const dataToAdd = action.payload.data;
       const isDataFetched = draft.playlistItems.fetchedData.some(
-        data => data.items[0].id === dataToAdd.items[0].id
+        (data) => data.items[0].id === dataToAdd.items[0].id
       );
 
       // return if data already fetched before
@@ -53,7 +53,7 @@ export const ytapi = produce((draft, action) => {
       if (!draft.fetchedItemsId.includes(playlistIdToAdd)) {
         const updatedFetchedItemsId = [
           ...draft.fetchedItemsId,
-          playlistIdToAdd
+          playlistIdToAdd,
         ];
         draft.fetchedItemsId = updatedFetchedItemsId;
       }

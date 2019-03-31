@@ -5,7 +5,7 @@ import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMe
 
 const LazyVideoList = lazy(() => import("../VideoList"));
 
-const CombinedPlaylist = props => {
+const CombinedPlaylist = (props) => {
   const { listToPlay } = props;
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
@@ -29,10 +29,10 @@ const CombinedPlaylist = props => {
 };
 
 CombinedPlaylist.propTypes = {
-  listToPlay: PropTypes.array.isRequired
+  listToPlay: PropTypes.array.isRequired,
 };
 const mapStateToProps = ({ ytplaylist: { listToPlay } }) => ({
-  listToPlay
+  listToPlay,
 });
 
 export default connect(

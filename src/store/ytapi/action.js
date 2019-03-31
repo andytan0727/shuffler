@@ -1,15 +1,15 @@
 import {
   SET_PLAYLIST_URL,
   FETCH_PLAYLIST_DATA,
-  ADD_FETCHED_ITEM_ID
+  ADD_FETCHED_ITEM_ID,
 } from "../../utils/constants/actionConstants";
 import { fetchPlaylistItems } from "../../utils/helper/fetchHelper";
 
-const setPlaylistUrl = playlistUrl => ({
+const setPlaylistUrl = (playlistUrl) => ({
   type: SET_PLAYLIST_URL,
   payload: {
-    playlistUrl
-  }
+    playlistUrl,
+  },
 });
 
 /**
@@ -20,14 +20,14 @@ const setPlaylistUrl = playlistUrl => ({
  * @returns dispatch function for redux thunk
  */
 const fetchPlaylistData = (url, params) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const data = await fetchPlaylistItems(url, params);
       dispatch({
         type: FETCH_PLAYLIST_DATA,
         payload: {
-          data
-        }
+          data,
+        },
       });
       return data;
     } catch (err) {
@@ -45,8 +45,8 @@ const fetchPlaylistData = (url, params) => {
 const addFetchedItemId = ({ id }) => ({
   type: ADD_FETCHED_ITEM_ID,
   payload: {
-    id
-  }
+    id,
+  },
 });
 
 export { setPlaylistUrl, fetchPlaylistData, addFetchedItemId };

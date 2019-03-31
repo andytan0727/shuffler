@@ -18,7 +18,7 @@ import HelpGuide from "./HelpGuide";
 import { shufflePlaylist } from "../../store/ytplaylist/action";
 import styles from "./styles.module.scss";
 
-const muiStyles = theme => ({
+const muiStyles = (theme) => ({
   paper: {
     position: "absolute",
     top: "50%",
@@ -30,17 +30,17 @@ const muiStyles = theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
     outline: "none",
-    overflow: "auto"
-  }
+    overflow: "auto",
+  },
 });
 
-const PlaylistInputPage = props => {
+const PlaylistInputPage = (props) => {
   const { classes, loadedFromDB, shufflePlaylist } = props;
   const [swipeDivIdx, setSwipeDivIdx] = useState(Number(loadedFromDB));
   const [modalOpen, setModalOpen] = useState(false);
   const matchesTablet = useMediaQuery("(max-width: 780px)");
 
-  const handleSwipeDivIdxChange = value => {
+  const handleSwipeDivIdxChange = (value) => {
     setSwipeDivIdx(value);
   };
 
@@ -105,11 +105,11 @@ const PlaylistInputPage = props => {
 PlaylistInputPage.propTypes = {
   classes: PropTypes.object.isRequired,
   loadedFromDB: PropTypes.bool.isRequired,
-  shufflePlaylist: PropTypes.func
+  shufflePlaylist: PropTypes.func,
 };
 
 const mapStateToProps = ({ ytplaylist: { loadedFromDB } }) => ({
-  loadedFromDB
+  loadedFromDB,
 });
 
 const StyledPlaylistInputPage = withStyles(muiStyles)(PlaylistInputPage);
@@ -117,6 +117,6 @@ const StyledPlaylistInputPage = withStyles(muiStyles)(PlaylistInputPage);
 export default connect(
   mapStateToProps,
   {
-    shufflePlaylist
+    shufflePlaylist,
   }
 )(StyledPlaylistInputPage);

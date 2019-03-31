@@ -13,21 +13,21 @@ import { notify } from "../../../utils/helper/notifyHelper";
 import {
   setPlaylistUrl,
   fetchPlaylistData,
-  addFetchedItemId
+  addFetchedItemId,
 } from "../../../store/ytapi/action";
 import { addPlaylist, addListToPlay } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
 
-const muiStyles = theme => ({
+const muiStyles = (theme) => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: 10,
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 });
 
-const PlaylistInput = props => {
+const PlaylistInput = (props) => {
   const {
     classes,
     handleSwipeDivIdxChange,
@@ -38,9 +38,9 @@ const PlaylistInput = props => {
       playlistUrl,
       playlistItems: {
         apiBaseUrl,
-        options: { part, maxResults, fields }
+        options: { part, maxResults, fields },
       },
-      fetchedItemsId
+      fetchedItemsId,
     },
 
     // dispatch
@@ -48,15 +48,15 @@ const PlaylistInput = props => {
     fetchPlaylistData,
     addFetchedItemId,
     addPlaylist,
-    addListToPlay
+    addListToPlay,
   } = props;
   const idInput = useRef(null);
 
-  const handlePlaylistInputChange = e => {
+  const handlePlaylistInputChange = (e) => {
     setPlaylistUrl(e.target.value);
   };
 
-  const handleRequest = async e => {
+  const handleRequest = async (e) => {
     e.preventDefault();
 
     const listRegex = /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:list)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/;
@@ -91,7 +91,7 @@ const PlaylistInput = props => {
         maxResults,
         playlistId: requestId,
         fields,
-        apiKey
+        apiKey,
       });
       items.push(...data.items);
       let count = 2;
@@ -110,7 +110,7 @@ const PlaylistInput = props => {
           playlistId: requestId,
           fields,
           pageToken: data.nextPageToken,
-          apiKey
+          apiKey,
         });
         items.push(...data.items);
         count++;
@@ -121,19 +121,19 @@ const PlaylistInput = props => {
         persist: true,
         playlist: {
           id: requestId,
-          items
-        }
+          items,
+        },
       });
 
       // add newly fetched playlist's song to listToPlay
       addListToPlay({
         persist: true,
-        listToAdd: items
+        listToAdd: items,
       });
 
       // add fetched playlist id to fetchedItemsId array
       addFetchedItemId({
-        id: requestId
+        id: requestId,
       });
 
       // clear input
@@ -182,19 +182,19 @@ PlaylistInput.propTypes = {
   options: PropTypes.shape({
     part: PropTypes.string.isRequired,
     maxResults: PropTypes.string.isRequired,
-    fields: PropTypes.string
+    fields: PropTypes.string,
   }),
   setPlaylistUrl: PropTypes.func.isRequired,
   fetchPlaylistData: PropTypes.func.isRequired,
   fetchedItemsId: PropTypes.array,
   addFetchedItemId: PropTypes.func.isRequired,
-  addPlaylist: PropTypes.func.isRequired
+  addPlaylist: PropTypes.func.isRequired,
 };
 
 const MUIPlaylistInput = withStyles(muiStyles)(PlaylistInput);
 
 const mapStateToProps = ({ ytapi }) => ({
-  ytapi
+  ytapi,
 });
 
 export default connect(
@@ -204,6 +204,6 @@ export default connect(
     fetchPlaylistData,
     addFetchedItemId,
     addPlaylist,
-    addListToPlay
+    addListToPlay,
   }
 )(MUIPlaylistInput);

@@ -32,7 +32,8 @@
     "start-https:bash": "HTTPS=true yarn start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --config \".prettierrc\" --write \"{src/*.js,src/**/*.js}\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,6 +45,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "prettier": "^1.16.4",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6"
   }

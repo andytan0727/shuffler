@@ -5,7 +5,7 @@ import {
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
   ADD_LIST_TO_PLAY,
-  CLEAR_LIST_TO_PLAY
+  CLEAR_LIST_TO_PLAY,
 } from "../../utils/constants/actionConstants";
 
 /**
@@ -18,8 +18,8 @@ const addPlaylist = ({ persist, playlist }) => ({
   type: ADD_PLAYLIST,
   payload: {
     persist,
-    playlist
-  }
+    playlist,
+  },
 });
 
 /**
@@ -27,7 +27,7 @@ const addPlaylist = ({ persist, playlist }) => ({
  * @returns REMOVE_PLAYLIST action object for redux store
  */
 const removePlaylist = () => ({
-  type: REMOVE_PLAYLIST
+  type: REMOVE_PLAYLIST,
 });
 
 /**
@@ -35,11 +35,11 @@ const removePlaylist = () => ({
  * @param {array} checkedPlaylists checkedPlaylists in SavedPlaylist component
  * @returns SET_CHECKED_PLAYLISTS action object for redux store
  */
-const setCheckedPlaylists = checkedPlaylists => ({
+const setCheckedPlaylists = (checkedPlaylists) => ({
   type: SET_CHECKED_PLAYLISTS,
   payload: {
-    checkedPlaylists
-  }
+    checkedPlaylists,
+  },
 });
 
 /**
@@ -48,7 +48,7 @@ const setCheckedPlaylists = checkedPlaylists => ({
  *
  */
 const shufflePlaylist = () => ({
-  type: SHUFFLE_PLAYLIST
+  type: SHUFFLE_PLAYLIST,
 });
 
 /**
@@ -57,7 +57,7 @@ const shufflePlaylist = () => ({
  *
  */
 const setLoadedFromDB = () => ({
-  type: SET_LOADED_FROM_DB
+  type: SET_LOADED_FROM_DB,
 });
 
 /**
@@ -73,8 +73,8 @@ const addListToPlay = ({ checked, persist, listToAdd }) => ({
   payload: {
     checked,
     persist,
-    listToAdd
-  }
+    listToAdd,
+  },
 });
 
 /**
@@ -82,7 +82,7 @@ const addListToPlay = ({ checked, persist, listToAdd }) => ({
  * @returns CLEAR_LIST_TO_PLAY action object for redux store
  */
 const clearListToPlay = () => ({
-  type: CLEAR_LIST_TO_PLAY
+  type: CLEAR_LIST_TO_PLAY,
 });
 
 export {
@@ -92,5 +92,5 @@ export {
   shufflePlaylist,
   setLoadedFromDB,
   addListToPlay,
-  clearListToPlay
+  clearListToPlay,
 };

@@ -8,7 +8,7 @@ import {
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
   ADD_LIST_TO_PLAY,
-  CLEAR_LIST_TO_PLAY
+  CLEAR_LIST_TO_PLAY,
 } from "../../utils/constants/actionConstants";
 
 import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
@@ -22,7 +22,7 @@ const initialState = {
     //   items: [{}]
     // }
   ],
-  listToPlay: []
+  listToPlay: [],
 };
 
 export const ytplaylist = produce((draft, action) => {
@@ -37,7 +37,7 @@ export const ytplaylist = produce((draft, action) => {
       const playlistToAdd = action.payload.playlist;
       const persist = action.payload.persist;
       const isPlaylistExists = prevPlaylists.some(
-        playlist => playlist.id === playlistToAdd.id
+        (playlist) => playlist.id === playlistToAdd.id
       );
 
       // return if playlist exists
@@ -52,15 +52,15 @@ export const ytplaylist = produce((draft, action) => {
             ...prevPlaylists,
             {
               ...playlistToAdd,
-              saved: true
-            }
+              saved: true,
+            },
           ];
 
       draft.playlists = updatedPlaylists;
 
       // add to indexedDB as well
       if (persist) {
-        updatedPlaylists.forEach(playlist => {
+        updatedPlaylists.forEach((playlist) => {
           dbPlaylist
             .setItem(playlist.id, playlist)
             .then(() => {
@@ -68,7 +68,7 @@ export const ytplaylist = produce((draft, action) => {
                 `successfully added playlist-${playlist.id} to playlistDB`
               );
             })
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
         });
       }
 
@@ -85,19 +85,19 @@ export const ytplaylist = produce((draft, action) => {
       const playlistsToRemove = original(draft.checkedPlaylists);
 
       const updatedPlaylist = draft.playlists.filter(
-        playlist => !playlistsToRemove.includes(playlist.id)
+        (playlist) => !playlistsToRemove.includes(playlist.id)
       );
 
       draft.playlists = updatedPlaylist;
 
       // remove from indexedDB as well
-      playlistsToRemove.forEach(playlistId => {
+      playlistsToRemove.forEach((playlistId) => {
         dbPlaylist
           .removeItem(playlistId)
           .then(() =>
             console.log(`successfully removed playlist-${playlistId}`)
           )
-          .catch(err =>
+          .catch((err) =>
             console.log("Error in removing playlist from indexedDB")
           );
       });
@@ -121,8 +121,10 @@ export const ytplaylist = produce((draft, action) => {
         ? [
             ...draft.listToPlay,
             ...draft.playlists
-              .filter(playlist => draft.checkedPlaylists.includes(playlist.id))
-              .flatMap(filteredPlaylist => filteredPlaylist.items)
+              .filter((playlist) =>
+                draft.checkedPlaylists.includes(playlist.id)
+              )
+              .flatMap((filteredPlaylist) => filteredPlaylist.items),
           ]
         : [...draft.listToPlay, ...listToAdd];
 
@@ -141,7 +143,7 @@ export const ytplaylist = produce((draft, action) => {
           .then(() =>
             console.log("successfully added listToPlay to songListDB")
           )
-          .catch(err => console.log(err));
+          .catch((err) => console.log(err));
       }
 
       return draft;
@@ -168,7 +170,7 @@ export const ytplaylist = produce((draft, action) => {
         dbSongList
           .setItem("listToPlay", draft.listToPlay)
           .then(() => console.log("add shuffled listToPlay to songListDB"))
-          .catch(err => console.error(err));
+          .catch((err) => console.error(err));
       }
 
       return draft;

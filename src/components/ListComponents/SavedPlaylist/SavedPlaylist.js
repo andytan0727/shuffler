@@ -17,16 +17,16 @@ import { setCheckedPlaylists } from "../../../store/ytplaylist/action";
 
 // import styles from "./styles.module.scss";
 
-const CollapseListItem = props => {
+const CollapseListItem = (props) => {
   const { playlist, checkedPlaylists, setCheckedPlaylists } = props;
   const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
-  const handleClick = e => {
-    setOpen(prevOpen => !prevOpen);
+  const handleClick = (e) => {
+    setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleToggle = value => () => {
+  const handleToggle = (value) => () => {
     const currentIndex = checkedPlaylists.indexOf(value);
     const newChecked = [...checkedPlaylists];
 
@@ -72,17 +72,17 @@ const CollapseListItem = props => {
   );
 };
 
-const SavedPlaylist = props => {
+const SavedPlaylist = (props) => {
   const {
     ytplaylist: { playlists, checkedPlaylists },
-    setCheckedPlaylists
+    setCheckedPlaylists,
   } = props;
 
   return (
     <React.Fragment>
       {playlists.length !== 0 ? (
         <List component="nav">
-          {playlists.map(playlist => (
+          {playlists.map((playlist) => (
             <CollapseListItem
               key={playlist.id}
               playlist={playlist}
@@ -103,20 +103,20 @@ const SavedPlaylist = props => {
 CollapseListItem.propTypes = {
   playlist: PropTypes.object.isRequired,
   checkedPlaylists: PropTypes.array.isRequired,
-  setCheckedPlaylists: PropTypes.func.isRequired
+  setCheckedPlaylists: PropTypes.func.isRequired,
 };
 
 SavedPlaylist.propTypes = {
-  ytplaylist: PropTypes.object.isRequired
+  ytplaylist: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = ({ ytplaylist }) => ({
-  ytplaylist
+  ytplaylist,
 });
 
 export default connect(
   mapStateToProps,
   {
-    setCheckedPlaylists
+    setCheckedPlaylists,
   }
 )(SavedPlaylist);

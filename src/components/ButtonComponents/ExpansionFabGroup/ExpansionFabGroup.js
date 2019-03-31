@@ -15,41 +15,41 @@ import { customSwal } from "../../../utils/helper/notifyHelper";
 import {
   removePlaylist,
   addListToPlay,
-  clearListToPlay
+  clearListToPlay,
 } from "../../../store/ytplaylist/action";
 
-const muiStyles = theme => ({
+const muiStyles = (theme) => ({
   fabExpand: {
     position: "absolute",
     bottom: theme.spacing.unit,
-    right: "12%"
+    right: "12%",
   },
   fabCollapse: {
     position: "absolute",
     bottom: theme.spacing.unit,
-    right: "12%"
+    right: "12%",
   },
 
   // fabExpand children
   fabAdd: {
     position: "absolute",
     bottom: "18%",
-    right: "12%"
+    right: "12%",
   },
   fabRemovePlaylist: {
     position: "absolute",
     bottom: "33%",
-    right: "12%"
+    right: "12%",
   },
 
   fabClearPlaying: {
     position: "absolute",
     bottom: theme.spacing.unit,
-    right: "12%"
-  }
+    right: "12%",
+  },
 });
 
-const ExpansionFabGroup = props => {
+const ExpansionFabGroup = (props) => {
   const {
     classes,
     theme,
@@ -57,13 +57,13 @@ const ExpansionFabGroup = props => {
     checkedPlaylists,
     removePlaylist,
     addListToPlay,
-    clearListToPlay
+    clearListToPlay,
   } = props;
   const [expand, setExpand] = useState(false);
 
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen
+    exit: theme.transitions.duration.leavingScreen,
   };
 
   const handleAddPlaylistToPlaying = async () => {
@@ -71,14 +71,14 @@ const ExpansionFabGroup = props => {
       await customSwal.fire({
         title: "No playlist is selected!💢",
         text: "Please select at least one playlist!",
-        type: "warning"
+        type: "warning",
       });
       return;
     }
 
     addListToPlay({
       checked: true,
-      persist: true
+      persist: true,
     });
     await customSwal.fire(
       "Added.",
@@ -92,7 +92,7 @@ const ExpansionFabGroup = props => {
       await customSwal.fire({
         title: "No playlist is selected!💢",
         text: "Please select at least one playlist!",
-        type: "warning"
+        type: "warning",
       });
       return;
     }
@@ -103,7 +103,7 @@ const ExpansionFabGroup = props => {
       type: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it please!🔥",
-      cancelButtonText: "No!!!😱"
+      cancelButtonText: "No!!!😱",
     });
 
     if (result.value) {
@@ -123,7 +123,7 @@ const ExpansionFabGroup = props => {
       type: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, clear it please!🔥",
-      cancelButtonText: "No!!!😱"
+      cancelButtonText: "No!!!😱",
     });
 
     if (result.value) {
@@ -143,7 +143,7 @@ const ExpansionFabGroup = props => {
       className: !expand ? classes.fabExpand : classes.fabCollapse,
       tooltip: !expand ? "expand" : "collapse",
       icon: !expand ? <ExpandLessIcon /> : <ExpandMoreIcon />,
-      func: () => setExpand(prevExpand => !prevExpand)
+      func: () => setExpand((prevExpand) => !prevExpand),
     },
     {
       color: "secondary",
@@ -151,8 +151,8 @@ const ExpansionFabGroup = props => {
       className: classes.fabClearPlaying,
       tooltip: "clear playing",
       icon: <DeleteIcon />,
-      func: handleClearListToPlay
-    }
+      func: handleClearListToPlay,
+    },
   ];
 
   const fabExpandGroup = [
@@ -162,7 +162,7 @@ const ExpansionFabGroup = props => {
       className: classes.fabAdd,
       tooltip: "add playlist to playing",
       icon: <AddIcon />,
-      func: handleAddPlaylistToPlaying
+      func: handleAddPlaylistToPlaying,
     },
     {
       color: "secondary",
@@ -170,8 +170,8 @@ const ExpansionFabGroup = props => {
       className: classes.fabRemovePlaylist,
       tooltip: "remove playlist",
       icon: <DeleteIcon />,
-      func: handleRemovePlaylist
-    }
+      func: handleRemovePlaylist,
+    },
   ];
 
   return (
@@ -184,7 +184,7 @@ const ExpansionFabGroup = props => {
           style={{
             transitionDelay: `${
               fab.tabIdx === tabValue ? transitionDuration.exit : 0
-            }ms`
+            }ms`,
           }}
           unmountOnExit
         >
@@ -227,11 +227,11 @@ ExpansionFabGroup.propTypes = {
   checkedPlaylists: PropTypes.array.isRequired,
   removePlaylist: PropTypes.func.isRequired,
   addListToPlay: PropTypes.func.isRequired,
-  clearListToPlay: PropTypes.func.isRequired
+  clearListToPlay: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ytplaylist: { checkedPlaylists } }) => ({
-  checkedPlaylists
+  checkedPlaylists,
 });
 
 export default withStyles(muiStyles, { withTheme: true })(
@@ -240,7 +240,7 @@ export default withStyles(muiStyles, { withTheme: true })(
     {
       removePlaylist,
       addListToPlay,
-      clearListToPlay
+      clearListToPlay,
     }
   )(ExpansionFabGroup)
 );

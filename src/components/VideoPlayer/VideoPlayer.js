@@ -9,21 +9,18 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import PauseIcon from "@material-ui/icons/Pause";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 
-import {
-  setCurSongIdx,
-  setVideoPlaying
-} from "../../store/ytplayer/action";
+import { setCurSongIdx, setVideoPlaying } from "../../store/ytplayer/action";
 
 import styles from "./styles.module.scss";
 
-const VideoPlayer = props => {
+const VideoPlayer = (props) => {
   const {
     playing,
     curSongIdx,
     playerVars,
     listToPlay,
     setCurSongIdx,
-    setVideoPlaying
+    setVideoPlaying,
   } = props;
   const ytPlayer = useRef(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
@@ -40,7 +37,7 @@ const VideoPlayer = props => {
 
   const setPause = () => setVideoPlaying(false);
 
-  const handlePlay = e => {
+  const handlePlay = (e) => {
     e.preventDefault();
 
     if (ytPlayer) {
@@ -48,7 +45,7 @@ const VideoPlayer = props => {
     }
   };
 
-  const handlePause = e => {
+  const handlePause = (e) => {
     e.preventDefault();
 
     if (ytPlayer) {
@@ -65,7 +62,7 @@ const VideoPlayer = props => {
     setCurSongIdx(curSongIdx + 1);
   };
 
-  const handleVideoError = e => {
+  const handleVideoError = (e) => {
     switch (e.data) {
       case 101:
       case 150:
@@ -95,8 +92,8 @@ const VideoPlayer = props => {
               width: matchesMobile ? 250 : 640,
               height: matchesMobile ? 180 : 390,
               playerVars: {
-                ...playerVars
-              }
+                ...playerVars,
+              },
             }}
             onReady={setPlaying}
             onPlay={setPlaying}
@@ -141,19 +138,19 @@ VideoPlayer.propTypes = {
   playerVars: PropTypes.object.isRequired,
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
-  setVideoPlaying: PropTypes.func.isRequired
+  setVideoPlaying: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
     ytplayer: { playing, curSongIdx, playerVars },
-    ytplaylist: { listToPlay }
+    ytplaylist: { listToPlay },
   } = state;
   return {
     playing,
     curSongIdx,
     playerVars,
-    listToPlay
+    listToPlay,
   };
 };
 
@@ -161,6 +158,6 @@ export default connect(
   mapStateToProps,
   {
     setCurSongIdx,
-    setVideoPlaying
+    setVideoPlaying,
   }
 )(VideoPlayer);

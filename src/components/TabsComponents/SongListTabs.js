@@ -10,14 +10,14 @@ import ExpansionFabGroup from "../ButtonComponents/ExpansionFabGroup";
 
 import styles from "./styles.module.scss";
 
-const muiStyles = theme => ({
+const muiStyles = (theme) => ({
   tab: {
     marginTop: -10,
     width: 500,
     height: "70vh",
     overflowY: "auto",
-    background: theme.palette.background.paper
-  }
+    background: theme.palette.background.paper,
+  },
 });
 
 const TabContainer = ({ children, dir }) => (
@@ -26,7 +26,7 @@ const TabContainer = ({ children, dir }) => (
   </Typography>
 );
 
-const SongListTabs = props => {
+const SongListTabs = (props) => {
   const { classes, theme, FirstTabComponent, SecondTabComponent } = props;
   const [value, setValue] = useState(1);
 
@@ -34,7 +34,7 @@ const SongListTabs = props => {
     setValue(value);
   };
 
-  const handleChangeIndex = index => {
+  const handleChangeIndex = (index) => {
     setValue(index);
   };
 
@@ -74,12 +74,12 @@ SongListTabs.propTypes = {
   theme: PropTypes.object.isRequired,
   FirstTabComponent: PropTypes.oneOfType([
     PropTypes.node.isRequired,
-    PropTypes.func.isRequired
+    PropTypes.func.isRequired,
   ]),
   SecondTabComponent: PropTypes.oneOfType([
     PropTypes.node.isRequired,
-    PropTypes.func.isRequired
-  ])
+    PropTypes.func.isRequired,
+  ]),
 };
 
 export default withStyles(muiStyles, { withTheme: true })(SongListTabs);
