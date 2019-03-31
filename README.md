@@ -3,6 +3,7 @@
 </p>
 
 # Shuffler
+[![Build Status](https://travis-ci.com/andytan0727/yt_random_player.svg?branch=master)](https://travis-ci.com/andytan0727/yt_random_player)
 
 A shuffler that randomize your YouTube playlist.
 
