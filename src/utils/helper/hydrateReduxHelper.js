@@ -29,9 +29,6 @@ export const hydrateRedux = async (store) => {
       );
     });
 
-    // notify user for success playlist loading
-    notify("success", "💖 Loaded saved playlists");
-
     // hydrate list to play
     const dbSongListArr = await dbSongList.getItem("listToPlay");
     if (!dbSongListArr || !dbSongListArr.length) {
@@ -46,7 +43,7 @@ export const hydrateRedux = async (store) => {
     );
 
     // notify user for success songlist loading
-    notify("success", "💖 Loaded playing list");
+    notify("success", "💖 Loaded saved playlists");
 
     console.log("Successfully hydrates Redux with stored indexedDB data");
 

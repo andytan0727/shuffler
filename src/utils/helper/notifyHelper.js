@@ -22,6 +22,15 @@ const notify = (type, message) => {
       break;
     }
 
+    case "info": {
+      toast.info(message, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+        pauseOnFocusLoss: false,
+      });
+      break;
+    }
+
     case "warning": {
       toast.warn(message, {
         position: toast.POSITION.TOP_RIGHT,
