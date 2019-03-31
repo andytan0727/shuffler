@@ -31,7 +31,7 @@
     "start-https:win": "set HTTPS=true&&yarn start",
     "start-https:bash": "HTTPS=true yarn start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
     "format": "prettier --config \".prettierrc\" --write \"{src/*.js,src/**/*.js}\""
   },
