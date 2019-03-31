@@ -1,79 +1,65 @@
 @import "../../utils/styles/colors";
 @import "../../utils/styles/variables";
 
-.playlistInPgDiv {
-  display: flex;
-  flex-direction: row;
-  min-height: 100%;
+.helpButton {
+  position: absolute;
+  top: -2%;
+}
 
-  @media screen and (max-width: $mobile-width) {
-    flex-direction: column;
+.playlistInPgDiv {
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-areas: "input";
+
+  @media screen and (min-width: $large-display-width) {
+    grid-template-rows: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "input guide";
+    grid-gap: 4em;
   }
 
   .inputDiv {
-    min-width: 50vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    top: 15%;
-
-    @media (max-width: $tablet-width) {
-      left: 50%;
-      transform: translateX(-50%);
-    }
+    min-width: 100%;
+    grid-area: input;
+    display: grid;
+    grid-template-rows: min-content min-content;
+    grid-template-columns: 100%;
+    grid-template-areas:
+      "swipe"
+      "song-list";
 
     .swipeableDiv {
-      width: 100%;
-      min-height: 100px;
+      grid-area: swipe;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .ctrlButtonsDiv {
-      min-height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      button,
-      a {
-        margin-right: 30px;
-
-        @media screen and (max-width: $mobile-width) {
-          margin-right: 15px;
-          font-size: 10px;
-        }
-      }
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 1em;
     }
 
     .songListTabsDiv {
-      width: 100%;
-      height: 100%;
+      grid-area: song-list;
       display: flex;
       justify-content: center;
-    }
-  }
-
-  .helpButton {
-    position: absolute;
-    top: 100px;
-
-    @media screen and (max-width: $mobile-width) {
-      top: 60px;
     }
   }
 
   .guideDiv {
-    width: 40%;
-    min-height: 80vh;
-    padding-right: 70px;
-    position: relative;
-    top: 15%;
-
-    ul {
-      list-style-type: decimal;
+    @media screen and (min-width: $large-display-width) {
+      grid-area: guide;
+      align-self: center;
+      padding-right: 4em;
 
       ul {
-        list-style-type: circle;
+        list-style-type: decimal;
+
+        ul {
+          list-style-type: circle;
+        }
       }
     }
   }

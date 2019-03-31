@@ -1,5 +1,6 @@
 import React, { Component, Suspense, lazy } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import PgFooter from "./pages/PgFooter";
 
 import "./App.scss";
 
@@ -9,7 +10,7 @@ const MainPage = lazy(() => import("./pages/MainPage"));
 const PlaylistInputPage = lazy(() => import("./pages/PlaylistInputPage"));
 const YTPlayerPage = lazy(() => import("./pages/YTPlayerPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
-const PgFooter = lazy(() => import("./pages/PgFooter"));
+// const PgFooter = lazy(() => import("./pages/PgFooter"));
 
 class App extends Component {
   render() {
@@ -28,10 +29,10 @@ class App extends Component {
                 <Route path="/about" component={AboutPage} />
               </Switch>
             </div>
-            <div className="App-footer">
-              <PgFooter />
-            </div>
           </Suspense>
+        </div>
+        <div className="App-footer">
+          <PgFooter />
         </div>
       </BrowserRouter>
     );

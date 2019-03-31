@@ -38,7 +38,7 @@ const PlaylistInputPage = (props) => {
   const { classes, loadedFromDB, shufflePlaylist } = props;
   const [swipeDivIdx, setSwipeDivIdx] = useState(Number(loadedFromDB));
   const [modalOpen, setModalOpen] = useState(false);
-  const matchesTablet = useMediaQuery("(max-width: 780px)");
+  const tabletBreakpoint = useMediaQuery("(min-width: 780px)");
 
   const handleSwipeDivIdxChange = (value) => {
     setSwipeDivIdx(value);
@@ -59,7 +59,7 @@ const PlaylistInputPage = (props) => {
           <SwipeableViews
             index={swipeDivIdx}
             onChangeIndex={handleSwipeDivIdxChange}
-            className={styles.swipeableDiv}
+            slideClassName={styles.swipeableDiv}
           >
             <PlaylistInput handleSwipeDivIdxChange={handleSwipeDivIdxChange} />
             <CtrlBtnGroup
@@ -74,7 +74,8 @@ const PlaylistInputPage = (props) => {
             />
           </div>
         </div>
-        {matchesTablet ? (
+        {/**  NOTE: done refactor */}
+        {!tabletBreakpoint ? (
           <React.Fragment>
             <IconButton
               className={styles.helpButton}

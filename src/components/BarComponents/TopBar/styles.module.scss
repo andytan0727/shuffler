@@ -2,8 +2,8 @@
 @import "../../../utils/styles/variables";
 
 .githubLogo {
-  width: 50px;
-  height: 30px;
+  width: 20px;
+  height: 15px;
 
   &:hover {
     path {
@@ -11,9 +11,9 @@
     }
   }
 
-  @media screen and (max-width: $mobile-width) {
-    width: 20px;
-    height: 15px;
+  @media screen and (min-width: $mobile-width) {
+    width: 50px;
+    height: 30px;
   }
 }
 
@@ -30,12 +30,13 @@
     z-index: 2;
 
     .logo {
-      width: 200px;
+      width: 120px;
       height: 45px;
+      margin-left: 10px;
 
-      @media (max-width: $mobile-width) {
-        width: 120px;
-        margin-left: 10px;
+      @media screen and (min-width: $mobile-width) {
+        width: 200px;
+        margin-left: 0px;
       }
     }
 
@@ -44,10 +45,6 @@
       color: $primary;
       font-family: "Roboto", sans-serif;
       text-decoration: none;
-
-      @media screen and (max-width: $mobile-width) {
-        padding: 0;
-      }
 
       &:first-child {
         flex-grow: 1;
@@ -59,9 +56,6 @@
 
       &:not(:first-child) {
         padding: 0.4em 0.8em;
-        @media screen and (max-width: $mobile-width) {
-          display: none;
-        }
 
         &:not(:last-child):hover {
           background-color: $secondary;
@@ -71,10 +65,8 @@
     }
 
     .menuButton {
-      @media (max-width: $mobile-width) {
-        display: inline-flex;
-        margin-right: 15px;
-      }
+      display: inline-flex;
+      margin-right: 15px;
     }
   }
 }

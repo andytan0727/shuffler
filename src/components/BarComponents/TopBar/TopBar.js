@@ -38,17 +38,7 @@ const TopBar = (props) => {
         <Link to="/">
           <ShufflerTextLogo className={styles.logo} />
         </Link>
-        <Link to="/playlistInput">Playlist</Link>
-        <Link to="/about">About</Link>
-        <a
-          href="https://github.com/andytan0727/yt_random_player"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <GithubLogo className={styles.githubLogo} />
-        </a>
-
-        {matchesMobile && (
+        {matchesMobile ? (
           <div>
             <IconButton
               className={styles.menuButton}
@@ -86,6 +76,18 @@ const TopBar = (props) => {
               </MenuItem>
             </Menu>
           </div>
+        ) : (
+          <React.Fragment>
+            <Link to="/playlistInput">Playlist</Link>
+            <Link to="/about">About</Link>
+            <a
+              href="https://github.com/andytan0727/yt_random_player"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubLogo className={styles.githubLogo} />
+            </a>
+          </React.Fragment>
         )}
       </nav>
     </div>

@@ -43,13 +43,11 @@
 }
 
 .mainPgDiv {
-  min-height: 100vh;
+  min-height: 100%;
   background-color: white;
-  position: relative;
-  top: -10%;
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: min-content auto min-content;
+  grid-template-rows: auto auto auto;
   justify-content: center;
   align-content: center;
   justify-items: center;
@@ -68,14 +66,15 @@
   }
 
   p {
-    font-size: 50px;
+    width: 90%;
+    font-size: 30px;
     font-family: "Roboto", sans-serif;
     text-align: center;
     margin: 1em auto;
 
-    @media (max-width: $mobile-width) {
-      width: 90%;
-      font-size: 30px;
+    @media screen and (min-width: $mobile-width) {
+      width: 100%;
+      font-size: 50px;
     }
   }
 

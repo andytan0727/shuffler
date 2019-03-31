@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
@@ -36,8 +37,7 @@ const GetStartedLink = (props) => <Link to="/playlistInput" {...props} />;
 const MainPage = (props) => {
   const { classes } = props;
   return (
-    <div className={styles.mainPgDiv}>
-      <ShufflerLogo className={styles.logo} />
+    <React.Fragment>
       <svg
         className={styles.pulse}
         viewBox="0 0 1300 1300"
@@ -50,23 +50,31 @@ const MainPage = (props) => {
         <circle id="Oval4" cx="700" cy="500" r="550" />
         <circle id="Oval5" cx="750" cy="550" r="580" />
       </svg>
-      <p>
-        Randomize your YouTube Playlist{" "}
-        <span role="img" aria-label="main-page-music-emoji">
-          🎶
-        </span>
-      </p>
-      <MuiThemeProvider theme={theme}>
-        <Button
-          aria-label="Get-Started"
-          className={classes.fab}
-          component={GetStartedLink}
-        >
-          Get Started
-        </Button>
-      </MuiThemeProvider>
-    </div>
+      <div className={styles.mainPgDiv}>
+        <ShufflerLogo className={styles.logo} />
+
+        <p>
+          Randomize your YouTube Playlist{" "}
+          <span role="img" aria-label="main-page-music-emoji">
+            🎶
+          </span>
+        </p>
+        <MuiThemeProvider theme={theme}>
+          <Button
+            aria-label="Get-Started"
+            className={classes.fab}
+            component={GetStartedLink}
+          >
+            Get Started
+          </Button>
+        </MuiThemeProvider>
+      </div>
+    </React.Fragment>
   );
+};
+
+MainPage.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(muiStyles)(MainPage);

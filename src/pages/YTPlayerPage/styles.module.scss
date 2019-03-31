@@ -2,19 +2,18 @@
 @import "../../utils/styles/variables";
 
 .ytPlayerDiv {
-  min-height: 100vh;
   display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 5fr 4fr;
-  grid-column-gap: 0em;
-  grid-template-areas: "player playlist";
+  grid-auto-rows: auto;
+  grid-template-columns: auto;
+  grid-template-areas:
+    "player"
+    "playlist";
 
-  @media screen and (max-width: $mobile-width) {
-    grid-auto-rows: auto;
-    grid-template-columns: auto;
-    grid-template-areas:
-      "player"
-      "playlist";
+  @media screen and (min-width: $mobile-width) {
+    grid-template-rows: auto;
+    grid-template-columns: 5fr 4fr;
+    grid-column-gap: 0em;
+    grid-template-areas: "player playlist";
   }
 
   .player {
