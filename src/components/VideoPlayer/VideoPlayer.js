@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
@@ -24,6 +24,7 @@ const VideoPlayer = (props) => {
   } = props;
   const ytPlayer = useRef(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
+  const [vidWidth, setVidWidth] = useState(0);
 
   const handlePrevious = () => {
     if (curSongIdx > 0) {
@@ -74,9 +75,19 @@ const VideoPlayer = (props) => {
     }
   };
 
+  const _setVidSize = () => {
+    const vidWrapper = document.getElementById("vid-wrapper");
+    setVidWidth(vidWrapper.width);
+  };
+
   useEffect(() => {
-    // Destroy player when unmount
+    window.addEventListener("resize", _setVidSize);
+
     return () => {
+      // remove listener
+      window.removeEventListener("resize", _setVidSize);
+
+      // Destroy player when unmount
       ytPlayer.current.internalPlayer.destroy();
     };
   }, []);
@@ -89,7 +100,7 @@ const VideoPlayer = (props) => {
             ref={ytPlayer}
             videoId={listToPlay[curSongIdx].snippet.resourceId.videoId}
             opts={{
-              width: matchesMobile ? 250 : 640,
+              width: matchesMobile ? vidWidth : 640,
               height: matchesMobile ? 180 : 390,
               playerVars: {
                 ...playerVars,

@@ -26,7 +26,7 @@ const YTPlayerPage = (props) => {
 
   return (
     <div className={styles.ytPlayerDiv}>
-      <div className={styles.player}>
+      <div id="vid-wrapper" className={styles.player}>
         <h3 className={styles.videoTitle}>
           {listToPlay.length !== 0
             ? listToPlay[curSongIdx].snippet.title
