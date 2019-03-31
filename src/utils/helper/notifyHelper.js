@@ -23,7 +23,7 @@ const notify = (type, message) => {
     }
 
     case "warning": {
-      toast.warning(message, {
+      toast.warn(message, {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 3000,
         pauseOnFocusLoss: false,
