@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import VideoList from "../../components/ListComponents/VideoList";
 
@@ -51,6 +52,17 @@ const PlayerPageList = (props) => {
     ytplaylist: { listToPlay },
     ytplayer: { curSongIdx },
   } = props;
+  const [listItemWidth, setListItemWidth] = useState(window.innerWidth * 0.9);
+  const matchesMobile = useMediaQuery("(max-width: 450px)");
+
+  const setVideoItemSize = () => setListItemWidth(window.innerWidth * 0.9);
+
+  useEffect(() => {
+    window.addEventListener("resize", setVideoItemSize);
+    return () => {
+      window.removeEventListener("resize", setVideoItemSize);
+    };
+  }, []);
 
   return (
     <React.Fragment>
@@ -60,7 +72,11 @@ const PlayerPageList = (props) => {
         </span>
         &nbsp;Currently playing: {`${curSongIdx + 1}/${listToPlay.length}`}
       </h3>
-      <VideoList items={listToPlay} width="80%" height={450}>
+      <VideoList
+        items={listToPlay}
+        width={matchesMobile ? listItemWidth : 400}
+        height={window.innerHeight * 0.65}
+      >
         {ConnectedPlaylistItem}
       </VideoList>
     </React.Fragment>

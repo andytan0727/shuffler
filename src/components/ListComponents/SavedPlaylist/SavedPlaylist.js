@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -20,6 +19,7 @@ import { setCheckedPlaylists } from "../../../store/ytplaylist/action";
 const CollapseListItem = (props) => {
   const { playlist, checkedPlaylists, setCheckedPlaylists } = props;
   const [open, setOpen] = useState(false);
+  const [listItemWidth, setListItemWidth] = useState(window.innerWidth * 0.75);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
   const handleClick = (e) => {
@@ -38,6 +38,16 @@ const CollapseListItem = (props) => {
 
     setCheckedPlaylists(newChecked);
   };
+
+  const setVideoItemSize = () => setListItemWidth(window.innerWidth * 0.75);
+
+  useEffect(() => {
+    window.addEventListener("resize", setVideoItemSize);
+    return () => {
+      // remove listener
+      window.removeEventListener("resize", setVideoItemSize);
+    };
+  }, []);
 
   return (
     <React.Fragment>
@@ -61,9 +71,18 @@ const CollapseListItem = (props) => {
         <List component="div" disablePadding>
           <ListItem>
             {matchesMobile ? (
-              <VideoList items={playlist.items} width={200} height={200} />
+              <VideoList
+                items={playlist.items}
+                width={listItemWidth}
+                height={200}
+                isMobile
+              />
             ) : (
-              <VideoList items={playlist.items} height={200} />
+              <VideoList
+                items={playlist.items}
+                width={700}
+                height={400}
+              />
             )}
           </ListItem>
         </List>

@@ -12,7 +12,6 @@ import styles from "./styles.module.scss";
 
 const muiStyles = (theme) => ({
   tab: {
-    // marginTop: -10,
     width: 500,
     height: "70vh",
     overflowY: "auto",
@@ -56,6 +55,7 @@ const SongListTabs = (props) => {
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
         onChangeIndex={handleChangeIndex}
+        slideClassName={styles.tabContainer}
       >
         <TabContainer dir={theme.direction}>
           <FirstTabComponent />

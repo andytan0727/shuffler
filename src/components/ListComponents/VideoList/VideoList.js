@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { FixedSizeList } from "react-window";
+import { VariableSizeList } from "react-window";
 
 import styles from "./styles.module.scss";
 
-class FixedSizeListItem extends React.PureComponent {
+class VideoListItem extends React.PureComponent {
   render() {
     const { index, style, data } = this.props;
 
@@ -18,24 +18,38 @@ class FixedSizeListItem extends React.PureComponent {
 
 const getItemKey = (index, data) => data[index].id;
 
-const VideoList = ({ items, width, height, children }) => (
-  <FixedSizeList
-    height={height || 350}
-    className={styles.songList}
-    itemCount={items.length}
-    itemSize={65}
-    itemData={items}
-    itemKey={getItemKey}
-    width={width || 400}
-  >
-    {children ? children : FixedSizeListItem}
-  </FixedSizeList>
-);
+const VideoList = ({ items, width, height, isMobile, children }) => {
+  const perLine = width / 15;
+
+  const getMobileListItemSize = (index) =>
+    ((items[index].snippet.title.length * 16) / width) * 20;
+
+  const getListItemSize = (index) => {
+    const titleLen = items[index].snippet.title.length;
+
+    return titleLen > perLine + 10 ? (titleLen / perLine) * 2.5 * 16 : 70;
+  };
+
+  return (
+    <VariableSizeList
+      height={height || 350}
+      className={styles.songList}
+      itemCount={items.length}
+      itemData={items}
+      itemKey={getItemKey}
+      itemSize={isMobile ? getMobileListItemSize : getListItemSize}
+      width={width || 400}
+    >
+      {children || VideoListItem}
+    </VariableSizeList>
+  );
+};
 
 VideoList.propTypes = {
   items: PropTypes.array.isRequired,
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.number,
+  isMobile: PropTypes.bool,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 

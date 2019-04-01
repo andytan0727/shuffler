@@ -14,9 +14,9 @@ const CombinedPlaylist = (props) => {
       {listToPlay.length ? (
         <Suspense fallback={<div>loading playlist...</div>}>
           {matchesMobile ? (
-            <LazyVideoList items={listToPlay} width={250} />
+            <LazyVideoList items={listToPlay} width={250} isMobile />
           ) : (
-            <LazyVideoList items={listToPlay} width="90%" />
+            <LazyVideoList items={listToPlay} width={400} />
           )}
         </Suspense>
       ) : (

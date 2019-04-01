@@ -11,9 +11,10 @@
 
   @media screen and (min-width: $mobile-width) {
     grid-template-rows: auto;
-    grid-template-columns: 5fr 4fr;
+    grid-template-columns: 4fr 3fr;
     grid-column-gap: 0em;
     grid-template-areas: "player playlist";
+    align-items: center;
   }
 
   .player {
@@ -22,10 +23,8 @@
     flex-direction: column;
     align-items: center;
 
-    position: relative;
-    top: 5%;
-
     .videoTitle {
+      width: 80%;
       text-align: center;
     }
   }
@@ -62,5 +61,6 @@
 
   span {
     grid-column: 3 / 4;
+    padding-right: 2.2em;
   }
 }
