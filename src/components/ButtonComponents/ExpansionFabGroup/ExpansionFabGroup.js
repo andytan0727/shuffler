@@ -21,31 +21,31 @@ import {
 const muiStyles = (theme) => ({
   fabExpand: {
     position: "absolute",
-    bottom: theme.spacing.unit,
-    right: "12%",
+    bottom: "2%",
+    right: "2%",
   },
   fabCollapse: {
     position: "absolute",
-    bottom: theme.spacing.unit,
-    right: "12%",
+    bottom: "2%",
+    right: "2%",
   },
 
   // fabExpand children
   fabAdd: {
     position: "absolute",
-    bottom: "18%",
-    right: "12%",
+    bottom: "20%",
+    right: "2%",
   },
   fabRemovePlaylist: {
     position: "absolute",
-    bottom: "33%",
-    right: "12%",
+    bottom: "35%",
+    right: "2%",
   },
 
   fabClearPlaying: {
     position: "absolute",
-    bottom: theme.spacing.unit,
-    right: "12%",
+    bottom: "2%",
+    right: "2%",
   },
 });
 

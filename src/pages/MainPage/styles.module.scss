@@ -7,6 +7,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 30rem;
+  z-index: 2;
 
   circle {
     fill: #fca2f0;
@@ -44,6 +45,7 @@
 
 .mainPgDiv {
   min-height: 100%;
+  width: 100%;
   background-color: white;
   display: grid;
   grid-template-columns: auto;

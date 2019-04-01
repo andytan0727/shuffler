@@ -38,19 +38,19 @@ const MainPage = (props) => {
   const { classes } = props;
   return (
     <React.Fragment>
-      <svg
-        className={styles.pulse}
-        viewBox="0 0 1300 1300"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle id="Oval1" cx="400" cy="400" r="400" />
-        <circle id="Oval2" cx="600" cy="600" r="450" />
-        <circle id="Oval3" cx="500" cy="450" r="500" />
-        <circle id="Oval4" cx="700" cy="500" r="550" />
-        <circle id="Oval5" cx="750" cy="550" r="580" />
-      </svg>
       <div className={styles.mainPgDiv}>
+        <svg
+          className={styles.pulse}
+          viewBox="0 0 1300 1300"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle id="Oval1" cx="400" cy="400" r="400" />
+          <circle id="Oval2" cx="600" cy="600" r="450" />
+          <circle id="Oval3" cx="500" cy="450" r="500" />
+          <circle id="Oval4" cx="700" cy="500" r="550" />
+          <circle id="Oval5" cx="750" cy="550" r="580" />
+        </svg>
         <ShufflerLogo className={styles.logo} />
 
         <p>

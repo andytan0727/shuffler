@@ -14,5 +14,7 @@
   .App-main {
     position: relative;
     grid-area: main;
+    display: flex;
+    justify-content: center;
   }
 }

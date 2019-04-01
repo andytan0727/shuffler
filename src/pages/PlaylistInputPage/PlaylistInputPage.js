@@ -5,7 +5,6 @@ import SwipeableViews from "react-swipeable-views";
 import IconButton from "@material-ui/core/IconButton";
 import HelpIcon from "@material-ui/icons/HelpOutline";
 import Modal from "@material-ui/core/Modal";
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import PlaylistInput from "../../components/InputComponents/PlaylistInput";

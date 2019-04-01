@@ -45,6 +45,12 @@
       grid-area: song-list;
       display: flex;
       justify-content: center;
+
+      @media screen and (min-width: $mobile-width) {
+        width: 500px; // fix the position of fab on different res
+        position: relative;
+        justify-self: center;
+      }
     }
   }
 

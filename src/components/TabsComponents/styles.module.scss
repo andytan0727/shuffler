@@ -1,8 +1,6 @@
 @import "../../utils/styles/colors";
 
 .tab {
-  position: relative; // for expansion fabs
-
   &::-webkit-scrollbar {
     width: 10px;
   }
@@ -16,5 +14,10 @@
   &::-webkit-scrollbar-track {
     background-color: lighten($primaryLight, 40%);
     border-radius: 10px;
+  }
+
+  .tabContainer:not(:first-child) {
+    display: flex;
+    justify-content: center;
   }
 }
