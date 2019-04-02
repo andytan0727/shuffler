@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
@@ -52,6 +52,7 @@ const PlayerPageList = (props) => {
     ytplaylist: { listToPlay },
     ytplayer: { curSongIdx },
   } = props;
+  const listRef = useRef(null);
   const [listItemWidth, setListItemWidth] = useState(window.innerWidth * 0.9);
   const matchesMobile = useMediaQuery("(max-width: 450px)");
 
@@ -64,6 +65,13 @@ const PlayerPageList = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    // scroll to current song in playing list
+    if (curSongIdx !== 0 && listRef.current) {
+      listRef.current.scrollToItem(curSongIdx, "center");
+    }
+  }, [curSongIdx]);
+
   return (
     <React.Fragment>
       <h3>
@@ -73,6 +81,7 @@ const PlayerPageList = (props) => {
         &nbsp;Currently playing: {`${curSongIdx + 1}/${listToPlay.length}`}
       </h3>
       <VideoList
+        ref={listRef}
         items={listToPlay}
         width={matchesMobile ? listItemWidth : 400}
         height={window.innerHeight * 0.65}

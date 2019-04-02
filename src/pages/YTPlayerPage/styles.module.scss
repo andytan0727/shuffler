@@ -9,7 +9,7 @@
     "player"
     "playlist";
 
-  @media screen and (min-width: $mobile-width) {
+  @media screen and (min-width: $large-display-width) {
     grid-template-rows: auto;
     grid-template-columns: 4fr 3fr;
     grid-column-gap: 2em;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { VariableSizeList } from "react-window";
 
@@ -18,7 +18,8 @@ class VideoListItem extends React.PureComponent {
 
 const getItemKey = (index, data) => data[index].id;
 
-const VideoList = ({ items, width, height, isMobile, children }) => {
+const VideoList = forwardRef(function videoList(props, ref) {
+  const { items, width, height, isMobile, children } = props;
   const perLine = width / 15;
 
   const getMobileListItemSize = (index) =>
@@ -32,6 +33,7 @@ const VideoList = ({ items, width, height, isMobile, children }) => {
 
   return (
     <VariableSizeList
+      ref={ref}
       height={height || 350}
       className={styles.songList}
       itemCount={items.length}
@@ -43,7 +45,7 @@ const VideoList = ({ items, width, height, isMobile, children }) => {
       {children || VideoListItem}
     </VariableSizeList>
   );
-};
+});
 
 VideoList.propTypes = {
   items: PropTypes.array.isRequired,
