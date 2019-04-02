@@ -25,7 +25,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 2px solid $primary;
+    margin-top: 10px;
     z-index: 2;
 
     .logo {
@@ -67,6 +67,7 @@
 
 .mainNavDiv {
   @extend %navDiv;
+
   nav {
     a {
       &:not(:first-child):not(:last-child):hover {
@@ -82,9 +83,6 @@
   @extend %navDiv;
 
   nav {
-    border-bottom: none !important;
-    margin-top: 10px;
-
     .logo {
       fill: white;
     }

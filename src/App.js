@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import PgFooter from "./pages/PgFooter";
+import { setPreferDarkTheme } from "./store/userPreferences/action";
+import { useKeyDown } from "./utils/helper/keyboardShortcutHelper";
 
 // MUI styles
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -17,10 +18,9 @@ const MainPage = lazy(() => import("./pages/MainPage"));
 const PlaylistInputPage = lazy(() => import("./pages/PlaylistInputPage"));
 const YTPlayerPage = lazy(() => import("./pages/YTPlayerPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
-// const PgFooter = lazy(() => import("./pages/PgFooter"));
 
 const App = (props) => {
-  const { preferDarkTheme } = props;
+  const { preferDarkTheme, setPreferDarkTheme } = props;
 
   const theme = createMuiTheme({
     palette: {
@@ -44,6 +44,17 @@ const App = (props) => {
       ].join(","),
     },
   });
+
+  const setPreferDarkThemeShortcut = (e) => {
+    if (e.ctrlKey && e.altKey && e.key === "d") {
+      setPreferDarkTheme({
+        persist: true,
+        isPreferDarkTheme: !preferDarkTheme,
+      });
+    }
+  };
+
+  useKeyDown(setPreferDarkThemeShortcut);
 
   return (
     <BrowserRouter>
@@ -73,9 +84,6 @@ const App = (props) => {
             </div>
           </Suspense>
         </div>
-        {/* <div className="App-footer">
-          <PgFooter />
-        </div> */}
       </MuiThemeProvider>
     </BrowserRouter>
   );
@@ -83,10 +91,16 @@ const App = (props) => {
 
 App.propTypes = {
   preferDarkTheme: PropTypes.bool.isRequired,
+  setPreferDarkTheme: PropTypes.func.isRequired,
 };
 
 const mapStatesToProps = ({ userPreferences: { preferDarkTheme } }) => ({
   preferDarkTheme,
 });
 
-export default connect(mapStatesToProps)(App);
+export default connect(
+  mapStatesToProps,
+  {
+    setPreferDarkTheme,
+  }
+)(App);
