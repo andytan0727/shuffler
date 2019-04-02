@@ -10,6 +10,7 @@ import PauseIcon from "@material-ui/icons/Pause";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 
 import { setCurSongIdx, setVideoPlaying } from "../../store/ytplayer/action";
+import { notify } from "../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
 
@@ -31,24 +32,20 @@ const VideoPlayer = (props) => {
       setCurSongIdx(curSongIdx - 1);
       return;
     }
-    alert("This is the first video");
+    notify("warning", "💢 This is the first video in your playlist!");
   };
 
   const setPlaying = () => setVideoPlaying(true);
 
   const setPause = () => setVideoPlaying(false);
 
-  const handlePlay = (e) => {
-    e.preventDefault();
-
+  const handlePlay = () => {
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.playVideo();
     }
   };
 
-  const handlePause = (e) => {
-    e.preventDefault();
-
+  const handlePause = () => {
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.pauseVideo();
     }
@@ -56,7 +53,7 @@ const VideoPlayer = (props) => {
 
   const handleNext = () => {
     if (curSongIdx === listToPlay.length - 1) {
-      alert("You have reached last song in the playlist");
+      notify("info", "🚀 You have reached last video in your playlist");
       return;
     }
 
@@ -80,12 +77,100 @@ const VideoPlayer = (props) => {
     setVidWidth(vidWrapper.width);
   };
 
+  // fix play/pause problem when spacebar is pressed after clicking buttons
+  const handleBlurButton = (e) => {
+    e.target.blur();
+  };
+
+  const keyboardShortcuts = async (e) => {
+    const keyCode = e.keyCode;
+    const arrowCode = { left: 37, up: 38, right: 39, down: 40 };
+
+    // spacekey (play/pause)
+    if (keyCode === 32 || e.keyC === " " || e.key === "Spacebar") {
+      if (playing) {
+        handlePause();
+        return;
+      }
+
+      if (!playing) {
+        handlePlay();
+        return;
+      }
+    }
+
+    // ctrl+arrow (fast forward/backward)
+    if (e.ctrlKey) {
+      switch (keyCode) {
+        case arrowCode.left: {
+          handlePrevious();
+          break;
+        }
+
+        case arrowCode.right: {
+          handleNext();
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+      return;
+    }
+
+    // arrow (volume)
+    if (keyCode >= arrowCode.left && keyCode <= arrowCode.down) {
+      const curVolume = await ytPlayer.current.internalPlayer.getVolume();
+
+      switch (keyCode) {
+        case arrowCode.up: {
+          if (curVolume >= 100) {
+            return;
+          }
+          ytPlayer.current.internalPlayer.setVolume(curVolume + 5);
+          break;
+        }
+
+        case arrowCode.down: {
+          if (curVolume <= 0) {
+            return;
+          }
+          ytPlayer.current.internalPlayer.setVolume(curVolume - 5);
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+      return;
+    }
+  };
+
+  // -----------------------------------------
+  // solve Redux state update problem due to javascript closure
+  // details: https://www.reddit.com/r/reactjs/comments/9zupzn/why_would_i_use_react_hooks_where_the_seteffect/ @VariadicIntegrity
+  const onKeyDownHandlerRef = useRef(keyboardShortcuts);
+
   useEffect(() => {
+    onKeyDownHandlerRef.current = keyboardShortcuts;
+  }, [keyboardShortcuts]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      onKeyDownHandlerRef.current(e);
+    };
+
     window.addEventListener("resize", _setVidSize);
 
+    // regsister keyboard shortcuts
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
-      // remove listener
+      // remove listeners
       window.removeEventListener("resize", _setVidSize);
+      window.removeEventListener("keydown", handleKeyDown);
 
       // Destroy player when unmount
       ytPlayer.current.internalPlayer.destroy();
@@ -106,7 +191,6 @@ const VideoPlayer = (props) => {
                 ...playerVars,
               },
             }}
-            onReady={setPlaying}
             onPlay={setPlaying}
             onPause={setPause}
             onEnd={handleNext}
@@ -121,11 +205,19 @@ const VideoPlayer = (props) => {
               <SkipPreviousIcon />
             </IconButton>
             {!playing ? (
-              <IconButton aria-label="Play" onClick={handlePlay}>
+              <IconButton
+                aria-label="Play"
+                onClick={handlePlay}
+                onKeyDown={handleBlurButton}
+              >
                 <PlayArrowIcon className={styles.playPauseIcon} />
               </IconButton>
             ) : (
-              <IconButton aria-label="Play" onClick={handlePause}>
+              <IconButton
+                aria-label="Play"
+                onClick={handlePause}
+                onKeyDown={handleBlurButton}
+              >
                 <PauseIcon className={styles.playPauseIcon} />
               </IconButton>
             )}

@@ -12,7 +12,7 @@
   @media screen and (min-width: $mobile-width) {
     grid-template-rows: auto;
     grid-template-columns: 4fr 3fr;
-    grid-column-gap: 0em;
+    grid-column-gap: 2em;
     grid-template-areas: "player playlist";
     align-items: center;
   }
@@ -22,6 +22,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media screen and (min-width: $mobile-width) {
+      width: 41em; // fix variable container size when res changes
+    }
 
     .videoTitle {
       width: 80%;
