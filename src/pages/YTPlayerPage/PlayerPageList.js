@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -8,6 +9,8 @@ import VideoList from "../../components/ListComponents/VideoList";
 import { setCurSongIdx } from "../../store/ytplayer/action";
 
 import styles from "./styles.module.scss";
+
+let matchesMobile;
 
 class CurrentPlaylistItem extends React.PureComponent {
   render() {
@@ -18,6 +21,7 @@ class CurrentPlaylistItem extends React.PureComponent {
       data,
 
       // Redux
+      preferDarkTheme,
       curSongIdx,
       setCurSongIdx,
     } = this.props;
@@ -28,12 +32,21 @@ class CurrentPlaylistItem extends React.PureComponent {
 
     return (
       <div
-        className={styles.currentPlaylistItem}
+        className={classNames(styles.currentPlaylistItem, {
+          [styles.dark]: preferDarkTheme,
+        })}
         style={style}
         onClick={handleChangeVideo}
       >
-        {index === curSongIdx && <PlayArrowIcon />}
-        <img src={data[index].snippet.thumbnails.default.url} alt="thumbnail" />
+        {!matchesMobile && (
+          <React.Fragment>
+            {index === curSongIdx && <PlayArrowIcon />}
+            <img
+              src={data[index].snippet.thumbnails.default.url}
+              alt="thumbnail"
+            />
+          </React.Fragment>
+        )}
         <span>{data[index].snippet.title}</span>
       </div>
     );
@@ -41,7 +54,10 @@ class CurrentPlaylistItem extends React.PureComponent {
 }
 
 const ConnectedPlaylistItem = connect(
-  ({ ytplayer: { curSongIdx } }) => ({ curSongIdx }),
+  ({ userPreferences: { preferDarkTheme }, ytplayer: { curSongIdx } }) => ({
+    preferDarkTheme,
+    curSongIdx,
+  }),
   {
     setCurSongIdx,
   }
@@ -53,17 +69,7 @@ const PlayerPageList = (props) => {
     ytplayer: { curSongIdx },
   } = props;
   const listRef = useRef(null);
-  const [listItemWidth, setListItemWidth] = useState(window.innerWidth * 0.9);
-  const matchesMobile = useMediaQuery("(max-width: 450px)");
-
-  const setVideoItemSize = () => setListItemWidth(window.innerWidth * 0.9);
-
-  useEffect(() => {
-    window.addEventListener("resize", setVideoItemSize);
-    return () => {
-      window.removeEventListener("resize", setVideoItemSize);
-    };
-  }, []);
+  matchesMobile = useMediaQuery("(max-width: 450px)");
 
   useEffect(() => {
     // scroll to current song in playing list
@@ -80,19 +86,32 @@ const PlayerPageList = (props) => {
         </span>
         &nbsp;Currently playing: {`${curSongIdx + 1}/${listToPlay.length}`}
       </h3>
-      <VideoList
-        ref={listRef}
-        items={listToPlay}
-        width={matchesMobile ? listItemWidth : 400}
-        height={window.innerHeight * 0.65}
-      >
-        {ConnectedPlaylistItem}
-      </VideoList>
+      {matchesMobile ? (
+        <VideoList
+          ref={listRef}
+          items={listToPlay}
+          width={250}
+          height={window.innerHeight * 0.65}
+          isMobile
+        >
+          {ConnectedPlaylistItem}
+        </VideoList>
+      ) : (
+        <VideoList
+          ref={listRef}
+          items={listToPlay}
+          width={400}
+          height={window.innerHeight * 0.65}
+        >
+          {ConnectedPlaylistItem}
+        </VideoList>
+      )}
     </React.Fragment>
   );
 };
 
 ConnectedPlaylistItem.propTypes = {
+  preferDarkTheme: PropTypes.bool,
   index: PropTypes.number.isRequired,
   style: PropTypes.object,
   data: PropTypes.array,

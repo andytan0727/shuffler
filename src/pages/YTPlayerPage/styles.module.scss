@@ -3,7 +3,7 @@
 
 .ytPlayerDiv {
   display: grid;
-  grid-auto-rows: auto;
+  grid-auto-rows: auto auto;
   grid-template-columns: auto;
   grid-template-areas:
     "player"
@@ -45,14 +45,21 @@
   }
 }
 
-// video divs
+// playing list item
 .currentPlaylistItem {
   display: grid;
-  grid-template-columns: 0.25fr 1fr 8fr;
-  grid-column-gap: 1em;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
   align-items: center;
-  border-bottom: 1px solid lighten(#222, 70%);
-  cursor: pointer;
+  overflow-x: hidden;
+
+  @media screen and (min-width: $large-display-width) {
+    grid-template-columns: 0.25fr 1fr 8fr;
+    grid-column-gap: 1em;
+    align-items: center;
+    border-bottom: 1px solid lighten(#222, 70%);
+    cursor: pointer;
+  }
 
   &:hover {
     color: white;
@@ -70,5 +77,25 @@
   span {
     grid-column: 3 / 4;
     padding-right: 2.2em;
+
+    @media screen and (max-width: $mobile-width) {
+      padding: 0px 10px;
+    }
+  }
+}
+
+// playing list item in dark theme
+.dark {
+  background-color: #4e4b53;
+  border-bottom: 1px solid white;
+
+  @media screen and (min-width: $large-display-width) {
+    border-bottom: none;
+
+    &:hover {
+      color: white;
+      font-weight: bold;
+      background-color: $secondary;
+    }
   }
 }

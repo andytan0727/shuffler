@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
-import { VariableSizeList } from "react-window";
+import { VariableSizeList, FixedSizeList } from "react-window";
 
 import styles from "./styles.module.scss";
 
@@ -20,18 +20,11 @@ const getItemKey = (index, data) => data[index].id;
 
 const VideoList = forwardRef(function videoList(props, ref) {
   const { items, width, height, isMobile, children } = props;
-  const perLine = width / 15;
 
   const getMobileListItemSize = (index) =>
     ((items[index].snippet.title.length * 16) / width) * 20;
 
-  const getListItemSize = (index) => {
-    const titleLen = items[index].snippet.title.length;
-
-    return titleLen > perLine + 10 ? (titleLen / perLine) * 2.5 * 16 : 70;
-  };
-
-  return (
+  return isMobile ? (
     <VariableSizeList
       ref={ref}
       height={height || 350}
@@ -39,11 +32,24 @@ const VideoList = forwardRef(function videoList(props, ref) {
       itemCount={items.length}
       itemData={items}
       itemKey={getItemKey}
-      itemSize={isMobile ? getMobileListItemSize : getListItemSize}
+      itemSize={getMobileListItemSize}
       width={width || 400}
     >
       {children || VideoListItem}
     </VariableSizeList>
+  ) : (
+    <FixedSizeList
+      ref={ref}
+      height={height || 350}
+      className={styles.songList}
+      itemCount={items.length}
+      itemData={items}
+      itemKey={getItemKey}
+      itemSize={90}
+      width={width || 400}
+    >
+      {children || VideoListItem}
+    </FixedSizeList>
   );
 });
 
