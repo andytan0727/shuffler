@@ -43,8 +43,8 @@ const SongListTabs = (props) => {
         <Tabs
           value={value}
           onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor="secondary"
+          textColor="secondary"
           variant="fullWidth"
         >
           <Tab label="Saved 🎵" />

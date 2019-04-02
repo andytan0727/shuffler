@@ -17,10 +17,9 @@
   }
 }
 
-.mainNavDiv {
+%navDiv {
   nav {
     width: 100%;
-    background-color: white;
     position: relative;
     display: flex;
     flex-wrap: wrap;
@@ -43,7 +42,6 @@
     a {
       font-size: 25px;
       color: $primary;
-      font-family: "Roboto", sans-serif;
       text-decoration: none;
 
       &:first-child {
@@ -54,19 +52,61 @@
         margin-right: 20px;
       }
 
-      &:not(:first-child) {
+      &:not(:first-child),
+      .darkThemeIcon {
         padding: 0.4em 0.8em;
-
-        &:not(:last-child):hover {
-          background-color: $secondary;
-          color: white;
-        }
       }
     }
 
     .menuButton {
       display: inline-flex;
       margin-right: 15px;
+    }
+  }
+}
+
+.mainNavDiv {
+  @extend %navDiv;
+  nav {
+    a {
+      &:not(:first-child):not(:last-child):hover {
+        background-color: $secondary;
+        color: white;
+      }
+    }
+  }
+}
+
+// topbar settings for dark theme
+.navDark {
+  @extend %navDiv;
+
+  nav {
+    border-bottom: none !important;
+    margin-top: 10px;
+
+    .logo {
+      fill: white;
+    }
+
+    .githubLogo {
+      path {
+        fill: white;
+      }
+
+      &:hover {
+        path {
+          fill: $secondary;
+        }
+      }
+    }
+
+    a {
+      color: white !important;
+
+      &:not(:last-child):hover {
+        color: $secondary !important;
+      }
     }
   }
 }

@@ -6,10 +6,60 @@
   top: -2%;
 }
 
+.toggleDarkModeDiv {
+  // TODO: support for mobile devices
+  display: none;
+
+  @media screen and (min-width: $mobile-width) {
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    align-items: center;
+
+    svg {
+      height: 30px;
+    }
+
+    .lightTheme {
+      &:last-child {
+        path {
+          fill: none;
+        }
+      }
+    }
+
+    .darkTheme {
+      &:first-child {
+        circle {
+          stroke: white;
+          fill: none;
+        }
+        path {
+          stroke: white;
+          fill: none;
+        }
+      }
+
+      &:last-child {
+        path {
+          stroke: white;
+          &:first-child {
+            fill: white;
+          }
+        }
+      }
+    }
+  }
+}
+
 .playlistInPgDiv {
   display: grid;
   grid-template-rows: 100%;
   grid-template-areas: "input";
+  overflow-y: hidden; // slide up animation of first tab fab
 
   @media screen and (min-width: $large-display-width) {
     grid-template-rows: 100%;

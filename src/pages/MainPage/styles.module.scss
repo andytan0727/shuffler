@@ -46,7 +46,6 @@
 .mainPgDiv {
   min-height: 100%;
   width: 100%;
-  background-color: white;
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto auto auto;
@@ -105,7 +104,7 @@
 
 @keyframes animateLogo {
   from {
-    transform: translateY(100px);
+    transform: translateX(-200px);
     opacity: 0;
   }
   to {

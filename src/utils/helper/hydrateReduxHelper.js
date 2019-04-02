@@ -1,5 +1,6 @@
-import { dbPlaylist, dbSongList } from "./dbHelper";
+import { dbPlaylist, dbSongList, dbPreferences } from "./dbHelper";
 import { notify } from "./notifyHelper";
+import { setPreferDarkTheme } from "../../store/userPreferences/action";
 import {
   addPlaylist,
   addListToPlay,
@@ -20,7 +21,6 @@ export const hydrateRedux = async (store) => {
     }
 
     await dbPlaylist.iterate((value, _) => {
-      console.log("value = ", value);
       store.dispatch(
         addPlaylist({
           persist: false,
@@ -42,8 +42,21 @@ export const hydrateRedux = async (store) => {
       })
     );
 
-    // notify user for success songlist loading
-    notify("success", "💖 Loaded saved playlists");
+    const isPreferDarkTheme = await dbPreferences.getItem("darkTheme");
+    // throws error if isPreferDarkTheme is not saved
+    if (isPreferDarkTheme == null) {
+      throw new Error("dark theme setting is not found in indexedDB");
+    }
+
+    store.dispatch(
+      setPreferDarkTheme({
+        persist: false,
+        isPreferDarkTheme,
+      })
+    );
+
+    // notify user for success saved data loading
+    notify("success", "💖 Loaded saved data");
 
     console.log("Successfully hydrates Redux with stored indexedDB data");
 

@@ -1,7 +1,11 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  createMuiTheme,
+  MuiThemeProvider,
+} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -27,10 +31,23 @@ const muiStyles = (theme) => ({
   },
 });
 
+// input theme for dark mode
+// fix low contrast label color when dark mode
+const muiInputTheme = createMuiTheme({
+  palette: {
+    type: "dark",
+    primary: {
+      main: "#ea80fc",
+    },
+  },
+  typography: { useNextVariants: true },
+});
+
 const PlaylistInput = (props) => {
   const {
     classes,
     handleSwipeDivIdxChange,
+    preferDarkTheme,
 
     // states
     ytapi: {
@@ -151,15 +168,29 @@ const PlaylistInput = (props) => {
 
   return (
     <div className={styles.playlistDiv}>
-      <TextField
-        inputRef={idInput}
-        id="outlined-playlist-and-video"
-        label="Playlist url"
-        className={classes.textField}
-        margin="normal"
-        value={playlistUrl}
-        onChange={handlePlaylistInputChange}
-      />
+      {preferDarkTheme ? (
+        <MuiThemeProvider theme={muiInputTheme}>
+          <TextField
+            inputRef={idInput}
+            id="outlined-playlist-and-video"
+            label="Playlist url"
+            className={classes.textField}
+            margin="normal"
+            value={playlistUrl}
+            onChange={handlePlaylistInputChange}
+          />
+        </MuiThemeProvider>
+      ) : (
+        <TextField
+          inputRef={idInput}
+          id="outlined-playlist-and-video"
+          label="Playlist url"
+          className={classes.textField}
+          margin="normal"
+          value={playlistUrl}
+          onChange={handlePlaylistInputChange}
+        />
+      )}
       <IconButton aria-label="search" onClick={handleRequest}>
         <SearchIcon />
       </IconButton>
@@ -176,6 +207,7 @@ const PlaylistInput = (props) => {
 PlaylistInput.propTypes = {
   classes: PropTypes.object.isRequired,
   handleSwipeDivIdxChange: PropTypes.func,
+  preferDarkTheme: PropTypes.bool.isRequired,
   apiKey: PropTypes.string,
   apiBaseUrl: PropTypes.string,
   playlistUrl: PropTypes.string,
@@ -191,11 +223,11 @@ PlaylistInput.propTypes = {
   addPlaylist: PropTypes.func.isRequired,
 };
 
-const MUIPlaylistInput = withStyles(muiStyles)(PlaylistInput);
-
 const mapStateToProps = ({ ytapi }) => ({
   ytapi,
 });
+
+const StyledPlaylistInput = withStyles(muiStyles)(PlaylistInput);
 
 export default connect(
   mapStateToProps,
@@ -206,4 +238,4 @@ export default connect(
     addPlaylist,
     addListToPlay,
   }
-)(MUIPlaylistInput);
+)(StyledPlaylistInput);

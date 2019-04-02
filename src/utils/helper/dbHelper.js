@@ -10,4 +10,9 @@ const dbSongList = localforage.createInstance({
   storeName: "song_list",
 });
 
-export { dbPlaylist, dbSongList };
+const dbPreferences = localforage.createInstance({
+  name: "preferencesDB",
+  storeName: "theme",
+});
+
+export { dbPlaylist, dbSongList, dbPreferences };

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import classNames from "classnames";
 import SwipeableViews from "react-swipeable-views";
 import IconButton from "@material-ui/core/IconButton";
 import HelpIcon from "@material-ui/icons/HelpOutline";
 import Modal from "@material-ui/core/Modal";
+import Switch from "@material-ui/core/Switch";
 import { withStyles } from "@material-ui/core/styles";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import PlaylistInput from "../../components/InputComponents/PlaylistInput";
@@ -14,10 +16,17 @@ import CombinedPlaylist from "../../components/ListComponents/CombinedPlaylist";
 import CtrlBtnGroup from "./CtrlBtnGroup";
 import HelpGuide from "./HelpGuide";
 
+import { ReactComponent as DarkThemeIcon } from "../../assets/darkThemeIcon.svg";
+import { ReactComponent as LightThemeIcon } from "../../assets/lightThemeIcon.svg";
+
+import { setPreferDarkTheme } from "../../store/userPreferences/action";
 import { shufflePlaylist } from "../../store/ytplaylist/action";
 import styles from "./styles.module.scss";
 
 const muiStyles = (theme) => ({
+  themeSwitch: {
+    cursor: "pointer",
+  },
   paper: {
     position: "absolute",
     top: "50%",
@@ -34,7 +43,13 @@ const muiStyles = (theme) => ({
 });
 
 const PlaylistInputPage = (props) => {
-  const { classes, loadedFromDB, shufflePlaylist } = props;
+  const {
+    classes,
+    preferDarkTheme,
+    loadedFromDB,
+    shufflePlaylist,
+    setPreferDarkTheme,
+  } = props;
   const [swipeDivIdx, setSwipeDivIdx] = useState(Number(loadedFromDB));
   const [modalOpen, setModalOpen] = useState(false);
   const tabletBreakpoint = useMediaQuery("(min-width: 780px)");
@@ -51,16 +66,45 @@ const PlaylistInputPage = (props) => {
     setModalOpen(false);
   };
 
+  const handleChangeTheme = () => {
+    setPreferDarkTheme({ persist: true, isPreferDarkTheme: !preferDarkTheme });
+  };
+
   return (
     <React.Fragment>
       <div className={styles.playlistInPgDiv}>
+        <div className={styles.toggleDarkModeDiv}>
+          <LightThemeIcon
+            className={classNames({
+              [styles.lightTheme]: !preferDarkTheme,
+              [styles.darkTheme]: preferDarkTheme,
+            })}
+          />
+          <Switch
+            className={classes.themeSwitch}
+            checked={preferDarkTheme}
+            onChange={handleChangeTheme}
+            value="toggle-dark-mode"
+            color="secondary"
+          />
+          <DarkThemeIcon
+            className={classNames({
+              [styles.lightTheme]: !preferDarkTheme,
+              [styles.darkTheme]: preferDarkTheme,
+            })}
+          />
+        </div>
+
         <div className={styles.inputDiv}>
           <SwipeableViews
             index={swipeDivIdx}
             onChangeIndex={handleSwipeDivIdxChange}
             slideClassName={styles.swipeableDiv}
           >
-            <PlaylistInput handleSwipeDivIdxChange={handleSwipeDivIdxChange} />
+            <PlaylistInput
+              handleSwipeDivIdxChange={handleSwipeDivIdxChange}
+              preferDarkTheme={preferDarkTheme}
+            />
             <CtrlBtnGroup
               handleSwipeDivIdxChange={handleSwipeDivIdxChange}
               shufflePlaylist={shufflePlaylist}
@@ -73,7 +117,6 @@ const PlaylistInputPage = (props) => {
             />
           </div>
         </div>
-        {/**  NOTE: done refactor */}
         {!tabletBreakpoint ? (
           <React.Fragment>
             <IconButton
@@ -104,12 +147,18 @@ const PlaylistInputPage = (props) => {
 
 PlaylistInputPage.propTypes = {
   classes: PropTypes.object.isRequired,
+  preferDarkTheme: PropTypes.bool.isRequired,
   loadedFromDB: PropTypes.bool.isRequired,
   shufflePlaylist: PropTypes.func,
+  setPreferDarkTheme: PropTypes.func,
 };
 
-const mapStateToProps = ({ ytplaylist: { loadedFromDB } }) => ({
+const mapStateToProps = ({
+  userPreferences: { preferDarkTheme },
+  ytplaylist: { loadedFromDB },
+}) => ({
   loadedFromDB,
+  preferDarkTheme,
 });
 
 const StyledPlaylistInputPage = withStyles(muiStyles)(PlaylistInputPage);
@@ -118,5 +167,6 @@ export default connect(
   mapStateToProps,
   {
     shufflePlaylist,
+    setPreferDarkTheme,
   }
 )(StyledPlaylistInputPage);
