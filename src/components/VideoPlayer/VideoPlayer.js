@@ -8,6 +8,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import PauseIcon from "@material-ui/icons/Pause";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
+import { useKeyDown } from "../../utils/helper/keyboardShortcutHelper";
 
 import { setCurSongIdx, setVideoPlaying } from "../../store/ytplayer/action";
 import { notify } from "../../utils/helper/notifyHelper";
@@ -82,7 +83,7 @@ const VideoPlayer = (props) => {
     e.target.blur();
   };
 
-  const keyboardShortcuts = async (e) => {
+  const playerKeyboardShortcuts = async (e) => {
     const keyCode = e.keyCode;
     const arrowCode = { left: 37, up: 38, right: 39, down: 40 };
 
@@ -148,29 +149,15 @@ const VideoPlayer = (props) => {
     }
   };
 
-  // -----------------------------------------
-  // solve Redux state update problem due to javascript closure
-  // details: https://www.reddit.com/r/reactjs/comments/9zupzn/why_would_i_use_react_hooks_where_the_seteffect/ @VariadicIntegrity
-  const onKeyDownHandlerRef = useRef(keyboardShortcuts);
+  // handle keyboard shortcuts for controlling player
+  useKeyDown(playerKeyboardShortcuts);
 
   useEffect(() => {
-    onKeyDownHandlerRef.current = keyboardShortcuts;
-  }, [keyboardShortcuts]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      onKeyDownHandlerRef.current(e);
-    };
-
     window.addEventListener("resize", _setVidSize);
-
-    // regsister keyboard shortcuts
-    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       // remove listeners
       window.removeEventListener("resize", _setVidSize);
-      window.removeEventListener("keydown", handleKeyDown);
 
       // Destroy player when unmount
       ytPlayer.current.internalPlayer.destroy();
