@@ -3,14 +3,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
 import IconButton from "@material-ui/core/IconButton";
+import LoopIcon from "@material-ui/icons/Loop";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
+import ShuffleIcon from "@material-ui/icons/Shuffle";
 import PauseIcon from "@material-ui/icons/Pause";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { useKeyDown } from "../../utils/helper/keyboardShortcutHelper";
 
 import { setCurSongIdx, setVideoPlaying } from "../../store/ytplayer/action";
+import { shufflePlaylist } from "../../store/ytplaylist/action";
 import { notify } from "../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
@@ -23,6 +26,7 @@ const VideoPlayer = (props) => {
     listToPlay,
     setCurSongIdx,
     setVideoPlaying,
+    shufflePlaylist,
   } = props;
   const ytPlayer = useRef(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
@@ -59,6 +63,10 @@ const VideoPlayer = (props) => {
     }
 
     setCurSongIdx(curSongIdx + 1);
+  };
+
+  const handleShufflePlaylist = () => {
+    shufflePlaylist();
   };
 
   const handleVideoError = (e) => {
@@ -98,6 +106,11 @@ const VideoPlayer = (props) => {
         handlePlay();
         return;
       }
+    }
+
+    // ctrl+alt+s (shuffle playing list)
+    if (e.ctrlKey && e.altKey && e.key === "s") {
+      handleShufflePlaylist();
     }
 
     // ctrl+arrow (fast forward/backward)
@@ -184,6 +197,9 @@ const VideoPlayer = (props) => {
             onError={handleVideoError}
           />
           <div className={styles.ctrlBtnGroup}>
+            <IconButton aria-label="Loop" onClick={() => console.log("loop")}>
+              <LoopIcon />
+            </IconButton>
             <IconButton
               disabled={curSongIdx === 0}
               aria-label="Previous"
@@ -215,6 +231,9 @@ const VideoPlayer = (props) => {
             >
               <SkipNextIcon />
             </IconButton>
+            <IconButton aria-label="Shuffle" onClick={handleShufflePlaylist}>
+              <ShuffleIcon />
+            </IconButton>
           </div>
         </div>
       )}
@@ -229,6 +248,7 @@ VideoPlayer.propTypes = {
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
   setVideoPlaying: PropTypes.func.isRequired,
+  shufflePlaylist: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -249,5 +269,6 @@ export default connect(
   {
     setCurSongIdx,
     setVideoPlaying,
+    shufflePlaylist,
   }
 )(VideoPlayer);
