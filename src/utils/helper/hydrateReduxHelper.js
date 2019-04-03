@@ -13,6 +13,26 @@ import {
  * @param {*} store Redux store
  */
 export const hydrateRedux = async (store) => {
+  // put theme preference try/catch block on its own to prevent ceased execution
+  // if playlist/songlist hydration throws error
+  try {
+    // hydrate user theme preference
+    const isPreferDarkTheme = await dbPreferences.getItem("darkTheme");
+    // throws error if isPreferDarkTheme is not saved
+    if (isPreferDarkTheme == null) {
+      throw new Error("dark theme setting is not found in indexedDB");
+    }
+
+    store.dispatch(
+      setPreferDarkTheme({
+        persist: false,
+        isPreferDarkTheme,
+      })
+    );
+  } catch (err) {
+    console.error(err.message);
+  }
+
   try {
     // hydrate playlist
     const dbPlaylistKeys = await dbPlaylist.keys();
@@ -39,19 +59,6 @@ export const hydrateRedux = async (store) => {
       addListToPlay({
         persist: false,
         listToAdd: dbSongListArr,
-      })
-    );
-
-    const isPreferDarkTheme = await dbPreferences.getItem("darkTheme");
-    // throws error if isPreferDarkTheme is not saved
-    if (isPreferDarkTheme == null) {
-      throw new Error("dark theme setting is not found in indexedDB");
-    }
-
-    store.dispatch(
-      setPreferDarkTheme({
-        persist: false,
-        isPreferDarkTheme,
       })
     );
 
