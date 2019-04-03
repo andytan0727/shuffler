@@ -86,7 +86,7 @@
 
 // playing list item in dark theme
 .dark {
-  background-color: #4e4b53;
+  background-color: $blackLight;
   border-bottom: 1px solid white;
 
   @media screen and (min-width: $large-display-width) {
