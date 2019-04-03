@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { setPreferDarkTheme } from "./store/userPreferences/action";
 import { useKeyDown } from "./utils/helper/keyboardShortcutHelper";
+import { retryLazy } from "./utils/helper/lazyImportHelper";
 
 // MUI styles
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -13,11 +14,11 @@ import purple from "@material-ui/core/colors/purple";
 import "./App.scss";
 
 // lazy loading pages
-const PgNavbar = lazy(() => import("./pages/PgNavbar"));
-const MainPage = lazy(() => import("./pages/MainPage"));
-const PlaylistInputPage = lazy(() => import("./pages/PlaylistInputPage"));
-const YTPlayerPage = lazy(() => import("./pages/YTPlayerPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
+const PgNavbar = lazy(() => retryLazy(() => import("./pages/PgNavbar")));
+const MainPage = lazy(() => retryLazy(() => import("./pages/MainPage")));
+const PlaylistInputPage = lazy(() => retryLazy(() => import("./pages/PlaylistInputPage")));
+const YTPlayerPage = lazy(() => retryLazy(() => import("./pages/YTPlayerPage")));
+const AboutPage = lazy(() => retryLazy(() => import("./pages/AboutPage")));
 
 const App = (props) => {
   const { preferDarkTheme, setPreferDarkTheme } = props;
