@@ -12,7 +12,7 @@ script:
 deploy:
   provider: surge
   project: ./build/
-  domain: ytrandomizer.surge.sh
+  domain: https://ytrandomizer.surge.sh
   skip_cleanup: true
 on:
   branch: master
