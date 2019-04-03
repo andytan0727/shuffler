@@ -19,6 +19,13 @@ const initialStates = {
         "Fix the problem of proceeding to player page with an empty playing list",
       ],
     },
+    {
+      version: "1.0.3",
+      changes: [
+        "Fix broken UI when video not found in player page",
+        "Update navbar links' style on active page",
+      ],
+    },
   ],
 };
 
