@@ -46,6 +46,7 @@ const PlaylistInputPage = (props) => {
   const {
     classes,
     preferDarkTheme,
+    listToPlay,
     loadedFromDB,
     shufflePlaylist,
     setPreferDarkTheme,
@@ -108,6 +109,7 @@ const PlaylistInputPage = (props) => {
             <CtrlBtnGroup
               handleSwipeDivIdxChange={handleSwipeDivIdxChange}
               shufflePlaylist={shufflePlaylist}
+              listToPlay={listToPlay}
             />
           </SwipeableViews>
           <div className={styles.songListTabsDiv}>
@@ -148,6 +150,7 @@ const PlaylistInputPage = (props) => {
 PlaylistInputPage.propTypes = {
   classes: PropTypes.object.isRequired,
   preferDarkTheme: PropTypes.bool.isRequired,
+  listToPlay: PropTypes.array.isRequired,
   loadedFromDB: PropTypes.bool.isRequired,
   shufflePlaylist: PropTypes.func,
   setPreferDarkTheme: PropTypes.func,
@@ -155,8 +158,9 @@ PlaylistInputPage.propTypes = {
 
 const mapStateToProps = ({
   userPreferences: { preferDarkTheme },
-  ytplaylist: { loadedFromDB },
+  ytplaylist: { listToPlay, loadedFromDB },
 }) => ({
+  listToPlay,
   loadedFromDB,
   preferDarkTheme,
 });
