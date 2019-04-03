@@ -10,7 +10,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { customSwal } from "../../../utils/helper/notifyHelper";
+import { generateCustomSwal } from "../../../utils/helper/notifyHelper";
 
 import {
   removePlaylist,
@@ -18,7 +18,7 @@ import {
   clearListToPlay,
 } from "../../../store/ytplaylist/action";
 
-const muiStyles = (theme) => ({
+const muiStyles = () => ({
   fabExpand: {
     position: "absolute",
     bottom: "2%",
@@ -67,6 +67,8 @@ const ExpansionFabGroup = (props) => {
   };
 
   const handleAddPlaylistToPlaying = async () => {
+    const customSwal = await generateCustomSwal();
+
     if (!checkedPlaylists.length) {
       await customSwal.fire({
         title: "No playlist is selected!💢",
@@ -80,6 +82,7 @@ const ExpansionFabGroup = (props) => {
       checked: true,
       persist: true,
     });
+
     await customSwal.fire(
       "Added.",
       "Selected playlist is added to playing list 😎",
@@ -88,6 +91,8 @@ const ExpansionFabGroup = (props) => {
   };
 
   const handleRemovePlaylist = async () => {
+    const customSwal = await generateCustomSwal();
+
     if (!checkedPlaylists.length) {
       await customSwal.fire({
         title: "No playlist is selected!💢",
@@ -117,6 +122,8 @@ const ExpansionFabGroup = (props) => {
   };
 
   const handleClearListToPlay = async () => {
+    const customSwal = await generateCustomSwal();
+
     const result = await customSwal.fire({
       title: "Clear playing list",
       text: "Are you sure?🤔",

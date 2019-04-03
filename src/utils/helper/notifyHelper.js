@@ -1,17 +1,22 @@
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
-import swalStyles from "./swalStyles.module.scss";
-import "react-toastify/dist/ReactToastify.min.css";
+import { retryLazy } from "./lazyImportHelper";
 
-const customSwal = Swal.mixin({
-  customClass: {
-    confirmButton: swalStyles.swalSuccessButton,
-    cancelButton: swalStyles.swalCancelButton,
-  },
-  buttonsStyling: false,
-});
+const generateCustomSwal = async () => {
+  const Swal = await retryLazy(() => import("sweetalert2"));
+  const swalStyles = await retryLazy(() => import("./swalStyles.module.scss"));
 
-const notify = (type, message) => {
+  return Swal.default.mixin({
+    customClass: {
+      confirmButton: swalStyles.swalSuccessButton,
+      cancelButton: swalStyles.swalCancelButton,
+    },
+    buttonsStyling: false,
+  });
+};
+
+const notify = async (type, message) => {
+  const { toast } = await retryLazy(() => import("react-toastify"));
+  await import("react-toastify/dist/ReactToastify.min.css");
+
   switch (type) {
     case "error": {
       toast.error(message, {
@@ -55,4 +60,4 @@ const notify = (type, message) => {
   }
 };
 
-export { customSwal, notify };
+export { generateCustomSwal, notify };
