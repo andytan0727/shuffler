@@ -44,6 +44,11 @@ const VideoPlayer = (props) => {
 
   const setPause = () => setVideoPlaying(false);
 
+  // focus window to listen for keyboard shortcuts
+  // fix the problem of unable to trigger keydown event
+  // when YT IFrame is focused
+  const setFocusWindow = () => window.focus();
+
   const handlePlay = () => {
     if (ytPlayer) {
       ytPlayer.current.internalPlayer.playVideo();
@@ -97,6 +102,9 @@ const VideoPlayer = (props) => {
 
     // spacekey (play/pause)
     if (keyCode === 32 || e.keyC === " " || e.key === "Spacebar") {
+      // blur anything else to prevent spacebar bugs
+      e.target.blur();
+
       if (playing) {
         handlePause();
         return;
@@ -193,6 +201,7 @@ const VideoPlayer = (props) => {
             }}
             onPlay={setPlaying}
             onPause={setPause}
+            onStateChange={setFocusWindow}
             onEnd={handleNext}
             onError={handleVideoError}
           />
