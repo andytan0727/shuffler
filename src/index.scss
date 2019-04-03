@@ -49,12 +49,8 @@ body {
 .dark {
   background-color: $black;
   color: white;
-
-  &,
-  & * {
-    transition: background-color 750ms !important;
-    transition-timing-function: linear;
-  }
+  transition: background-color 750ms !important;
+  transition-timing-function: linear;
 }
 
 // transition animation from dark theme to light theme
