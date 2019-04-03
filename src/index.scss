@@ -45,11 +45,23 @@ body {
   }
 }
 
-// dark mode
-// elements with .dark class
+// global dark theme settings
 .dark {
   background-color: $black;
   color: white;
-  transition: background-color 0.25s, color 0.5s;
+
+  &,
+  & * {
+    transition: background-color 750ms !important;
+    transition-timing-function: linear;
+  }
+}
+
+// transition animation from dark theme to light theme
+.transition,
+.transition *,
+.transition *::before,
+.transition *::after {
+  transition: background-color 750ms !important;
   transition-timing-function: linear;
 }

@@ -60,9 +60,15 @@ const App = (props) => {
     <BrowserRouter>
       <MuiThemeProvider theme={theme}>
         <div
-          className={classNames("App", {
-            dark: preferDarkTheme,
-          })}
+          className={classNames(
+            "App",
+            {
+              dark: preferDarkTheme,
+            },
+            {
+              transition: !preferDarkTheme,
+            }
+          )}
         >
           <Suspense fallback={<div>loading...</div>}>
             <div className="App-header">
