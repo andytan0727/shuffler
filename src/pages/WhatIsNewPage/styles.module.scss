@@ -1,0 +1,37 @@
+@import "../../utils/styles/colors";
+
+.dark {
+  border-top: 2px solid white !important;
+
+  & > header {
+    background-color: $blackLight !important;
+    border-right: 2px solid white;
+  }
+}
+
+.whatIsNewDiv {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  align-items: center;
+  justify-items: center;
+  border-top: 2px solid $secondary;
+
+  header {
+    grid-column: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $secondary;
+  }
+
+  main {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: auto;
+    grid-auto-rows: min-content;
+  }
+}

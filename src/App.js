@@ -16,8 +16,15 @@ import "./App.scss";
 // lazy loading pages
 const PgNavbar = lazy(() => retryLazy(() => import("./pages/PgNavbar")));
 const MainPage = lazy(() => retryLazy(() => import("./pages/MainPage")));
-const PlaylistInputPage = lazy(() => retryLazy(() => import("./pages/PlaylistInputPage")));
-const YTPlayerPage = lazy(() => retryLazy(() => import("./pages/YTPlayerPage")));
+const PlaylistInputPage = lazy(() =>
+  retryLazy(() => import("./pages/PlaylistInputPage"))
+);
+const YTPlayerPage = lazy(() =>
+  retryLazy(() => import("./pages/YTPlayerPage"))
+);
+const WhatIsNewPage = lazy(() =>
+  retryLazy(() => import("./pages/WhatIsNewPage"))
+);
 const AboutPage = lazy(() => retryLazy(() => import("./pages/AboutPage")));
 
 const App = (props) => {
@@ -82,6 +89,15 @@ const App = (props) => {
                   exact
                   render={(props) => (
                     <MainPage preferDarkTheme={preferDarkTheme} {...props} />
+                  )}
+                />
+                <Route
+                  path="/what-is-new"
+                  render={(props) => (
+                    <WhatIsNewPage
+                      preferDarkTheme={preferDarkTheme}
+                      {...props}
+                    />
                   )}
                 />
                 <Route path="/player" component={YTPlayerPage} />
