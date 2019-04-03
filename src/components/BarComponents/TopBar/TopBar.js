@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Menu from "@material-ui/core/Menu";
@@ -37,9 +37,9 @@ const TopBar = (props) => {
   return (
     <div className={preferDarkTheme ? styles.navDark : styles.mainNavDiv}>
       <nav>
-        <Link to="/">
+        <NavLink to="/">
           <ShufflerTextLogo className={styles.logo} />
-        </Link>
+        </NavLink>
         {matchesMobile ? (
           <div>
             <IconButton
@@ -57,14 +57,14 @@ const TopBar = (props) => {
               onClose={handleMenuClose}
             >
               <MenuItem onClick={handleMenuClose}>
-                <Link className={classes.menuAnchor} to="/playlistInput">
+                <NavLink className={classes.menuAnchor} to="/playlistInput">
                   Playlist
-                </Link>
+                </NavLink>
               </MenuItem>
               <MenuItem onClick={handleMenuClose}>
-                <Link className={classes.menuAnchor} to="/about">
+                <NavLink className={classes.menuAnchor} to="/about">
                   About
-                </Link>
+                </NavLink>
               </MenuItem>
               <MenuItem onClick={handleMenuClose}>
                 <a
@@ -80,9 +80,10 @@ const TopBar = (props) => {
           </div>
         ) : (
           <React.Fragment>
-            <Link to="/what-is-new">What's New</Link>
-            <Link to="/playlistInput">Playlist</Link>
-            <Link to="/about">About</Link>
+            <NavLink activeClassName={styles.curActivePg} to="/what-is-new">What's New</NavLink>
+            <NavLink activeClassName={styles.curActivePg} to="/playlistInput">Playlist</NavLink>
+            <NavLink activeClassName={styles.curActivePg} to="/player">Player</NavLink>
+            <NavLink activeClassName={styles.curActivePg} to="/about">About</NavLink>
             <a
               href="https://github.com/andytan0727/yt_random_player"
               target="_blank"

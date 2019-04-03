@@ -41,7 +41,7 @@
 
     a {
       font-size: 1.3rem;
-      color: $primary;
+      color: black;
       text-decoration: none;
 
       &:last-child {
@@ -71,6 +71,11 @@
         color: white;
       }
     }
+
+    .curActivePg {
+      border-bottom: 3px solid $secondary;
+      color: $secondary;
+    }
   }
 }
 
@@ -99,8 +104,13 @@
       color: white !important;
 
       &:not(:last-child):hover {
-        color: $secondary !important;
+        color: $secondaryLight !important;
       }
+    }
+
+    .curActivePg {
+      color: $secondaryLight !important;
+      border-bottom: 2px solid $secondaryLight;
     }
   }
 }
