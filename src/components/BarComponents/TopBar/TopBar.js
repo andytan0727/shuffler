@@ -80,9 +80,9 @@ const TopBar = (props) => {
           </div>
         ) : (
           <React.Fragment>
+            <Link to="/what-is-new">What's New</Link>
             <Link to="/playlistInput">Playlist</Link>
             <Link to="/about">About</Link>
-
             <a
               href="https://github.com/andytan0727/yt_random_player"
               target="_blank"

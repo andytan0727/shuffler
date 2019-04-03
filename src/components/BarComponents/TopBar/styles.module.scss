@@ -22,10 +22,10 @@
     width: 100%;
     position: relative;
     display: flex;
-    flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
     margin-top: 10px;
+    margin-bottom: 10px;
     z-index: 2;
 
     .logo {
@@ -40,13 +40,9 @@
     }
 
     a {
-      font-size: 25px;
+      font-size: 1.3rem;
       color: $primary;
       text-decoration: none;
-
-      &:first-child {
-        flex-grow: 1;
-      }
 
       &:last-child {
         margin-right: 20px;
