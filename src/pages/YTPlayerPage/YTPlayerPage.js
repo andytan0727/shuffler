@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import VideoPlayer from "../../components/VideoPlayer";
 import PlayerPageList from "./PlayerPageList";
 import { setCurSongIdx } from "../../store/ytplayer/action";
+import novideo from "../../assets/novideo.svg";
 
 import styles from "./styles.module.scss";
 
@@ -25,19 +26,31 @@ const YTPlayerPage = (props) => {
   }, []);
 
   return (
-    <div className={styles.ytPlayerDiv}>
-      <div id="vid-wrapper" className={styles.player}>
-        <h3 className={styles.videoTitle}>
-          {listToPlay.length !== 0
-            ? listToPlay[curSongIdx].snippet.title
-            : "No Video Selected To Play"}
-        </h3>
-        <VideoPlayer />
-      </div>
-      <div className={styles.playlist}>
-        <PlayerPageList />
-      </div>
-    </div>
+    <React.Fragment>
+      {listToPlay.length !== 0 ? (
+        <div className={styles.ytPlayerDiv}>
+          <div id="vid-wrapper" className={styles.player}>
+            <h3 className={styles.videoTitle}>
+              {listToPlay[curSongIdx].snippet.title}
+            </h3>
+            <VideoPlayer />
+          </div>
+          <div className={styles.playlist}>
+            <PlayerPageList />
+          </div>
+        </div>
+      ) : (
+        <div className={styles.noVideo}>
+          <h2>
+            <span role="img" aria-label="no-video-found">
+              ⚠️
+            </span>
+            No Video Found
+          </h2>
+          <img src={novideo} alt="no video" />
+        </div>
+      )}
+    </React.Fragment>
   );
 };
 
