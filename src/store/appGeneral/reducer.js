@@ -13,6 +13,12 @@ const initialStates = {
       version: "1.0.1",
       changes: ["Fix shortcut bugs after pressed iframe and buttons"],
     },
+    {
+      version: "1.0.2",
+      changes: [
+        "Fix the problem of proceeding to player page with an empty playing list",
+      ],
+    },
   ],
 };
 
