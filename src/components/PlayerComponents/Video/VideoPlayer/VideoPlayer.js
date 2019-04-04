@@ -10,11 +10,11 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import PauseIcon from "@material-ui/icons/Pause";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
-import { useKeyDown } from "../../utils/helper/keyboardShortcutHelper";
+import { useKeyDown } from "../../../../utils/helper/keyboardShortcutHelper";
 
-import { setCurSongIdx, setVideoPlaying } from "../../store/ytplayer/action";
-import { shufflePlaylist } from "../../store/ytplaylist/action";
-import { notify } from "../../utils/helper/notifyHelper";
+import { setCurSongIdx, setVideoPlaying } from "../../../../store/ytplayer/action";
+import { shufflePlaylist } from "../../../../store/ytplaylist/action";
+import { notify } from "../../../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
 

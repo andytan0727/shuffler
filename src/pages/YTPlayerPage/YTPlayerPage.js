@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import VideoPlayer from "../../components/VideoPlayer";
+import VideoPlayer from "../../components/PlayerComponents/Video/VideoPlayer";
 import PlayerPageList from "./PlayerPageList";
 import { setCurSongIdx } from "../../store/ytplayer/action";
 import novideo from "../../assets/novideo.svg";
