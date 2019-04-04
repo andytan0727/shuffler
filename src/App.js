@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { setPreferDarkTheme } from "./store/userPreferences/action";
 import { useKeyDown } from "./utils/helper/keyboardShortcutHelper";
 import { retryLazy } from "./utils/helper/lazyImportHelper";
@@ -103,6 +103,7 @@ const App = (props) => {
                 <Route path="/player" component={YTPlayerPage} />
                 <Route path="/playlistInput" component={PlaylistInputPage} />
                 <Route path="/about" component={AboutPage} />
+                <Redirect to="/" />
               </Switch>
             </div>
           </Suspense>
