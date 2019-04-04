@@ -1,22 +1,6 @@
 @import "../../utils/styles/colors";
 @import "../../utils/styles/variables";
 
-.noVideo {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  img {
-    height: 60%;
-
-    @media screen and (max-width: $mobile-width) {
-      width: 100%;
-    }
-  }
-}
-
 .ytPlayerDiv {
   display: grid;
   grid-auto-rows: auto auto;

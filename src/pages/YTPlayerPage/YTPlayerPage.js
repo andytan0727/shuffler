@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import VideoPlayer from "../../components/PlayerComponents/Video/VideoPlayer";
 import PlayerPageList from "./PlayerPageList";
+import NoVideoFound from "./NoVideoFound";
 import { setCurSongIdx } from "../../store/ytplayer/action";
-import novideo from "../../assets/novideo.svg";
 
 import styles from "./styles.module.scss";
 
@@ -40,15 +40,7 @@ const YTPlayerPage = (props) => {
           </div>
         </div>
       ) : (
-        <div className={styles.noVideo}>
-          <h2>
-            <span role="img" aria-label="no-video-found">
-              ⚠️
-            </span>
-            No Video Found
-          </h2>
-          <img src={novideo} alt="no video" />
-        </div>
+        <NoVideoFound />
       )}
     </React.Fragment>
   );
