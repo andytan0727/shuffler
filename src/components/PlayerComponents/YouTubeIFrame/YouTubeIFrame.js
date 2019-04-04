@@ -1,7 +1,8 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
+import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { setCurSongIdx, setVideoPlaying } from "../../../store/ytplayer/action";
 import { notify } from "../../../utils/helper/notifyHelper";
 
@@ -18,11 +19,15 @@ const YouTubeIFrame = (props) => {
     // actions
     setCurSongIdx,
     setVideoPlaying,
-
-    // own props
-    playerWidth,
-    playerHeight,
   } = props;
+  const matchesMobile = useMediaQuery("(max-width: 420px)");
+  const [vidWidth, setVidWidth] = useState(0);
+
+  const _setVidSize = () => {
+    const vidWrapper = document.getElementById("vid-wrapper");
+    setVidWidth(vidWrapper.width);
+    console.log(vidWrapper);
+  };
 
   const setPlaying = () => setVideoPlaying(true);
 
@@ -54,14 +59,23 @@ const YouTubeIFrame = (props) => {
     }
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", _setVidSize);
+
+    return () => {
+      // remove listeners
+      window.removeEventListener("resize", _setVidSize);
+    };
+  }, []);
+
   return (
     <div id="player">
       <YouTube
         ref={forwardRef}
         videoId={listToPlay[curSongIdx].snippet.resourceId.videoId}
         opts={{
-          width: playerWidth ? playerWidth : 640,
-          height: playerHeight ? playerHeight : 390,
+          width: matchesMobile ? vidWidth : 640,
+          height: matchesMobile ? 200 : 390,
           playerVars: {
             ...playerVars,
           },
@@ -83,8 +97,6 @@ YouTubeIFrame.propTypes = {
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
   setVideoPlaying: PropTypes.func.isRequired,
-  playerWidth: PropTypes.number.isRequired,
-  playerHeight: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => {
