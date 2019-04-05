@@ -24,9 +24,8 @@ const YouTubeIFrame = (props) => {
   const [vidWidth, setVidWidth] = useState(0);
 
   const _setVidSize = () => {
-    const vidWrapper = document.getElementById("vid-wrapper");
+    const vidWrapper = document.getElementById("player");
     setVidWidth(vidWrapper.width);
-    console.log(vidWrapper);
   };
 
   const setPlaying = () => setVideoPlaying(true);

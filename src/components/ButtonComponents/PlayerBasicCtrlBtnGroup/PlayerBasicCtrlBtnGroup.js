@@ -34,7 +34,6 @@ const PlayerBasicCtrlBtnGroup = (props) => {
 
   const handlePlay = () => {
     if (ytPlayerRef) {
-      console.log(ytPlayerRef.current);
       ytPlayerRef.current.internalPlayer.playVideo();
     }
   };
