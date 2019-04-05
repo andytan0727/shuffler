@@ -19,9 +19,7 @@ const MainPage = lazy(() => retryLazy(() => import("./pages/MainPage")));
 const PlaylistInputPage = lazy(() =>
   retryLazy(() => import("./pages/PlaylistInputPage"))
 );
-const YTPlayerPage = lazy(() =>
-  retryLazy(() => import("./pages/YTPlayerPage"))
-);
+const PlayerPage = lazy(() => retryLazy(() => import("./pages/PlayerPage")));
 const WhatIsNewPage = lazy(() =>
   retryLazy(() => import("./pages/WhatIsNewPage"))
 );
@@ -100,8 +98,8 @@ const App = (props) => {
                     />
                   )}
                 />
-                <Route path="/player" component={YTPlayerPage} />
                 <Route path="/playlistInput" component={PlaylistInputPage} />
+                <Route exact path="/player" component={PlayerPage} />
                 <Route path="/about" component={AboutPage} />
                 <Redirect to="/" />
               </Switch>
