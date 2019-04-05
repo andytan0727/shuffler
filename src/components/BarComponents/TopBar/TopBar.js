@@ -97,11 +97,7 @@ const TopBar = (props) => {
                 </NavLink>
               </li>
               <li>
-                <div
-                  activeClassName={styles.curActivePg}
-                  className={styles.playerDropDown}
-                  to="/player"
-                >
+                <div className={styles.playerDropDown}>
                   Player <ArrowDropDownIcon />
                   <div
                     className={classNames(styles.playerDropDownItem, {
