@@ -2,13 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
+import LoopIcon from "@material-ui/icons/Loop";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
+import ShuffleIcon from "@material-ui/icons/Shuffle";
 import { useKeyDown } from "../../../utils/helper/keyboardShortcutHelper";
 
 import { setCurSongIdx } from "../../../store/ytplayer/action";
+import { shufflePlaylist } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
@@ -19,6 +22,7 @@ const PlayerBasicCtrlBtnGroup = (props) => {
     curSongIdx,
     listToPlay,
     setCurSongIdx,
+    shufflePlaylist,
 
     // own props
     ytPlayerRef,
@@ -53,6 +57,10 @@ const PlayerBasicCtrlBtnGroup = (props) => {
     setCurSongIdx(curSongIdx + 1);
   };
 
+  const handleShufflePlaylist = () => {
+    shufflePlaylist();
+  };
+
   // fix play/pause problem when spacebar is pressed after clicking buttons
   const handleBlur = (e) => {
     e.target.blur();
@@ -78,8 +86,15 @@ const PlayerBasicCtrlBtnGroup = (props) => {
       }
     }
 
-    // ctrl+arrow (fast forward/backward)
     if (e.ctrlKey) {
+      // ctrl+alt+s (shuffle playing list)
+      if (e.ctrlKey && e.altKey && e.key === "s") {
+        console.log("shuffle");
+        handleShufflePlaylist();
+        return;
+      }
+
+      // ctrl+arrow (fast forward/backward)
       switch (keyCode) {
         case arrowCode.left: {
           handlePrevious();
@@ -131,7 +146,11 @@ const PlayerBasicCtrlBtnGroup = (props) => {
   useKeyDown(playerKeyboardShortcuts);
 
   return (
-    <div>
+    <div className={styles.ctrlBtnGroup}>
+      {/* TODO: */}
+      <IconButton aria-label="Loop">
+        <LoopIcon />
+      </IconButton>
       <IconButton
         disabled={curSongIdx === 0}
         aria-label="Previous"
@@ -163,6 +182,9 @@ const PlayerBasicCtrlBtnGroup = (props) => {
       >
         <SkipNextIcon />
       </IconButton>
+      <IconButton aria-label="Shuffle" onClick={handleShufflePlaylist}>
+        <ShuffleIcon />
+      </IconButton>
     </div>
   );
 };
@@ -172,6 +194,7 @@ PlayerBasicCtrlBtnGroup.propTypes = {
   curSongIdx: PropTypes.number.isRequired,
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
+  shufflePlaylist: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -190,5 +213,6 @@ export default connect(
   mapStateToProps,
   {
     setCurSongIdx,
+    shufflePlaylist,
   }
 )(PlayerBasicCtrlBtnGroup);
