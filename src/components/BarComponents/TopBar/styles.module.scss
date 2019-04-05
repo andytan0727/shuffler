@@ -17,6 +17,61 @@
   }
 }
 
+// dropdown menu for player
+.playerDropDown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    .playerDropDownItem {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+  }
+
+  .playerDropDownItem {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 20%;
+    font-size: 18px;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 10px 8px 16px 0px rgba(black, 0.5);
+    z-index: 1;
+
+    a {
+      color: black;
+      padding: 10px 20px;
+      text-decoration: none;
+      z-index: inherit;
+
+      &:hover {
+        background-color: $secondary;
+        color: white;
+      }
+    }
+  }
+
+  .playerDropDownItemDark {
+    background-color: $blackLight;
+    box-shadow: 10px 8px 16px 0px rgba(black, 0.5);
+    z-index: 1 !important;
+
+    a {
+      color: white;
+
+      &:hover {
+        background-color: $black;
+        color: $secondaryLight;
+      }
+    }
+  }
+}
+
 %navDiv {
   nav {
     width: 100%;
@@ -39,19 +94,21 @@
       }
     }
 
-    a {
+    .navItems {
+      list-style-type: none;
+      display: flex;
+      align-items: center;
+      margin: 0px 0px;
+      padding-left: 0px;
+    }
+
+    .navItems > li > a,
+    // include dropdown div as well
+    .playerDropDown {
       font-size: 1.3rem;
       color: black;
       text-decoration: none;
-
-      &:last-child {
-        margin-right: 20px;
-      }
-
-      &:not(:first-child),
-      .darkThemeIcon {
-        padding: 0.4em 0.8em;
-      }
+      padding: 0.4em 0.8em;
     }
 
     .menuButton {
@@ -65,17 +122,20 @@
   @extend %navDiv;
 
   nav {
-    a {
-      &:not(:first-child):not(:last-child):hover {
-        background-color: $secondary;
-        color: white;
+    .navItems > li {
+      &:not(:last-child) {
+        & > a:hover,
+        .playerDropDown:hover {
+          background-color: $secondary !important;
+          color: white !important;
+        }
       }
     }
+  }
 
-    .curActivePg {
-      border-bottom: 3px solid $secondary;
-      color: $secondary;
-    }
+  .curActivePg {
+    border-bottom: 3px solid $secondary;
+    color: $secondary !important;
   }
 }
 
@@ -100,17 +160,18 @@
       }
     }
 
-    a {
-      color: white !important;
+    .navItems > li > a,
+    .playerDropDown {
+      color: white;
 
-      &:not(:last-child):hover {
+      &:hover {
         color: $secondaryLight !important;
       }
     }
+  }
 
-    .curActivePg {
-      color: $secondaryLight !important;
-      border-bottom: 2px solid $secondaryLight;
-    }
+  .curActivePg {
+    color: $secondaryLight !important;
+    border-bottom: 2px solid $secondaryLight;
   }
 }

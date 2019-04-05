@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
@@ -80,17 +82,52 @@ const TopBar = (props) => {
           </div>
         ) : (
           <React.Fragment>
-            <NavLink activeClassName={styles.curActivePg} to="/what-is-new">What's New</NavLink>
-            <NavLink activeClassName={styles.curActivePg} to="/playlistInput">Playlist</NavLink>
-            <NavLink activeClassName={styles.curActivePg} to="/player">Player</NavLink>
-            <NavLink activeClassName={styles.curActivePg} to="/about">About</NavLink>
-            <a
-              href="https://github.com/andytan0727/yt_random_player"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GithubLogo className={styles.githubLogo} />
-            </a>
+            <ul className={styles.navItems}>
+              <li>
+                <NavLink activeClassName={styles.curActivePg} to="/what-is-new">
+                  What's New
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  activeClassName={styles.curActivePg}
+                  to="/playlistInput"
+                >
+                  Playlist
+                </NavLink>
+              </li>
+              <li>
+                <div
+                  activeClassName={styles.curActivePg}
+                  className={styles.playerDropDown}
+                  to="/player"
+                >
+                  Player <ArrowDropDownIcon />
+                  <div
+                    className={classNames(styles.playerDropDownItem, {
+                      [styles.playerDropDownItemDark]: preferDarkTheme,
+                    })}
+                  >
+                    <NavLink to="/player/ytplayer">YT Player</NavLink>
+                    <NavLink to="/player/miniplayer">Mini Player</NavLink>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <NavLink activeClassName={styles.curActivePg} to="/about">
+                  About
+                </NavLink>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/andytan0727/yt_random_player"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <GithubLogo className={styles.githubLogo} />
+                </a>
+              </li>
+            </ul>
           </React.Fragment>
         )}
       </nav>
