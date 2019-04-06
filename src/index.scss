@@ -49,7 +49,7 @@ body {
 .dark {
   background-color: $black;
   color: white;
-  transition: background-color 750ms !important;
+  transition: background-color 500ms !important;
   transition-timing-function: linear;
 }
 
@@ -58,6 +58,6 @@ body {
 .transition *,
 .transition *::before,
 .transition *::after {
-  transition: background-color 750ms !important;
+  transition: background-color 500ms;
   transition-timing-function: linear;
 }

@@ -1,0 +1,161 @@
+@import "../../../../../utils/styles/colors";
+@import "../../../../../utils/styles/variables";
+
+$playing: #08d56a;
+
+%largePlaylistDiv {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+  grid-template-rows: auto;
+  grid-column-gap: 10px;
+  background-color: rgba(lighten($black, 10%), 0.9);
+  z-index: 2;
+
+  .nowPlaying {
+    align-self: center;
+    height: 80%;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto min-content;
+    grid-column-gap: 10px;
+    place-items: center;
+    position: relative;
+
+    &::before {
+      content: "Now Playing";
+      position: absolute;
+      top: 0%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    img {
+      width: 350px;
+      height: 350px;
+      margin-top: 20px;
+      border-radius: 50%;
+    }
+
+    h3 {
+      width: 75%;
+      text-align: center;
+    }
+  }
+
+  .list {
+    @media screen and (min-width: $large-display-width) {
+      width: 800px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    &::before {
+      content: "Up Next:";
+      font-size: 20px;
+      font-weight: bold;
+      position: absolute;
+      top: 5%;
+      left: 2%;
+    }
+
+    ul {
+      list-style-type: none;
+      height: 80%;
+      display: grid;
+      grid-template-columns: auto;
+      grid-auto-rows: 1fr;
+      grid-row-gap: 10px;
+      overflow: hidden;
+      margin: 0px;
+      padding: 0px;
+
+      .song {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        grid-template-rows: auto;
+        place-items: center;
+        padding: 0.8em;
+        margin-right: 10px;
+        background-color: $black;
+        cursor: pointer;
+
+        img {
+          height: 6em;
+        }
+
+        span {
+          width: 450px;
+        }
+      }
+    }
+
+    .curSongPlaying {
+      color: $playing;
+    }
+
+    .progress {
+      width: 10px;
+      height: 80%;
+      background-color: white !important;
+
+      div {
+        height: 5%;
+        background-color: #08d56a;
+      }
+    }
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    border: none;
+    background-color: transparent;
+    color: white;
+
+    svg {
+      transform: scale(1.5);
+    }
+
+    &:hover {
+      cursor: pointer;
+      transform: rotate(180deg);
+      transition: transform 500ms linear;
+    }
+  }
+}
+
+.largePlaylistDivDark {
+  @extend %largePlaylistDiv;
+
+  ul {
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: white;
+      border-radius: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background-color: lighten($black, 40%);
+      border-radius: 10px;
+    }
+  }
+}
+
+.largePlaylistDivLight {
+  @extend %largePlaylistDiv;
+}

@@ -25,7 +25,7 @@ const CtrlBtnGroup = ({
       return;
     }
 
-    history.push("/player");
+    history.push("/player/miniplayer");
   };
 
   return (

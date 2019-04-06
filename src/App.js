@@ -99,7 +99,7 @@ const App = (props) => {
                   )}
                 />
                 <Route path="/playlistInput" component={PlaylistInputPage} />
-                <Route exact path="/player" component={PlayerPage} />
+                <Route path="/player" component={PlayerPage} />
                 <Route path="/about" component={AboutPage} />
                 <Redirect to="/" />
               </Switch>
