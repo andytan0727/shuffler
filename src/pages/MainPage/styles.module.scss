@@ -1,48 +1,6 @@
 @import "../../utils/styles/colors";
 @import "../../utils/styles/variables";
 
-.pulse {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 30rem;
-  z-index: 2;
-
-  circle {
-    fill: #fca2f0;
-    transform: scale(0);
-    opacity: 0;
-    transform-origin: 50% 50%;
-    animation: pulse 4s cubic-bezier(0.5, 0.5, 0, 1);
-    animation-iteration-count: infinite;
-
-    &:nth-child(2) {
-      fill: #d1a9bd;
-      animation: pulse 4s 0.75s cubic-bezier(0.5, 0.5, 0, 1);
-      animation-iteration-count: infinite;
-    }
-
-    &:nth-child(3) {
-      fill: #8ea8fd;
-      animation: pulse 4s 1.5s cubic-bezier(0.5, 0.5, 0, 1);
-      animation-iteration-count: infinite;
-    }
-
-    &:nth-child(4) {
-      fill: #eecc83;
-      animation: pulse 4s 2.25s cubic-bezier(0.5, 0.5, 0, 1);
-      animation-iteration-count: infinite;
-    }
-
-    &:nth-child(5) {
-      fill: #99d476;
-      animation: pulse 4s 3s cubic-bezier(0.5, 0.5, 0, 1);
-      animation-iteration-count: infinite;
-    }
-  }
-}
-
 .mainPgDiv {
   min-height: 100%;
   width: 100%;
@@ -53,6 +11,11 @@
   align-content: center;
   justify-items: center;
   z-index: 1;
+
+  @media screen and (min-width: $large-display-width) {
+    background: url("../../assets/musicBg.svg") center no-repeat;
+    background-size: cover;
+  }
 
   animation-duration: 0.5s;
   animation-name: animateLogo;
