@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./styles.module.scss";
 
 const HelpGuide = () => (
-  <div className={styles.guideDiv}>
+  <React.Fragment>
     <h3>
       <span role="img" aria-label="how-to-use">
         ❓{" "}
@@ -47,7 +47,7 @@ const HelpGuide = () => (
         .
       </li>
     </ul>
-  </div>
+  </React.Fragment>
 );
 
 export default HelpGuide;

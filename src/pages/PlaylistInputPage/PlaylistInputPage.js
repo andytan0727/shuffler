@@ -74,28 +74,6 @@ const PlaylistInputPage = (props) => {
   return (
     <React.Fragment>
       <div className={styles.playlistInPgDiv}>
-        <div className={styles.toggleDarkModeDiv}>
-          <LightThemeIcon
-            className={classNames({
-              [styles.lightTheme]: !preferDarkTheme,
-              [styles.darkTheme]: preferDarkTheme,
-            })}
-          />
-          <Switch
-            className={classes.themeSwitch}
-            checked={preferDarkTheme}
-            onChange={handleChangeTheme}
-            value="toggle-dark-mode"
-            color="secondary"
-          />
-          <DarkThemeIcon
-            className={classNames({
-              [styles.lightTheme]: !preferDarkTheme,
-              [styles.darkTheme]: preferDarkTheme,
-            })}
-          />
-        </div>
-
         <div className={styles.inputDiv}>
           <SwipeableViews
             index={swipeDivIdx}
@@ -140,7 +118,32 @@ const PlaylistInputPage = (props) => {
             </Modal>
           </React.Fragment>
         ) : (
-          <HelpGuide />
+          <div className={styles.guideDiv}>
+            <div className={styles.toggleDarkModeDiv}>
+              <LightThemeIcon
+                className={classNames({
+                  [styles.lightTheme]: !preferDarkTheme,
+                  [styles.darkTheme]: preferDarkTheme,
+                })}
+              />
+              <Switch
+                className={classes.themeSwitch}
+                checked={preferDarkTheme}
+                onChange={handleChangeTheme}
+                value="toggle-dark-mode"
+                color="secondary"
+              />
+              <DarkThemeIcon
+                className={classNames({
+                  [styles.lightTheme]: !preferDarkTheme,
+                  [styles.darkTheme]: preferDarkTheme,
+                })}
+              />
+            </div>
+            <div className={styles.helpGuideDiv}>
+              <HelpGuide />
+            </div>
+          </div>
         )}
       </div>
     </React.Fragment>

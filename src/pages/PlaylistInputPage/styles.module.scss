@@ -6,55 +6,6 @@
   top: -2%;
 }
 
-.toggleDarkModeDiv {
-  // TODO: support for mobile devices
-  display: none;
-
-  @media screen and (min-width: $mobile-width) {
-    position: absolute;
-    top: 5%;
-    right: 3%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    align-items: center;
-
-    svg {
-      height: 30px;
-    }
-
-    .lightTheme {
-      &:last-child {
-        path {
-          fill: none;
-        }
-      }
-    }
-
-    .darkTheme {
-      &:first-child {
-        circle {
-          stroke: white;
-          fill: none;
-        }
-        path {
-          stroke: white;
-          fill: none;
-        }
-      }
-
-      &:last-child {
-        path {
-          stroke: white;
-          &:first-child {
-            fill: white;
-          }
-        }
-      }
-    }
-  }
-}
-
 .playlistInPgDiv {
   display: grid;
   grid-template-rows: 100%;
@@ -106,15 +57,76 @@
 
   .guideDiv {
     @media screen and (min-width: $large-display-width) {
+      width: 30em;
+      height: 75vh;
       grid-area: guide;
       align-self: center;
-      padding-right: 4em;
+      justify-self: flex-start;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: auto;
+      position: relative;
+      padding: 0px 2em;
+      box-shadow: 10px 8px 10px 5px rgba(black, 0.5);
 
       ul {
         list-style-type: decimal;
 
         ul {
           list-style-type: circle;
+        }
+      }
+
+      .helpGuideDiv {
+        align-self: center;
+      }
+    }
+  }
+
+
+  .toggleDarkModeDiv {
+    display: none;
+
+    @media screen and (min-width: $mobile-width) {
+      position: absolute;
+      top: 2%;
+      right: 2%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto;
+      align-items: center;
+
+      svg {
+        height: 30px;
+      }
+
+      .lightTheme {
+        &:last-child {
+          path {
+            fill: none;
+          }
+        }
+      }
+
+      .darkTheme {
+        &:first-child {
+          circle {
+            stroke: white;
+            fill: none;
+          }
+          path {
+            stroke: white;
+            fill: none;
+          }
+        }
+
+        &:last-child {
+          path {
+            stroke: white;
+            &:first-child {
+              fill: white;
+            }
+          }
         }
       }
     }
