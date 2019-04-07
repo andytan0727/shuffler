@@ -24,4 +24,17 @@ const useKeyDown = (handler) => {
   });
 };
 
-export { useKeyDown };
+/**
+ * Set ESC as the shortcut for exiting overlay
+ *
+ * @param {*} fn function to execute for escaping overlay
+ */
+const setEscOverlay = (fn) => {
+  useKeyDown((e) => {
+    if (e.keyCode === 27) {
+      fn(e);
+    }
+  });
+};
+
+export { useKeyDown, setEscOverlay };

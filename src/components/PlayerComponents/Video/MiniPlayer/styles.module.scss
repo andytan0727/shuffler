@@ -269,6 +269,10 @@
       transform: rotate(180deg);
       transition: transform 500ms linear;
     }
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 

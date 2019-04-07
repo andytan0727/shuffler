@@ -14,6 +14,7 @@ import LargePlaylist from "./LargePlaylist";
 
 import styles from "./styles.module.scss";
 import { setCurSongIdx } from "../../../../store/ytplayer/action";
+import { setEscOverlay } from "../../../../utils/helper/keyboardShortcutHelper";
 
 const MiniPlayer = (props) => {
   const {
@@ -56,17 +57,32 @@ const MiniPlayer = (props) => {
     setCurDisplayIdx(curSongIdx);
   };
 
-  const handleSetShowYT = (e) => {
+  const handleShowYT = (e) => {
     e.preventDefault();
-    setShowYT((prevShowYT) => !prevShowYT);
-    setBlurBg((prevBlurBg) => !prevBlurBg);
+    setShowYT(true);
+    setBlurBg(true);
+  };
+
+  const handleHideYT = (e) => {
+    e.preventDefault();
+    setShowYT(false);
+    setBlurBg(false);
   };
 
   const handleShowLargePlaylist = (e) => {
     e.preventDefault();
-    setShowLargePlaylist((prevShowLargePlaylist) => !prevShowLargePlaylist);
-    setBlurBg((prevBlurBg) => !prevBlurBg);
+    setShowLargePlaylist(true);
+    setBlurBg(true);
   };
+
+  const handleHideLargePlaylist = (e) => {
+    e.preventDefault();
+    setShowLargePlaylist(false);
+    setBlurBg(false);
+  };
+
+  // set shortcut to close YT overlay
+  setEscOverlay(handleHideYT);
 
   useEffect(() => {
     setCurDisplayIdx(curSongIdx);
@@ -122,7 +138,7 @@ const MiniPlayer = (props) => {
             <button onClick={handleSetCurDisplayIdx}>
               <MusicVideoIcon />
             </button>
-            <button onClick={handleSetShowYT}>
+            <button onClick={handleShowYT}>
               <PlayCircleIcon />
             </button>
             <button onClick={handleShowLargePlaylist}>
@@ -168,7 +184,7 @@ const MiniPlayer = (props) => {
           [styles.showYTIframe]: showYT,
         })}
       >
-        <button className={styles.closeButton} onClick={handleSetShowYT}>
+        <button className={styles.closeButton} onClick={handleHideYT}>
           <CloseIcon />
         </button>
         <YouTubeIFrame ref={ytPlayerRef} />
@@ -182,7 +198,7 @@ const MiniPlayer = (props) => {
               style={{ position: "relative", zIndex: 2, ...props }}
             >
               <LargePlaylist
-                handleShowLargePlaylist={handleShowLargePlaylist}
+                handleHideLargePlaylist={handleHideLargePlaylist}
                 preferDarkTheme={preferDarkTheme}
                 curSongIdx={curSongIdx}
                 listToPlay={listToPlay}
