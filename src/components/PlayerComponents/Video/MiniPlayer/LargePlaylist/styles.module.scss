@@ -75,8 +75,11 @@ $playing: #08d56a;
       display: grid;
       grid-template-columns: auto;
       grid-auto-rows: 1fr;
+      grid-row-gap: 25px;
       margin: 0px;
       padding: 0px;
+      overflow: auto;
+      scroll-behavior: smooth;
 
       .song {
         display: grid;
@@ -84,15 +87,13 @@ $playing: #08d56a;
         grid-template-rows: auto;
         place-items: center;
         padding: 0.8em;
-        margin-right: 10px;
+        margin-right: 20px;
+        background-color: lighten(black, 25%);
+        box-shadow: 5px 8px 20px 2px lighten(black, 6%);
         cursor: pointer;
 
-        &:not(:last-child) {
-          border-bottom: 1px solid white;
-        }
-
         &:hover {
-          background-color: $blackLight;
+          background-color: lighten(black, 15%);
         }
 
         img {
@@ -102,23 +103,6 @@ $playing: #08d56a;
         span {
           width: 450px;
         }
-      }
-    }
-
-    .curSongPlaying {
-      color: $playing;
-    }
-
-    .progress {
-      width: 10px;
-      height: 80%;
-      position: relative;
-      // background-color: white !important;
-
-      div {
-        position: relative;
-        // height: 4%;
-        background-color: #08d56a;
       }
     }
   }
@@ -153,13 +137,11 @@ $playing: #08d56a;
 
     &::-webkit-scrollbar-thumb {
       background: white;
-      border-radius: 10px;
     }
 
     /* Track */
     &::-webkit-scrollbar-track {
-      background-color: lighten($black, 40%);
-      border-radius: 10px;
+      background-color: lighten($black, 30%);
     }
   }
 }

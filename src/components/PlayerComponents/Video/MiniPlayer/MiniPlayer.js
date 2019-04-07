@@ -68,11 +68,15 @@ const MiniPlayer = (props) => {
     setBlurBg((prevBlurBg) => !prevBlurBg);
   };
 
-  const AnimatedLargePlaylist = animated(LargePlaylist);
-
   useEffect(() => {
     setCurDisplayIdx(curSongIdx);
   }, [curSongIdx]);
+
+  useEffect(() => {
+    return () => {
+      setCurSongIdx(0);
+    };
+  }, []);
 
   return (
     <React.Fragment>
@@ -175,7 +179,7 @@ const MiniPlayer = (props) => {
           item && (
             <animated.div
               key={key}
-              style={{ position: "absolute", zIndex: 2, ...props }}
+              style={{ position: "relative", zIndex: 2, ...props }}
             >
               <LargePlaylist
                 handleShowLargePlaylist={handleShowLargePlaylist}
@@ -183,6 +187,7 @@ const MiniPlayer = (props) => {
                 curSongIdx={curSongIdx}
                 listToPlay={listToPlay}
                 playing={playing}
+                setCurSongIdx={setCurSongIdx}
               />
             </animated.div>
           )
