@@ -26,6 +26,15 @@ const initialStates = {
         "Update navbar links' style on active page",
       ],
     },
+    {
+      version: "2.0.0",
+      changes: [
+        "Change main page appearance",
+        "Improve playlist input page UI",
+        "Add new mini player as an alternative to the existing YT player",
+        "All non-valid URL path on / will be redirected to main page instead, and all non-valid path on /player will be directed to /player/ytplayer",
+      ],
+    },
   ],
 };
 

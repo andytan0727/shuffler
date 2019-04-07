@@ -1,6 +1,6 @@
 {
   "name": "yt_random_player",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "private": true,
   "homepage": "https://ytrandomizer.surge.sh",
   "dependencies": {
