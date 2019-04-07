@@ -40,6 +40,7 @@ const YouTubeIFrame = (props) => {
   const setNext = () => {
     if (curSongIdx === listToPlay.length - 1) {
       notify("info", "🚀 You have reached last video in your playlist");
+      setPause();  // set pause to prevent playing bug on last video
       return;
     }
 
