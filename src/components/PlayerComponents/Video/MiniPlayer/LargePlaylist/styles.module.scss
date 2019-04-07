@@ -14,7 +14,7 @@ $playing: #08d56a;
   grid-template-columns: 3fr 4fr;
   grid-template-rows: auto;
   grid-column-gap: 10px;
-  background-color: rgba(lighten($black, 10%), 0.9);
+  background-color: rgba(lighten(black, 20%), 0.9);
   z-index: 2;
 
   .nowPlaying {
@@ -58,6 +58,7 @@ $playing: #08d56a;
       justify-content: center;
       position: relative;
     }
+    overflow: hidden;
 
     &::before {
       content: "Up Next:";
@@ -74,8 +75,6 @@ $playing: #08d56a;
       display: grid;
       grid-template-columns: auto;
       grid-auto-rows: 1fr;
-      grid-row-gap: 10px;
-      overflow: hidden;
       margin: 0px;
       padding: 0px;
 
@@ -86,8 +85,15 @@ $playing: #08d56a;
         place-items: center;
         padding: 0.8em;
         margin-right: 10px;
-        background-color: $black;
         cursor: pointer;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid white;
+        }
+
+        &:hover {
+          background-color: $blackLight;
+        }
 
         img {
           height: 6em;
@@ -106,10 +112,12 @@ $playing: #08d56a;
     .progress {
       width: 10px;
       height: 80%;
-      background-color: white !important;
+      position: relative;
+      // background-color: white !important;
 
       div {
-        height: 5%;
+        position: relative;
+        // height: 4%;
         background-color: #08d56a;
       }
     }
@@ -158,4 +166,5 @@ $playing: #08d56a;
 
 .largePlaylistDivLight {
   @extend %largePlaylistDiv;
+  background-color: rgba(white, 0.5);
 }
