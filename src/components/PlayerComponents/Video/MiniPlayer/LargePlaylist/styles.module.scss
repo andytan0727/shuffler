@@ -57,8 +57,8 @@ $playing: #08d56a;
       align-items: center;
       justify-content: center;
       position: relative;
+      overflow: hidden;
     }
-    overflow: hidden;
 
     &::before {
       content: "Up Next:";
@@ -67,6 +67,31 @@ $playing: #08d56a;
       position: absolute;
       top: 5%;
       left: 2%;
+    }
+
+    .scrollTopFab {
+      width: 4em;
+      height: 4em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      border: none;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $softBlack;
+        color: white;
+        box-shadow: 3px 8px 15px 2px black;
+      }
+
+      &:focus {
+        outline: none;
+      }
     }
 
     ul {

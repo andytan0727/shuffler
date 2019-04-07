@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import CloseIcon from "@material-ui/icons/Close";
+import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
 
 import styles from "./styles.module.scss";
 
@@ -13,6 +14,7 @@ const LargePlaylist = (props) => {
     listToPlay,
     setCurSongIdx,
   } = props;
+  const listRef = useRef(null);
   const listLen = listToPlay.length;
   const displayList = listToPlay.slice(curSongIdx + 1, listLen);
 
@@ -20,6 +22,12 @@ const LargePlaylist = (props) => {
     const songToPlay = e.currentTarget.getAttribute("data-index");
     setCurSongIdx(parseInt(songToPlay));
   };
+
+  const handleScrollToListTop = () =>
+    listRef.current.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
 
   return (
     <div
@@ -39,8 +47,15 @@ const LargePlaylist = (props) => {
         <h3>{listToPlay[curSongIdx].snippet.title}</h3>
       </div>
       <div className={styles.list}>
+        <button
+          className={styles.scrollTopFab}
+          color="primary"
+          onClick={handleScrollToListTop}
+        >
+          <KeyboardArrowUp />
+        </button>
         {listLen !== 0 && (
-          <ul>
+          <ul ref={listRef}>
             {displayList.map((song, idx) => (
               <li
                 key={song.id}
