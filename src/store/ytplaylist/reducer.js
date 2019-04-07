@@ -23,6 +23,7 @@ const initialState = {
     // }
   ],
   listToPlay: [],
+  playingPlaylists: [], // id array storing playlists added to playing list
 };
 
 export const ytplaylist = produce((draft, action) => {
@@ -115,27 +116,33 @@ export const ytplaylist = produce((draft, action) => {
       const listToAdd = action.payload.listToAdd;
       const persist = action.payload.persist;
       const checked = action.payload.checked;
+      let updatedListToPlay;
 
       // make sure only add unique song
-      const updatedListToPlay = checked
-        ? [
-            ...draft.listToPlay,
-            ...draft.playlists
-              .filter((playlist) =>
-                draft.checkedPlaylists.includes(playlist.id)
-              )
-              .flatMap((filteredPlaylist) => filteredPlaylist.items),
-          ]
-        : [...draft.listToPlay, ...listToAdd];
+      if (checked) {
+        updatedListToPlay = [
+          ...draft.listToPlay,
+          ...draft.playlists
+            .filter((playlist) => draft.checkedPlaylists.includes(playlist.id))
+            .flatMap((filteredPlaylist) => filteredPlaylist.items),
+        ];
+
+        // push playlists' id to playingPlaylists array
+        draft.checkedPlaylists.forEach((playlistId) => {
+          if (!draft.playingPlaylists.includes(playlistId)) {
+            draft.playingPlaylists.push(playlistId);
+          }
+        });
+
+        // clear checkedPlaylists as well if the item added was checked
+        draft.checkedPlaylists = [];
+      } else {
+        updatedListToPlay = [...draft.listToPlay, ...listToAdd];
+      }
 
       const uniqueListToPlay = uniqBy(updatedListToPlay, "id");
 
       draft.listToPlay = uniqueListToPlay;
-
-      // clear checkedPlaylists as well if the item added was checked
-      if (checked) {
-        draft.checkedPlaylists = [];
-      }
 
       if (persist) {
         dbSongList
@@ -151,6 +158,9 @@ export const ytplaylist = produce((draft, action) => {
 
     case CLEAR_LIST_TO_PLAY: {
       draft.listToPlay = [];
+
+      // clear playingPlaylists as well
+      draft.playingPlaylists = [];
 
       // clear indexedDB as well
       dbSongList
