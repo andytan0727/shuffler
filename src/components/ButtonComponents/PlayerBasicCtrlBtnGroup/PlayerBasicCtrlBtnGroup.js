@@ -89,7 +89,6 @@ const PlayerBasicCtrlBtnGroup = (props) => {
     if (e.ctrlKey) {
       // ctrl+alt+s (shuffle playing list)
       if (e.ctrlKey && e.altKey && e.key === "s") {
-        console.log("shuffle");
         handleShufflePlaylist();
         return;
       }
