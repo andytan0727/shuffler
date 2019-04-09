@@ -1,6 +1,7 @@
 import {
   ADD_PLAYLIST,
   REMOVE_PLAYLIST,
+  RENAME_PLAYLIST,
   SET_CHECKED_PLAYLISTS,
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
@@ -29,6 +30,19 @@ const addPlaylist = ({ persist, playlist }) => ({
  */
 const removePlaylist = () => ({
   type: REMOVE_PLAYLIST,
+});
+
+/**
+ * Rename selected playlist (one at once)
+ *
+ * @param {*} newName New name of selected playlist
+ * @returns RENAME_PLAYLIST action object for redux store
+ */
+const renamePlaylist = (newName) => ({
+  type: RENAME_PLAYLIST,
+  payload: {
+    newName,
+  },
 });
 
 /**
@@ -102,6 +116,7 @@ const clearListToPlay = () => ({
 export {
   addPlaylist,
   removePlaylist,
+  renamePlaylist,
   setCheckedPlaylists,
   shufflePlaylist,
   setLoadedFromDB,

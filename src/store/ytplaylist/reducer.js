@@ -4,6 +4,7 @@ import shuffle from "lodash.shuffle";
 import {
   ADD_PLAYLIST,
   REMOVE_PLAYLIST,
+  RENAME_PLAYLIST,
   SET_CHECKED_PLAYLISTS,
   SHUFFLE_PLAYLIST,
   SET_LOADED_FROM_DB,
@@ -20,6 +21,7 @@ const initialState = {
   playlists: [
     // {
     //   id: "",
+    //   name: "",
     //   items: [{}]
     // }
   ],
@@ -79,7 +81,6 @@ export const ytplaylist = produce((draft, action) => {
 
     case REMOVE_PLAYLIST: {
       if (!draft.checkedPlaylists.length) {
-        alert("No playlist to remove");
         return draft;
       }
 
@@ -90,9 +91,16 @@ export const ytplaylist = produce((draft, action) => {
         (playlist) => !playlistsToRemove.includes(playlist.id)
       );
 
-      draft.playlists = updatedPlaylist;
+      // also check playingPlaylists
+      const updatedPlayingPlaylists = draft.playingPlaylists.filter(
+        (playlistId) => !playlistsToRemove.includes(playlistId)
+      );
 
-      // remove from indexedDB as well
+      // update playlists and playingPlaylists
+      draft.playlists = updatedPlaylist;
+      draft.playingPlaylists = updatedPlayingPlaylists;
+
+      // update playlists array with removed playlists from indexedDB
       playlistsToRemove.forEach((playlistId) => {
         dbPlaylist
           .removeItem(playlistId)
@@ -103,6 +111,44 @@ export const ytplaylist = produce((draft, action) => {
             console.log("Error in removing playlist from indexedDB")
           );
       });
+
+      // update playingPlaylists with removed playlists in indexedDB
+      dbSongList
+        .setItem("playingPlaylists", updatedPlayingPlaylists)
+        .then(() =>
+          console.log(
+            "successfully remove removed playlists in playingPlaylists"
+          )
+        );
+
+      return draft;
+    }
+
+    case RENAME_PLAYLIST: {
+      if (!draft.checkedPlaylists.length || draft.checkedPlaylists.length > 1) {
+        return draft;
+      }
+
+      const newName = action.payload.newName;
+      const playlists = original(draft.playlists);
+      playlists.forEach((playlist) => {
+        if (playlist.id === draft.checkedPlaylists[0]) {
+          playlist.name = newName;
+        }
+      });
+
+      const renamedPlaylist = playlists.filter(
+        (playlist) => playlist.id === draft.checkedPlaylists[0]
+      )[0];
+
+      // reassign playlists and clear checkedPlaylists
+      draft.playlists = playlists;
+      draft.checkedPlaylists = [];
+
+      // update playlists in indexedDB
+      dbPlaylist
+        .setItem(renamedPlaylist.id, renamedPlaylist)
+        .then(() => console.log("successfully saved renamed playlist"));
 
       return draft;
     }
@@ -174,16 +220,22 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case CLEAR_LIST_TO_PLAY: {
+      // clear listToPlay
       draft.listToPlay = [];
 
       // clear playingPlaylists as well
       draft.playingPlaylists = [];
 
-      // clear indexedDB as well
+      // clear listToPlay and playingPlaylists in indexedDB as well
       dbSongList
         .removeItem("listToPlay")
         .then(() =>
           console.log("successfully removed listToPlay in songListDB")
+        );
+      dbSongList
+        .removeItem("playingPlaylists")
+        .then(() =>
+          console.log("successfully removed playingPlaylists in songlistDB")
         );
 
       return draft;
