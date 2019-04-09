@@ -31,17 +31,21 @@ body {
     background-color: lighten($primary, 15%);
   }
 
-  &::-webkit-scrollbar {
-    width: 15px;
-  }
+  // default scrollbar styles for light theme
+  &,
+  & * {
+    &::-webkit-scrollbar {
+      width: 15px;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background: $secondary;
-  }
+    &::-webkit-scrollbar-thumb {
+      background: $secondary;
+    }
 
-  /* Track */
-  &::-webkit-scrollbar-track {
-    background-color: lighten($secondaryLight, 20%);
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background-color: lighten($secondaryLight, 20%);
+    }
   }
 }
 
@@ -51,6 +55,23 @@ body {
   color: white;
   transition: background-color 500ms !important;
   transition-timing-function: linear;
+
+  // default scrollbar styles for dark theme
+  &,
+  & * {
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: white;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background-color: lighten($black, 30%);
+    }
+  }
 }
 
 // transition animation from dark theme to light theme

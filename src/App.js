@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
@@ -61,6 +61,17 @@ const App = (props) => {
   };
 
   useKeyDown(setPreferDarkThemeShortcut);
+
+  useEffect(() => {
+    // add dark class to body when preferDarkTheme
+    // primarily use for applying scrollbar styles on body
+    if (preferDarkTheme) {
+      if (document.body.className.indexOf("dark") === -1)
+        document.body.className += " dark";
+    } else {
+      document.body.className = "";
+    }
+  }, [preferDarkTheme]);
 
   return (
     <BrowserRouter>

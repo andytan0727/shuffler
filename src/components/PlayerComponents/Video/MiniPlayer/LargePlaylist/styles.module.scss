@@ -158,21 +158,6 @@ $playing: #08d56a;
 
 .largePlaylistDivDark {
   @extend %largePlaylistDiv;
-
-  ul {
-    &::-webkit-scrollbar {
-      width: 10px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: white;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background-color: lighten($black, 30%);
-    }
-  }
 }
 
 .largePlaylistDivLight {
