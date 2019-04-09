@@ -4,6 +4,7 @@ import { setPreferDarkTheme } from "../../store/userPreferences/action";
 import {
   addPlaylist,
   addListToPlay,
+  addPlayingPlaylists,
   setLoadedFromDB,
 } from "../../store/ytplaylist/action";
 
@@ -61,6 +62,14 @@ export const hydrateRedux = async (store) => {
         listToAdd: dbSongListArr,
       })
     );
+
+    // hydrate playing playlists
+    const dbPlayingPlaylistsArr = await dbSongList.getItem("playingPlaylists");
+    if (!dbPlayingPlaylistsArr || !dbPlayingPlaylistsArr.length) {
+      throw new Error("Playing playlists not found in indexedDB");
+    }
+
+    store.dispatch(addPlayingPlaylists(dbPlayingPlaylistsArr));
 
     // notify user for success saved data loading
     notify("success", "💖 Loaded saved data");

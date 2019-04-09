@@ -9,6 +9,7 @@ import {
   SET_LOADED_FROM_DB,
   ADD_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
+  ADD_PLAYING_PLAYLISTS,
 } from "../../utils/constants/actionConstants";
 
 import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
@@ -116,6 +117,7 @@ export const ytplaylist = produce((draft, action) => {
       const listToAdd = action.payload.listToAdd;
       const persist = action.payload.persist;
       const checked = action.payload.checked;
+      const playingPlaylists = original(draft.playingPlaylists);
       let updatedListToPlay;
 
       // make sure only add unique song
@@ -129,8 +131,8 @@ export const ytplaylist = produce((draft, action) => {
 
         // push playlists' id to playingPlaylists array
         draft.checkedPlaylists.forEach((playlistId) => {
-          if (!draft.playingPlaylists.includes(playlistId)) {
-            draft.playingPlaylists.push(playlistId);
+          if (!playingPlaylists.includes(playlistId)) {
+            playingPlaylists.push(playlistId);
           }
         });
 
@@ -143,16 +145,31 @@ export const ytplaylist = produce((draft, action) => {
       const uniqueListToPlay = uniqBy(updatedListToPlay, "id");
 
       draft.listToPlay = uniqueListToPlay;
+      draft.playingPlaylists = playingPlaylists;
 
       if (persist) {
+        // save listToPlay
         dbSongList
           .setItem("listToPlay", uniqueListToPlay)
           .then(() =>
             console.log("successfully added listToPlay to songListDB")
           )
           .catch((err) => console.log(err));
+
+        // save playingPlaylists
+        dbSongList
+          .setItem("playingPlaylists", playingPlaylists)
+          .then(() =>
+            console.log("successfully saved playingPlaylists to songListDB")
+          );
       }
 
+      return draft;
+    }
+
+    case ADD_PLAYING_PLAYLISTS: {
+      const playlistIds = action.payload.playlists;
+      draft.playingPlaylists = playlistIds;
       return draft;
     }
 
