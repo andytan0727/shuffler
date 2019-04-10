@@ -8,6 +8,8 @@ $secondaryDark: #aa00c7;
 $error: #eb064b;
 
 // dark mode colors
-$black: rgb(43, 47, 51);
+// $black: rgb(43, 47, 51);
+$black: lighten(black, 10%);
 $blackLight: #4e4b53;
+$blackDark: lighten(black, 5%);
 $softBlack: #414a4c;
