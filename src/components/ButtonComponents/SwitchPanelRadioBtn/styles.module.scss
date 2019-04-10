@@ -1,0 +1,55 @@
+@import "../../../utils/styles/colors";
+
+.switchPanelRadio {
+  position: fixed;
+  top: 50%;
+  left: 2%;
+  transform: translateY(-50%);
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-rows: min-content;
+  grid-row-gap: 10px;
+  z-index: 10;
+
+  .radioDiv {
+    position: relative;
+    width: 50px;
+    height: 50px;
+
+    .radioSelector {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      cursor: pointer;
+
+      &:hover + label {
+        background-color: rgba(white, 0.2);
+        animation: hoverInput 1s ease-in alternate infinite;
+      }
+
+      &:checked + label {
+        border: 2px solid white;
+      }
+    }
+
+    label {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes hoverInput {
+  to {
+    transform: rotate(69deg);
+  }
+}
