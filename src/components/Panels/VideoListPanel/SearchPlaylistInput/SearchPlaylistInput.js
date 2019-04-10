@@ -71,13 +71,17 @@ const SearchPlayListInput = (props) => {
     const items = [];
 
     try {
-      let data = await fetchPlaylistData(apiBaseUrl, {
-        part,
-        maxResults,
-        playlistId,
-        fields,
-        apiKey,
-      });
+      let data = await fetchPlaylistData(
+        apiBaseUrl,
+        {
+          part,
+          maxResults,
+          playlistId,
+          fields,
+          apiKey,
+        },
+        "playlist"
+      );
       items.push(...data.items);
       let count = 2;
 
@@ -89,14 +93,18 @@ const SearchPlayListInput = (props) => {
           break;
         }
 
-        data = await fetchPlaylistData(apiBaseUrl, {
-          part,
-          maxResults,
-          playlistId,
-          fields,
-          pageToken: data.nextPageToken,
-          apiKey,
-        });
+        data = await fetchPlaylistData(
+          apiBaseUrl,
+          {
+            part,
+            maxResults,
+            playlistId,
+            fields,
+            pageToken: data.nextPageToken,
+            apiKey,
+          },
+          "playlist"
+        );
         items.push(...data.items);
         count++;
       }

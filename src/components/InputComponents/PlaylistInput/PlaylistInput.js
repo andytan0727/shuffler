@@ -103,13 +103,17 @@ const PlaylistInput = (props) => {
     const items = [];
 
     try {
-      let data = await fetchPlaylistData(apiBaseUrl, {
-        part,
-        maxResults,
-        playlistId: requestId,
-        fields,
-        apiKey,
-      });
+      let data = await fetchPlaylistData(
+        apiBaseUrl,
+        {
+          part,
+          maxResults,
+          playlistId: requestId,
+          fields,
+          apiKey,
+        },
+        "playlist"
+      );
       items.push(...data.items);
       let count = 2;
 
@@ -121,14 +125,18 @@ const PlaylistInput = (props) => {
           break;
         }
 
-        data = await fetchPlaylistData(apiBaseUrl, {
-          part,
-          maxResults,
-          playlistId: requestId,
-          fields,
-          pageToken: data.nextPageToken,
-          apiKey,
-        });
+        data = await fetchPlaylistData(
+          apiBaseUrl,
+          {
+            part,
+            maxResults,
+            playlistId: requestId,
+            fields,
+            pageToken: data.nextPageToken,
+            apiKey,
+          },
+          "playlist"
+        );
         items.push(...data.items);
         count++;
       }
@@ -196,7 +204,9 @@ const PlaylistInput = (props) => {
       </IconButton>
       <IconButton
         aria-label="cancel"
-        onClick={handleSwipeDivIdxChange.bind(this, 1)}
+        onClick={
+          handleSwipeDivIdxChange && handleSwipeDivIdxChange.bind(this, 1)
+        }
       >
         <CancelIcon />
       </IconButton>
@@ -214,13 +224,14 @@ PlaylistInput.propTypes = {
   options: PropTypes.shape({
     part: PropTypes.string.isRequired,
     maxResults: PropTypes.string.isRequired,
-    fields: PropTypes.string,
+    fields: PropTypes.array.isRequired,
   }),
   setPlaylistUrl: PropTypes.func.isRequired,
   fetchPlaylistData: PropTypes.func.isRequired,
   fetchedItemsId: PropTypes.array,
   addFetchedItemId: PropTypes.func.isRequired,
   addPlaylist: PropTypes.func.isRequired,
+  addListToPlay: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ ytapi }) => ({
