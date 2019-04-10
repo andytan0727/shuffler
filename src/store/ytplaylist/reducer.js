@@ -186,6 +186,7 @@ export const ytplaylist = produce((draft, action) => {
         draft.checkedPlaylists = [];
       } else {
         updatedListToPlay = [...draft.listToPlay, ...listToAdd];
+        playingPlaylists.push(listToAdd[0].snippet.playlistId);
       }
 
       const uniqueListToPlay = uniqBy(updatedListToPlay, "id");
