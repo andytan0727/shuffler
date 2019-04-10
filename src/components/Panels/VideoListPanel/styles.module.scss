@@ -1,0 +1,91 @@
+@import "../../../utils/styles/colors";
+
+.checkedPlaylists {
+  color: $secondaryLight;
+  font-weight: bold;
+}
+
+.viewPlaylistDiv {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: $blackDark;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .closeButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    z-index: 3;
+
+    svg {
+      transform: scale(1.5);
+    }
+
+    &:hover {
+      cursor: pointer;
+      transform: rotate(180deg);
+      transition: transform 500ms linear;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.videoListPanelDiv {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content auto min-content;
+  grid-row-gap: 10px;
+
+  .videoListItems {
+    height: 400px;
+    display: grid;
+    grid-template-columns: auto;
+    grid-auto-rows: min-content;
+    grid-row-gap: 15px;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .videoListItem {
+      display: grid;
+      grid-template-columns: auto min-content;
+      align-items: center;
+      padding: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $black;
+      }
+
+      div {
+        width: 100%;
+        display: grid;
+        grid-template-columns: min-content auto;
+        grid-column-gap: 10px;
+        align-items: center;
+
+        span {
+          display: inline-block;
+          width: 300px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

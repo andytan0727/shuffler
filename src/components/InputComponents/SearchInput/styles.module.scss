@@ -1,0 +1,39 @@
+@import '../../../utils/styles/colors';
+
+.searchInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  input {
+    margin-right: 10px;
+    border: none;
+    border: 1px solid rgba(white, 0.5);
+    text-align: center;
+    font-size: 15px;
+    width: 100%;
+    height: 36px;
+    background: lighten(black, 13%);
+    color: white;
+    outline: none;
+    transition: transform 250ms ease;
+
+    &:focus {
+      background-color: rgba($softBlack, 0.4);
+
+      &::placeholder {
+        transform: translateX(-200px);
+        transition: transform 250ms ease-in;
+      }
+    }
+
+    &::placeholder {
+      color: rgba(white, 0.8);
+    }
+  }
+
+  button {
+    margin: 0px 5px;
+  }
+}
