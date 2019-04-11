@@ -41,13 +41,12 @@
     background-color: white;
     min-width: 150px;
     box-shadow: 10px 8px 16px 0px rgba(black, 0.5);
-    z-index: 100;
 
     a {
       color: black;
       padding: 10px 20px;
       text-decoration: none;
-      z-index: inherit;
+      z-index: 2;
 
       &:hover {
         background-color: $secondary;
@@ -59,7 +58,6 @@
   .playerDropDownItemDark {
     background-color: $blackLight;
     box-shadow: 10px 8px 16px 0px rgba(black, 0.5);
-    z-index: 1 !important;
 
     a {
       color: white;

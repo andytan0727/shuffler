@@ -9,6 +9,7 @@ import {
 } from "../../../../store/ytapi/action";
 import {
   addPlaylist,
+  addPlayingPlaylists,
   addListToPlay,
 } from "../../../../store/ytplaylist/action";
 
@@ -30,6 +31,7 @@ const SearchPlayListInput = (props) => {
     fetchPlaylistData,
     addFetchedItemId,
     addPlaylist,
+    addPlayingPlaylists,
     addListToPlay,
 
     // own props
@@ -124,6 +126,9 @@ const SearchPlayListInput = (props) => {
         listToAdd: items,
       });
 
+      // add fetched playlist id to playingPlaylists
+      addPlayingPlaylists([playlistId], true);
+
       // add fetched playlist id to fetchedItemsId array
       addFetchedItemId({
         id: playlistId,
@@ -189,6 +194,7 @@ export default connect(
     fetchPlaylistData,
     addFetchedItemId,
     addPlaylist,
+    addPlayingPlaylists,
     addListToPlay,
   }
 )(SearchPlayListInput);
