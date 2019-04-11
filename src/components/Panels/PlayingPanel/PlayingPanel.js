@@ -27,7 +27,7 @@ const PlayingPanel = (props) => {
       return;
     }
 
-    history.push("/player/miniplayer");
+    history.push("/player/ytplayer");
   };
 
   const handleClearListToPlay = async () => {
