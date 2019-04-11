@@ -1,88 +1,12 @@
 @import "../../utils/styles/colors";
 @import "../../utils/styles/variables";
 
-.helpButton {
-  position: absolute;
-  top: -2%;
-}
-
 .playlistInPgDiv {
+  width: 100%;
   display: grid;
+  grid-template-columns: auto;
   grid-template-rows: 100%;
-  grid-template-areas: "input";
-  overflow-y: hidden; // slide up animation of first tab fab
-
-  @media screen and (min-width: $large-display-width) {
-    grid-template-rows: 100%;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "input guide";
-    grid-gap: 4em;
-  }
-
-  .inputDiv {
-    min-width: 100%;
-    grid-area: input;
-    display: grid;
-    grid-template-rows: min-content min-content;
-    grid-template-columns: 100%;
-    grid-template-areas:
-      "swipe"
-      "song-list";
-
-    .swipeableDiv {
-      grid-area: swipe;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .ctrlButtonsDiv {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 1em;
-    }
-
-    .songListTabsDiv {
-      grid-area: song-list;
-      display: flex;
-      justify-content: center;
-
-      @media screen and (min-width: $mobile-width) {
-        width: 500px; // fix the position of fab on different res
-        position: relative;
-        justify-self: center;
-      }
-    }
-  }
-
-  .guideDiv {
-    @media screen and (min-width: $large-display-width) {
-      width: 30em;
-      height: 75vh;
-      grid-area: guide;
-      align-self: center;
-      justify-self: flex-start;
-      display: grid;
-      grid-template-columns: 100%;
-      grid-template-rows: auto;
-      position: relative;
-      padding: 0px 2em;
-      box-shadow: 10px 8px 10px 5px rgba(black, 0.5);
-
-      ul {
-        list-style-type: decimal;
-
-        ul {
-          list-style-type: circle;
-        }
-      }
-
-      .helpGuideDiv {
-        align-self: center;
-      }
-    }
-  }
-
+  place-items: center;
 
   .toggleDarkModeDiv {
     display: none;
