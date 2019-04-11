@@ -1,11 +1,13 @@
-import { dbPlaylist, dbSongList, dbPreferences } from "./dbHelper";
-import { notify } from "./notifyHelper";
+import { dbPlaylist, dbSongList, dbPreferences, dbVideos } from "./dbHelper";
 import { setPreferDarkTheme } from "../../store/userPreferences/action";
 import {
   addPlaylist,
   addListToPlay,
   addPlayingPlaylists,
-  setLoadedFromDB,
+
+  // videos
+  addVideo,
+  addPlayingVideos,
 } from "../../store/ytplaylist/action";
 
 /**
@@ -14,8 +16,6 @@ import {
  * @param {*} store Redux store
  */
 export const hydrateRedux = async (store) => {
-  // put theme preference try/catch block on its own to prevent ceased execution
-  // if playlist/songlist hydration throws error
   try {
     // hydrate user theme preference
     const isPreferDarkTheme = await dbPreferences.getItem("darkTheme");
@@ -49,7 +49,28 @@ export const hydrateRedux = async (store) => {
         })
       );
     });
+  } catch (err) {
+    console.error(err.message);
+  }
 
+  try {
+    // hydrate videos
+    const dbVideosKeys = await dbVideos.keys();
+    if (!dbVideosKeys.length) throw new Error("Videos not found in indexedDB");
+
+    await dbVideos.iterate((value, _) => {
+      store.dispatch(
+        addVideo({
+          persist: false,
+          video: value,
+        })
+      );
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
+
+  try {
     // hydrate list to play
     const dbSongListArr = await dbSongList.getItem("listToPlay");
     if (!dbSongListArr || !dbSongListArr.length) {
@@ -58,26 +79,34 @@ export const hydrateRedux = async (store) => {
 
     store.dispatch(
       addListToPlay({
+        checked: false,
         persist: false,
         listToAdd: dbSongListArr,
       })
     );
+  } catch (err) {
+    console.error(err.message);
+  }
 
+  try {
     // hydrate playing playlists
     const dbPlayingPlaylistsArr = await dbSongList.getItem("playingPlaylists");
     if (!dbPlayingPlaylistsArr || !dbPlayingPlaylistsArr.length) {
       throw new Error("Playing playlists not found in indexedDB");
     }
 
-    store.dispatch(addPlayingPlaylists(dbPlayingPlaylistsArr));
+    store.dispatch(addPlayingPlaylists(dbPlayingPlaylistsArr, false));
+  } catch (err) {
+    console.error(err.message);
+  }
 
-    // notify user for success saved data loading
-    notify("success", "💖 Loaded saved data");
+  try {
+    // hydrate playing videos
+    const dbPlayingVideosArr = await dbSongList.getItem("playingVideos");
+    if (!dbPlayingVideosArr || !dbPlayingVideosArr.length)
+      throw new Error("Playing videos not found in indexedDB");
 
-    console.log("Successfully hydrates Redux with stored indexedDB data");
-
-    // set loadedFromDB to true
-    store.dispatch(setLoadedFromDB());
+    store.dispatch(addPlayingVideos(dbPlayingVideosArr, false));
   } catch (err) {
     console.error(err.message);
   }

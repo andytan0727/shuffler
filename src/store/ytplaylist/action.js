@@ -8,6 +8,13 @@ import {
   ADD_LIST_TO_PLAY,
   ADD_PLAYING_PLAYLISTS,
   CLEAR_LIST_TO_PLAY,
+
+  // videos
+  ADD_VIDEO,
+  REMOVE_VIDEO,
+  RENAME_VIDEO,
+  SET_CHECKED_VIDEOS,
+  ADD_PLAYING_VIDEOS,
 } from "../../utils/constants/actionConstants";
 
 /**
@@ -76,8 +83,88 @@ const setLoadedFromDB = () => ({
 });
 
 /**
- * Add video to listToPlay
- * @param {boolean} checked use checkedPlaylists in Redux store if true
+ * Add playlists in listToPlay to playingPlaylists array
+ *
+ * @param {array} playlists playlists' id array
+ * @param {boolean} persist persist to indexedDB
+ * @returns ADD_PLAYING_PLAYLISTS action object for redux store
+ */
+const addPlayingPlaylists = (playlists, persist) => ({
+  type: ADD_PLAYING_PLAYLISTS,
+  payload: {
+    playlists,
+    persist,
+  },
+});
+
+// -----------------------------------------------
+// videos
+// -----------------------------------------------
+/**
+ * Add fetched video to Redux store
+ * @param {boolean} persist persist to indexedDB
+ * @param {object} playlist An object of video id and items from YouTube Data API
+ * @returns ADD_VIDEO action object for redux store
+ */
+const addVideo = ({ persist, video }) => ({
+  type: ADD_VIDEO,
+  payload: {
+    persist,
+    video,
+  },
+});
+
+/**
+ * Remove checked video in checkedVideos array
+ * @returns REMOVE_VIDEO action object for redux store
+ */
+const removeVideo = () => ({
+  type: REMOVE_VIDEO,
+});
+
+/**
+ * Rename selected video (one at once)
+ *
+ * @param {*} newName New name of selected video
+ * @returns RENAME_VIDEO action object for redux store
+ */
+const renameVideo = (newName) => ({
+  type: RENAME_VIDEO,
+  payload: {
+    newName,
+  },
+});
+
+/**
+ * Set checked videos in Redux store
+ * @param {array} checkedVideos checkedVideos array
+ * @returns SET_CHECKED_VIDEOS action object for redux store
+ */
+const setCheckedVideos = (checkedVideos) => ({
+  type: SET_CHECKED_VIDEOS,
+  payload: {
+    checkedVideos,
+  },
+});
+
+/**
+ * Add videos in listToPlay to playingVideos array
+ *
+ * @param {array} videosId videos id array
+ * @param {boolean} persist persist to indexedDB
+ * @returns ADD_PLAYING_VIDEOS action object for redux store
+ */
+const addPlayingVideos = (videosId, persist) => ({
+  type: ADD_PLAYING_VIDEOS,
+  payload: {
+    videosId,
+    persist
+  },
+});
+
+/**
+ * Add playlists/videos to listToPlay
+ * @param {boolean} checked use checkedPlaylists/checkedVideos in Redux store if true
  * @param {boolean} persist persist to indexedDB
  * @param {object} listToAdd An array of video to add
 
@@ -89,19 +176,6 @@ const addListToPlay = ({ checked, persist, listToAdd }) => ({
     checked,
     persist,
     listToAdd,
-  },
-});
-
-/**
- * Add playlists in listToPlay to playingPlaylists array
- *
- * @param {*} playlists playlists' id array
- * @returns ADD_PLAYING_PLAYLISTS action object for redux store
- */
-const addPlayingPlaylists = (playlists) => ({
-  type: ADD_PLAYING_PLAYLISTS,
-  payload: {
-    playlists,
   },
 });
 
@@ -123,4 +197,10 @@ export {
   addListToPlay,
   addPlayingPlaylists,
   clearListToPlay,
+  // videos
+  addVideo,
+  removeVideo,
+  renameVideo,
+  setCheckedVideos,
+  addPlayingVideos,
 };

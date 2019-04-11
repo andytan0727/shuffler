@@ -11,14 +11,29 @@ import {
   ADD_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
   ADD_PLAYING_PLAYLISTS,
+
+  // videos
+  ADD_VIDEO,
+  REMOVE_VIDEO,
+  RENAME_VIDEO,
+  SET_CHECKED_VIDEOS,
+  ADD_PLAYING_VIDEOS,
 } from "../../utils/constants/actionConstants";
 
-import { dbPlaylist, dbSongList } from "../../utils/helper/dbHelper";
+import { dbPlaylist, dbSongList, dbVideos } from "../../utils/helper/dbHelper";
 
 const initialState = {
   loadedFromDB: false,
   checkedPlaylists: [], // pushed playlistId from checkbox in SavedPlaylist
+  checkedVideos: [], // pushed videoId from checkbox
   playlists: [
+    // {
+    //   id: "",
+    //   name: "",
+    //   items: [{}]
+    // }
+  ],
+  videos: [
     // {
     //   id: "",
     //   name: "",
@@ -27,6 +42,7 @@ const initialState = {
   ],
   listToPlay: [],
   playingPlaylists: [], // id array storing playlists added to playing list
+  playingVideos: [], // [ id1, id2, id3 ]
 };
 
 export const ytplaylist = produce((draft, action) => {
@@ -96,9 +112,10 @@ export const ytplaylist = produce((draft, action) => {
         (playlistId) => !playlistsToRemove.includes(playlistId)
       );
 
-      // update playlists and playingPlaylists
+      // update playlists, playingPlaylists and checkedPlaylists
       draft.playlists = updatedPlaylist;
       draft.playingPlaylists = updatedPlayingPlaylists;
+      draft.checkedPlaylists = [];
 
       // update playlists array with removed playlists from indexedDB
       playlistsToRemove.forEach((playlistId) => {
@@ -159,15 +176,178 @@ export const ytplaylist = produce((draft, action) => {
       return draft;
     }
 
+    case ADD_PLAYING_PLAYLISTS: {
+      const persist = action.payload.persist;
+      const filteredPlaylistIds = action.payload.playlists.filter(
+        (id) => !draft.playingPlaylists.includes(id)
+      );
+      const playingPlaylists = [
+        ...draft.playingPlaylists,
+        ...filteredPlaylistIds,
+      ];
+
+      // update playingPlaylists in redux
+      draft.playingPlaylists = playingPlaylists;
+
+      // save to indexedDB
+      if (persist) {
+        dbSongList
+          .setItem("playingPlaylists", playingPlaylists)
+          .then(() => console.log("successfully saved playingPlaylists"))
+          .catch((err) => console.error(err));
+      }
+
+      return draft;
+    }
+
+    // ------------------------------------------
+    // videos
+    // ------------------------------------------
+    case ADD_VIDEO: {
+      const prevVideos = original(draft.videos);
+      const videoToAdd = action.payload.video;
+      const persist = action.payload.persist;
+      const isVideoExists = prevVideos.some(
+        (video) => video.id === videoToAdd.id
+      );
+
+      // return if video exists
+      if (isVideoExists) {
+        return;
+      }
+
+      // if the video is unique then assign it to redux store
+      const updatedVideos = !persist
+        ? [...prevVideos, videoToAdd]
+        : [
+            ...prevVideos,
+            {
+              ...videoToAdd,
+              saved: true,
+            },
+          ];
+
+      draft.videos = updatedVideos;
+
+      // add to indexedDB as well
+      if (persist) {
+        updatedVideos.forEach((video) => {
+          dbVideos
+            .setItem(video.id, video)
+            .then(() => {
+              console.log(`successfully added video-${video.id} to playlistDB`);
+            })
+            .catch((err) => console.error(err));
+        });
+      }
+
+      return draft;
+    }
+
+    case REMOVE_VIDEO: {
+      if (!draft.checkedVideos.length) {
+        return draft;
+      }
+
+      const videosToRemove = original(draft.checkedVideos);
+      const updatedVideos = draft.videos.filter(
+        (video) => !videosToRemove.includes(video.id)
+      );
+      const updatedPlayingVideos = draft.playingVideos.filter(
+        (videoId) => !videosToRemove.includes(videoId)
+      );
+
+      // update videos, playingVideos and checkedVideos
+      draft.videos = updatedVideos;
+      draft.playingVideos = updatedPlayingVideos;
+      draft.checkedVideos = [];
+
+      // update videos with removed vides from indexedDB
+      videosToRemove.forEach((videoId) => {
+        dbVideos
+          .removeItem(videoId)
+          .then(() => console.log(`successfully removed video-${videoId}`))
+          .catch((err) => console.error(err));
+      });
+
+      // update playingVideos with removed videos in indexedDB
+      dbSongList
+        .setItem("playingVideos", updatedPlayingVideos)
+        .then(() =>
+          console.log("successfully remove removed videos in playingVideos")
+        );
+
+      return draft;
+    }
+
+    case RENAME_VIDEO: {
+      if (!draft.checkedVideos.length || draft.checkedVideos.length > 1) {
+        return draft;
+      }
+
+      const newName = action.payload.newName;
+      const videos = original(draft.videos);
+      videos.forEach((video) => {
+        if (video.id === draft.checkedVideos[0]) {
+          video.name = newName;
+        }
+      });
+
+      const renamedVideo = videos.filter(
+        (video) => video.id === draft.checkedVideos[0]
+      )[0];
+
+      // reassign videos and clear checkedVideos
+      draft.videos = videos;
+      draft.checkedVideos = [];
+
+      // update videos in indexedDB
+      dbVideos
+        .setItem(renamedVideo.id, renamedVideo)
+        .then(() => console.log("successfully saved renamed video"));
+
+      return draft;
+    }
+
+    case SET_CHECKED_VIDEOS: {
+      draft.checkedVideos = action.payload.checkedVideos;
+      return draft;
+    }
+
+    case ADD_PLAYING_VIDEOS: {
+      const persist = action.payload.persist;
+      const filteredVideoIds = action.payload.videosId.filter(
+        (id) => !draft.playingVideos.includes(id)
+      );
+      const updatedPlayingVideos = [
+        ...draft.playingVideos,
+        ...filteredVideoIds,
+      ];
+
+      // update playingVideos in redux
+      draft.playingVideos = updatedPlayingVideos;
+
+      // save to indexedDB
+      if (persist) {
+        dbSongList
+          .setItem("playingVideos", updatedPlayingVideos)
+          .then(() => console.log("successfully saved playingVideos"))
+          .catch((err) => console.error(err));
+      }
+
+      return draft;
+    }
+
     case ADD_LIST_TO_PLAY: {
       const listToAdd = action.payload.listToAdd;
       const persist = action.payload.persist;
       const checked = action.payload.checked;
       const playingPlaylists = original(draft.playingPlaylists);
+      const playingVideos = original(draft.playingVideos);
       let updatedListToPlay;
 
-      // make sure only add unique song
-      if (checked) {
+      // add playlists
+      if (checked && !draft.checkedVideos.length) {
         updatedListToPlay = [
           ...draft.listToPlay,
           ...draft.playlists
@@ -175,24 +355,42 @@ export const ytplaylist = produce((draft, action) => {
             .flatMap((filteredPlaylist) => filteredPlaylist.items),
         ];
 
-        // push playlists' id to playingPlaylists array
+        // push chosen playlists' id to playingPlaylists array
         draft.checkedPlaylists.forEach((playlistId) => {
           if (!playingPlaylists.includes(playlistId)) {
             playingPlaylists.push(playlistId);
           }
         });
 
-        // clear checkedPlaylists as well if the item added was checked
         draft.checkedPlaylists = [];
+
+        // add videos
+      } else if (checked && !draft.checkedPlaylists.length) {
+        updatedListToPlay = [
+          ...draft.listToPlay,
+          ...draft.videos
+            .filter((video) => draft.checkedVideos.includes(video.id))
+            .flatMap((filteredVideo) => filteredVideo.items),
+        ];
+
+        // push chosen videos' id to playingVideos array
+        draft.checkedVideos.forEach((videoId) => {
+          if (!playingVideos.includes(videoId)) {
+            playingVideos.push(videoId);
+          }
+        });
+
+        draft.checkedVideos = [];
       } else {
+        // for hydration
         updatedListToPlay = [...draft.listToPlay, ...listToAdd];
-        playingPlaylists.push(listToAdd[0].snippet.playlistId);
       }
 
       const uniqueListToPlay = uniqBy(updatedListToPlay, "id");
 
       draft.listToPlay = uniqueListToPlay;
       draft.playingPlaylists = playingPlaylists;
+      draft.playingVideos = playingVideos;
 
       if (persist) {
         // save listToPlay
@@ -201,22 +399,24 @@ export const ytplaylist = produce((draft, action) => {
           .then(() =>
             console.log("successfully added listToPlay to songListDB")
           )
-          .catch((err) => console.log(err));
+          .catch((err) => console.error(err));
 
         // save playingPlaylists
         dbSongList
           .setItem("playingPlaylists", playingPlaylists)
           .then(() =>
             console.log("successfully saved playingPlaylists to songListDB")
+          )
+          .catch((err) => console.error(err));
+
+        // save playingVideos
+        dbSongList
+          .setItem("playingVideos", playingVideos)
+          .then(() =>
+            console.log("successfully saved playingVideos to songListDB")
           );
       }
 
-      return draft;
-    }
-
-    case ADD_PLAYING_PLAYLISTS: {
-      const playlistIds = action.payload.playlists;
-      draft.playingPlaylists = playlistIds;
       return draft;
     }
 
@@ -224,19 +424,27 @@ export const ytplaylist = produce((draft, action) => {
       // clear listToPlay
       draft.listToPlay = [];
 
-      // clear playingPlaylists as well
+      // clear playingPlaylists and playingVideos as well
       draft.playingPlaylists = [];
+      draft.playingVideos = [];
 
-      // clear listToPlay and playingPlaylists in indexedDB as well
+      // clear listToPlay, playingPlaylists and playingVideos in indexedDB as well
       dbSongList
         .removeItem("listToPlay")
         .then(() =>
           console.log("successfully removed listToPlay in songListDB")
         );
+
       dbSongList
         .removeItem("playingPlaylists")
         .then(() =>
           console.log("successfully removed playingPlaylists in songlistDB")
+        );
+
+      dbSongList
+        .removeItem("playingVideos")
+        .then(() =>
+          console.log("successfully removed playingVideos in songlistDB")
         );
 
       return draft;
