@@ -40,7 +40,7 @@ const YouTubeIFrame = (props) => {
   const setNext = () => {
     if (curSongIdx === listToPlay.length - 1) {
       notify("info", "🚀 You have reached last video in your playlist");
-      setPause();  // set pause to prevent playing bug on last video
+      setPause(); // set pause to prevent playing bug on last video
       return;
     }
 
@@ -72,7 +72,13 @@ const YouTubeIFrame = (props) => {
     <div id="player">
       <YouTube
         ref={forwardRef}
-        videoId={listToPlay[curSongIdx].snippet.resourceId.videoId}
+        videoId={
+          // playlist: if resourceId present
+          // video: else
+          listToPlay[curSongIdx].snippet.resourceId
+            ? listToPlay[curSongIdx].snippet.resourceId.videoId
+            : listToPlay[curSongIdx].id
+        }
         opts={{
           width: matchesMobile ? vidWidth : 640,
           height: matchesMobile ? 200 : 390,
