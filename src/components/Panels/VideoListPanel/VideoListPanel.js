@@ -73,7 +73,7 @@ const VideoListPanel = (props) => {
                     {playingPlaylists.includes(playlist.id) && (
                       <MusicVideoIcon />
                     )}
-                    <span>{playlist.name || `Playllist - ${playlist.id}`}</span>
+                    <span>{playlist.name || `Playlist - ${playlist.id}`}</span>
                   </div>
                 </div>
               </React.Fragment>
