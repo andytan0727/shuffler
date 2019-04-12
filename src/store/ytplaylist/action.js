@@ -42,13 +42,15 @@ const removePlaylist = () => ({
 /**
  * Rename selected playlist (one at once)
  *
- * @param {*} newName New name of selected playlist
+ * @param {string} newName New name of selected playlist
+ * @param {string} playlistId selected playlist's id
  * @returns RENAME_PLAYLIST action object for redux store
  */
-const renamePlaylist = (newName) => ({
+const renamePlaylist = (newName, playlistId) => ({
   type: RENAME_PLAYLIST,
   payload: {
     newName,
+    playlistId,
   },
 });
 
@@ -158,7 +160,7 @@ const addPlayingVideos = (videosId, persist) => ({
   type: ADD_PLAYING_VIDEOS,
   payload: {
     videosId,
-    persist
+    persist,
   },
 });
 

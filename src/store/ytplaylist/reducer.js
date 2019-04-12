@@ -142,25 +142,22 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case RENAME_PLAYLIST: {
-      if (!draft.checkedPlaylists.length || draft.checkedPlaylists.length > 1) {
-        return draft;
-      }
-
       const newName = action.payload.newName;
+      const playlistIdToRename = action.payload.playlistId;
       const playlists = original(draft.playlists);
-      playlists.forEach((playlist) => {
-        if (playlist.id === draft.checkedPlaylists[0]) {
+      const updatedPlaylists = playlists.map((playlist) => {
+        if (playlist.id === playlistIdToRename) {
           playlist.name = newName;
         }
+        return playlist;
       });
 
-      const renamedPlaylist = playlists.filter(
-        (playlist) => playlist.id === draft.checkedPlaylists[0]
+      const renamedPlaylist = updatedPlaylists.filter(
+        (playlist) => playlist.id === playlistIdToRename
       )[0];
 
-      // reassign playlists and clear checkedPlaylists
-      draft.playlists = playlists;
-      draft.checkedPlaylists = [];
+      // reassign playlists
+      draft.playlists = updatedPlaylists;
 
       // update playlists in indexedDB
       dbPlaylist
@@ -287,19 +284,19 @@ export const ytplaylist = produce((draft, action) => {
 
       const newName = action.payload.newName;
       const videos = original(draft.videos);
-      videos.forEach((video) => {
+      const updatedVideos = videos.map((video) => {
         if (video.id === draft.checkedVideos[0]) {
           video.name = newName;
         }
+        return video;
       });
 
-      const renamedVideo = videos.filter(
+      const renamedVideo = updatedVideos.filter(
         (video) => video.id === draft.checkedVideos[0]
       )[0];
 
       // reassign videos and clear checkedVideos
       draft.videos = videos;
-      draft.checkedVideos = [];
 
       // update videos in indexedDB
       dbVideos

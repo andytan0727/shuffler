@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import CreateIcon from "@material-ui/icons/Create";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ViewListIcon from "@material-ui/icons/ViewList";
@@ -9,7 +8,6 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 import {
   addListToPlay,
   removePlaylist,
-  renamePlaylist,
 } from "../../../store/ytplaylist/action";
 import { generateCustomSwal } from "../../../utils/helper/notifyHelper";
 
@@ -29,7 +27,6 @@ const VideoListPanelBtnGroup = (props) => {
     checkedPlaylists,
     addListToPlay,
     removePlaylist,
-    renamePlaylist,
     setViewPlaylist,
   } = props;
 
@@ -80,45 +77,6 @@ const VideoListPanelBtnGroup = (props) => {
     }
   };
 
-  const handleRenamePlaylist = async () => {
-    const customSwal = await generateCustomSwal();
-
-    if (!checkedPlaylists.length) {
-      await noPlaylistSelectedAlert();
-      return;
-    }
-
-    if (checkedPlaylists.length > 1) {
-      await customSwal.fire({
-        title: "You can only rename one playlist at once",
-        text: "Please select only one playlist!",
-        type: "warning",
-      });
-      return;
-    }
-
-    const { value: newName } = await customSwal.fire({
-      title: "Rename Playlist",
-      input: "text",
-      confirmButtonText: "Confirm",
-      showCancelButton: true,
-      inputValidator: (newName) => {
-        if (!newName) {
-          return "Please enter something 💢";
-        }
-      },
-    });
-
-    if (newName) {
-      renamePlaylist(newName);
-      customSwal.fire({
-        title: "All done!",
-        html: `Your selected playlist has been renamed to <strong>${newName}</strong>`,
-        confirmButtonText: "Yeah 😎",
-      });
-    }
-  };
-
   const handleViewPlaylist = async () => {
     const customSwal = await generateCustomSwal();
 
@@ -141,9 +99,6 @@ const VideoListPanelBtnGroup = (props) => {
 
   return (
     <div className={styles.btnGroup}>
-      <button onClick={handleRenamePlaylist} data-tooltip={"Rename playlist"}>
-        <CreateIcon />
-      </button>
       <button
         onClick={handleAddPlaylistToPlaying}
         data-tooltip={"Add to playing list"}
@@ -164,7 +119,6 @@ VideoListPanelBtnGroup.propTypes = {
   checkedPlaylists: PropTypes.array.isRequired,
   addListToPlay: PropTypes.func.isRequired,
   removePlaylist: PropTypes.func.isRequired,
-  renamePlaylist: PropTypes.func.isRequired,
   setViewPlaylist: PropTypes.func.isRequired,
 };
 
@@ -177,6 +131,5 @@ export default connect(
   {
     addListToPlay,
     removePlaylist,
-    renamePlaylist,
   }
 )(VideoListPanelBtnGroup);
