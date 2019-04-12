@@ -2,7 +2,7 @@
 
 .checkedPlaylists {
   color: $secondaryLight;
-  font-weight: bold;
+  background-color: $black;
 }
 
 .viewPlaylistDiv {
@@ -49,6 +49,11 @@
   grid-template-columns: 100%;
   grid-template-rows: min-content auto min-content;
   grid-row-gap: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 
   .videoListItems {
     height: 400px;
@@ -77,10 +82,22 @@
         grid-template-columns: min-content auto;
         grid-column-gap: 10px;
         align-items: center;
+        position: relative;
+
+        .editNameInput {
+          height: 25px;
+          width: 350px;
+          position: absolute;
+          left: 0%;
+          border: none;
+          background-color: $softBlack;
+          color: white;
+          font-size: 16px;
+        }
 
         span {
           display: inline-block;
-          width: 300px;
+          width: 350px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
