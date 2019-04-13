@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+import Checkbox from "@material-ui/core/Checkbox";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import SearchInput from "../../InputComponents/SearchInput";
@@ -65,8 +68,8 @@ const VideoListPanel = (props) => {
     setCheckedPlaylists([]);
   };
 
-  const handleMouseEnterSelect = (e) => {
-    const selectedPlaylistId = e.currentTarget.getAttribute("data-playlistid");
+  const handleCheckPlaylists = (e) => {
+    const selectedPlaylistId = e.target.value;
     _checkPlaylist(selectedPlaylistId);
   };
 
@@ -106,7 +109,15 @@ const VideoListPanel = (props) => {
                   })}
                 >
                   <div>
-                    {editName[playlist.id] && (
+                    <Checkbox
+                      className={styles.checkBox}
+                      checked={checkedPlaylists.includes(playlist.id)}
+                      icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                      checkedIcon={<CheckBoxIcon fontSize="small" />}
+                      value={playlist.id}
+                      onChange={handleCheckPlaylists}
+                    />
+                    {editName[playlist.id] ? (
                       <input
                         className={classNames(
                           styles.editNameInput,
@@ -117,14 +128,11 @@ const VideoListPanel = (props) => {
                         onChange={handleEditNameInputChange}
                         onBlur={handleEditNameInputBlur}
                       />
+                    ) : (
+                      <span onDoubleClick={handleDoubleClick}>
+                        {playlist.name || `Playlist - ${playlist.id}`}
+                      </span>
                     )}
-                    <span
-                      onDoubleClick={handleDoubleClick}
-                      onMouseEnter={handleMouseEnterSelect}
-                      data-playlistid={playlist.id}
-                    >
-                      {playlist.name || `Playlist - ${playlist.id}`}
-                    </span>
                     {playingPlaylists.includes(playlist.id) && (
                       <MusicVideoIcon />
                     )}

@@ -79,25 +79,34 @@
       div {
         width: 100%;
         display: grid;
-        grid-template-columns: min-content auto;
+        grid-template-columns: min-content 300px min-content;
         grid-column-gap: 10px;
         align-items: center;
         position: relative;
 
         .editNameInput {
           height: 25px;
-          width: 350px;
-          position: absolute;
-          left: 0%;
           border: none;
-          background-color: $softBlack;
+          background-color: transparent;
           color: white;
           font-size: 16px;
         }
 
+        // material-ui checkbox
+        .checkBox {
+          height: 25px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+
+          & span {
+            display: flex;
+            align-items: center;
+          }
+        }
+
         span {
           display: inline-block;
-          width: 350px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
