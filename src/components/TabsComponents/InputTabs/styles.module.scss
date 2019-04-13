@@ -10,16 +10,15 @@
   .playlistPanelsDiv {
     height: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto;
     grid-auto-columns: 1fr;
-    grid-column-gap: 10em;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow-y: hidden;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
     &::-webkit-scrollbar {
       width: 0;
@@ -32,11 +31,10 @@
       left: 50%;
       z-index: 1;
       transform: translate(-50%, -50%);
-      transition: all 1s ease-in;
     }
 
     .inactivePanel {
-      transform: scale(0.8);
+      transform: scale(0.9);
       background-color: lighten(black, 9%) !important;
       -webkit-user-select: none;
       -moz-user-select: none;
@@ -59,12 +57,11 @@
     }
 
     %panelDiv {
-      width: 500px;
+      width: 440px;
       height: 550px;
       background: lighten(black, 8%);
-      box-shadow: 10px 8px 13px -2px black;
-      padding: 1em 2em;
-      transition: all linear 0.1s;
+      box-shadow: 5px 10px 13px -2px black;
+      padding: 1em 1.5em;
     }
 
     .videolistPanel {

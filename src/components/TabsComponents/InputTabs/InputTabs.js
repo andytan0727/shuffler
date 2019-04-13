@@ -6,11 +6,11 @@ import SwitchPanelRadioBtn from "../../ButtonComponents/SwitchPanelRadioBtn";
 import VideoListPanel from "../../Panels/VideoListPanel";
 import VideosPanel from "../../Panels/VideosPanel";
 import PlayingPanel from "../../Panels/PlayingPanel/PlayingPanel";
+import { move } from "../../../utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
 
 const InputTabs = (props) => {
-  const [curPanel, setCurPanel] = useState(0);
   const [checkedButton, setCheckedButton] = useState("radio-videolist");
   const radios = ["radio-videolist", "radio-video", "radio-playing"];
   const panels = [
@@ -51,12 +51,10 @@ const InputTabs = (props) => {
       />
 
       <div className={styles.playlistPanelsDiv}>
-        {panels.map((panel) => (
+        {move(panels, radios.indexOf(checkedButton), 1).map((panel) => (
           <div
-            className={classNames(panel.class, {
-              [styles.activePanel]: checkedButton === panel.radio,
-              [styles.inactivePanel]: checkedButton !== panel.radio,
-            })}
+            key={panel.radio}
+            className={classNames(panel.class, styles.inactivePanel)}
             data-panel={panel.panelIdx}
             onClick={
               checkedButton !== panel.radio ? handleClickSwitchPanel : null
@@ -65,6 +63,17 @@ const InputTabs = (props) => {
             <panel.Component />
           </div>
         ))}
+        {panels.map(
+          (panel) =>
+            panel.radio === checkedButton && (
+              <div
+                key={panel.radio}
+                className={classNames(panel.class, styles.activePanel)}
+              >
+                <panel.Component />
+              </div>
+            )
+        )}
       </div>
     </div>
   );
