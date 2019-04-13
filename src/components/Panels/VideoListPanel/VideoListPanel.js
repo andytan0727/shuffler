@@ -25,7 +25,6 @@ const VideoListPanel = (props) => {
     setCheckedPlaylists,
     renamePlaylist,
   } = props;
-
   const [viewPlaylist, setViewPlaylist] = useState(false);
   const [playlistToView, setPlaylistToView] = useState([]);
   const [editName, setEditName] = useState({});
@@ -48,6 +47,7 @@ const VideoListPanel = (props) => {
     setCheckedPlaylists([]);
   };
 
+  // on videoItem span child
   const handleDoubleClick = (e) => {
     const selectedPlaylistId = e.currentTarget.getAttribute("data-playlistid");
     setEditName({
@@ -57,9 +57,7 @@ const VideoListPanel = (props) => {
   };
 
   const handleEditNameInputChange = (e) => {
-    const playlistId = e.target.nextElementSibling.getAttribute(
-      "data-playlistid"
-    );
+    const playlistId = e.target.getAttribute("data-playlistid");
     renamePlaylist(e.target.value, playlistId);
   };
 
@@ -73,9 +71,18 @@ const VideoListPanel = (props) => {
     _checkPlaylist(selectedPlaylistId);
   };
 
+  // place on parent div
+  const handleClick = (e) => {
+    // obtain playlist id from span child
+    const playlistId = Array.from(e.currentTarget.childNodes)[1].getAttribute(
+      "data-playlistid"
+    );
+    _checkPlaylist(playlistId);
+  };
+
   useEffect(() => {
-    if (Object.keys(editName).length) {
-      const input = document.querySelector('input[name="edit-name"]');
+    const input = document.querySelector('input[name="edit-name"]');
+    if (Object.keys(editName).length && input) {
       input.focus();
     }
   }, [editName]);
@@ -108,7 +115,7 @@ const VideoListPanel = (props) => {
                     ),
                   })}
                 >
-                  <div>
+                  <div onClick={handleClick}>
                     <Checkbox
                       className={styles.checkBox}
                       checked={checkedPlaylists.includes(playlist.id)}
@@ -127,9 +134,13 @@ const VideoListPanel = (props) => {
                         value={playlist.name}
                         onChange={handleEditNameInputChange}
                         onBlur={handleEditNameInputBlur}
+                        data-playlistid={playlist.id}
                       />
                     ) : (
-                      <span onDoubleClick={handleDoubleClick}>
+                      <span
+                        onDoubleClick={handleDoubleClick}
+                        data-playlistid={playlist.id}
+                      >
                         {playlist.name || `Playlist - ${playlist.id}`}
                       </span>
                     )}

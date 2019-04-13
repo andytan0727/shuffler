@@ -79,7 +79,7 @@
       div {
         width: 100%;
         display: grid;
-        grid-template-columns: min-content 300px min-content;
+        grid-template-columns: min-content 290px min-content;
         grid-column-gap: 10px;
         align-items: center;
         position: relative;
@@ -90,6 +90,12 @@
           background-color: transparent;
           color: white;
           font-size: 16px;
+          padding: 0px;
+
+          &:focus {
+            border: 2px solid $secondaryLight;
+            outline: none;
+          }
         }
 
         // material-ui checkbox
