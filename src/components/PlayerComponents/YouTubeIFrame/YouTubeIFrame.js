@@ -28,7 +28,10 @@ const YouTubeIFrame = (props) => {
     setVidWidth(vidWrapper.width);
   };
 
-  const setPlaying = () => setVideoPlaying(true);
+  const setPlaying = () => {
+    setVideoPlaying(true);
+    document.title = listToPlay[curSongIdx].snippet.title;
+  };
 
   const setPause = () => setVideoPlaying(false);
 
