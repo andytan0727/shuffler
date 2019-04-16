@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import LoopIcon from "@material-ui/icons/Loop";
@@ -10,7 +11,7 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import { useKeyDown } from "../../../utils/helper/keyboardShortcutHelper";
 
-import { setCurSongIdx } from "../../../store/ytplayer/action";
+import { setCurSongIdx, toggleRepeat } from "../../../store/ytplayer/action";
 import { shufflePlaylist } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";
 
@@ -19,10 +20,12 @@ import styles from "./styles.module.scss";
 const PlayerBasicCtrlBtnGroup = (props) => {
   const {
     playing,
+    repeat,
     curSongIdx,
     listToPlay,
     setCurSongIdx,
     shufflePlaylist,
+    toggleRepeat,
 
     // own props
     ytPlayerRef,
@@ -59,6 +62,7 @@ const PlayerBasicCtrlBtnGroup = (props) => {
 
   const handleShufflePlaylist = () => {
     shufflePlaylist();
+    setCurSongIdx(0);
   };
 
   // fix play/pause problem when spacebar is pressed after clicking buttons
@@ -146,9 +150,12 @@ const PlayerBasicCtrlBtnGroup = (props) => {
 
   return (
     <div className={styles.ctrlBtnGroup}>
-      {/* TODO: */}
-      <IconButton aria-label="Loop">
-        <LoopIcon />
+      <IconButton onClick={toggleRepeat} aria-label="Loop">
+        <LoopIcon
+          className={classNames({
+            [styles.toggledRepeat]: repeat,
+          })}
+        />
       </IconButton>
       <IconButton
         disabled={curSongIdx === 0}
@@ -190,19 +197,22 @@ const PlayerBasicCtrlBtnGroup = (props) => {
 
 PlayerBasicCtrlBtnGroup.propTypes = {
   playing: PropTypes.bool.isRequired,
+  repeat: PropTypes.bool.isRequired,
   curSongIdx: PropTypes.number.isRequired,
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
   shufflePlaylist: PropTypes.func.isRequired,
+  toggleRepeat: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   const {
-    ytplayer: { playing, curSongIdx },
+    ytplayer: { playing, repeat, curSongIdx },
     ytplaylist: { listToPlay },
   } = state;
   return {
     playing,
+    repeat,
     curSongIdx,
     listToPlay,
   };
@@ -213,5 +223,6 @@ export default connect(
   {
     setCurSongIdx,
     shufflePlaylist,
+    toggleRepeat,
   }
 )(PlayerBasicCtrlBtnGroup);

@@ -12,6 +12,7 @@ const YouTubeIFrame = (props) => {
     forwardRef,
 
     // redux
+    repeat,
     listToPlay,
     curSongIdx,
     playerVars,
@@ -42,8 +43,13 @@ const YouTubeIFrame = (props) => {
 
   const setNext = () => {
     if (curSongIdx === listToPlay.length - 1) {
-      notify("info", "🚀 You have reached last video in your playlist");
-      setPause(); // set pause to prevent playing bug on last video
+      if (!repeat) {
+        notify("info", "🚀 You have reached last video in your playlist");
+        setPause(); // set pause to prevent playing bug on last video
+      } else {
+        // repeat to first item in playing list
+        setCurSongIdx(0);
+      }
       return;
     }
 
@@ -101,6 +107,7 @@ const YouTubeIFrame = (props) => {
 
 YouTubeIFrame.propTypes = {
   playing: PropTypes.bool.isRequired,
+  repeat: PropTypes.bool.isRequired,
   curSongIdx: PropTypes.number.isRequired,
   playerVars: PropTypes.object.isRequired,
   listToPlay: PropTypes.array,
@@ -110,11 +117,12 @@ YouTubeIFrame.propTypes = {
 
 const mapStateToProps = (state) => {
   const {
-    ytplayer: { playing, curSongIdx, playerVars },
+    ytplayer: { playing, repeat, curSongIdx, playerVars },
     ytplaylist: { listToPlay },
   } = state;
   return {
     playing,
+    repeat,
     curSongIdx,
     playerVars,
     listToPlay,

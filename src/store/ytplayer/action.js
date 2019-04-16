@@ -1,6 +1,7 @@
 import {
   SET_CURRENT_SONG_IDX,
   SET_VIDEO_PLAYING,
+  TOGGLE_REPEAT,
 } from "../../utils/constants/actionConstants";
 
 const setCurSongIdx = (songIdx) => ({
@@ -17,4 +18,8 @@ const setVideoPlaying = (playing) => ({
   },
 });
 
-export { setCurSongIdx, setVideoPlaying };
+const toggleRepeat = () => ({
+  type: TOGGLE_REPEAT,
+});
+
+export { setCurSongIdx, setVideoPlaying, toggleRepeat };

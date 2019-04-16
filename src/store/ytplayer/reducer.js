@@ -2,10 +2,12 @@ import produce from "immer";
 import {
   SET_CURRENT_SONG_IDX,
   SET_VIDEO_PLAYING,
+  TOGGLE_REPEAT,
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
   playing: false,
+  repeat: false,
   curSongIdx: 0,
   playerVars: {
     autoplay: 1,
@@ -27,6 +29,11 @@ export const ytplayer = produce((draft, action) => {
 
     case SET_VIDEO_PLAYING: {
       draft.playing = action.payload.playing;
+      return draft;
+    }
+
+    case TOGGLE_REPEAT: {
+      draft.repeat = !draft.repeat;
       return draft;
     }
 
