@@ -2,14 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ViewListIcon from "@material-ui/icons/ViewList";
 
 import {
   addListToPlay,
   removePlaylist,
+  removePlaylistFromPlaying,
 } from "../../../store/ytplaylist/action";
-import { generateCustomSwal } from "../../../utils/helper/notifyHelper";
+import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
 
@@ -27,6 +29,7 @@ const VideoListPanelBtnGroup = (props) => {
     checkedPlaylists,
     addListToPlay,
     removePlaylist,
+    removePlaylistFromPlaying,
     setViewPlaylist,
   } = props;
 
@@ -48,6 +51,17 @@ const VideoListPanelBtnGroup = (props) => {
       "Selected playlist is added to playing list 😎",
       "success"
     );
+  };
+
+  const handleRemovePlaylistFromPlaying = async () => {
+    if (!checkedPlaylists.length) {
+      await noPlaylistSelectedAlert();
+      return;
+    }
+
+    removePlaylistFromPlaying();
+
+    notify("success", "Successfully remove playlist(s) from playing list 😎");
   };
 
   const handleRemovePlaylist = async () => {
@@ -101,9 +115,15 @@ const VideoListPanelBtnGroup = (props) => {
     <div className={styles.btnGroup}>
       <button
         onClick={handleAddPlaylistToPlaying}
-        data-tooltip={"Add to playing list"}
+        data-tooltip={"Add to playing"}
       >
         <AddIcon />
+      </button>
+      <button
+        onClick={handleRemovePlaylistFromPlaying}
+        data-tooltip={"Remove from playing"}
+      >
+        <RemoveIcon />
       </button>
       <button onClick={handleRemovePlaylist} data-tooltip={"Remove playlist"}>
         <DeleteIcon />
@@ -119,6 +139,7 @@ VideoListPanelBtnGroup.propTypes = {
   checkedPlaylists: PropTypes.array.isRequired,
   addListToPlay: PropTypes.func.isRequired,
   removePlaylist: PropTypes.func.isRequired,
+  removePlaylistFromPlaying: PropTypes.func.isRequired,
   setViewPlaylist: PropTypes.func.isRequired,
 };
 
@@ -131,5 +152,6 @@ export default connect(
   {
     addListToPlay,
     removePlaylist,
+    removePlaylistFromPlaying,
   }
 )(VideoListPanelBtnGroup);

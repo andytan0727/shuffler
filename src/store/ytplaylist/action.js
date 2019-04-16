@@ -8,6 +8,7 @@ import {
   ADD_LIST_TO_PLAY,
   ADD_PLAYING_PLAYLISTS,
   CLEAR_LIST_TO_PLAY,
+  REMOVE_PLAYLIST_FROM_PLAYING,
 
   // videos
   ADD_VIDEO,
@@ -189,6 +190,10 @@ const clearListToPlay = () => ({
   type: CLEAR_LIST_TO_PLAY,
 });
 
+const removePlaylistFromPlaying = () => ({
+  type: REMOVE_PLAYLIST_FROM_PLAYING,
+});
+
 export {
   addPlaylist,
   removePlaylist,
@@ -199,6 +204,8 @@ export {
   addListToPlay,
   addPlayingPlaylists,
   clearListToPlay,
+  removePlaylistFromPlaying,
+  // ------------------------------------
   // videos
   addVideo,
   removeVideo,

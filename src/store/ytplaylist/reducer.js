@@ -11,6 +11,7 @@ import {
   ADD_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
   ADD_PLAYING_PLAYLISTS,
+  REMOVE_PLAYLIST_FROM_PLAYING,
 
   // videos
   ADD_VIDEO,
@@ -413,6 +414,51 @@ export const ytplaylist = produce((draft, action) => {
             console.log("successfully saved playingVideos to songListDB")
           );
       }
+
+      return draft;
+    }
+
+    case REMOVE_PLAYLIST_FROM_PLAYING: {
+      if (!draft.checkedPlaylists.length) {
+        return draft;
+      }
+
+      const playlistsToRemove = original(draft.checkedPlaylists);
+
+      const songsToRemove = original(draft.playlists)
+        .filter((playlist) => playlistsToRemove.includes(playlist.id))
+        .flatMap((filteredPlaylist) => filteredPlaylist.items)
+        .flatMap((filteredItem) => filteredItem.id);
+
+      // update listToPlay
+      const updatedListToPlay = original(draft.listToPlay).filter(
+        (video) => !songsToRemove.includes(video.id)
+      );
+
+      // // update playingPlaylists
+      const updatedPlayingPlaylists = original(draft.playingPlaylists).filter(
+        (playlistId) => !playlistsToRemove.includes(playlistId)
+      );
+
+      // // update redux
+      draft.listToPlay = updatedListToPlay;
+      draft.playingPlaylists = updatedPlayingPlaylists;
+      draft.checkedPlaylists = [];
+
+      // save to indexedDB
+      // save listToPlay
+      dbSongList
+        .setItem("listToPlay", updatedListToPlay)
+        .then(() => console.log("successfully added listToPlay to songListDB"))
+        .catch((err) => console.error(err));
+
+      // save playingPlaylists
+      dbSongList
+        .setItem("playingPlaylists", updatedPlayingPlaylists)
+        .then(() =>
+          console.log("successfully saved playingPlaylists to songListDB")
+        )
+        .catch((err) => console.error(err));
 
       return draft;
     }
