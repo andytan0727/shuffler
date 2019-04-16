@@ -34,8 +34,6 @@ const VideoListPanelBtnGroup = (props) => {
   } = props;
 
   const handleAddPlaylistToPlaying = async () => {
-    const customSwal = await generateCustomSwal();
-
     if (!checkedPlaylists.length) {
       await noPlaylistSelectedAlert();
       return;
@@ -46,11 +44,7 @@ const VideoListPanelBtnGroup = (props) => {
       persist: true,
     });
 
-    await customSwal.fire(
-      "Added.",
-      "Selected playlist is added to playing list 😎",
-      "success"
-    );
+    notify("success", "Successfully added selected playlist(s) to playing 😎");
   };
 
   const handleRemovePlaylistFromPlaying = async () => {
@@ -61,7 +55,7 @@ const VideoListPanelBtnGroup = (props) => {
 
     removePlaylistFromPlaying();
 
-    notify("success", "Successfully remove playlist(s) from playing list 😎");
+    notify("success", "Successfully removed playlist(s) from playing 😎");
   };
 
   const handleRemovePlaylist = async () => {
