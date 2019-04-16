@@ -2,7 +2,7 @@ import { SET_PREFER_DARK_THEME } from "../../utils/constants/actionConstants";
 import { dbPreferences } from "../../utils/helper/dbHelper";
 
 const initialStates = {
-  preferDarkTheme: false,
+  preferDarkTheme: true,
 };
 
 export const userPreferences = (state = initialStates, action) => {

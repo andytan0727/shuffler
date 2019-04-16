@@ -2,7 +2,7 @@
   "name": "yt_random_player",
   "version": "2.0.0",
   "private": true,
-  "homepage": "https://ytrandomizer.surge.sh",
+  "homepage": "https://shuffler.surge.sh",
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",

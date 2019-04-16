@@ -7,7 +7,7 @@
 
 A shuffler that randomize your YouTube playlist.
 
-Demo: <https://ytrandomizer.surge.sh>
+Demo: <https://shuffler.surge.sh>
 
 ## Local Development
 
