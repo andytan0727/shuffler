@@ -35,6 +35,16 @@ const initialStates = {
         "All non-valid URL path on / will be redirected to main page instead, and all non-valid path on /player will be directed to /player/ytplayer",
       ],
     },
+    {
+      version: "2.1.0",
+      changes: [
+        "Change playlistInput page designs",
+        "Individual video searching is now supported",
+        "Added functionality to remove particular playlist(s) from playing in playlistInput page",
+        "Added functionality to rename playlists/videos",
+        "Dark theme is set as the default mode",
+      ],
+    },
   ],
 };
 
