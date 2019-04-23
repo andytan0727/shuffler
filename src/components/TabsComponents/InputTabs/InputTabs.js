@@ -11,7 +11,7 @@ import { move } from "../../../utils/helper/arrayHelper";
 import styles from "./styles.module.scss";
 
 const InputTabs = (props) => {
-  const [checkedButton, setCheckedButton] = useState("radio-videolist");
+  const [checkedButton, setCheckedButton] = useState("radio-playing");
   const radios = ["radio-videolist", "radio-video", "radio-playing"];
   const panels = [
     {
@@ -54,7 +54,9 @@ const InputTabs = (props) => {
         {move(panels, radios.indexOf(checkedButton), 1).map((panel) => (
           <div
             key={panel.radio}
-            className={classNames(panel.class, styles.inactivePanel)}
+            className={classNames(panel.class, styles.inactivePanel, {
+              [styles.currentInactive]: panel.radio === checkedButton,
+            })}
             data-panel={panel.panelIdx}
             onClick={
               checkedButton !== panel.radio ? handleClickSwitchPanel : null
@@ -63,17 +65,16 @@ const InputTabs = (props) => {
             <panel.Component />
           </div>
         ))}
-        {panels.map(
-          (panel) =>
-            panel.radio === checkedButton && (
-              <div
-                key={panel.radio}
-                className={classNames(panel.class, styles.activePanel)}
-              >
-                <panel.Component />
-              </div>
-            )
-        )}
+        {panels
+          .filter((panel) => panel.radio === checkedButton)
+          .map((panel) => (
+            <div
+              key={panel.radio}
+              className={classNames(panel.class, styles.activePanel)}
+            >
+              <panel.Component />
+            </div>
+          ))}
       </div>
     </div>
   );

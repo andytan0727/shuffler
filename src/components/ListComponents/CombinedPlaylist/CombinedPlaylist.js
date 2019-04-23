@@ -22,7 +22,7 @@ const CombinedPlaylist = (props) => {
         </Suspense>
       ) : (
         <div>
-          <h3>No video to play.</h3>
+          <h3>No video to play? Add something.</h3>
         </div>
       )}
     </React.Fragment>

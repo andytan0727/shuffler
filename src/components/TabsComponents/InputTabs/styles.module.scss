@@ -56,6 +56,10 @@
       }
     }
 
+    .currentInactive {
+      opacity: 0;
+    }
+
     %panelDiv {
       width: 440px;
       height: 550px;
