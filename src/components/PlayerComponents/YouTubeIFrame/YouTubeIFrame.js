@@ -41,7 +41,14 @@ const YouTubeIFrame = (props) => {
   // when YT IFrame is focused
   const setFocusWindow = () => window.focus();
 
-  const setNext = () => {
+  const setNext = (e) => {
+    // special condition: loop one song
+    // seek to 0 second using YouTube Iframe API
+    if (listToPlay.length === 1 && repeat) {
+      e.target.seekTo(0);
+      return;
+    }
+
     if (curSongIdx === listToPlay.length - 1) {
       if (!repeat) {
         notify("info", "🚀 You have reached last video in your playlist");
