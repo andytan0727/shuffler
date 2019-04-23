@@ -45,6 +45,10 @@ const initialStates = {
         "Dark theme is set as the default mode",
       ],
     },
+    {
+      version: "2.1.1",
+      changes: ["Fix: Problem of repeating one song in playlist"],
+    },
   ],
 };
 
