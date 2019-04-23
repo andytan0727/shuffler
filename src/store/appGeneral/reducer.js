@@ -49,6 +49,12 @@ const initialStates = {
       version: "2.1.1",
       changes: ["Fix: Problem of repeating one song in playlist"],
     },
+    {
+      version: "2.1.2",
+      changes: [
+        "Change default panel shown on first visit to PlaylistInputPage as PlayingPanel",
+      ],
+    },
   ],
 };
 
