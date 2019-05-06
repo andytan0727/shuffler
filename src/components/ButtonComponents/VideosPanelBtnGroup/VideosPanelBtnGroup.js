@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import CreateIcon from "@material-ui/icons/Create";
 import AddIcon from "@material-ui/icons/Add";
@@ -27,6 +28,7 @@ const noVideoSelectedAlert = async () => {
 
 const VideosPanelBtnGroup = (props) => {
   const {
+    preferDarkTheme,
     checkedVideos,
     removeVideo,
     addListToPlay,
@@ -122,7 +124,12 @@ const VideosPanelBtnGroup = (props) => {
   };
 
   return (
-    <div className={styles.btnGroup}>
+    <div
+      className={classNames({
+        [styles.btnGroupLight]: !preferDarkTheme,
+        [styles.btnGroupDark]: preferDarkTheme,
+      })}
+    >
       <button onClick={handleRenameVideo} data-tooltip={"Rename video"}>
         <CreateIcon />
       </button>
@@ -146,6 +153,7 @@ const VideosPanelBtnGroup = (props) => {
 };
 
 VideosPanelBtnGroup.propTypes = {
+  preferDarkTheme: PropTypes.bool.isRequired,
   checkedVideos: PropTypes.array.isRequired,
   renameVideo: PropTypes.func.isRequired,
   removeVideo: PropTypes.func.isRequired,
@@ -153,7 +161,11 @@ VideosPanelBtnGroup.propTypes = {
   removeVideoFromPlaying: PropTypes.func.isRequired,
 };
 
-const mapStatesToProps = ({ ytplaylist: { checkedVideos } }) => ({
+const mapStatesToProps = ({
+  userPreferences: { preferDarkTheme },
+  ytplaylist: { checkedVideos },
+}) => ({
+  preferDarkTheme,
   checkedVideos,
 });
 

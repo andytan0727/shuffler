@@ -11,24 +11,31 @@ import { move } from "../../../utils/helper/arrayHelper";
 import styles from "./styles.module.scss";
 
 const InputTabs = (props) => {
+  const { preferDarkTheme } = props;
   const [checkedButton, setCheckedButton] = useState("radio-playing");
   const radios = ["radio-videolist", "radio-video", "radio-playing"];
   const panels = [
     {
       panelIdx: 0,
-      class: styles.videolistPanel,
+      class: classNames(styles.videolistPanel, {
+        [styles.videolistPanelLight]: !preferDarkTheme,
+      }),
       radio: "radio-videolist",
       Component: VideoListPanel,
     },
     {
       panelIdx: 1,
-      class: styles.videoPanel,
+      class: classNames(styles.videoPanel, {
+        [styles.videoPanelLight]: !preferDarkTheme,
+      }),
       radio: "radio-video",
       Component: VideosPanel,
     },
     {
       panelIdx: 2,
-      class: styles.playingPanel,
+      class: classNames(styles.playingPanel, {
+        [styles.playingPanelLight]: !preferDarkTheme,
+      }),
       radio: "radio-playing",
       Component: PlayingPanel,
     },
@@ -48,6 +55,7 @@ const InputTabs = (props) => {
       <SwitchPanelRadioBtn
         checkedButton={checkedButton}
         handleChangePanel={handleChangePanel}
+        preferDarkTheme={preferDarkTheme}
       />
 
       <div className={styles.playlistPanelsDiv}>

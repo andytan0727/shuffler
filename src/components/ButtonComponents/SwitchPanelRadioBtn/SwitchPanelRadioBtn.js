@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -7,7 +8,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import styles from "./styles.module.scss";
 
 const SwitchPanelRadioBtn = (props) => {
-  const { checkedButton, handleChangePanel } = props;
+  const { checkedButton, handleChangePanel, preferDarkTheme } = props;
 
   return (
     <div className={styles.switchPanelRadio}>
@@ -17,7 +18,9 @@ const SwitchPanelRadioBtn = (props) => {
           type="radio"
           name="playlist-panels"
           value="radio-videolist"
-          className={styles.radioSelector}
+          className={classNames(styles.radioSelector, {
+            [styles.radioSelectorLight]: !preferDarkTheme,
+          })}
           checked={checkedButton === "radio-videolist"}
           onChange={handleChangePanel}
         />
@@ -32,7 +35,9 @@ const SwitchPanelRadioBtn = (props) => {
           type="radio"
           name="playlist-panels"
           value="radio-video"
-          className={styles.radioSelector}
+          className={classNames(styles.radioSelector, {
+            [styles.radioSelectorLight]: !preferDarkTheme,
+          })}
           checked={checkedButton === "radio-video"}
           onChange={handleChangePanel}
         />
@@ -47,11 +52,13 @@ const SwitchPanelRadioBtn = (props) => {
           type="radio"
           name="playlist-panels"
           value="radio-playing"
-          className={styles.radioSelector}
+          className={classNames(styles.radioSelector, {
+            [styles.radioSelectorLight]: !preferDarkTheme,
+          })}
           checked={checkedButton === "radio-playing"}
           onChange={handleChangePanel}
         />
-        <label htmlFor="playingRadio" className="tab-label-3">
+        <label htmlFor="playingRadio">
           <PlayArrowIcon />
         </label>
       </div>
@@ -62,6 +69,7 @@ const SwitchPanelRadioBtn = (props) => {
 SwitchPanelRadioBtn.propTypes = {
   checkedButton: PropTypes.string.isRequired,
   handleChangePanel: PropTypes.func.isRequired,
+  preferDarkTheme: PropTypes.bool.isRequired,
 };
 
 export default SwitchPanelRadioBtn;

@@ -75,13 +75,25 @@
       position: relative;
     }
 
+    .videolistPanelLight {
+      background: white !important;
+    }
+
     .videoPanel {
       @extend %panelDiv;
       position: relative;
     }
 
+    .videoPanelLight {
+      background: white !important;
+    }
+
     .playingPanel {
       @extend %panelDiv;
+    }
+
+    .playingPanelLight {
+      background: white !important;
     }
   }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -16,7 +17,13 @@ import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
 import styles from "./styles.module.scss";
 
 const PlayingPanel = (props) => {
-  const { listToPlay, history, clearListToPlay, shufflePlaylist } = props;
+  const {
+    preferDarkTheme,
+    listToPlay,
+    history,
+    clearListToPlay,
+    shufflePlaylist,
+  } = props;
 
   const handleRedirectToPlayer = () => {
     if (!listToPlay.length) {
@@ -61,7 +68,12 @@ const PlayingPanel = (props) => {
         Playing
       </h2>
       <CombinedPlaylist />
-      <div className={styles.playingPanelBtnGroup}>
+      <div
+        className={classNames({
+          [styles.playingPanelBtnGroupLight]: !preferDarkTheme,
+          [styles.playingPanelBtnGroupDark]: preferDarkTheme,
+        })}
+      >
         <button onClick={handleRedirectToPlayer} data-tooltip="Play">
           <PlayArrowIcon />
         </button>
@@ -85,13 +97,18 @@ const PlayingPanel = (props) => {
 };
 
 PlayingPanel.propTypes = {
+  preferDarkTheme: PropTypes.bool.isRequired,
   listToPlay: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
   clearListToPlay: PropTypes.func.isRequired,
   shufflePlaylist: PropTypes.func.isRequired,
 };
 
-const mapStatesToProps = ({ ytplaylist: { listToPlay } }) => ({
+const mapStatesToProps = ({
+  userPreferences: { preferDarkTheme },
+  ytplaylist: { listToPlay },
+}) => ({
+  preferDarkTheme,
   listToPlay,
 });
 
