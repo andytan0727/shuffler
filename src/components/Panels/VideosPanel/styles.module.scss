@@ -11,6 +11,10 @@
   grid-template-columns: 100%;
   grid-template-rows: min-content auto min-content;
   grid-row-gap: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
 
   .videos {
     height: 400px;
@@ -36,13 +40,24 @@
       div {
         width: 100%;
         display: grid;
-        grid-template-columns: min-content auto;
-        grid-column-gap: 10px;
+        grid-template-columns: min-content 19rem min-content;
+        grid-column-gap: 0.8rem;
         align-items: center;
+
+        .checkBox {
+          height: 25px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+
+          & span {
+            display: flex;
+            align-items: center;
+          }
+        }
 
         span {
           display: inline-block;
-          width: 300px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;

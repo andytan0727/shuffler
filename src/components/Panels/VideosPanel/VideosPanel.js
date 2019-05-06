@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+import Checkbox from "@material-ui/core/Checkbox";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import { setCheckedVideos } from "../../../store/ytplaylist/action";
 import SearchInput from "../../InputComponents/SearchInput";
@@ -15,6 +18,24 @@ const VideosPanel = (props) => {
     ytplaylist: { videos, checkedVideos, playingVideos },
     setCheckedVideos,
   } = props;
+
+  const _checkVideos = (videoId) => {
+    const currentIndex = checkedVideos.indexOf(videoId);
+    const newSelected = [...checkedVideos];
+
+    if (currentIndex === -1) {
+      newSelected.push(videoId);
+    } else {
+      newSelected.splice(currentIndex, 1);
+    }
+
+    setCheckedVideos(newSelected);
+  };
+
+  const handleCheckVideos = (e) => {
+    const selectedVideosId = e.target.value;
+    _checkVideos(selectedVideosId);
+  };
 
   const handleSelectVideoItem = (e) => {
     const selectedVideoId = e.currentTarget.getAttribute("data-videoid");
@@ -50,8 +71,16 @@ const VideosPanel = (props) => {
                   data-videoid={video.id}
                 >
                   <div>
-                    {playingVideos.includes(video.id) && <MusicVideoIcon />}
+                    <Checkbox
+                      className={styles.checkBox}
+                      checked={checkedVideos.includes(video.id)}
+                      icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                      checkedIcon={<CheckBoxIcon fontSize="small" />}
+                      value={video.id}
+                      onChange={handleCheckVideos}
+                    />
                     <span>{video.name || video.items[0].snippet.title}</span>
+                    {playingVideos.includes(video.id) && <MusicVideoIcon />}
                   </div>
                 </div>
               </React.Fragment>

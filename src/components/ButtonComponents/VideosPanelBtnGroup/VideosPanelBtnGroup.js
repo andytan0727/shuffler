@@ -3,14 +3,16 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import CreateIcon from "@material-ui/icons/Create";
 import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import {
   addListToPlay,
   removeVideo,
   renameVideo,
+  removeVideoFromPlaying,
 } from "../../../store/ytplaylist/action";
-import { generateCustomSwal } from "../../../utils/helper/notifyHelper";
+import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
 
@@ -24,11 +26,15 @@ const noVideoSelectedAlert = async () => {
 };
 
 const VideosPanelBtnGroup = (props) => {
-  const { checkedVideos, removeVideo, addListToPlay, renameVideo } = props;
+  const {
+    checkedVideos,
+    removeVideo,
+    addListToPlay,
+    renameVideo,
+    removeVideoFromPlaying,
+  } = props;
 
   const handleAddVideosToPlaying = async () => {
-    const customSwal = await generateCustomSwal();
-
     if (!checkedVideos.length) {
       await noVideoSelectedAlert();
       return;
@@ -39,11 +45,7 @@ const VideosPanelBtnGroup = (props) => {
       persist: true,
     });
 
-    await customSwal.fire(
-      "Added.",
-      "Selected video is added to playing list 😎",
-      "success"
-    );
+    notify("success", "Successfully added selected video(s) to playing 😎");
   };
 
   const handleRemoveVideo = async () => {
@@ -67,6 +69,17 @@ const VideosPanelBtnGroup = (props) => {
       removeVideo();
       await customSwal.fire("Deleted!", "Video(s) deleted 😎", "success");
     }
+  };
+
+  const handleRemoveVideoFromPlaying = async () => {
+    if (!checkedVideos.length) {
+      await noVideoSelectedAlert();
+      return;
+    }
+
+    removeVideoFromPlaying();
+
+    notify("success", "Successfully removed video(s) from playing 😎");
   };
 
   const handleRenameVideo = async () => {
@@ -119,6 +132,12 @@ const VideosPanelBtnGroup = (props) => {
       >
         <AddIcon />
       </button>
+      <button
+        onClick={handleRemoveVideoFromPlaying}
+        data-tooltip={"Remove from playing"}
+      >
+        <RemoveIcon />
+      </button>
       <button onClick={handleRemoveVideo} data-tooltip={"Delete video"}>
         <DeleteIcon />
       </button>
@@ -131,6 +150,7 @@ VideosPanelBtnGroup.propTypes = {
   renameVideo: PropTypes.func.isRequired,
   removeVideo: PropTypes.func.isRequired,
   addListToPlay: PropTypes.func.isRequired,
+  removeVideoFromPlaying: PropTypes.func.isRequired,
 };
 
 const mapStatesToProps = ({ ytplaylist: { checkedVideos } }) => ({
@@ -143,5 +163,6 @@ export default connect(
     addListToPlay,
     removeVideo,
     renameVideo,
+    removeVideoFromPlaying,
   }
 )(VideosPanelBtnGroup);

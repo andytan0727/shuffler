@@ -16,6 +16,7 @@ import {
   RENAME_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
+  REMOVE_VIDEO_FROM_PLAYING,
 } from "../../utils/constants/actionConstants";
 
 /**
@@ -98,6 +99,16 @@ const addPlayingPlaylists = (playlists, persist) => ({
     playlists,
     persist,
   },
+});
+
+/**
+ * Remove selected playlist(s) from playingList
+ *
+ * @returns REMOVE_PLAYLIST_FROM_PLAYING action object for redux store
+ *
+ */
+const removePlaylistFromPlaying = () => ({
+  type: REMOVE_PLAYLIST_FROM_PLAYING,
 });
 
 // -----------------------------------------------
@@ -190,8 +201,14 @@ const clearListToPlay = () => ({
   type: CLEAR_LIST_TO_PLAY,
 });
 
-const removePlaylistFromPlaying = () => ({
-  type: REMOVE_PLAYLIST_FROM_PLAYING,
+/**
+ * Remove selected video(s) from playingList
+ *
+ * @returns REMOVE_VIDEO_FROM_PLAYING action object for redux store
+ *
+ */
+const removeVideoFromPlaying = () => ({
+  type: REMOVE_VIDEO_FROM_PLAYING,
 });
 
 export {
@@ -212,4 +229,5 @@ export {
   renameVideo,
   setCheckedVideos,
   addPlayingVideos,
+  removeVideoFromPlaying,
 };
