@@ -55,6 +55,14 @@ const initialStates = {
         "Change default panel shown on first visit to PlaylistInputPage as PlayingPanel",
       ],
     },
+    {
+      version: "2.2.0",
+      changes: [
+        "Renew layout for video panel",
+        "Added function to remove video from playing list",
+        "Fix: broken playlistInputPage UI color on light mode",
+      ],
+    },
   ],
 };
 

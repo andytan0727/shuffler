@@ -1,6 +1,6 @@
 {
   "name": "yt_random_player",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "private": true,
   "homepage": "https://shuffler.surge.sh",
   "dependencies": {
