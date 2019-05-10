@@ -63,6 +63,10 @@ const initialStates = {
         "Fix: broken playlistInputPage UI color on light mode",
       ],
     },
+    {
+      version: "2.3.0",
+      changes: ["New layout in YT Player page"],
+    },
   ],
 };
 
