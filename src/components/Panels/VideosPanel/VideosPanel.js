@@ -79,7 +79,7 @@ const VideosPanel = (props) => {
                       value={video.id}
                       onChange={handleCheckVideos}
                     />
-                    <span>{video.name || video.items[0].snippet.title}</span>
+                    <span>{video.items[0].snippet.title}</span>
                     {playingVideos.includes(video.id) && <MusicVideoIcon />}
                   </div>
                 </div>

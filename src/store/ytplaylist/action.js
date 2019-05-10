@@ -13,7 +13,6 @@ import {
   // videos
   ADD_VIDEO,
   REMOVE_VIDEO,
-  RENAME_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
   REMOVE_VIDEO_FROM_PLAYING,
@@ -137,19 +136,6 @@ const removeVideo = () => ({
 });
 
 /**
- * Rename selected video (one at once)
- *
- * @param {*} newName New name of selected video
- * @returns RENAME_VIDEO action object for redux store
- */
-const renameVideo = (newName) => ({
-  type: RENAME_VIDEO,
-  payload: {
-    newName,
-  },
-});
-
-/**
  * Set checked videos in Redux store
  * @param {array} checkedVideos checkedVideos array
  * @returns SET_CHECKED_VIDEOS action object for redux store
@@ -226,7 +212,6 @@ export {
   // videos
   addVideo,
   removeVideo,
-  renameVideo,
   setCheckedVideos,
   addPlayingVideos,
   removeVideoFromPlaying,

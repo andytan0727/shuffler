@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
-import CreateIcon from "@material-ui/icons/Create";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -10,7 +9,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {
   addListToPlay,
   removeVideo,
-  renameVideo,
   removeVideoFromPlaying,
 } from "../../../store/ytplaylist/action";
 import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
@@ -32,7 +30,6 @@ const VideosPanelBtnGroup = (props) => {
     checkedVideos,
     removeVideo,
     addListToPlay,
-    renameVideo,
     removeVideoFromPlaying,
   } = props;
 
@@ -84,45 +81,6 @@ const VideosPanelBtnGroup = (props) => {
     notify("success", "Successfully removed video(s) from playing 😎");
   };
 
-  const handleRenameVideo = async () => {
-    const customSwal = await generateCustomSwal();
-
-    if (!checkedVideos.length) {
-      await noVideoSelectedAlert();
-      return;
-    }
-
-    if (checkedVideos.length > 1) {
-      await customSwal.fire({
-        title: "You can only rename one video at once",
-        text: "Please select only one video!",
-        type: "warning",
-      });
-      return;
-    }
-
-    const { value: newName } = await customSwal.fire({
-      title: "Rename Video",
-      input: "text",
-      confirmButtonText: "Confirm",
-      showCancelButton: true,
-      inputValidator: (newName) => {
-        if (!newName) {
-          return "Please enter something 💢";
-        }
-      },
-    });
-
-    if (newName) {
-      renameVideo(newName);
-      customSwal.fire({
-        title: "All done!",
-        html: `Your selected video has been renamed to <strong>${newName}</strong>`,
-        confirmButtonText: "Yeah 😎",
-      });
-    }
-  };
-
   return (
     <div
       className={classNames({
@@ -130,9 +88,6 @@ const VideosPanelBtnGroup = (props) => {
         [styles.btnGroupDark]: preferDarkTheme,
       })}
     >
-      <button onClick={handleRenameVideo} data-tooltip={"Rename video"}>
-        <CreateIcon />
-      </button>
       <button
         onClick={handleAddVideosToPlaying}
         data-tooltip={"Add to playing list"}
@@ -155,7 +110,6 @@ const VideosPanelBtnGroup = (props) => {
 VideosPanelBtnGroup.propTypes = {
   preferDarkTheme: PropTypes.bool.isRequired,
   checkedVideos: PropTypes.array.isRequired,
-  renameVideo: PropTypes.func.isRequired,
   removeVideo: PropTypes.func.isRequired,
   addListToPlay: PropTypes.func.isRequired,
   removeVideoFromPlaying: PropTypes.func.isRequired,
@@ -174,7 +128,6 @@ export default connect(
   {
     addListToPlay,
     removeVideo,
-    renameVideo,
     removeVideoFromPlaying,
   }
 )(VideosPanelBtnGroup);

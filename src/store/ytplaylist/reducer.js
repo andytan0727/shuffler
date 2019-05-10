@@ -16,7 +16,6 @@ import {
   // videos
   ADD_VIDEO,
   REMOVE_VIDEO,
-  RENAME_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
   REMOVE_VIDEO_FROM_PLAYING,
@@ -38,7 +37,6 @@ const initialState = {
   videos: [
     // {
     //   id: "",
-    //   name: "",
     //   items: [{}]
     // }
   ],
@@ -320,35 +318,6 @@ export const ytplaylist = produce((draft, action) => {
         .then(() =>
           console.log("successfully remove removed videos in playingVideos")
         );
-
-      return draft;
-    }
-
-    case RENAME_VIDEO: {
-      if (!draft.checkedVideos.length || draft.checkedVideos.length > 1) {
-        return draft;
-      }
-
-      const newName = action.payload.newName;
-      const videos = original(draft.videos);
-      const updatedVideos = videos.map((video) => {
-        if (video.id === draft.checkedVideos[0]) {
-          video.name = newName;
-        }
-        return video;
-      });
-
-      const renamedVideo = updatedVideos.filter(
-        (video) => video.id === draft.checkedVideos[0]
-      )[0];
-
-      // reassign videos and clear checkedVideos
-      draft.videos = videos;
-
-      // update videos in indexedDB
-      dbVideos
-        .setItem(renamedVideo.id, renamedVideo)
-        .then(() => console.log("successfully saved renamed video"));
 
       return draft;
     }
