@@ -1,17 +1,17 @@
 import { useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { notify } from "../../../../utils/helper/notifyHelper";
+import { notify } from "../../../utils/helper/notifyHelper";
 import {
   setVideoUrl,
   fetchVideoData,
   addFetchedVideoId,
-} from "../../../../store/ytapi/action";
+} from "../../../store/ytapi/action";
 import {
   addVideo,
   addPlayingVideos,
   addListToPlay,
-} from "../../../../store/ytplaylist/action";
+} from "../../../store/ytplaylist/action";
 
 const SearchVideoInput = (props) => {
   const {

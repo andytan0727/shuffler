@@ -8,7 +8,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import { setCheckedVideos } from "../../../store/ytplaylist/action";
 import SearchInput from "../../Inputs/SearchInput";
-import SearchVideoInput from "./SearchVideoInput";
+import SearchVideoInput from "../../Inputs/SearchVideoInput";
 import VideosPanelBtnGroup from "../../Buttons/VideosPanelBtnGroup";
 
 import styles from "./styles.module.scss";
