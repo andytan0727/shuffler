@@ -25,7 +25,7 @@ import { dbPlaylist, dbSongList, dbVideos } from "../../utils/helper/dbHelper";
 
 const initialState = {
   loadedFromDB: false,
-  checkedPlaylists: [], // pushed playlistId from checkbox in SavedPlaylist
+  checkedPlaylists: [], // pushed playlistId from selected playlists
   checkedVideos: [], // pushed videoId from checkbox
   playlists: [
     // {

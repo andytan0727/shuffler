@@ -57,7 +57,7 @@ const renamePlaylist = (newName, playlistId) => ({
 
 /**
  * Set checked playlist in Redux store
- * @param {array} checkedPlaylists checkedPlaylists in SavedPlaylist component
+ * @param {array} checkedPlaylists selected playlists
  * @returns SET_CHECKED_PLAYLISTS action object for redux store
  */
 const setCheckedPlaylists = (checkedPlaylists) => ({
