@@ -1,0 +1,70 @@
+@import "../../../utils/styles/colors";
+
+%playingPanelBtnGroup {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    background-color: transparent;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      background-color: rgba(white, 0.2);
+
+      &::after {
+        content: attr(data-tooltip);
+        width: 150px;
+        position: absolute;
+        bottom: -35px;
+        background-color: $softBlack;
+        color: white;
+        padding: 5px;
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    svg {
+      fill: white;
+    }
+  }
+}
+
+.playingPanelBtnGroupLight {
+  @extend %playingPanelBtnGroup;
+
+  button {
+    border: 2px solid black;
+
+    &:hover {
+      background-color: rgba(black, 0.2);
+
+      &::after {
+        background-color: white;
+        color: black;
+        border: 2px solid black;
+      }
+    }
+
+    svg {
+      fill: black;
+    }
+  }
+}
+
+.playingPanelBtnGroupDark {
+  @extend %playingPanelBtnGroup;
+}
