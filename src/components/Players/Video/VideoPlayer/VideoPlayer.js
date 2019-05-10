@@ -22,9 +22,7 @@ const VideoPlayer = (props) => {
       {listToPlay.length !== 0 && (
         <div className={styles.playerWrapper}>
           <YouTubeIFrame ref={ytPlayer} />
-          <div>
-            <PlayerBasicCtrlBtnGroup ytPlayerRef={ytPlayer} />
-          </div>
+          <PlayerBasicCtrlBtnGroup ytPlayerRef={ytPlayer} />
         </div>
       )}
     </React.Fragment>
