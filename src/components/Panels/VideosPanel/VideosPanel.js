@@ -7,9 +7,9 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import { setCheckedVideos } from "../../../store/ytplaylist/action";
-import SearchInput from "../../InputComponents/SearchInput";
+import SearchInput from "../../Inputs/SearchInput";
 import SearchVideoInput from "./SearchVideoInput";
-import VideosPanelBtnGroup from "../../ButtonComponents/VideosPanelBtnGroup";
+import VideosPanelBtnGroup from "../../Buttons/VideosPanelBtnGroup";
 
 import styles from "./styles.module.scss";
 

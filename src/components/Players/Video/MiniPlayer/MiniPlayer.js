@@ -9,7 +9,7 @@ import ListIcon from "@material-ui/icons/List";
 import CloseIcon from "@material-ui/icons/Close";
 import { useTransition, animated } from "react-spring";
 import YouTubeIFrame from "../../YouTubeIFrame";
-import PlayerBasicCtrlBtnGroup from "../../../ButtonComponents/PlayerBasicCtrlBtnGroup";
+import PlayerBasicCtrlBtnGroup from "../../../Buttons/PlayerBasicCtrlBtnGroup";
 import LargePlaylist from "./LargePlaylist";
 
 import styles from "./styles.module.scss";

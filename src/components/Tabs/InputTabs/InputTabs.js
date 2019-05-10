@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
-import SwitchPanelRadioBtn from "../../ButtonComponents/SwitchPanelRadioBtn";
+import SwitchPanelRadioBtn from "../../Buttons/SwitchPanelRadioBtn";
 import VideoListPanel from "../../Panels/VideoListPanel";
 import VideosPanel from "../../Panels/VideosPanel";
 import PlayingPanel from "../../Panels/PlayingPanel/PlayingPanel";

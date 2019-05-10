@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { connect } from "react-redux";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import VideoList from "../../../components/ListComponents/VideoList";
+import VideoList from "../../../components/Lists/VideoList";
 
 import { setCurSongIdx } from "../../../store/ytplayer/action";
 

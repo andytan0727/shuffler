@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import CombinedPlaylist from "../../ListComponents/CombinedPlaylist";
+import CombinedPlaylist from "../../Lists/CombinedPlaylist";
 
-import PlayingPanelBtnGroup from "../../ButtonComponents/PlayingPanelBtnGroup";
+import PlayingPanelBtnGroup from "../../Buttons/PlayingPanelBtnGroup";
 
 import styles from "./styles.module.scss";
 

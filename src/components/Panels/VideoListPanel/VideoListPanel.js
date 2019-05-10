@@ -7,10 +7,10 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
-import SearchInput from "../../InputComponents/SearchInput";
+import SearchInput from "../../Inputs/SearchInput";
 import SearchPlaylistInput from "./SearchPlaylistInput";
-import VideoListPanelBtnGroup from "../../ButtonComponents/VideoListPanelBtnGroup";
-import VideoList from "../../ListComponents/VideoList";
+import VideoListPanelBtnGroup from "../../Buttons/VideoListPanelBtnGroup";
+import VideoList from "../../Lists/VideoList";
 
 import {
   setCheckedPlaylists,
