@@ -79,11 +79,7 @@ const VideoListPanelBtnGroup = (props) => {
 
     if (result.value) {
       removePlaylist();
-      await customSwal.fire(
-        "Deleted!",
-        "Playlist has been deleted 😎",
-        "success"
-      );
+      notify("success", "Successfully deleted playlist(s) 😎");
     }
   };
 
