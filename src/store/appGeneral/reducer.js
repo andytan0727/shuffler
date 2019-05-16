@@ -67,6 +67,13 @@ const initialStates = {
       version: "2.3.0",
       changes: ["New layout in YT Player page"],
     },
+    {
+      version: "2.3.1",
+      changes: [
+        "Fix: hidden video title in YT Player",
+        "Fix: scaling problem of panels in smaller screen",
+      ],
+    },
   ],
 };
 
