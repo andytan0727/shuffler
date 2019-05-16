@@ -62,8 +62,9 @@ const InputTabs = (props) => {
         {move(panels, radios.indexOf(checkedButton), 1).map((panel) => (
           <div
             key={panel.radio}
-            className={classNames(panel.class, styles.inactivePanel, {
-              [styles.currentInactive]: panel.radio === checkedButton,
+            className={classNames(panel.class, {
+              [styles.inactivePanel]: panel.radio !== checkedButton,
+              [styles.activePanel]: panel.radio === checkedButton,
             })}
             data-panel={panel.panelIdx}
             onClick={
@@ -73,16 +74,6 @@ const InputTabs = (props) => {
             <panel.Component />
           </div>
         ))}
-        {panels
-          .filter((panel) => panel.radio === checkedButton)
-          .map((panel) => (
-            <div
-              key={panel.radio}
-              className={classNames(panel.class, styles.activePanel)}
-            >
-              <panel.Component />
-            </div>
-          ))}
       </div>
     </div>
   );
