@@ -168,6 +168,12 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case SET_CHECKED_PLAYLISTS: {
+      // clear checked videos before operating checked videos
+      // prevent error caused by simultaneously checked videos and playlists
+      if (draft.checkedVideos.length !== 0) {
+        draft.checkedVideos = [];
+      }
+
       draft.checkedPlaylists = action.payload.checkedPlaylists;
 
       return draft;
@@ -323,6 +329,12 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case SET_CHECKED_VIDEOS: {
+      // clear checked playlists before operating checked videos
+      // prevent error caused by simultaneously checked videos and playlists
+      if (draft.checkedPlaylists.length !== 0) {
+        draft.checkedPlaylists = [];
+      }
+
       draft.checkedVideos = action.payload.checkedVideos;
       return draft;
     }
