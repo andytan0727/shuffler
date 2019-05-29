@@ -74,6 +74,13 @@ const initialStates = {
         "Fix: scaling problem of panels in smaller screen",
       ],
     },
+    {
+      version: "2.4.0",
+      changes: [
+        "Fix: error when simultaneously checked videos and playlists",
+        "Shuffler now shuffles playlist after the playing list ends with loop enabled",
+      ],
+    },
   ],
 };
 
