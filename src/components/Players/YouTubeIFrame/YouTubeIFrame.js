@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import YouTube from "react-youtube";
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import { setCurSongIdx, setVideoPlaying } from "../../../store/ytplayer/action";
+import { shufflePlaylist } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";
 
 const YouTubeIFrame = (props) => {
@@ -20,6 +21,7 @@ const YouTubeIFrame = (props) => {
     // actions
     setCurSongIdx,
     setVideoPlaying,
+    shufflePlaylist,
   } = props;
   const matchesMobile = useMediaQuery("(max-width: 420px)");
   const [vidWidth, setVidWidth] = useState(0);
@@ -54,8 +56,11 @@ const YouTubeIFrame = (props) => {
         notify("info", "🚀 You have reached last video in your playlist");
         setPause(); // set pause to prevent playing bug on last video
       } else {
-        // repeat to first item in playing list
+        // if repeat is turned on
+        // reindex to the first item in playing list
+        // and shuffle it
         setCurSongIdx(0);
+        shufflePlaylist();
       }
       return;
     }
@@ -120,6 +125,7 @@ YouTubeIFrame.propTypes = {
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
   setVideoPlaying: PropTypes.func.isRequired,
+  shufflePlaylist: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -141,6 +147,7 @@ const ConnectedYouTubeIFrame = connect(
   {
     setCurSongIdx,
     setVideoPlaying,
+    shufflePlaylist,
   }
 )(YouTubeIFrame);
 
