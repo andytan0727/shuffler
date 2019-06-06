@@ -81,6 +81,10 @@ const initialStates = {
         "Shuffler now shuffles playlist after the playing list ends with loop enabled",
       ],
     },
+    {
+      version: "2.4.1",
+      changes: ["Fix: several vulnerabilities"],
+    },
   ],
 };
 
