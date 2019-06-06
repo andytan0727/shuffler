@@ -23,7 +23,7 @@
     "react-scripts": "2.1.8",
     "react-spring": "^8.0.19",
     "react-swipeable-views": "^0.13.1",
-    "react-toastify": "^5.0.0-rc.3",
+    "react-toastify": "5.2.1",
     "react-window": "^1.7.1",
     "react-youtube": "^7.9.0",
     "redux": "^4.0.1",

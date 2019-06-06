@@ -24,6 +24,8 @@ const notify = async (type, message) => {
     const { toast } = await retryLazy(() => import("react-toastify"));
     await import("react-toastify/dist/ReactToastify.min.css");
 
+    toast.configure();
+
     switch (type) {
       case "error": {
         toast.error(message, {
