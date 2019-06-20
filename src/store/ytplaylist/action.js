@@ -20,8 +20,12 @@ import {
   REMOVE_VIDEO_FROM_PLAYING,
 } from "../../utils/constants/actionConstants";
 
-import { dbPlaylist, dbSongList, dbVideos } from "../../utils/helper/dbHelper";
+import { PlaylistDB, SongListDB, VideosDB } from "../../utils/helper/dbHelper";
 import { notify } from "../../utils/helper/notifyHelper";
+
+const playlistDB = new PlaylistDB();
+const songListDB = new SongListDB();
+const videosDB = new VideosDB();
 
 /**
  * Add fetched playlist items to Redux store
@@ -63,16 +67,7 @@ const addPlaylist = ({ persist, playlist }) => {
 
     // add to indexedDB as well
     if (persist) {
-      updatedPlaylists.forEach((playlist) => {
-        dbPlaylist
-          .setItem(playlist.id, playlist)
-          .then(() => {
-            console.log(
-              `successfully added playlist-${playlist.id} to playlistDB`
-            );
-          })
-          .catch((err) => console.error(err));
-      });
+      playlistDB.addPlaylists(updatedPlaylists);
     }
   };
 };
@@ -110,22 +105,9 @@ const removePlaylist = () => {
       },
     });
 
-    // update playlists array with removed playlists from indexedDB
-    playlistsToRemove.forEach((playlistId) => {
-      dbPlaylist
-        .removeItem(playlistId)
-        .then(() => console.log(`successfully removed playlist-${playlistId}`))
-        .catch((err) =>
-          console.log("Error in removing playlist from indexedDB")
-        );
-    });
-
-    // update playingPlaylists with removed playlists in indexedDB
-    dbSongList
-      .setItem("playingPlaylists", updatedPlayingPlaylists)
-      .then(() =>
-        console.log("successfully remove removed playlists in playingPlaylists")
-      );
+    // update playlists and playingPlaylists in indexedDB
+    playlistDB.removePlaylists(playlistsToRemove);
+    songListDB.updatePlayingPlaylists(updatedPlayingPlaylists);
   };
 };
 
@@ -159,9 +141,7 @@ const renamePlaylist = (newName, playlistIdToRename) => {
     });
 
     // update playlists in indexedDB
-    dbPlaylist
-      .setItem(renamedPlaylist.id, renamedPlaylist)
-      .then(() => console.log("successfully saved renamed playlist"));
+    playlistDB.updatePlaylist(renamedPlaylist.id, renamedPlaylist);
   };
 };
 
@@ -198,10 +178,7 @@ const shufflePlaylist = () => {
       });
 
       // add to indexedDB as well
-      dbSongList
-        .setItem("listToPlay", updatedListToPlay)
-        .then(() => console.log("add shuffled listToPlay to songListDB"))
-        .catch((err) => console.error(err));
+      songListDB.updateListToPlay(updatedListToPlay);
     }
   };
 };
@@ -244,10 +221,7 @@ const addPlayingPlaylists = (playlistIdsToAdd, persist) => {
 
     // save to indexedDB
     if (persist) {
-      dbSongList
-        .setItem("playingPlaylists", updatedPlayingPlaylists)
-        .then(() => console.log("successfully saved playingPlaylists"))
-        .catch((err) => console.error(err));
+      songListDB.updatePlayingPlaylists(updatedPlayingPlaylists);
     }
   };
 };
@@ -316,19 +290,8 @@ const removePlaylistFromPlaying = () => {
     dispatch(setCheckedPlaylists([]));
 
     // save to indexedDB
-    // save listToPlay
-    dbSongList
-      .setItem("listToPlay", updatedListToPlay)
-      .then(() => console.log("successfully added listToPlay to songListDB"))
-      .catch((err) => console.error(err));
-
-    // save playingPlaylists
-    dbSongList
-      .setItem("playingPlaylists", updatedPlayingPlaylists)
-      .then(() =>
-        console.log("successfully saved playingPlaylists to songListDB")
-      )
-      .catch((err) => console.error(err));
+    songListDB.updateListToPlay(listToPlay);
+    songListDB.updatePlayingPlaylists(updatedPlayingPlaylists);
   };
 };
 
@@ -373,14 +336,7 @@ const addVideo = ({ persist, video: videoToAdd }) => {
 
     // add to indexedDB as well
     if (persist) {
-      updatedVideos.forEach((video) => {
-        dbVideos
-          .setItem(video.id, video)
-          .then(() => {
-            console.log(`successfully added video-${video.id} to playlistDB`);
-          })
-          .catch((err) => console.error(err));
-      });
+      videosDB.addVideos(updatedVideos);
     }
   };
 };
@@ -415,20 +371,11 @@ const removeVideo = () => {
       },
     });
 
-    // update videos with removed vides from indexedDB
+    // save to indexedDB
     videosToRemove.forEach((videoId) => {
-      dbVideos
-        .removeItem(videoId)
-        .then(() => console.log(`successfully removed video-${videoId}`))
-        .catch((err) => console.error(err));
+      videosDB.removeVideo(videoId);
     });
-
-    // update playingVideos with removed videos in indexedDB
-    dbSongList
-      .setItem("playingVideos", updatedPlayingVideos)
-      .then(() =>
-        console.log("successfully remove removed videos in playingVideos")
-      );
+    songListDB.updatePlayingVideos(updatedPlayingVideos);
   };
 };
 
@@ -468,10 +415,7 @@ const addPlayingVideos = (videosId, persist) => {
 
     // save to indexedDB
     if (persist) {
-      dbSongList
-        .setItem("playingVideos", updatedPlayingVideos)
-        .then(() => console.log("successfully saved playingVideos"))
-        .catch((err) => console.error(err));
+      songListDB.updatePlayingVideos(updatedPlayingVideos);
     }
   };
 };
@@ -550,26 +494,9 @@ const addListToPlay = ({ checked, persist, listToAdd }) => {
     });
 
     if (persist) {
-      // save listToPlay
-      dbSongList
-        .setItem("listToPlay", uniqueListToPlay)
-        .then(() => console.log("successfully added listToPlay to songListDB"))
-        .catch((err) => console.error(err));
-
-      // save playingPlaylists
-      dbSongList
-        .setItem("playingPlaylists", playingPlaylists)
-        .then(() =>
-          console.log("successfully saved playingPlaylists to songListDB")
-        )
-        .catch((err) => console.error(err));
-
-      // save playingVideos
-      dbSongList
-        .setItem("playingVideos", playingVideos)
-        .then(() =>
-          console.log("successfully saved playingVideos to songListDB")
-        );
+      songListDB.updateListToPlay(uniqueListToPlay);
+      songListDB.updatePlayingPlaylists(playingPlaylists);
+      songListDB.updatePlayingVideos(playingVideos);
     }
   };
 };
@@ -585,21 +512,9 @@ const clearListToPlay = () => {
     });
 
     // clear listToPlay, playingPlaylists and playingVideos in indexedDB
-    dbSongList
-      .removeItem("listToPlay")
-      .then(() => console.log("successfully removed listToPlay in songListDB"));
-
-    dbSongList
-      .removeItem("playingPlaylists")
-      .then(() =>
-        console.log("successfully removed playingPlaylists in songlistDB")
-      );
-
-    dbSongList
-      .removeItem("playingVideos")
-      .then(() =>
-        console.log("successfully removed playingVideos in songlistDB")
-      );
+    songListDB.removeListToPlay();
+    songListDB.removePlayingPlaylists();
+    songListDB.removePlayingVideos();
   };
 };
 
@@ -660,17 +575,8 @@ const removeVideoFromPlaying = () => {
     notify("success", "Successfully removed selected video(s) from playing 😎");
 
     // save to indexedDB
-    // save listToPlay
-    dbSongList
-      .setItem("listToPlay", updatedListToPlay)
-      .then(() => console.log("successfully added listToPlay to songListDB"))
-      .catch((err) => console.error(err));
-
-    // save playingVideos
-    dbSongList
-      .setItem("playingVideos", updatedPlayingVideos)
-      .then(() => console.log("successfully saved playingVideos to songListDB"))
-      .catch((err) => console.error(err));
+    songListDB.updateListToPlay(updatedListToPlay);
+    songListDB.updatePlayingVideos(updatedPlayingVideos);
   };
 };
 

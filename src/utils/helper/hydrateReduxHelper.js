@@ -1,4 +1,4 @@
-import { dbPlaylist, dbSongList, dbPreferences, dbVideos } from "./dbHelper";
+import { PlaylistDB, SongListDB, VideosDB, PreferencesDB } from "./dbHelper";
 import { setPreferDarkTheme } from "../../store/userPreferences/action";
 import {
   addPlaylist,
@@ -16,9 +16,14 @@ import {
  * @param {*} store Redux store
  */
 export const hydrateRedux = async (store) => {
+  const playlistDBInstance = new PlaylistDB().getInstance();
+  const songListDBInstance = new SongListDB().getInstance();
+  const videosDBInstance = new VideosDB().getInstance();
+  const preferencesDBInstance = new PreferencesDB().getInstance();
+
   try {
     // hydrate user theme preference
-    const isPreferDarkTheme = await dbPreferences.getItem("darkTheme");
+    const isPreferDarkTheme = await preferencesDBInstance.getItem("darkTheme");
     // throws error if isPreferDarkTheme is not saved
     if (isPreferDarkTheme == null) {
       throw new Error("dark theme setting is not found in indexedDB");
@@ -36,12 +41,12 @@ export const hydrateRedux = async (store) => {
 
   try {
     // hydrate playlist
-    const dbPlaylistKeys = await dbPlaylist.keys();
+    const dbPlaylistKeys = await playlistDBInstance.keys();
     if (!dbPlaylistKeys.length) {
       throw new Error("Playlist not found in indexedDB");
     }
 
-    await dbPlaylist.iterate((value, _) => {
+    await playlistDBInstance.iterate((value, _) => {
       store.dispatch(
         addPlaylist({
           persist: false,
@@ -55,10 +60,10 @@ export const hydrateRedux = async (store) => {
 
   try {
     // hydrate videos
-    const dbVideosKeys = await dbVideos.keys();
+    const dbVideosKeys = await videosDBInstance.keys();
     if (!dbVideosKeys.length) throw new Error("Videos not found in indexedDB");
 
-    await dbVideos.iterate((value, _) => {
+    await videosDBInstance.iterate((value, _) => {
       store.dispatch(
         addVideo({
           persist: false,
@@ -72,7 +77,7 @@ export const hydrateRedux = async (store) => {
 
   try {
     // hydrate list to play
-    const dbSongListArr = await dbSongList.getItem("listToPlay");
+    const dbSongListArr = await songListDBInstance.getItem("listToPlay");
     if (!dbSongListArr || !dbSongListArr.length) {
       throw new Error("SongList to play not found in indexedDB");
     }
@@ -90,7 +95,9 @@ export const hydrateRedux = async (store) => {
 
   try {
     // hydrate playing playlists
-    const dbPlayingPlaylistsArr = await dbSongList.getItem("playingPlaylists");
+    const dbPlayingPlaylistsArr = await songListDBInstance.getItem(
+      "playingPlaylists"
+    );
     if (!dbPlayingPlaylistsArr || !dbPlayingPlaylistsArr.length) {
       throw new Error("Playing playlists not found in indexedDB");
     }
@@ -102,7 +109,9 @@ export const hydrateRedux = async (store) => {
 
   try {
     // hydrate playing videos
-    const dbPlayingVideosArr = await dbSongList.getItem("playingVideos");
+    const dbPlayingVideosArr = await songListDBInstance.getItem(
+      "playingVideos"
+    );
     if (!dbPlayingVideosArr || !dbPlayingVideosArr.length)
       throw new Error("Playing videos not found in indexedDB");
 

@@ -1,5 +1,7 @@
 import { SET_PREFER_DARK_THEME } from "../../utils/constants/actionConstants";
-import { dbPreferences } from "../../utils/helper/dbHelper";
+import { PreferencesDB } from "../../utils/helper/dbHelper";
+
+const preferencesDB = new PreferencesDB();
 
 /**
  * Set user theme preference to Redux store
@@ -18,9 +20,7 @@ const setPreferDarkTheme = ({ persist, isPreferDarkTheme }) => {
 
     // persist to indexedDB
     if (persist) {
-      dbPreferences
-        .setItem("darkTheme", isPreferDarkTheme)
-        .then(() => console.log("successfully saved preferred theme"));
+      preferencesDB.setDarkTheme(isPreferDarkTheme);
     }
   };
 };
