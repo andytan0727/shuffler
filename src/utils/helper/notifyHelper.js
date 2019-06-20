@@ -26,45 +26,38 @@ const notify = async (type, message) => {
 
     toast.configure();
 
+    const toastConfig = {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 4000,
+      pauseOnFocusLoss: false,
+    };
+
     switch (type) {
       case "error": {
-        toast.error(message, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 3000,
-          pauseOnFocusLoss: false,
-        });
+        toast.error(message, toastConfig);
         break;
       }
 
       case "info": {
-        toast.info(message, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 5000,
-          pauseOnFocusLoss: false,
-        });
+        toast.info(message, toastConfig);
         break;
       }
 
       case "warning": {
-        toast.warn(message, {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 3000,
-          pauseOnFocusLoss: false,
-        });
+        toast.warn(message, toastConfig);
         break;
       }
 
       case "success": {
-        toast.success(message, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 5000,
-          pauseOnFocusLoss: false,
-        });
+        toast.success(message, toastConfig);
         break;
       }
 
       default: {
-        return;
+        toast.warn(
+          "Default toast is called. You may misconfigure notify function",
+          toastConfig
+        );
       }
     }
   } catch (err) {
