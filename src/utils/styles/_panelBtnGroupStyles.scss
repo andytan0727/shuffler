@@ -1,0 +1,41 @@
+%panelBtnGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    background-color: transparent;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      background-color: rgba(white, 0.2);
+
+      &::after {
+        content: attr(data-tooltip);
+        width: 150px;
+        position: absolute;
+        bottom: -35px;
+        background-color: $softBlack;
+        color: white;
+        padding: 5px;
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    svg {
+      fill: white;
+    }
+  }
+}
