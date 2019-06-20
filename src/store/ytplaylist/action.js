@@ -21,6 +21,7 @@ import {
 } from "../../utils/constants/actionConstants";
 
 import { dbPlaylist, dbSongList, dbVideos } from "../../utils/helper/dbHelper";
+import { notify } from "../../utils/helper/notifyHelper";
 
 /**
  * Add fetched playlist items to Redux store
@@ -266,25 +267,45 @@ const removePlaylistFromPlaying = () => {
       playingPlaylists,
     } = getState().ytplaylist;
 
+    let songsToRemove = [];
+
     if (!playlistsToRemove.length) {
       return;
     }
 
-    const songsToRemove = playlists
-      .filter((playlist) => playlistsToRemove.includes(playlist.id))
-      .flatMap((filteredPlaylist) => filteredPlaylist.items)
-      .flatMap((filteredItem) => filteredItem.id);
+    for (const playlistIdToRemove of playlistsToRemove) {
+      if (!playingPlaylists.includes(playlistIdToRemove)) {
+        notify(
+          "warning",
+          `playlist-${playlistIdToRemove} is not included in playing`
+        );
+        continue;
+      }
+
+      songsToRemove.push(
+        ...playlists
+          .filter((playlist) => playlist.id === playlistIdToRemove)
+          .flatMap((filteredPlaylist) => filteredPlaylist.items)
+          .flatMap((filteredItem) => filteredItem.id)
+      );
+
+      notify(
+        "success",
+        `Successfully removed playlist-${playlistIdToRemove} from playing 😎`
+      );
+    }
 
     // update listToPlay
     const updatedListToPlay = listToPlay.filter(
       (video) => !songsToRemove.includes(video.id)
     );
 
-    // // update playingPlaylists
+    // update playingPlaylists
     const updatedPlayingPlaylists = playingPlaylists.filter(
       (playlistId) => !playlistsToRemove.includes(playlistId)
     );
 
+    // remove playlists and clear checked playlists
     dispatch({
       type: REMOVE_PLAYLIST_FROM_PLAYING,
       payload: {
@@ -292,6 +313,7 @@ const removePlaylistFromPlaying = () => {
         updatedPlayingPlaylists,
       },
     });
+    dispatch(setCheckedPlaylists([]));
 
     // save to indexedDB
     // save listToPlay

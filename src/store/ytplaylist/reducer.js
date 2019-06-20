@@ -90,10 +90,8 @@ export const ytplaylist = produce((draft, action) => {
     case REMOVE_PLAYLIST_FROM_PLAYING: {
       const { updatedListToPlay, updatedPlayingPlaylists } = action.payload;
 
-      // update redux
       draft.listToPlay = updatedListToPlay;
       draft.playingPlaylists = updatedPlayingPlaylists;
-      draft.checkedPlaylists = [];
 
       return draft;
     }

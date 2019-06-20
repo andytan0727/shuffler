@@ -58,8 +58,6 @@ const VideoListPanelBtnGroup = (props) => {
     }
 
     removePlaylistFromPlaying();
-
-    notify("success", "Successfully removed playlist(s) from playing 😎");
   };
 
   const handleRemovePlaylist = async () => {
