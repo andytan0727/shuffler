@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+
+// Material Icons
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -11,7 +13,6 @@ import {
   clearListToPlay,
   shufflePlaylist,
 } from "../../../store/ytplaylist/action";
-
 import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";

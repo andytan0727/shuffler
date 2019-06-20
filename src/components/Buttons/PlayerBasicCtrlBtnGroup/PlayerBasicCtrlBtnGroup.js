@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+
+// Material Icons
 import IconButton from "@material-ui/core/IconButton";
 import LoopIcon from "@material-ui/icons/Loop";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
@@ -9,8 +11,8 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
-import { useKeyDown } from "../../../utils/helper/keyboardShortcutHelper";
 
+import { useKeyDown } from "../../../utils/helper/keyboardShortcutHelper";
 import { setCurSongIdx, toggleRepeat } from "../../../store/ytplayer/action";
 import { shufflePlaylist } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";

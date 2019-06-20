@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+
+// Material Icons
 import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";

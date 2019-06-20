@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
-import SwitchPanelRadioBtn from "../../Buttons/SwitchPanelRadioBtn";
-import VideoListPanel from "../../Panels/VideoListPanel";
-import VideosPanel from "../../Panels/VideosPanel";
-import PlayingPanel from "../../Panels/PlayingPanel/PlayingPanel";
+import { SwitchPanelRadioBtn } from "../../Buttons";
+import * as PanelComponent from "../../Panels";
 import { move } from "../../../utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
@@ -21,7 +19,7 @@ const InputTabs = (props) => {
         [styles.videolistPanelLight]: !preferDarkTheme,
       }),
       radio: "radio-videolist",
-      Component: VideoListPanel,
+      Component: PanelComponent.VideoListPanel,
     },
     {
       panelIdx: 1,
@@ -29,7 +27,7 @@ const InputTabs = (props) => {
         [styles.videoPanelLight]: !preferDarkTheme,
       }),
       radio: "radio-video",
-      Component: VideosPanel,
+      Component: PanelComponent.VideosPanel,
     },
     {
       panelIdx: 2,
@@ -37,7 +35,7 @@ const InputTabs = (props) => {
         [styles.playingPanelLight]: !preferDarkTheme,
       }),
       radio: "radio-playing",
-      Component: PlayingPanel,
+      Component: PanelComponent.PlayingPanel,
     },
   ];
 

@@ -2,19 +2,23 @@ import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+import { useTransition, animated } from "react-spring";
+
+// Material Icons
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import PlayCircleIcon from "@material-ui/icons/PlayCircleFilled";
 import ListIcon from "@material-ui/icons/List";
 import CloseIcon from "@material-ui/icons/Close";
-import { useTransition, animated } from "react-spring";
-import YouTubeIFrame from "../../YouTubeIFrame";
-import PlayerBasicCtrlBtnGroup from "../../../Buttons/PlayerBasicCtrlBtnGroup";
-import LargePlaylist from "./LargePlaylist";
 
-import styles from "./styles.module.scss";
+import YouTubeIFrame from "../../YouTubeIFrame";
+import { PlayerBasicCtrlBtnGroup } from "../../../Buttons";
+import { LargePlaylist } from "../../../Lists";
+
 import { setCurSongIdx } from "../../../../store/ytplayer/action";
 import { setEscOverlay } from "../../../../utils/helper/keyboardShortcutHelper";
+
+import styles from "./styles.module.scss";
 
 const MiniPlayer = (props) => {
   const {

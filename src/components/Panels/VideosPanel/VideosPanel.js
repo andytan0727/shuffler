@@ -2,14 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+
+// Material Components
 import Checkbox from "@material-ui/core/Checkbox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
+
+import { SearchInput, SearchVideoInput } from "../../Inputs";
+import { VideosPanelBtnGroup } from "../../Buttons";
+
 import { setCheckedVideos } from "../../../store/ytplaylist/action";
-import SearchInput from "../../Inputs/SearchInput";
-import SearchVideoInput from "../../Inputs/SearchVideoInput";
-import VideosPanelBtnGroup from "../../Buttons/VideosPanelBtnGroup";
 
 import styles from "./styles.module.scss";
 

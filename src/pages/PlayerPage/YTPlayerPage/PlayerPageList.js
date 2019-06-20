@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+
+// Material Components
 import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import VideoList from "../../../components/Lists/VideoList";
 
+import { VideoList } from "../../../components/Lists";
 import { setCurSongIdx } from "../../../store/ytplayer/action";
 
 import styles from "./styles.module.scss";

@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
+
+// Material Components
 import Checkbox from "@material-ui/core/Checkbox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
-import SearchInput from "../../Inputs/SearchInput";
-import SearchPlaylistInput from "../../Inputs/SearchPlaylistInput";
-import VideoListPanelBtnGroup from "../../Buttons/VideoListPanelBtnGroup";
-import VideoList from "../../Lists/VideoList";
+
+import { VideoListPanelBtnGroup } from "../../Buttons";
+import { SearchInput, SearchPlaylistInput } from "../../Inputs";
+import { VideoList } from "../../Lists";
 
 import {
   setCheckedPlaylists,

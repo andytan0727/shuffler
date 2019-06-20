@@ -1,4 +1,6 @@
 import React, { forwardRef } from "react";
+
+// Material Icons
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import CancelIcon from "@material-ui/icons/Cancel";

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import MiniPlayer from "../../../components/Players/Video/MiniPlayer";
+import { MiniPlayer } from "../../../components/Players";
 import NoVideoFound from "../NoVideoFound";
 
 const MiniPlayerPage = (props) => {

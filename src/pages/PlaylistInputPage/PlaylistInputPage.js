@@ -5,7 +5,7 @@ import classNames from "classnames";
 import Switch from "@material-ui/core/Switch";
 import { withStyles } from "@material-ui/core/styles";
 
-import InputTabs from "../../components/Tabs/InputTabs";
+import { InputTabs } from "../../components/Tabs";
 import { ReactComponent as DarkThemeIcon } from "../../assets/darkThemeIcon.svg";
 import { ReactComponent as LightThemeIcon } from "../../assets/lightThemeIcon.svg";
 

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTubeIFrame from "../../YouTubeIFrame";
-import PlayerBasicCtrlBtnGroup from "../../../Buttons/PlayerBasicCtrlBtnGroup";
+import { PlayerBasicCtrlBtnGroup } from "../../../Buttons";
 
 import styles from "./styles.module.scss";
 

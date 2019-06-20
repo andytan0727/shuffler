@@ -1,5 +1,5 @@
 import React from "react";
-import TopBar from "../../components/Bars/TopBar";
+import { TopBar } from "../../components/Bars";
 
 const PgNavbar = () => <TopBar />;
 
