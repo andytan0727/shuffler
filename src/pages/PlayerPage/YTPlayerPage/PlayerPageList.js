@@ -73,7 +73,7 @@ const PlayerPageList = (props) => {
 
   useEffect(() => {
     // scroll to current song in playing list
-    if (curSongIdx !== 0 && listRef.current) {
+    if (listRef.current) {
       listRef.current.scrollToItem(curSongIdx, "center");
     }
   }, [curSongIdx]);
