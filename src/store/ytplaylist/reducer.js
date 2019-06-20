@@ -137,7 +137,6 @@ export const ytplaylist = produce((draft, action) => {
 
       draft.listToPlay = updatedListToPlay;
       draft.playingVideos = updatedPlayingVideos;
-      draft.checkedVideos = [];
 
       return draft;
     }

@@ -79,8 +79,6 @@ const VideosPanelBtnGroup = (props) => {
     }
 
     removeVideoFromPlaying();
-
-    notify("success", "Successfully removed video(s) from playing 😎");
   };
 
   return (

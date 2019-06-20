@@ -616,18 +616,36 @@ const removeVideoFromPlaying = () => {
       listToPlay,
       playingVideos,
     } = getState().ytplaylist;
+
     if (!videosToRemove.length) {
       return;
     }
 
-    // update listToPlay
-    const updatedListToPlay = listToPlay.filter(
-      (video) => !videosToRemove.includes(video.id)
-    );
+    const filteredVideosToRemove = videosToRemove.filter((videoId) => {
+      const isVideoIdIncluded = playingVideos.includes(videoId);
 
-    // // update playingVideos
+      if (!isVideoIdIncluded) {
+        notify(
+          "warning",
+          `Video-${videoId} does not included in playing list.`
+        );
+      }
+
+      return isVideoIdIncluded;
+    });
+
+    if (filteredVideosToRemove.length === 0) {
+      dispatch(setCheckedVideos([]));
+      return;
+    }
+
+    // proceed to update listToPlay and playingVideos
+    // if filteredVideosToRemove is not empty
+    const updatedListToPlay = listToPlay.filter(
+      (video) => !filteredVideosToRemove.includes(video.id)
+    );
     const updatedPlayingVideos = playingVideos.filter(
-      (videoId) => !videosToRemove.includes(videoId)
+      (videoId) => !filteredVideosToRemove.includes(videoId)
     );
 
     dispatch({
@@ -637,6 +655,9 @@ const removeVideoFromPlaying = () => {
         updatedPlayingVideos,
       },
     });
+    dispatch(setCheckedVideos([]));
+
+    notify("success", "Successfully removed selected video(s) from playing 😎");
 
     // save to indexedDB
     // save listToPlay
