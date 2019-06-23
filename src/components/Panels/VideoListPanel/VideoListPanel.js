@@ -11,13 +11,10 @@ import CloseIcon from "@material-ui/icons/Close";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 
 import { VideoListPanelBtnGroup } from "../../Buttons";
-import { SearchInput, SearchPlaylistInput } from "../../Inputs";
+import { SearchInput, SearchPlaylistInput, RenameInput } from "../../Inputs";
 import { VideoList } from "../../Lists";
 
-import {
-  setCheckedPlaylists,
-  renamePlaylist,
-} from "../../../store/ytplaylist/action";
+import { setCheckedPlaylists } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
 
@@ -25,11 +22,9 @@ const VideoListPanel = (props) => {
   const {
     ytplaylist: { playlists, checkedPlaylists, playingPlaylists },
     setCheckedPlaylists,
-    renamePlaylist,
   } = props;
   const [viewPlaylist, setViewPlaylist] = useState(false);
   const [playlistToView, setPlaylistToView] = useState([]);
-  const [editName, setEditName] = useState({});
 
   const _checkPlaylist = (playlistId) => {
     const currentIndex = checkedPlaylists.indexOf(playlistId);
@@ -49,45 +44,25 @@ const VideoListPanel = (props) => {
     setCheckedPlaylists([]);
   };
 
-  // on videoItem span child
-  const handleDoubleClick = (e) => {
-    const selectedPlaylistId = e.currentTarget.getAttribute("data-playlistid");
-    setEditName({
-      [selectedPlaylistId]: true,
-    });
-    _checkPlaylist(selectedPlaylistId);
-  };
-
-  const handleEditNameInputChange = (e) => {
-    const playlistId = e.target.getAttribute("data-playlistid");
-    renamePlaylist(e.target.value, playlistId);
-  };
-
-  const handleEditNameInputBlur = () => {
-    setEditName({});
-    setCheckedPlaylists([]);
-  };
-
   const handleCheckPlaylists = (e) => {
+    // stop event bubbling to parent div and checks checkbox twice
+    e.stopPropagation();
+
     const selectedPlaylistId = e.target.value;
     _checkPlaylist(selectedPlaylistId);
   };
 
   // place on parent div
   const handleClick = (e) => {
+    // stop event delegation to checkbox
+    e.stopPropagation();
+
     // obtain playlist id from span child
     const playlistId = Array.from(e.currentTarget.childNodes)[1].getAttribute(
       "data-playlistid"
     );
     _checkPlaylist(playlistId);
   };
-
-  useEffect(() => {
-    const input = document.querySelector('input[name="edit-name"]');
-    if (Object.keys(editName).length && input) {
-      input.focus();
-    }
-  }, [editName]);
 
   useEffect(() => {
     if (viewPlaylist && playlists.length) {
@@ -126,26 +101,7 @@ const VideoListPanel = (props) => {
                       value={playlist.id}
                       onChange={handleCheckPlaylists}
                     />
-                    {editName[playlist.id] ? (
-                      <input
-                        className={classNames(
-                          styles.editNameInput,
-                          `edit-name-${playlist.id}`
-                        )}
-                        name="edit-name"
-                        value={playlist.name}
-                        onChange={handleEditNameInputChange}
-                        onBlur={handleEditNameInputBlur}
-                        data-playlistid={playlist.id}
-                      />
-                    ) : (
-                      <span
-                        onDoubleClick={handleDoubleClick}
-                        data-playlistid={playlist.id}
-                      >
-                        {playlist.name || `Playlist - ${playlist.id}`}
-                      </span>
-                    )}
+                    <RenameInput id={playlist.id} name={playlist.name} />
                     {playingPlaylists.includes(playlist.id) && (
                       <MusicVideoIcon />
                     )}
@@ -184,7 +140,6 @@ const VideoListPanel = (props) => {
 VideoListPanel.propTypes = {
   ytplaylist: PropTypes.object.isRequired,
   setCheckedPlaylists: PropTypes.func.isRequired,
-  renamePlaylist: PropTypes.func.isRequired,
 };
 
 const mapStatesToVideoListPanelProps = ({ ytplaylist }) => ({
@@ -195,6 +150,5 @@ export default connect(
   mapStatesToVideoListPanelProps,
   {
     setCheckedPlaylists,
-    renamePlaylist,
   }
 )(VideoListPanel);

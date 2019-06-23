@@ -1,0 +1,22 @@
+@import "../../../utils/styles/colors";
+
+.editNameInput {
+  height: 25px;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  padding: 0px;
+
+  &:focus {
+    border: 2px solid $secondaryLight;
+    outline: none;
+  }
+}
+
+.editNameSpan {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
