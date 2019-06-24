@@ -2,7 +2,7 @@ import React, { forwardRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
-import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { setCurSongIdx, setVideoPlaying } from "../../../store/ytplayer/action";
 import { shufflePlaylist } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";

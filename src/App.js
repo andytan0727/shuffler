@@ -35,7 +35,6 @@ const App = (props) => {
       secondary: { main: purple["A200"] },
     },
     typography: {
-      useNextVariants: true,
       fontFamily: [
         "-apple-system",
         "BlinkMacSystemFont",

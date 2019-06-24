@@ -10,23 +10,24 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { withStyles } from "@material-ui/core/styles";
-import { unstable_useMediaQuery as useMediaQuery } from "@material-ui/core/useMediaQuery";
+import { makeStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import { ReactComponent as ShufflerTextLogo } from "../../../assets/shufflerTextLogo.svg";
 import { ReactComponent as GithubLogo } from "../../../assets/githubLogo.svg";
 
 import styles from "./styles.module.scss";
 
-const muiStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   menuAnchor: {
     textDecoration: "none",
     color: theme.palette.primary.main,
   },
-});
+}));
 
 const TopBar = (props) => {
-  const { classes, preferDarkTheme } = props;
+  const { preferDarkTheme } = props;
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
@@ -138,11 +139,10 @@ const mapStatesToProps = ({ userPreferences: { preferDarkTheme } }) => ({
 });
 
 TopBar.propTypes = {
-  classes: PropTypes.object.isRequired,
   preferDarkTheme: PropTypes.bool.isRequired,
 };
 
 export default connect(
   mapStatesToProps,
   {}
-)(withStyles(muiStyles)(TopBar));
+)(TopBar);

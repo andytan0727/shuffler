@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
 import Switch from "@material-ui/core/Switch";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { InputTabs } from "../../components/Tabs";
 import { ReactComponent as DarkThemeIcon } from "../../assets/darkThemeIcon.svg";
@@ -12,14 +12,15 @@ import { ReactComponent as LightThemeIcon } from "../../assets/lightThemeIcon.sv
 import { setPreferDarkTheme } from "../../store/userPreferences/action";
 import styles from "./styles.module.scss";
 
-const muiStyles = () => ({
+const useStyles = makeStyles({
   themeSwitch: {
     cursor: "pointer",
   },
 });
 
 const PlaylistInputPage = (props) => {
-  const { classes, preferDarkTheme, setPreferDarkTheme } = props;
+  const { preferDarkTheme, setPreferDarkTheme } = props;
+  const classes = useStyles();
 
   const handleChangeTheme = () => {
     setPreferDarkTheme({ persist: true, isPreferDarkTheme: !preferDarkTheme });
@@ -56,7 +57,6 @@ const PlaylistInputPage = (props) => {
 };
 
 PlaylistInputPage.propTypes = {
-  classes: PropTypes.object.isRequired,
   preferDarkTheme: PropTypes.bool.isRequired,
   setPreferDarkTheme: PropTypes.func,
 };
@@ -65,11 +65,9 @@ const mapStateToProps = ({ userPreferences: { preferDarkTheme } }) => ({
   preferDarkTheme,
 });
 
-const StyledPlaylistInputPage = withStyles(muiStyles)(PlaylistInputPage);
-
 export default connect(
   mapStateToProps,
   {
     setPreferDarkTheme,
   }
-)(StyledPlaylistInputPage);
+)(PlaylistInputPage);
