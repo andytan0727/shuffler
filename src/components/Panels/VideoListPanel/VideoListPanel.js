@@ -111,7 +111,13 @@ const VideoListPanel = (props) => {
             ))
           ) : (
             <div>
-              <h3>No Playlist Found</h3>
+              <h3
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                No Playlist Found
+              </h3>
             </div>
           )}
         </div>

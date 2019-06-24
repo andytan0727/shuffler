@@ -4,10 +4,12 @@
 .ytPlayerDiv {
   display: grid;
   grid-auto-rows: auto auto;
+  grid-row-gap: 3em;
   grid-template-columns: auto;
   grid-template-areas:
     "player"
     "playlist";
+  justify-items: center;
 
   @media screen and (min-width: $large-display-width) {
     grid-template-rows: auto;
@@ -26,12 +28,8 @@
     background-color: lighten(black, 7%);
     box-shadow: 5px 5px 20px 5px black;
 
-    @media screen and (min-width: $mobile-width) {
-      width: 41em; // fix variable container size when res changes
-    }
-
     .videoTitle {
-      width: 80%;
+      width: 30em; // fix title size to prevent container size changing
       margin: 0px;
       padding: 1em 0px 1em 0px;
       text-align: center;

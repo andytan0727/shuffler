@@ -108,8 +108,9 @@ $playing: #08d56a;
 
       .song {
         display: grid;
-        grid-template-columns: 1fr 4fr;
         grid-template-rows: auto;
+        grid-template-columns: 1fr 4fr;
+        grid-column-gap: 2rem;
         place-items: center;
         padding: 0.8em;
         margin-right: 20px;

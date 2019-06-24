@@ -90,7 +90,13 @@ const VideosPanel = (props) => {
             ))
           ) : (
             <div>
-              <h3>No Video Found</h3>
+              <h3
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                No Video Found
+              </h3>
             </div>
           )}
         </div>
