@@ -17,11 +17,13 @@ import {
   REMOVE_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
+  TOGGLE_PLAYING_VIDEO,
   REMOVE_VIDEO_FROM_PLAYING,
 } from "../../utils/constants/actionConstants";
 
 import { PlaylistDB, SongListDB, VideosDB } from "../../utils/helper/dbHelper";
 import { notify } from "../../utils/helper/notifyHelper";
+import { addOrRemove } from "../../utils/helper/arrayHelper";
 
 const playlistDB = new PlaylistDB();
 const songListDB = new SongListDB();
@@ -423,6 +425,39 @@ const addPlayingVideos = (videosId, persist) => {
 };
 
 /**
+ * Toggle add or remove video from listToPlay
+ *
+ * @param {string} id Video id to add/remove from listToPlay
+ * @returns {function} TOGGLE_PLAYING_VIDEO thunk function for redux store
+ */
+const togglePlayingVideo = (id) => {
+  return (dispatch, getState) => {
+    const { videos, playingVideos, listToPlay } = getState().ytplaylist;
+
+    const isPlayingVideoPreviously = playingVideos.includes(id);
+
+    const updatedPlayingVideos = addOrRemove(playingVideos, id);
+    const updatedListToPlay = !isPlayingVideoPreviously
+      ? uniqBy(
+          [...listToPlay, ...videos.filter((video) => video.id === id)],
+          "id"
+        )
+      : listToPlay.filter((video) => video.id !== id);
+
+    dispatch({
+      type: TOGGLE_PLAYING_VIDEO,
+      payload: {
+        playingVideos: updatedPlayingVideos,
+        listToPlay: updatedListToPlay,
+      },
+    });
+
+    songListDB.updatePlayingVideos(updatedPlayingVideos);
+    songListDB.updateListToPlay(updatedListToPlay);
+  };
+};
+
+/**
  * Add playlists/videos to listToPlay
  * @param {object} params
  * @param {boolean} params.checked Use checkedPlaylists/checkedVideos in Redux store if true
@@ -599,5 +634,6 @@ export {
   removeVideo,
   setCheckedVideos,
   addPlayingVideos,
+  togglePlayingVideo,
   removeVideoFromPlaying,
 };

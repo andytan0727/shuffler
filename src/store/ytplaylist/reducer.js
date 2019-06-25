@@ -16,6 +16,7 @@ import {
   REMOVE_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
+  TOGGLE_PLAYING_VIDEO,
   REMOVE_VIDEO_FROM_PLAYING,
 } from "../../utils/constants/actionConstants";
 
@@ -128,6 +129,14 @@ export const ytplaylist = produce((draft, action) => {
 
     case ADD_PLAYING_VIDEOS: {
       draft.playingVideos = action.payload.updatedPlayingVideos;
+
+      return draft;
+    }
+
+    case TOGGLE_PLAYING_VIDEO: {
+      const { playingVideos, listToPlay } = action.payload;
+      draft.playingVideos = playingVideos;
+      draft.listToPlay = listToPlay;
 
       return draft;
     }
