@@ -116,7 +116,7 @@ const removePlaylist = () => {
  * Rename selected playlist (one at once)
  *
  * @param {string} newName New name of selected playlist
- * @param {string} playlistIdToRename selected playlist's id
+ * @param {string} playlistIdToRename Selected playlist's id
  * @returns {function} RENAME_PLAYLIST thunk function for redux store
  */
 const renamePlaylist = (newName, playlistIdToRename) => {
@@ -196,8 +196,8 @@ const setLoadedFromDB = () => ({
 /**
  * Add playlists in listToPlay to playingPlaylists array
  *
- * @param {Array<string>} playlistIdsToAdd playlists' id array
- * @param {boolean} persist persist to indexedDB
+ * @param {Array<string>} playlistIdsToAdd Playlists' id array
+ * @param {boolean} persist Persist to indexedDB
  * @returns {function} ADD_PLAYING_PLAYLISTS thunk function for redux store
  */
 const addPlayingPlaylists = (playlistIdsToAdd, persist) => {
@@ -302,7 +302,7 @@ const removePlaylistFromPlaying = () => {
 /**
  * Add fetched video to Redux store
  * @param {object} params
- * @param {boolean} params.persist persist to indexedDB
+ * @param {boolean} params.persist Persist to indexedDB
  * @param {object} params.video An object of video id and items from YouTube Data API
  * @returns {function} ADD_VIDEO thunk function for redux store
  */
@@ -383,7 +383,7 @@ const removeVideo = () => {
 
 /**
  * Set checked videos in Redux store
- * @param {Array<string>} checkedVideos an array of checked video id to store
+ * @param {Array<string>} checkedVideos An array of checked video id to store
  * @returns SET_CHECKED_VIDEOS action object for redux store
  */
 const setCheckedVideos = (checkedVideos) => ({
@@ -396,8 +396,8 @@ const setCheckedVideos = (checkedVideos) => ({
 /**
  * Add videos in listToPlay to playingVideos array
  *
- * @param {array} videosId videos id array
- * @param {boolean} persist persist to indexedDB
+ * @param {Array<string>} videosId Videos id array
+ * @param {boolean} persist Persist to indexedDB
  * @returns {function} ADD_PLAYING_VIDEOS thunk function for redux store
  */
 const addPlayingVideos = (videosId, persist) => {
@@ -425,8 +425,8 @@ const addPlayingVideos = (videosId, persist) => {
 /**
  * Add playlists/videos to listToPlay
  * @param {object} params
- * @param {boolean} params.checked use checkedPlaylists/checkedVideos in Redux store if true
- * @param {boolean} params.persist persist to indexedDB
+ * @param {boolean} params.checked Use checkedPlaylists/checkedVideos in Redux store if true
+ * @param {boolean} params.persist Persist to indexedDB
  * @param {Array<string>} params.listToAdd An array of video to add
  * @returns ADD_LIST_TO_PLAY thunk function for redux store
  */
