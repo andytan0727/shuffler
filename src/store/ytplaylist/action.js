@@ -15,6 +15,7 @@ import {
   // videos
   ADD_VIDEO,
   REMOVE_VIDEO,
+  DELETE_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
   TOGGLE_PLAYING_VIDEO,
@@ -384,6 +385,43 @@ const removeVideo = () => {
 };
 
 /**
+ * Delete ONE video from saved videos
+ *
+ * @param {string} id Id for video to be deleted
+ * @returns {function} DELETE_VIDEO thunk function for redux store
+ */
+const deleteVideo = (id) => {
+  return (dispatch, getState) => {
+    const { videos, playingVideos, listToPlay } = getState().ytplaylist;
+
+    // updates videos array
+    const updatedVideos = videos.filter((video) => video.id !== id);
+
+    // updates playingVideos if video exists
+    const updatedPlayingVideos = playingVideos.filter(
+      (videoId) => videoId !== id
+    );
+
+    // updates listToPlay
+    const updatedListToPlay = listToPlay.filter((video) => video.id !== id);
+
+    dispatch({
+      type: DELETE_VIDEO,
+      payload: {
+        videos: updatedVideos,
+        playingVideos: updatedPlayingVideos,
+        listToPlay: updatedListToPlay,
+      },
+    });
+
+    // updates indexedDB
+    videosDB.removeVideo(id);
+    songListDB.updatePlayingVideos(updatedPlayingVideos);
+    songListDB.updateListToPlay(updatedListToPlay);
+  };
+};
+
+/**
  * Set checked videos in Redux store
  * @param {Array<string>} checkedVideos An array of checked video id to store
  * @returns SET_CHECKED_VIDEOS action object for redux store
@@ -632,6 +670,7 @@ export {
   // videos
   addVideo,
   removeVideo,
+  deleteVideo,
   setCheckedVideos,
   addPlayingVideos,
   togglePlayingVideo,
