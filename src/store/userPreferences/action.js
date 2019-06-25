@@ -9,7 +9,7 @@ const preferencesDB = new PreferencesDB();
  * @param {boolean} isPreferDarkTheme is user prefer dark mode or not
  * @returns SET_PREFER_DARK_THEME thunk function for redux store
  */
-const setPreferDarkTheme = ({ persist, isPreferDarkTheme }) => {
+export const setPreferDarkTheme = ({ persist, isPreferDarkTheme }) => {
   return (dispatch) => {
     dispatch({
       type: SET_PREFER_DARK_THEME,
@@ -24,5 +24,3 @@ const setPreferDarkTheme = ({ persist, isPreferDarkTheme }) => {
     }
   };
 };
-
-export { setPreferDarkTheme };

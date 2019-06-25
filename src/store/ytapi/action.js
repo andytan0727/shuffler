@@ -14,7 +14,7 @@ import { fetchYoutubeAPIData } from "../../utils/helper/fetchHelper";
  * @param {string} playlistUrl
  * @return SET_PLAYLIST_URL action object for Redux
  */
-const setPlaylistUrl = (playlistUrl) => ({
+export const setPlaylistUrl = (playlistUrl) => ({
   type: SET_PLAYLIST_URL,
   payload: {
     playlistUrl,
@@ -28,7 +28,7 @@ const setPlaylistUrl = (playlistUrl) => ({
  * @param {object} params Extra params for request
  * @returns dispatch function for redux thunk
  */
-const fetchPlaylistData = (url, params, dataType) => {
+export const fetchPlaylistData = (url, params, dataType) => {
   return async (dispatch) => {
     try {
       const data = await fetchYoutubeAPIData(url, params, dataType);
@@ -51,7 +51,7 @@ const fetchPlaylistData = (url, params, dataType) => {
  * @param {string} id fetched item(playlist) id
  * @returns ADD_FETCHED_ITEM_ID action object for Redux
  */
-const addFetchedItemId = ({ id }) => ({
+export const addFetchedItemId = ({ id }) => ({
   type: ADD_FETCHED_ITEM_ID,
   payload: {
     id,
@@ -64,7 +64,7 @@ const addFetchedItemId = ({ id }) => ({
  * @param {string} videoUrl
  * @return SET_VIDEO_URL action object for Redux
  */
-const setVideoUrl = (videoUrl) => ({
+export const setVideoUrl = (videoUrl) => ({
   type: SET_VIDEO_URL,
   payload: {
     videoUrl,
@@ -78,7 +78,7 @@ const setVideoUrl = (videoUrl) => ({
  * @param {object} params Extra params for request
  * @returns dispatch function for redux thunk
  */
-const fetchVideoData = (url, params, dataType) => {
+export const fetchVideoData = (url, params, dataType) => {
   return async (dispatch) => {
     try {
       const data = await fetchYoutubeAPIData(url, params, dataType);
@@ -101,18 +101,9 @@ const fetchVideoData = (url, params, dataType) => {
  * @param {string} id fetched video id
  * @returns ADD_FETCHED_VIDEO_ID action object for Redux
  */
-const addFetchedVideoId = ({ id }) => ({
+export const addFetchedVideoId = ({ id }) => ({
   type: ADD_FETCHED_VIDEO_ID,
   payload: {
     id,
   },
 });
-
-export {
-  setPlaylistUrl,
-  fetchPlaylistData,
-  addFetchedItemId,
-  setVideoUrl,
-  fetchVideoData,
-  addFetchedVideoId,
-};
