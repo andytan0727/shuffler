@@ -33,6 +33,14 @@ const App = (props) => {
       type: preferDarkTheme ? "dark" : "light",
       primary: { main: purple[800] },
       secondary: { main: purple["A200"] },
+      background: {
+        black: "#1a1a1a",
+        blackLight: "#4e4b53",
+        lightGrey: "#2a2a2a",
+        darkGrey: "#282828",
+        blackDark: "#0d0d0d",
+        softBlack: "#414a4c",
+      },
     },
     typography: {
       fontFamily: [
