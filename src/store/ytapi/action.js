@@ -5,8 +5,15 @@ import {
   SET_VIDEO_URL,
   FETCH_VIDEO_DATA,
   ADD_FETCHED_VIDEO_ID,
+  FETCH_VIDEO_DATA_SUCCESS,
+  FETCH_VIDEO_DATA_FAILED,
 } from "../../utils/constants/actionConstants";
 import { fetchYoutubeAPIData } from "../../utils/helper/fetchHelper";
+import {
+  addVideo,
+  addListToPlay,
+  addPlayingVideos,
+} from "../ytplaylist/action";
 
 /**
  * Set inputed playlist URL
@@ -22,7 +29,6 @@ export const setPlaylistUrl = (playlistUrl) => ({
 });
 
 /**
- *
  * Add fetched playlist asynchronously to Redux
  * @param {string} url Base url for HTTP request
  * @param {object} params Extra params for request
@@ -46,7 +52,6 @@ export const fetchPlaylistData = (url, params, dataType) => {
 };
 
 /**
- *
  * Add fetched playlist's to Redux store
  * @param {string} id fetched item(playlist) id
  * @returns ADD_FETCHED_ITEM_ID action object for Redux
@@ -72,38 +77,68 @@ export const setVideoUrl = (videoUrl) => ({
 });
 
 /**
- *
- * Add fetched video information asynchronously to Redux
+ * Fetching videos information asynchronously from API to Redux
  * @param {string} url Base url for HTTP request
  * @param {object} params Extra params for request
- * @returns dispatch function for redux thunk
+ * @returns {function} thunk function for redux
  */
 export const fetchVideoData = (url, params, dataType) => {
   return async (dispatch) => {
     try {
+      dispatch({ type: FETCH_VIDEO_DATA });
       const data = await fetchYoutubeAPIData(url, params, dataType);
-      dispatch({
-        type: FETCH_VIDEO_DATA,
-        payload: {
-          data,
-        },
-      });
-      return data;
+      dispatch(fetchVideoDataSuccess(data));
     } catch (err) {
+      dispatch({ type: FETCH_VIDEO_DATA_FAILED });
       throw err;
     }
   };
 };
 
 /**
+ * Executes when successfully fetched video data from YouTube Data API
  *
- * Add fetched video's to Redux store
- * @param {string} id fetched video id
- * @returns ADD_FETCHED_VIDEO_ID action object for Redux
+ * @param {*} data Data obtained from YouTube Data API
+ * @returns {function} thunk function for redux
  */
-export const addFetchedVideoId = ({ id }) => ({
-  type: ADD_FETCHED_VIDEO_ID,
-  payload: {
-    id,
-  },
-});
+export const fetchVideoDataSuccess = (data) => {
+  return (dispatch) => {
+    const items = Array.from(data.items);
+    const id = items[0].id;
+
+    console.log(`id: ${id}`);
+
+    dispatch({
+      type: FETCH_VIDEO_DATA_SUCCESS,
+      payload: {
+        data,
+      },
+    });
+
+    // add fetched videos to videos, listToPlay and playingVideos in redux store
+    dispatch(
+      addVideo({
+        persist: true,
+        video: {
+          id,
+          items,
+        },
+      })
+    );
+    dispatch(
+      addListToPlay({
+        persist: true,
+        listToAdd: items,
+      })
+    );
+    dispatch(addPlayingVideos([id]));
+
+    // add fetched video's id to redux store
+    dispatch({
+      type: ADD_FETCHED_VIDEO_ID,
+      payload: {
+        id,
+      },
+    });
+  };
+};

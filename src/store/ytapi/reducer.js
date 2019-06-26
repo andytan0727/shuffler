@@ -6,6 +6,8 @@ import {
   SET_VIDEO_URL,
   FETCH_VIDEO_DATA,
   ADD_FETCHED_VIDEO_ID,
+  FETCH_VIDEO_DATA_SUCCESS,
+  FETCH_VIDEO_DATA_FAILED,
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -32,6 +34,7 @@ const initialState = {
       fields: ["items"],
     },
     fetchedData: [],
+    fetchLoading: false,
   },
   fetchedItemsId: [],
   fetchedVideoId: [],
@@ -60,7 +63,6 @@ export const ytapi = produce((draft, action) => {
 
       // proceed if data is new and fresh
       draft.playlistItems.fetchedData.push(dataToAdd);
-
       return draft;
     }
 
@@ -75,7 +77,6 @@ export const ytapi = produce((draft, action) => {
         ];
         draft.fetchedItemsId = updatedFetchedItemsId;
       }
-
       return draft;
     }
 
@@ -88,6 +89,13 @@ export const ytapi = produce((draft, action) => {
     }
 
     case FETCH_VIDEO_DATA: {
+      draft.fetchLoading = true;
+      return draft;
+    }
+
+    case FETCH_VIDEO_DATA_SUCCESS: {
+      draft.fetchLoading = false;
+
       const dataToAdd = action.payload.data;
       const isDataFetched = draft.videos.fetchedData.some(
         (data) => data.items[0].id === dataToAdd.items[0].id
@@ -100,7 +108,11 @@ export const ytapi = produce((draft, action) => {
 
       // proceed if data is new and fresh
       draft.videos.fetchedData.push(dataToAdd);
+      return draft;
+    }
 
+    case FETCH_VIDEO_DATA_FAILED: {
+      draft.fetchLoading = false;
       return draft;
     }
 
@@ -111,7 +123,6 @@ export const ytapi = produce((draft, action) => {
       if (!draft.fetchedVideoId.includes(videoIdToAdd)) {
         draft.fetchedVideoId.push(videoIdToAdd);
       }
-
       return draft;
     }
 

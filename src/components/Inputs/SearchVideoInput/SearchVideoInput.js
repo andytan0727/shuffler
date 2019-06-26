@@ -2,16 +2,7 @@ import { useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { notify } from "../../../utils/helper/notifyHelper";
-import {
-  setVideoUrl,
-  fetchVideoData,
-  addFetchedVideoId,
-} from "../../../store/ytapi/action";
-import {
-  addVideo,
-  addPlayingVideos,
-  addListToPlay,
-} from "../../../store/ytplaylist/action";
+import { setVideoUrl, fetchVideoData } from "../../../store/ytapi/action";
 
 const SearchVideoInput = (props) => {
   const {
@@ -29,10 +20,6 @@ const SearchVideoInput = (props) => {
     // dispatch
     setVideoUrl,
     fetchVideoData,
-    addFetchedVideoId,
-    addVideo,
-    addPlayingVideos,
-    addListToPlay,
 
     // own props
     name,
@@ -69,11 +56,8 @@ const SearchVideoInput = (props) => {
       return;
     }
 
-    // array to store requested videos
-    const items = [];
-
     try {
-      let data = await fetchVideoData(
+      await fetchVideoData(
         apiBaseUrl,
         {
           part,
@@ -84,30 +68,6 @@ const SearchVideoInput = (props) => {
         },
         "video"
       );
-      items.push(...data.items);
-
-      // add newly fetched video to Redux
-      addVideo({
-        persist: true,
-        video: {
-          id: videoId,
-          items,
-        },
-      });
-
-      // add newly fetched video to listToPlay
-      addListToPlay({
-        persist: true,
-        listToAdd: items,
-      });
-
-      // add video id to playingVideos
-      addPlayingVideos([videoId], true);
-
-      // add fetched video id to fetchedVideoId array
-      addFetchedVideoId({
-        id: videoId,
-      });
 
       // clear input
       setVideoUrl("");
@@ -153,9 +113,6 @@ SearchVideoInput.propTypes = {
   }),
   setVideoUrl: PropTypes.func.isRequired,
   fetchVideoData: PropTypes.func.isRequired,
-  addFetchedVideoId: PropTypes.func.isRequired,
-  addVideo: PropTypes.func.isRequired,
-  addListToPlay: PropTypes.func.isRequired,
 };
 
 const mapStatesToProps = ({ ytapi }) => ({
@@ -167,9 +124,5 @@ export default connect(
   {
     setVideoUrl,
     fetchVideoData,
-    addFetchedVideoId,
-    addVideo,
-    addPlayingVideos,
-    addListToPlay,
   }
 )(SearchVideoInput);
