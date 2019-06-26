@@ -10,19 +10,19 @@ import {
   addPlayingVideos,
 } from "../../store/ytplaylist/action";
 
-/**
- * Hydrate states stored in indexedDB to Redux
- *
- * @param {*} store Redux store
- */
-export const hydrateRedux = async (store) => {
-  const playlistDBInstance = new PlaylistDB().getInstance();
-  const songListDBInstance = new SongListDB().getInstance();
-  const videosDBInstance = new VideosDB().getInstance();
-  const preferencesDBInstance = new PreferencesDB().getInstance();
+// db instances to perform indexedDB operations
+const playlistDBInstance = new PlaylistDB().getInstance();
+const songListDBInstance = new SongListDB().getInstance();
+const videosDBInstance = new VideosDB().getInstance();
+const preferencesDBInstance = new PreferencesDB().getInstance();
 
+/**
+ * Hydrate theme settings from indexedDB to redux store
+ *
+ * @param {*} store
+ */
+const _hydrateThemeSettings = async (store) => {
   try {
-    // hydrate user theme preference
     const isPreferDarkTheme = await preferencesDBInstance.getItem("darkTheme");
     // throws error if isPreferDarkTheme is not saved
     if (isPreferDarkTheme == null) {
@@ -38,9 +38,15 @@ export const hydrateRedux = async (store) => {
   } catch (err) {
     console.error(err.message);
   }
+};
 
+/**
+ * Hydrate playlists stored in indexedDB to redux store
+ *
+ * @param {*} store
+ */
+const _hydratePlaylists = async (store) => {
   try {
-    // hydrate playlist
     const dbPlaylistKeys = await playlistDBInstance.keys();
     if (!dbPlaylistKeys.length) {
       throw new Error("Playlist not found in indexedDB");
@@ -57,9 +63,15 @@ export const hydrateRedux = async (store) => {
   } catch (err) {
     console.error(err.message);
   }
+};
 
+/**
+ * Hydrate videos stored in indexedDB to redux store
+ *
+ * @param {*} store
+ */
+const _hydrateVideos = async (store) => {
   try {
-    // hydrate videos
     const dbVideosKeys = await videosDBInstance.keys();
     if (!dbVideosKeys.length) throw new Error("Videos not found in indexedDB");
 
@@ -74,9 +86,15 @@ export const hydrateRedux = async (store) => {
   } catch (err) {
     console.error(err.message);
   }
+};
 
+/**
+ * Hydrate listToPlay stored in indexedDB to redux store
+ *
+ * @param {*} store
+ */
+const _hydrateListToPlay = async (store) => {
   try {
-    // hydrate list to play
     const dbSongListArr = await songListDBInstance.getItem("listToPlay");
     if (!dbSongListArr || !dbSongListArr.length) {
       throw new Error("SongList to play not found in indexedDB");
@@ -92,9 +110,15 @@ export const hydrateRedux = async (store) => {
   } catch (err) {
     console.error(err.message);
   }
+};
 
+/**
+ * Hydrate playingPlaylists stored in indexedDB to redux store
+ *
+ * @param {*} store
+ */
+const _hydratePlayingPlaylists = async (store) => {
   try {
-    // hydrate playing playlists
     const dbPlayingPlaylistsArr = await songListDBInstance.getItem(
       "playingPlaylists"
     );
@@ -106,9 +130,15 @@ export const hydrateRedux = async (store) => {
   } catch (err) {
     console.error(err.message);
   }
+};
 
+/**
+ * Hydrate playingVideos stored in indexedDB to redux store
+ *
+ * @param {*} store
+ */
+const _hydratePlayingVideos = async (store) => {
   try {
-    // hydrate playing videos
     const dbPlayingVideosArr = await songListDBInstance.getItem(
       "playingVideos"
     );
@@ -119,4 +149,18 @@ export const hydrateRedux = async (store) => {
   } catch (err) {
     console.error(err.message);
   }
+};
+
+/**
+ * Hydrate states stored in indexedDB to Redux
+ *
+ * @param {*} store Redux store
+ */
+export const hydrateRedux = async (store) => {
+  _hydrateThemeSettings(store);
+  _hydratePlaylists(store);
+  _hydrateVideos(store);
+  _hydrateListToPlay(store);
+  _hydratePlayingPlaylists(store);
+  _hydratePlayingVideos(store);
 };
