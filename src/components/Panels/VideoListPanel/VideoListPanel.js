@@ -71,7 +71,7 @@ const VideoListPanel = (props) => {
           .items
       );
     }
-  }, [viewPlaylist]);
+  }, [checkedPlaylists, playlists, viewPlaylist]);
 
   return (
     <React.Fragment>

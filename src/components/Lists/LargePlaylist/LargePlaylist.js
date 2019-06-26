@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import CloseIcon from "@material-ui/icons/Close";
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
-import { setEscOverlay } from "../../../utils/helper/keyboardShortcutHelper";
+import {
+  useKeyDown,
+  setEscOverlay,
+} from "../../../utils/helper/keyboardShortcutHelper";
 
 import styles from "./styles.module.scss";
 
@@ -32,7 +35,7 @@ const LargePlaylist = (props) => {
   };
 
   // set shortcut to close LargePlaylist overlay
-  setEscOverlay(handleHideLargePlaylist);
+  useKeyDown(setEscOverlay(handleHideLargePlaylist));
 
   return (
     <div

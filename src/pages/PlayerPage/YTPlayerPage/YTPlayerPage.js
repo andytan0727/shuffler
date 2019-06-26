@@ -23,7 +23,7 @@ const YTPlayerPage = (props) => {
       // also reset curSongIdx when unmounting
       setCurSongIdx(0);
     };
-  }, []);
+  }, [setCurSongIdx]);
 
   return (
     <React.Fragment>

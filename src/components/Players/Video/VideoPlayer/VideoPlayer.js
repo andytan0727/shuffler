@@ -11,9 +11,13 @@ const VideoPlayer = (props) => {
   const ytPlayer = useRef(null);
 
   useEffect(() => {
+    // fix exhaustive-deps rule of react-hooks
+    // ensure ytPlayer.current points to the correct node in the cleanup function
+    const ytPlayerRef = ytPlayer.current;
+
     return () => {
       // Destroy player when unmount
-      ytPlayer.current.internalPlayer.destroy();
+      ytPlayerRef.internalPlayer.destroy();
     };
   }, []);
 

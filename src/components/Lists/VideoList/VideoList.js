@@ -58,7 +58,11 @@ VideoList.propTypes = {
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.number,
   isMobile: PropTypes.bool,
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.object,
+    PropTypes.func,
+  ]),
 };
 
 export default VideoList;

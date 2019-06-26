@@ -16,7 +16,10 @@ import { PlayerBasicCtrlBtnGroup } from "../../../Buttons";
 import { LargePlaylist } from "../../../Lists";
 
 import { setCurSongIdx } from "../../../../store/ytplayer/action";
-import { setEscOverlay } from "../../../../utils/helper/keyboardShortcutHelper";
+import {
+  useKeyDown,
+  setEscOverlay,
+} from "../../../../utils/helper/keyboardShortcutHelper";
 
 import styles from "./styles.module.scss";
 
@@ -86,7 +89,7 @@ const MiniPlayer = (props) => {
   };
 
   // set shortcut to close YT overlay
-  setEscOverlay(handleHideYT);
+  useKeyDown(setEscOverlay(handleHideYT));
 
   useEffect(() => {
     setCurDisplayIdx(curSongIdx);
@@ -96,7 +99,7 @@ const MiniPlayer = (props) => {
     return () => {
       setCurSongIdx(0);
     };
-  }, []);
+  }, [setCurSongIdx]);
 
   return (
     <React.Fragment>
