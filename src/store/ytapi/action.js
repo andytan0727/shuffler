@@ -118,7 +118,6 @@ export const fetchVideoDataSuccess = (data) => {
     // add fetched videos to videos, listToPlay and playingVideos in redux store
     dispatch(
       addVideo({
-        persist: true,
         video: {
           id,
           items,
@@ -127,7 +126,6 @@ export const fetchVideoDataSuccess = (data) => {
     );
     dispatch(
       addListToPlay({
-        persist: true,
         listToAdd: items,
       })
     );

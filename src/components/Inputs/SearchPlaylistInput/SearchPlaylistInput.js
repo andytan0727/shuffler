@@ -119,7 +119,6 @@ const SearchPlayListInput = (props) => {
 
       // add newly fetched playlist's song to listToPlay
       addListToPlay({
-        persist: true,
         listToAdd: items,
       });
 

@@ -23,7 +23,7 @@ const PlaylistInputPage = (props) => {
   const classes = useStyles();
 
   const handleChangeTheme = () => {
-    setPreferDarkTheme({ persist: true, isPreferDarkTheme: !preferDarkTheme });
+    setPreferDarkTheme(!preferDarkTheme);
   };
 
   return (

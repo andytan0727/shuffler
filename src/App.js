@@ -60,10 +60,7 @@ const App = (props) => {
 
   const setPreferDarkThemeShortcut = (e) => {
     if (e.ctrlKey && e.altKey && e.key === "d") {
-      setPreferDarkTheme({
-        persist: true,
-        isPreferDarkTheme: !preferDarkTheme,
-      });
+      setPreferDarkTheme(!preferDarkTheme);
     }
   };
 

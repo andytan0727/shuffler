@@ -45,7 +45,6 @@ const VideoListPanelBtnGroup = (props) => {
 
     addListToPlay({
       checked: true,
-      persist: true,
     });
 
     notify("success", "Successfully added selected playlist(s) to playing 😎");

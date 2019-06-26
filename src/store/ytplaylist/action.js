@@ -23,21 +23,14 @@ import {
   REMOVE_VIDEO_FROM_PLAYING,
 } from "../../utils/constants/actionConstants";
 
-import { PlaylistDB, SongListDB, VideosDB } from "../../utils/helper/dbHelper";
 import { notify } from "../../utils/helper/notifyHelper";
-import { addOrRemove } from "../../utils/helper/arrayHelper";
-
-const playlistDB = new PlaylistDB();
-const songListDB = new SongListDB();
-const videosDB = new VideosDB();
 
 /**
  * Add playlist to Redux store
  * @param {object} playlist A playlist object structured according to YouTube Data Api
- * @param {boolean} persist Persist to indexedDB (Default to true)
  * @returns {function} Thunk function
  */
-export const addPlaylist = (playlist, persist = true) => {
+export const addPlaylist = (playlist) => {
   return (dispatch, getState) => {
     const { playlists: prevPlaylists } = getState().ytplaylist;
     const playlistToAdd = playlist;
@@ -59,9 +52,6 @@ export const addPlaylist = (playlist, persist = true) => {
         playlists: updatedPlaylists,
       },
     });
-
-    // add to indexedDB as well
-    if (persist) playlistDB.addPlaylists(updatedPlaylists);
   };
 };
 
@@ -97,10 +87,6 @@ export const removePlaylist = () => {
         updatedPlayingPlaylists,
       },
     });
-
-    // update playlists and playingPlaylists in indexedDB
-    playlistDB.removePlaylists(playlistsToRemove);
-    songListDB.updatePlayingPlaylists(updatedPlayingPlaylists);
   };
 };
 
@@ -122,19 +108,12 @@ export const renamePlaylist = (newName, playlistIdToRename) => {
       return playlist;
     });
 
-    const renamedPlaylist = updatedPlaylists.filter(
-      (playlist) => playlist.id === playlistIdToRename
-    )[0];
-
     dispatch({
       type: RENAME_PLAYLIST,
       payload: {
         updatedPlaylists,
       },
     });
-
-    // update playlists in indexedDB
-    playlistDB.updatePlaylist(renamedPlaylist.id, renamedPlaylist);
   };
 };
 
@@ -167,10 +146,9 @@ export const shufflePlaylist = () => {
  * Add playlists in listToPlay to playingPlaylists array
  *
  * @param {Array<string>} playlistIdsToAdd Playlists' id array
- * @param {boolean} persist Persist to indexedDB
  * @returns {function} Thunk function
  */
-export const addPlayingPlaylists = (playlistIdsToAdd, persist) => {
+export const addPlayingPlaylists = (playlistIdsToAdd) => {
   return (dispatch, getState) => {
     const {
       playingPlaylists: playingPlaylistsFromStore,
@@ -189,11 +167,6 @@ export const addPlayingPlaylists = (playlistIdsToAdd, persist) => {
         updatedPlayingPlaylists,
       },
     });
-
-    // save to indexedDB
-    if (persist) {
-      songListDB.updatePlayingPlaylists(updatedPlayingPlaylists);
-    }
   };
 };
 
@@ -259,10 +232,6 @@ export const removePlaylistFromPlaying = () => {
     });
     dispatch(updateListToPlay(updatedListToPlay));
     dispatch(setCheckedPlaylists([]));
-
-    // save to indexedDB
-    // songListDB.updateListToPlay(listToPlay);
-    songListDB.updatePlayingPlaylists(updatedPlayingPlaylists);
   };
 };
 
@@ -272,11 +241,10 @@ export const removePlaylistFromPlaying = () => {
 /**
  * Add fetched video to Redux store
  * @param {object} params
- * @param {boolean} params.persist Persist to indexedDB
  * @param {object} params.video An object of video id and items from YouTube Data API
  * @returns {function} Thunk function
  */
-export const addVideo = ({ persist, video: videoToAdd }) => {
+export const addVideo = ({ video: videoToAdd }) => {
   return (dispatch, getState) => {
     const { videos: prevVideos } = getState().ytplaylist;
     const isVideoExists = prevVideos.some(
@@ -288,16 +256,7 @@ export const addVideo = ({ persist, video: videoToAdd }) => {
       return;
     }
 
-    // if the video is unique then assign it to redux store
-    const updatedVideos = !persist
-      ? [...prevVideos, videoToAdd]
-      : [
-          ...prevVideos,
-          {
-            ...videoToAdd,
-            saved: true,
-          },
-        ];
+    const updatedVideos = [...prevVideos, videoToAdd];
 
     dispatch({
       type: ADD_VIDEO,
@@ -305,11 +264,6 @@ export const addVideo = ({ persist, video: videoToAdd }) => {
         updatedVideos,
       },
     });
-
-    // add to indexedDB as well
-    if (persist) {
-      videosDB.addVideos(updatedVideos);
-    }
   };
 };
 
@@ -335,10 +289,6 @@ export const removeVideo = () => {
       },
     });
     dispatch(removePlayingVideos(videosToRemove));
-
-    videosToRemove.forEach((videoId) => {
-      videosDB.removeVideo(videoId);
-    });
   };
 };
 
@@ -368,9 +318,6 @@ export const deleteVideo = (videoId) => {
     });
     dispatch(updateListToPlay(updatedListToPlay));
     dispatch(removePlayingVideos([videoId]));
-
-    // updates indexedDB
-    videosDB.removeVideo(videoId);
   };
 };
 
@@ -390,10 +337,9 @@ export const setCheckedVideos = (checkedVideos) => ({
  * Add videos specified by videoIds array to playingVideos
  *
  * @param {Array<string>} videoIds Videos id array
- * @param {boolean} persist Persist to indexedDB (Default to true)
  * @returns {function} Thunk function for redux store
  */
-export const addPlayingVideos = (videoIds, persist = true) => {
+export const addPlayingVideos = (videoIds) => {
   return (dispatch, getState) => {
     const { playingVideos } = getState().ytplaylist;
 
@@ -405,11 +351,6 @@ export const addPlayingVideos = (videoIds, persist = true) => {
         playingVideos: updatedPlayingVideos,
       },
     });
-
-    // save to indexedDB
-    if (persist) {
-      songListDB.updatePlayingVideos(updatedPlayingVideos);
-    }
   };
 };
 
@@ -417,11 +358,10 @@ export const addPlayingVideos = (videoIds, persist = true) => {
  * Remove videos specified by videoIds array from playingVideos
  *
  * @param {*} videoIds Videos id to remove array
- * @param {boolean} persist Persist to indexedDB (Default to true)
  * @returns {function} Thunk function for redux store
  * @returns
  */
-export const removePlayingVideos = (videoIds, persist = true) => {
+export const removePlayingVideos = (videoIds) => {
   return (dispatch, getState) => {
     const { playingVideos } = getState().ytplaylist;
 
@@ -437,8 +377,6 @@ export const removePlayingVideos = (videoIds, persist = true) => {
         playingVideos: updatedPlayingVideos,
       },
     });
-
-    if (persist) songListDB.updatePlayingVideos(updatedPlayingVideos);
   };
 };
 
@@ -484,11 +422,10 @@ export const togglePlayingVideo = (id) => {
  * Add playlists/videos to listToPlay
  * @param {object} params
  * @param {boolean} params.checked Use checkedPlaylists/checkedVideos in Redux store if true
- * @param {boolean} params.persist Persist to indexedDB
  * @param {Array<string>} params.listToAdd An array of video to add
  * @returns Thunk function
  */
-export const addListToPlay = ({ checked, persist, listToAdd }) => {
+export const addListToPlay = ({ checked, listToAdd }) => {
   return (dispatch, getState) => {
     const {
       playingPlaylists,
@@ -501,6 +438,10 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
     } = getState().ytplaylist;
     let updatedListToPlay, checkedListToClear;
 
+    // fix accidentally mutated state problem in playlists and videos
+    const newPlayingPlaylists = [...playingPlaylists];
+    const newPlayingVideos = [...playingVideos];
+
     // add playlists
     if (checked && !checkedVideos.length) {
       updatedListToPlay = [
@@ -512,8 +453,8 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
 
       // push chosen playlists' id to playingPlaylists array
       checkedPlaylists.forEach((playlistId) => {
-        if (!playingPlaylists.includes(playlistId)) {
-          playingPlaylists.push(playlistId);
+        if (!newPlayingPlaylists.includes(playlistId)) {
+          newPlayingPlaylists.push(playlistId);
         }
       });
 
@@ -530,12 +471,12 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
 
       // push chosen videos' id to playingVideos array
       checkedVideos.forEach((videoId) => {
-        if (!playingVideos.includes(videoId)) {
-          playingVideos.push(videoId);
+        if (!newPlayingVideos.includes(videoId)) {
+          newPlayingVideos.push(videoId);
         }
       });
 
-      dispatch(addPlayingVideos(playingVideos, persist));
+      dispatch(addPlayingVideos(newPlayingVideos));
       checkedListToClear = "video";
     } else {
       // for hydration
@@ -547,15 +488,11 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
     dispatch({
       type: ADD_LIST_TO_PLAY,
       payload: {
-        updatedPlayingPlaylists: playingPlaylists,
+        updatedPlayingPlaylists: newPlayingPlaylists,
         checkedListToClear,
       },
     });
-    dispatch(updateListToPlay(uniqueListToPlay, persist));
-
-    if (persist) {
-      songListDB.updatePlayingPlaylists(playingPlaylists);
-    }
+    dispatch(updateListToPlay(uniqueListToPlay));
   };
 };
 
@@ -563,10 +500,9 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
  * Update listToPlay with updatedList supplied
  *
  * @param {Array<*>} updatedList Updated array of listToPlay
- * @param {boolean} persist Persist to indexedDB
  * @returns {function} Thunk function for redux store
  */
-export const updateListToPlay = (updatedList, persist = true) => {
+export const updateListToPlay = (updatedList) => {
   return (dispatch) => {
     dispatch({
       type: UPDATE_LIST_TO_PLAY,
@@ -574,27 +510,16 @@ export const updateListToPlay = (updatedList, persist = true) => {
         listToPlay: updatedList,
       },
     });
-
-    if (persist) songListDB.updateListToPlay(updatedList);
   };
 };
 
 /**
  * Clear current playing playlist
- * @returns {function} Thunk function for redux store
+ * @returns CLEAR_LIST_TO_PLAY action object for redux store
  */
-export const clearListToPlay = () => {
-  return (dispatch) => {
-    dispatch({
-      type: CLEAR_LIST_TO_PLAY,
-    });
-
-    // clear listToPlay, playingPlaylists and playingVideos in indexedDB
-    songListDB.removeListToPlay();
-    songListDB.removePlayingPlaylists();
-    songListDB.removePlayingVideos();
-  };
-};
+export const clearListToPlay = () => ({
+  type: CLEAR_LIST_TO_PLAY,
+});
 
 /**
  * Remove selected video(s) from playingList
