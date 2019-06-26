@@ -4,9 +4,8 @@ import {
   REMOVE_PLAYLIST,
   RENAME_PLAYLIST,
   SET_CHECKED_PLAYLISTS,
-  SHUFFLE_PLAYLIST,
-  SET_LOADED_FROM_DB,
   ADD_LIST_TO_PLAY,
+  UPDATE_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
   ADD_PLAYING_PLAYLISTS,
   REMOVE_PLAYLIST_FROM_PLAYING,
@@ -22,7 +21,6 @@ import {
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
-  loadedFromDB: false,
   checkedPlaylists: [], // pushed playlistId from selected playlists
   checkedVideos: [], // pushed videoId from checkbox
   playlists: [
@@ -45,13 +43,8 @@ const initialState = {
 
 export const ytplaylist = produce((draft, action) => {
   switch (action.type) {
-    case SET_LOADED_FROM_DB: {
-      draft.loadedFromDB = true;
-      return draft;
-    }
-
     case ADD_PLAYLIST: {
-      draft.playlists = action.payload.updatedPlaylists;
+      draft.playlists = action.payload.playlists;
       return draft;
     }
 
@@ -90,10 +83,7 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case REMOVE_PLAYLIST_FROM_PLAYING: {
-      const { updatedListToPlay, updatedPlayingPlaylists } = action.payload;
-
-      draft.listToPlay = updatedListToPlay;
-      draft.playingPlaylists = updatedPlayingPlaylists;
+      draft.playingPlaylists = action.payload.updatedPlayingPlaylists;
 
       return draft;
     }
@@ -118,11 +108,10 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case DELETE_VIDEO: {
-      const { videos, playingVideos, listToPlay } = action.payload;
+      const { videos, playingVideos } = action.payload;
 
       draft.videos = videos;
       draft.playingVideos = playingVideos;
-      draft.listToPlay = listToPlay;
 
       return draft;
     }
@@ -145,18 +134,13 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case TOGGLE_PLAYING_VIDEO: {
-      const { playingVideos, listToPlay } = action.payload;
-      draft.playingVideos = playingVideos;
-      draft.listToPlay = listToPlay;
+      draft.playingVideos = action.payload.playingVideos;
 
       return draft;
     }
 
     case REMOVE_VIDEO_FROM_PLAYING: {
-      const { updatedListToPlay, updatedPlayingVideos } = action.payload;
-
-      draft.listToPlay = updatedListToPlay;
-      draft.playingVideos = updatedPlayingVideos;
+      draft.playingVideos = action.payload.updatedPlayingVideos;
 
       return draft;
     }
@@ -166,12 +150,10 @@ export const ytplaylist = produce((draft, action) => {
     // ------------------------------------------
     case ADD_LIST_TO_PLAY: {
       const {
-        updatedListToPlay,
         updatedPlayingPlaylists,
         updatedPlayingVideos,
         checkedListToClear,
       } = action.payload;
-      draft.listToPlay = updatedListToPlay;
       draft.playingPlaylists = updatedPlayingPlaylists;
       draft.playingVideos = updatedPlayingVideos;
       if (checkedListToClear === "playlist") {
@@ -179,6 +161,12 @@ export const ytplaylist = produce((draft, action) => {
       } else {
         draft.checkedVideos = [];
       }
+
+      return draft;
+    }
+
+    case UPDATE_LIST_TO_PLAY: {
+      draft.listToPlay = action.payload.listToPlay;
 
       return draft;
     }
@@ -191,11 +179,6 @@ export const ytplaylist = produce((draft, action) => {
       draft.playingPlaylists = [];
       draft.playingVideos = [];
 
-      return draft;
-    }
-
-    case SHUFFLE_PLAYLIST: {
-      draft.listToPlay = action.payload.updatedListToPlay;
       return draft;
     }
 

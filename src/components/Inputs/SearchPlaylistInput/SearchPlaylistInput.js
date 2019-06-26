@@ -113,11 +113,8 @@ const SearchPlayListInput = (props) => {
 
       // add newly fetched playlist to Redux
       addPlaylist({
-        persist: true,
-        playlist: {
-          id: playlistId,
-          items,
-        },
+        id: playlistId,
+        items,
       });
 
       // add newly fetched playlist's song to listToPlay

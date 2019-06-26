@@ -53,12 +53,7 @@ const _hydratePlaylists = async (store) => {
     }
 
     await playlistDBInstance.iterate((value, _) => {
-      store.dispatch(
-        addPlaylist({
-          persist: false,
-          playlist: value,
-        })
-      );
+      store.dispatch(addPlaylist(value, false));
     });
   } catch (err) {
     console.error(err.message);
