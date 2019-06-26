@@ -16,8 +16,7 @@ import {
   DELETE_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
-  TOGGLE_PLAYING_VIDEO,
-  REMOVE_VIDEO_FROM_PLAYING,
+  REMOVE_PLAYING_VIDEOS,
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -55,7 +54,6 @@ export const ytplaylist = produce((draft, action) => {
       draft.playlists = updatedPlaylist;
       draft.playingPlaylists = updatedPlayingPlaylists;
       draft.checkedPlaylists = [];
-
       return draft;
     }
 
@@ -72,19 +70,16 @@ export const ytplaylist = produce((draft, action) => {
       }
 
       draft.checkedPlaylists = action.payload.checkedPlaylists;
-
       return draft;
     }
 
     case ADD_PLAYING_PLAYLISTS: {
       draft.playingPlaylists = action.payload.updatedPlayingPlaylists;
-
       return draft;
     }
 
     case REMOVE_PLAYLIST_FROM_PLAYING: {
       draft.playingPlaylists = action.payload.updatedPlayingPlaylists;
-
       return draft;
     }
 
@@ -97,22 +92,13 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case REMOVE_VIDEO: {
-      const { updatedVideos, updatedPlayingVideos } = action.payload;
-
-      // // update videos, playingVideos and checkedVideos
-      draft.videos = updatedVideos;
-      draft.playingVideos = updatedPlayingVideos;
+      draft.videos = action.payload.updatedVideos;
       draft.checkedVideos = [];
-
       return draft;
     }
 
     case DELETE_VIDEO: {
-      const { videos, playingVideos } = action.payload;
-
-      draft.videos = videos;
-      draft.playingVideos = playingVideos;
-
+      draft.videos = action.payload.videos;
       return draft;
     }
 
@@ -128,19 +114,13 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case ADD_PLAYING_VIDEOS: {
-      draft.playingVideos = action.payload.updatedPlayingVideos;
-
-      return draft;
-    }
-
-    case TOGGLE_PLAYING_VIDEO: {
       draft.playingVideos = action.payload.playingVideos;
 
       return draft;
     }
 
-    case REMOVE_VIDEO_FROM_PLAYING: {
-      draft.playingVideos = action.payload.updatedPlayingVideos;
+    case REMOVE_PLAYING_VIDEOS: {
+      draft.playingVideos = action.payload.playingVideos;
 
       return draft;
     }
@@ -149,13 +129,10 @@ export const ytplaylist = produce((draft, action) => {
     // list to play / playingList
     // ------------------------------------------
     case ADD_LIST_TO_PLAY: {
-      const {
-        updatedPlayingPlaylists,
-        updatedPlayingVideos,
-        checkedListToClear,
-      } = action.payload;
+      const { updatedPlayingPlaylists, checkedListToClear } = action.payload;
+
       draft.playingPlaylists = updatedPlayingPlaylists;
-      draft.playingVideos = updatedPlayingVideos;
+
       if (checkedListToClear === "playlist") {
         draft.checkedPlaylists = [];
       } else {
@@ -167,7 +144,6 @@ export const ytplaylist = produce((draft, action) => {
 
     case UPDATE_LIST_TO_PLAY: {
       draft.listToPlay = action.payload.listToPlay;
-
       return draft;
     }
 

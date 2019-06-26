@@ -1,5 +1,6 @@
 import uniqBy from "lodash.uniqby";
 import shuffle from "lodash.shuffle";
+import union from "lodash.union";
 import {
   ADD_PLAYLIST,
   REMOVE_PLAYLIST,
@@ -17,6 +18,7 @@ import {
   DELETE_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
+  REMOVE_PLAYING_VIDEOS,
   TOGGLE_PLAYING_VIDEO,
   REMOVE_VIDEO_FROM_PLAYING,
 } from "../../utils/constants/actionConstants";
@@ -317,11 +319,7 @@ export const addVideo = ({ persist, video: videoToAdd }) => {
  */
 export const removeVideo = () => {
   return (dispatch, getState) => {
-    const {
-      checkedVideos: videosToRemove,
-      videos,
-      playingVideos,
-    } = getState().ytplaylist;
+    const { checkedVideos: videosToRemove, videos } = getState().ytplaylist;
     if (!videosToRemove.length) {
       return;
     }
@@ -329,59 +327,50 @@ export const removeVideo = () => {
     const updatedVideos = videos.filter(
       (video) => !videosToRemove.includes(video.id)
     );
-    const updatedPlayingVideos = playingVideos.filter(
-      (videoId) => !videosToRemove.includes(videoId)
-    );
 
     dispatch({
       type: REMOVE_VIDEO,
       payload: {
         updatedVideos,
-        updatedPlayingVideos,
       },
     });
+    dispatch(removePlayingVideos(videosToRemove));
 
-    // save to indexedDB
     videosToRemove.forEach((videoId) => {
       videosDB.removeVideo(videoId);
     });
-    songListDB.updatePlayingVideos(updatedPlayingVideos);
   };
 };
 
 /**
  * Delete ONE video from saved videos
  *
- * @param {string} id Id for video to be deleted
+ * @param {string} videoId Id for video to be deleted
  * @returns {function} Thunk function
  */
-export const deleteVideo = (id) => {
+export const deleteVideo = (videoId) => {
   return (dispatch, getState) => {
-    const { videos, playingVideos, listToPlay } = getState().ytplaylist;
+    const { videos, listToPlay } = getState().ytplaylist;
 
     // updates videos array
-    const updatedVideos = videos.filter((video) => video.id !== id);
-
-    // updates playingVideos if video exists
-    const updatedPlayingVideos = playingVideos.filter(
-      (videoId) => videoId !== id
-    );
+    const updatedVideos = videos.filter((video) => video.id !== videoId);
 
     // updates listToPlay
-    const updatedListToPlay = listToPlay.filter((video) => video.id !== id);
+    const updatedListToPlay = listToPlay.filter(
+      (video) => video.id !== videoId
+    );
 
     dispatch({
       type: DELETE_VIDEO,
       payload: {
         videos: updatedVideos,
-        playingVideos: updatedPlayingVideos,
       },
     });
     dispatch(updateListToPlay(updatedListToPlay));
+    dispatch(removePlayingVideos([videoId]));
 
     // updates indexedDB
-    videosDB.removeVideo(id);
-    songListDB.updatePlayingVideos(updatedPlayingVideos);
+    videosDB.removeVideo(videoId);
   };
 };
 
@@ -398,24 +387,22 @@ export const setCheckedVideos = (checkedVideos) => ({
 });
 
 /**
- * Add videos in listToPlay to playingVideos array
+ * Add videos specified by videoIds array to playingVideos
  *
- * @param {Array<string>} videosId Videos id array
- * @param {boolean} persist Persist to indexedDB
+ * @param {Array<string>} videoIds Videos id array
+ * @param {boolean} persist Persist to indexedDB (Default to true)
  * @returns {function} Thunk function for redux store
  */
-export const addPlayingVideos = (videosId, persist) => {
+export const addPlayingVideos = (videoIds, persist = true) => {
   return (dispatch, getState) => {
     const { playingVideos } = getState().ytplaylist;
-    const filteredVideoIds = videosId.filter(
-      (id) => !playingVideos.includes(id)
-    );
-    const updatedPlayingVideos = [...playingVideos, ...filteredVideoIds];
+
+    const updatedPlayingVideos = union(playingVideos, videoIds);
 
     dispatch({
       type: ADD_PLAYING_VIDEOS,
       payload: {
-        updatedPlayingVideos,
+        playingVideos: updatedPlayingVideos,
       },
     });
 
@@ -423,6 +410,35 @@ export const addPlayingVideos = (videosId, persist) => {
     if (persist) {
       songListDB.updatePlayingVideos(updatedPlayingVideos);
     }
+  };
+};
+
+/**
+ * Remove videos specified by videoIds array from playingVideos
+ *
+ * @param {*} videoIds Videos id to remove array
+ * @param {boolean} persist Persist to indexedDB (Default to true)
+ * @returns {function} Thunk function for redux store
+ * @returns
+ */
+export const removePlayingVideos = (videoIds, persist = true) => {
+  return (dispatch, getState) => {
+    const { playingVideos } = getState().ytplaylist;
+
+    console.log(playingVideos);
+
+    const updatedPlayingVideos = playingVideos.filter(
+      (videoId) => !videoIds.includes(videoId)
+    );
+
+    dispatch({
+      type: REMOVE_PLAYING_VIDEOS,
+      payload: {
+        playingVideos: updatedPlayingVideos,
+      },
+    });
+
+    if (persist) songListDB.updatePlayingVideos(updatedPlayingVideos);
   };
 };
 
@@ -438,7 +454,6 @@ export const togglePlayingVideo = (id) => {
 
     const isPlayingVideoPreviously = playingVideos.includes(id);
 
-    const updatedPlayingVideos = addOrRemove(playingVideos, id);
     const updatedListToPlay = !isPlayingVideoPreviously
       ? uniqBy(
           [
@@ -453,13 +468,15 @@ export const togglePlayingVideo = (id) => {
 
     dispatch({
       type: TOGGLE_PLAYING_VIDEO,
-      payload: {
-        playingVideos: updatedPlayingVideos,
-      },
     });
-    dispatch(updateListToPlay(updatedListToPlay));
 
-    songListDB.updatePlayingVideos(updatedPlayingVideos);
+    if (isPlayingVideoPreviously) {
+      dispatch(removePlayingVideos([id]));
+    } else {
+      dispatch(addPlayingVideos([id]));
+    }
+
+    dispatch(updateListToPlay(updatedListToPlay));
   };
 };
 
@@ -518,6 +535,7 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
         }
       });
 
+      dispatch(addPlayingVideos(playingVideos, persist));
       checkedListToClear = "video";
     } else {
       // for hydration
@@ -530,7 +548,6 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
       type: ADD_LIST_TO_PLAY,
       payload: {
         updatedPlayingPlaylists: playingPlaylists,
-        updatedPlayingVideos: playingVideos,
         checkedListToClear,
       },
     });
@@ -538,7 +555,6 @@ export const addListToPlay = ({ checked, persist, listToAdd }) => {
 
     if (persist) {
       songListDB.updatePlayingPlaylists(playingPlaylists);
-      songListDB.updatePlayingVideos(playingVideos);
     }
   };
 };
@@ -611,32 +627,24 @@ export const removeVideoFromPlaying = () => {
       return isVideoIdIncluded;
     });
 
+    // clear checkedVideos and return if no video to remove
     if (filteredVideosToRemove.length === 0) {
       dispatch(setCheckedVideos([]));
       return;
     }
 
-    // proceed to update listToPlay and playingVideos
-    // if filteredVideosToRemove is not empty
+    // proceed if filteredVideosToRemove is not empty
     const updatedListToPlay = listToPlay.filter(
       (video) => !filteredVideosToRemove.includes(video.id)
-    );
-    const updatedPlayingVideos = playingVideos.filter(
-      (videoId) => !filteredVideosToRemove.includes(videoId)
     );
 
     dispatch({
       type: REMOVE_VIDEO_FROM_PLAYING,
-      payload: {
-        updatedPlayingVideos,
-      },
     });
+    dispatch(removePlayingVideos(filteredVideosToRemove));
     dispatch(updateListToPlay(updatedListToPlay));
     dispatch(setCheckedVideos([]));
 
     notify("success", "Successfully removed selected video(s) from playing 😎");
-
-    // save to indexedDB
-    songListDB.updatePlayingVideos(updatedPlayingVideos);
   };
 };
