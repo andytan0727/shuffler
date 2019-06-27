@@ -1,4 +1,6 @@
-import produce from "immer";
+import produce, { original } from "immer";
+import uniqBy from "lodash.uniqby";
+import union from "lodash.union";
 import {
   ADD_PLAYLIST,
   REMOVE_PLAYLIST,
@@ -17,6 +19,7 @@ import {
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
   REMOVE_PLAYING_VIDEOS,
+  APPEND_LIST_TO_PLAY,
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -43,7 +46,16 @@ const initialState = {
 export const ytplaylist = produce((draft, action) => {
   switch (action.type) {
     case ADD_PLAYLIST: {
-      draft.playlists = action.payload.playlists;
+      const playlistToAdd = action.payload.playlist;
+      const isPlaylistExists = draft.playlists.some(
+        (playlist) => playlist.id === playlistToAdd.id
+      );
+
+      // return if playlist already existed
+      if (isPlaylistExists) return draft;
+
+      // proceeds to add playlist if it does not exist yet
+      draft.playlists.push(playlistToAdd);
       return draft;
     }
 
@@ -74,7 +86,9 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case ADD_PLAYING_PLAYLISTS: {
-      draft.playingPlaylists = action.payload.updatedPlayingPlaylists;
+      const playlistIds = action.payload.playlistIds;
+      const prevPlayingPlaylists = original(draft.playingPlaylists);
+      draft.playingPlaylists = union(prevPlayingPlaylists, playlistIds);
       return draft;
     }
 
@@ -87,7 +101,18 @@ export const ytplaylist = produce((draft, action) => {
     // videos
     // ------------------------------------------
     case ADD_VIDEO: {
-      draft.videos = action.payload.updatedVideos;
+      const { videoToAdd } = action.payload;
+
+      const isVideoExists = draft.videos.some(
+        (video) => video.id === videoToAdd.id
+      );
+
+      // return if video exists
+      if (isVideoExists) {
+        return draft;
+      }
+
+      draft.videos.push(videoToAdd);
       return draft;
     }
 
@@ -114,8 +139,9 @@ export const ytplaylist = produce((draft, action) => {
     }
 
     case ADD_PLAYING_VIDEOS: {
-      draft.playingVideos = action.payload.playingVideos;
-
+      const videoIds = action.payload.videoIds;
+      const prevPlayingVideos = original(draft.playingVideos);
+      draft.playingVideos = union(prevPlayingVideos, videoIds);
       return draft;
     }
 
@@ -139,6 +165,13 @@ export const ytplaylist = produce((draft, action) => {
         draft.checkedVideos = [];
       }
 
+      return draft;
+    }
+
+    case APPEND_LIST_TO_PLAY: {
+      const items = action.payload.items;
+      const prevListToPlay = original(draft.listToPlay);
+      draft.listToPlay = uniqBy([...prevListToPlay, ...items], "id");
       return draft;
     }
 

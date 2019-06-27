@@ -1,4 +1,6 @@
 import { applyMiddleware, createStore, combineReducers } from "redux";
+import createSagaMiddleware from "redux-saga";
+import { all } from "redux-saga/effects";
 import { persistStore, persistReducer } from "redux-persist";
 import localforage from "localforage";
 import thunk from "redux-thunk";
@@ -13,9 +15,16 @@ import { ytapi as ytapiReducer } from "./ytapi/reducer";
 import { ytplayer as ytplayerReducer } from "./ytplayer/reducer";
 import { ytplaylist as ytplaylistReducer } from "./ytplaylist/reducer";
 
+// sagas
+import ytapiSaga from "./ytapi/sagas";
+
 // Disable immer's auto freezing
 // To solve the problem of redux-persist _persist object is not extensible
 setAutoFreeze(false);
+
+function* rootSaga() {
+  yield all([ytapiSaga()]);
+}
 
 const rootPersistConfig = {
   key: "root",
@@ -35,6 +44,8 @@ const ytplaylistPersistConfig = {
   blacklist: ["checkedPlaylists", "checkedVideos"],
 };
 
+const sagaMiddleware = createSagaMiddleware();
+
 const logger = createLogger();
 
 const rootReducer = combineReducers({
@@ -51,9 +62,11 @@ const store =
   process.env.NODE_ENV === "development"
     ? createStore(
         persistedReducer,
-        composeWithDevTools(applyMiddleware(thunk, logger))
+        composeWithDevTools(applyMiddleware(thunk, sagaMiddleware, logger))
       )
     : createStore(persistedReducer, applyMiddleware(thunk));
+
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
 export default store;

@@ -2,7 +2,10 @@ import { useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { notify } from "../../../utils/helper/notifyHelper";
-import { setVideoUrl, fetchVideoData } from "../../../store/ytapi/action";
+import {
+  setVideoUrlAction,
+  fetchVideoDataAction,
+} from "../../../store/ytapi/action";
 
 const SearchVideoInput = (props) => {
   const {
@@ -18,8 +21,8 @@ const SearchVideoInput = (props) => {
     },
 
     // dispatch
-    setVideoUrl,
-    fetchVideoData,
+    setVideoUrlAction,
+    fetchVideoDataAction,
 
     // own props
     name,
@@ -29,10 +32,10 @@ const SearchVideoInput = (props) => {
   const inputRef = useRef(null);
 
   const handleVideoInputChange = (e) => {
-    setVideoUrl(e.target.value);
+    setVideoUrlAction(e.target.value);
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
 
     const vidRegex = /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:v)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/;
@@ -56,32 +59,17 @@ const SearchVideoInput = (props) => {
       return;
     }
 
-    try {
-      await fetchVideoData(
-        apiBaseUrl,
-        {
-          part,
-          maxResults,
-          id: videoId,
-          fields,
-          apiKey,
-        },
-        "video"
-      );
-
-      // clear input
-      setVideoUrl("");
-    } catch (err) {
-      notify("error", "❌ Error in requesting video!");
-      console.error(err);
-
-      // clear input
-      setVideoUrl("");
-    }
+    fetchVideoDataAction(apiBaseUrl, {
+      part,
+      maxResults,
+      id: videoId,
+      fields,
+      apiKey,
+    });
   };
 
   const handleCancel = () => {
-    setVideoUrl("");
+    setVideoUrlAction("");
   };
 
   return children({
@@ -111,8 +99,8 @@ SearchVideoInput.propTypes = {
     }),
     fetchedVideoId: PropTypes.array,
   }),
-  setVideoUrl: PropTypes.func.isRequired,
-  fetchVideoData: PropTypes.func.isRequired,
+  setVideoUrlAction: PropTypes.func.isRequired,
+  fetchVideoDataAction: PropTypes.func.isRequired,
 };
 
 const mapStatesToProps = ({ ytapi }) => ({
@@ -122,7 +110,7 @@ const mapStatesToProps = ({ ytapi }) => ({
 export default connect(
   mapStatesToProps,
   {
-    setVideoUrl,
-    fetchVideoData,
+    setVideoUrlAction,
+    fetchVideoDataAction,
   }
 )(SearchVideoInput);

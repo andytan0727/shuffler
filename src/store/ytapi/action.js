@@ -1,19 +1,63 @@
 import {
-  SET_PLAYLIST_URL,
   FETCH_PLAYLIST_DATA,
-  ADD_FETCHED_ITEM_ID,
-  SET_VIDEO_URL,
+  FETCH_PLAYLIST_DATA_SUCCESS,
+  FETCH_PLAYLIST_DATA_FAILED,
+  ADD_FETCHED_PLAYLIST_ID,
+  SET_PLAYLIST_URL,
   FETCH_VIDEO_DATA,
-  ADD_FETCHED_VIDEO_ID,
   FETCH_VIDEO_DATA_SUCCESS,
   FETCH_VIDEO_DATA_FAILED,
+  ADD_FETCHED_VIDEO_ID,
+  SET_VIDEO_URL,
 } from "../../utils/constants/actionConstants";
-import { fetchYoutubeAPIData } from "../../utils/helper/fetchHelper";
-import {
-  addVideo,
-  addListToPlay,
-  addPlayingVideos,
-} from "../ytplaylist/action";
+
+/**
+ * Add fetched playlist asynchronously to Redux
+ * @param {string} url Base url for HTTP request
+ * @param {object} params Extra params for request
+ * @returns FETCH_PLAYLIST_DATA action object
+ */
+export const fetchPlaylistDataAction = (url, params) => ({
+  type: FETCH_PLAYLIST_DATA,
+  payload: {
+    url,
+    params,
+  },
+});
+
+/**
+ * Executes when successfully fetched playlist data from YouTube Data API
+ *
+ * @param {*} data Data obtained from YouTube Data API
+ * @returns FETCH_PLAYLIST_DATA_SUCCESS action object
+ */
+export const fetchPlaylistDataSuccessAction = (data) => ({
+  type: FETCH_PLAYLIST_DATA_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+/**
+ * Executes when failed to fetch playlist data from YouTube Data API
+ *
+ * @returns FETCH_PLAYLIST_DATA_FAILED action object
+ */
+export const fetchPlaylistDataFailedAction = () => ({
+  type: FETCH_PLAYLIST_DATA_FAILED,
+});
+
+/**
+ * Add fetched playlist's to Redux store
+ * @param {string} id Fetched playlist id
+ * @returns ADD_FETCHED_PLAYLIST_ID action object
+ */
+export const addFetchedPlaylistIdAction = (id) => ({
+  type: ADD_FETCHED_PLAYLIST_ID,
+  payload: {
+    id,
+  },
+});
 
 /**
  * Set inputed playlist URL
@@ -21,7 +65,7 @@ import {
  * @param {string} playlistUrl
  * @return SET_PLAYLIST_URL action object for Redux
  */
-export const setPlaylistUrl = (playlistUrl) => ({
+export const setPlaylistUrlAction = (playlistUrl) => ({
   type: SET_PLAYLIST_URL,
   payload: {
     playlistUrl,
@@ -29,35 +73,49 @@ export const setPlaylistUrl = (playlistUrl) => ({
 });
 
 /**
- * Add fetched playlist asynchronously to Redux
+ * Fetching videos information asynchronously from API to Redux
  * @param {string} url Base url for HTTP request
  * @param {object} params Extra params for request
- * @returns dispatch function for redux thunk
+ * @returns FETCH_VIDEO_DATA action object
  */
-export const fetchPlaylistData = (url, params, dataType) => {
-  return async (dispatch) => {
-    try {
-      const data = await fetchYoutubeAPIData(url, params, dataType);
-      dispatch({
-        type: FETCH_PLAYLIST_DATA,
-        payload: {
-          data,
-        },
-      });
-      return data;
-    } catch (err) {
-      throw err;
-    }
-  };
-};
+export const fetchVideoDataAction = (url, params) => ({
+  type: FETCH_VIDEO_DATA,
+  payload: {
+    url,
+    params,
+  },
+});
 
 /**
- * Add fetched playlist's to Redux store
- * @param {string} id fetched item(playlist) id
- * @returns ADD_FETCHED_ITEM_ID action object for Redux
+ * Executes when successfully fetched video data from YouTube Data API
+ *
+ * @param {*} data Data obtained from YouTube Data API
+ * @returns FETCH_VIDEO_DATA_SUCCESS action object
  */
-export const addFetchedItemId = ({ id }) => ({
-  type: ADD_FETCHED_ITEM_ID,
+export const fetchVideoDataSuccessAction = (data) => ({
+  type: FETCH_VIDEO_DATA_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+/**
+ * Executes when failed to fetch video data from YouTube Data API
+ *
+ * @returns FETCH_VIDEO_DATA_FAILED action object
+ */
+export const fetchVideoDataFailedAction = () => ({
+  type: FETCH_VIDEO_DATA_FAILED,
+});
+
+/**
+ * Add fetched video id to ytapi redux store
+ *
+ * @param {string} id
+ * @returns ADD_FETCHED_VIDEO_ID action object
+ */
+export const addFetchedVideoIdAction = (id) => ({
+  type: ADD_FETCHED_VIDEO_ID,
   payload: {
     id,
   },
@@ -69,74 +127,9 @@ export const addFetchedItemId = ({ id }) => ({
  * @param {string} videoUrl
  * @return SET_VIDEO_URL action object for Redux
  */
-export const setVideoUrl = (videoUrl) => ({
+export const setVideoUrlAction = (videoUrl) => ({
   type: SET_VIDEO_URL,
   payload: {
     videoUrl,
   },
 });
-
-/**
- * Fetching videos information asynchronously from API to Redux
- * @param {string} url Base url for HTTP request
- * @param {object} params Extra params for request
- * @returns {function} thunk function for redux
- */
-export const fetchVideoData = (url, params, dataType) => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: FETCH_VIDEO_DATA });
-      const data = await fetchYoutubeAPIData(url, params, dataType);
-      dispatch(fetchVideoDataSuccess(data));
-    } catch (err) {
-      dispatch({ type: FETCH_VIDEO_DATA_FAILED });
-      throw err;
-    }
-  };
-};
-
-/**
- * Executes when successfully fetched video data from YouTube Data API
- *
- * @param {*} data Data obtained from YouTube Data API
- * @returns {function} thunk function for redux
- */
-export const fetchVideoDataSuccess = (data) => {
-  return (dispatch) => {
-    const items = Array.from(data.items);
-    const id = items[0].id;
-
-    console.log(`id: ${id}`);
-
-    dispatch({
-      type: FETCH_VIDEO_DATA_SUCCESS,
-      payload: {
-        data,
-      },
-    });
-
-    // add fetched videos to videos, listToPlay and playingVideos in redux store
-    dispatch(
-      addVideo({
-        video: {
-          id,
-          items,
-        },
-      })
-    );
-    dispatch(
-      addListToPlay({
-        listToAdd: items,
-      })
-    );
-    dispatch(addPlayingVideos([id]));
-
-    // add fetched video's id to redux store
-    dispatch({
-      type: ADD_FETCHED_VIDEO_ID,
-      payload: {
-        id,
-      },
-    });
-  };
-};

@@ -1,13 +1,16 @@
 import produce from "immer";
+import union from "lodash.union";
 import {
   SET_PLAYLIST_URL,
   FETCH_PLAYLIST_DATA,
-  ADD_FETCHED_ITEM_ID,
   SET_VIDEO_URL,
   FETCH_VIDEO_DATA,
   ADD_FETCHED_VIDEO_ID,
   FETCH_VIDEO_DATA_SUCCESS,
   FETCH_VIDEO_DATA_FAILED,
+  FETCH_PLAYLIST_DATA_SUCCESS,
+  FETCH_PLAYLIST_DATA_FAILED,
+  ADD_FETCHED_PLAYLIST_ID,
 } from "../../utils/constants/actionConstants";
 
 const initialState = {
@@ -23,6 +26,7 @@ const initialState = {
       fields: ["items", "nextPageToken", "pageInfo"],
     },
     fetchedData: [],
+    fetchLoading: false,
   },
   videoUrl: "",
   videos: {
@@ -36,7 +40,7 @@ const initialState = {
     fetchedData: [],
     fetchLoading: false,
   },
-  fetchedItemsId: [],
+  fetchedPlaylistId: [],
   fetchedVideoId: [],
 };
 
@@ -45,12 +49,14 @@ export const ytapi = produce((draft, action) => {
     // -------------------------------------
     // Playlists
     // -------------------------------------
-    case SET_PLAYLIST_URL: {
-      draft.playlistUrl = action.payload.playlistUrl;
+    case FETCH_PLAYLIST_DATA: {
+      draft.playlistItems.fetchLoading = true;
       return draft;
     }
 
-    case FETCH_PLAYLIST_DATA: {
+    case FETCH_PLAYLIST_DATA_SUCCESS: {
+      draft.playlistItems.fetchLoading = false;
+
       const dataToAdd = action.payload.data;
       const isDataFetched = draft.playlistItems.fetchedData.some(
         (data) => data.items[0].id === dataToAdd.items[0].id
@@ -66,35 +72,33 @@ export const ytapi = produce((draft, action) => {
       return draft;
     }
 
-    case ADD_FETCHED_ITEM_ID: {
-      const playlistIdToAdd = action.payload.id;
+    case FETCH_PLAYLIST_DATA_FAILED: {
+      draft.playlistItems.fetchLoading = false;
+      return draft;
+    }
 
-      // push fetched playlist id to fetched items array if not exists
-      if (!draft.fetchedItemsId.includes(playlistIdToAdd)) {
-        const updatedFetchedItemsId = [
-          ...draft.fetchedItemsId,
-          playlistIdToAdd,
-        ];
-        draft.fetchedItemsId = updatedFetchedItemsId;
-      }
+    case ADD_FETCHED_PLAYLIST_ID: {
+      draft.fetchedPlaylistId = union(draft.fetchedPlaylistId, [
+        action.payload.id,
+      ]);
+      return draft;
+    }
+
+    case SET_PLAYLIST_URL: {
+      draft.playlistUrl = action.payload.playlistUrl;
       return draft;
     }
 
     // -------------------------------------
     // Videos
     // -------------------------------------
-    case SET_VIDEO_URL: {
-      draft.videoUrl = action.payload.videoUrl;
-      return draft;
-    }
-
     case FETCH_VIDEO_DATA: {
-      draft.fetchLoading = true;
+      draft.videos.fetchLoading = true;
       return draft;
     }
 
     case FETCH_VIDEO_DATA_SUCCESS: {
-      draft.fetchLoading = false;
+      draft.videos.fetchLoading = false;
 
       const dataToAdd = action.payload.data;
       const isDataFetched = draft.videos.fetchedData.some(
@@ -112,17 +116,17 @@ export const ytapi = produce((draft, action) => {
     }
 
     case FETCH_VIDEO_DATA_FAILED: {
-      draft.fetchLoading = false;
+      draft.videos.fetchLoading = false;
       return draft;
     }
 
     case ADD_FETCHED_VIDEO_ID: {
-      const videoIdToAdd = action.payload.id;
+      draft.fetchedVideoId = union(draft.fetchedVideoId, action.payload.id);
+      return draft;
+    }
 
-      // push fetched video id if not exists
-      if (!draft.fetchedVideoId.includes(videoIdToAdd)) {
-        draft.fetchedVideoId.push(videoIdToAdd);
-      }
+    case SET_VIDEO_URL: {
+      draft.videoUrl = action.payload.videoUrl;
       return draft;
     }
 

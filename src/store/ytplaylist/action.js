@@ -1,6 +1,5 @@
 import uniqBy from "lodash.uniqby";
 import shuffle from "lodash.shuffle";
-import union from "lodash.union";
 import {
   ADD_PLAYLIST,
   REMOVE_PLAYLIST,
@@ -21,6 +20,7 @@ import {
   REMOVE_PLAYING_VIDEOS,
   TOGGLE_PLAYING_VIDEO,
   REMOVE_VIDEO_FROM_PLAYING,
+  APPEND_LIST_TO_PLAY,
 } from "../../utils/constants/actionConstants";
 
 import { notify } from "../../utils/helper/notifyHelper";
@@ -28,32 +28,15 @@ import { notify } from "../../utils/helper/notifyHelper";
 /**
  * Add playlist to Redux store
  * @param {object} playlist A playlist object structured according to YouTube Data Api
- * @returns {function} Thunk function
+ * @returns ADD_PLAYLIST action object
  */
-export const addPlaylist = (playlist) => {
-  return (dispatch, getState) => {
-    const { playlists: prevPlaylists } = getState().ytplaylist;
-    const playlistToAdd = playlist;
 
-    const isPlaylistExists = prevPlaylists.some(
-      (playlist) => playlist.id === playlistToAdd.id
-    );
-
-    // return if playlist already existed
-    if (isPlaylistExists) {
-      return;
-    }
-
-    const updatedPlaylists = [...prevPlaylists, playlistToAdd];
-
-    dispatch({
-      type: ADD_PLAYLIST,
-      payload: {
-        playlists: updatedPlaylists,
-      },
-    });
-  };
-};
+export const addPlaylistAction = (playlist) => ({
+  type: ADD_PLAYLIST,
+  payload: {
+    playlist,
+  },
+});
 
 /**
  * Remove checked playlist in checkedPlaylists array
@@ -145,30 +128,15 @@ export const shufflePlaylist = () => {
 /**
  * Add playlists in listToPlay to playingPlaylists array
  *
- * @param {Array<string>} playlistIdsToAdd Playlists' id array
- * @returns {function} Thunk function
+ * @param {Array<string>} playlistIds Playlists' id array
+ * @returns ADD_PLAYING_PLAYLISTS action object
  */
-export const addPlayingPlaylists = (playlistIdsToAdd) => {
-  return (dispatch, getState) => {
-    const {
-      playingPlaylists: playingPlaylistsFromStore,
-    } = getState().ytplaylist;
-    const filteredPlaylistIds = playlistIdsToAdd.filter(
-      (id) => !playingPlaylistsFromStore.includes(id)
-    );
-    const updatedPlayingPlaylists = [
-      ...playingPlaylistsFromStore,
-      ...filteredPlaylistIds,
-    ];
-
-    dispatch({
-      type: ADD_PLAYING_PLAYLISTS,
-      payload: {
-        updatedPlayingPlaylists,
-      },
-    });
-  };
-};
+export const addPlayingPlaylistsAction = (playlistIds) => ({
+  type: ADD_PLAYING_PLAYLISTS,
+  payload: {
+    playlistIds,
+  },
+});
 
 /**
  * Remove selected playlist(s) from playingList
@@ -240,32 +208,15 @@ export const removePlaylistFromPlaying = () => {
 // -----------------------------------------------
 /**
  * Add fetched video to Redux store
- * @param {object} params
- * @param {object} params.video An object of video id and items from YouTube Data API
- * @returns {function} Thunk function
+ * @param {object} videoToAdd An object of video id and items from YouTube Data API
+ * @returns ADD_VIDEO action object
  */
-export const addVideo = ({ video: videoToAdd }) => {
-  return (dispatch, getState) => {
-    const { videos: prevVideos } = getState().ytplaylist;
-    const isVideoExists = prevVideos.some(
-      (video) => video.id === videoToAdd.id
-    );
-
-    // return if video exists
-    if (isVideoExists) {
-      return;
-    }
-
-    const updatedVideos = [...prevVideos, videoToAdd];
-
-    dispatch({
-      type: ADD_VIDEO,
-      payload: {
-        updatedVideos,
-      },
-    });
-  };
-};
+export const addVideoAction = (videoToAdd) => ({
+  type: ADD_VIDEO,
+  payload: {
+    videoToAdd,
+  },
+});
 
 /**
  * Remove checked video in checkedVideos array
@@ -334,25 +285,17 @@ export const setCheckedVideos = (checkedVideos) => ({
 });
 
 /**
- * Add videos specified by videoIds array to playingVideos
+ * Add videos' id specified by videoIds array to playingVideos
  *
  * @param {Array<string>} videoIds Videos id array
- * @returns {function} Thunk function for redux store
+ * @returns ADD_PLAYING_VIDEOS action object
  */
-export const addPlayingVideos = (videoIds) => {
-  return (dispatch, getState) => {
-    const { playingVideos } = getState().ytplaylist;
-
-    const updatedPlayingVideos = union(playingVideos, videoIds);
-
-    dispatch({
-      type: ADD_PLAYING_VIDEOS,
-      payload: {
-        playingVideos: updatedPlayingVideos,
-      },
-    });
-  };
-};
+export const addPlayingVideosAction = (videoIds) => ({
+  type: ADD_PLAYING_VIDEOS,
+  payload: {
+    videoIds,
+  },
+});
 
 /**
  * Remove videos specified by videoIds array from playingVideos
@@ -411,7 +354,7 @@ export const togglePlayingVideo = (id) => {
     if (isPlayingVideoPreviously) {
       dispatch(removePlayingVideos([id]));
     } else {
-      dispatch(addPlayingVideos([id]));
+      dispatch(addPlayingVideosAction([id]));
     }
 
     dispatch(updateListToPlay(updatedListToPlay));
@@ -476,7 +419,7 @@ export const addListToPlay = ({ checked, listToAdd }) => {
         }
       });
 
-      dispatch(addPlayingVideos(newPlayingVideos));
+      dispatch(addPlayingVideosAction(newPlayingVideos));
       checkedListToClear = "video";
     } else {
       // for hydration
@@ -495,6 +438,19 @@ export const addListToPlay = ({ checked, listToAdd }) => {
     dispatch(updateListToPlay(uniqueListToPlay));
   };
 };
+
+/** NOTE: (mayb) replace addListToPlay action in the future
+ * Action to append new item(s) (video/playlist) to listToPlay
+ *
+ * @param {Array<*>} items Items obtained from API (items key in json returned)
+ * @returns APPEND_LIST_TO_PLAY action object
+ */
+export const appendListToPlayAction = (items) => ({
+  type: APPEND_LIST_TO_PLAY,
+  payload: {
+    items,
+  },
+});
 
 /**
  * Update listToPlay with updatedList supplied

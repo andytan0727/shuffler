@@ -4,7 +4,7 @@ import axios from "axios";
  * Fetch YouTube Data (Playlist/Video) from YouTube API v3
  * @param {string} baseUrl Base url of YouTube Data API
  * @param {object} params Params (query strings) for the GET request
- * @param {string} dataType Enum of data to fetch (playlist/video)
+ * @param {"playlist"|"video"} dataType Enum of data to fetch (playlist/video)
  * @return {object} Data object contains information about playlist
  */
 const fetchYoutubeAPIData = async (baseUrl, params, dataType) => {
@@ -29,6 +29,17 @@ const fetchYoutubeAPIData = async (baseUrl, params, dataType) => {
     const res = await axios.get(apiReq);
     return res.data;
   } catch (err) {
+    // throw specific error about fetching playlist
+    if (dataType === "playlist") {
+      if (err.response.status === 404)
+        throw new Error("404 Playlist Not Found");
+    }
+
+    if (dataType === "video") {
+      if (err.response.status === 404) throw new Error("404 Vide Not Found");
+    }
+
+    // throw general error
     throw err;
   }
 };
