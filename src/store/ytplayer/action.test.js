@@ -2,8 +2,8 @@ import {
   SET_CURRENT_SONG_IDX,
   SET_VIDEO_PLAYING,
   TOGGLE_REPEAT,
-} from "../../../utils/constants/actionConstants";
-import { setCurSongIdx, setVideoPlaying, toggleRepeat } from "../action";
+} from "../../utils/constants/actionConstants";
+import { setCurSongIdx, setVideoPlaying, toggleRepeat } from "./action";
 
 describe("ytplayer actions", () => {
   test("should create SET_CURRENT_SONG_IDX action object", () => {

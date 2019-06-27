@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { setCurSongIdx, setVideoPlaying } from "../action";
-import { ytplayer as ytplayerReducer } from "../reducer";
+import { setCurSongIdx, setVideoPlaying } from "./action";
+import { ytplayer as ytplayerReducer } from "./reducer";
 
 describe("ytplayer reducer", () => {
   const initialState = {

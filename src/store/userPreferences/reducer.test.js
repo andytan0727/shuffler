@@ -1,5 +1,5 @@
-import { setPreferDarkTheme } from "../action";
-import { userPreferences as userPreferencesReducer } from "../reducer";
+import { setPreferDarkTheme } from "./action";
+import { userPreferences as userPreferencesReducer } from "./reducer";
 
 describe("userPreferences reducer", () => {
   test("should return initial state on default", () => {

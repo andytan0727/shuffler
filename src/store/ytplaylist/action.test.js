@@ -7,7 +7,7 @@ import {
   REMOVE_PLAYING_PLAYLISTS,
   REMOVE_PLAYLISTS,
   REMOVE_FROM_LIST_TO_PLAY,
-} from "../../../utils/constants/actionConstants";
+} from "../../utils/constants/actionConstants";
 import {
   addPlaylistAction,
   addPlayingPlaylistsAction,
@@ -17,7 +17,7 @@ import {
   removePlayingPlaylistsAction,
   removePlaylistsAction,
   removeFromListToPlayAction,
-} from "../action";
+} from "./action";
 
 describe("ytplaylist actions", () => {
   // Bypass jsdoc/ts property not found error on global

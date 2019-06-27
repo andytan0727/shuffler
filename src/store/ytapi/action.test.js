@@ -9,7 +9,7 @@ import {
   addFetchedPlaylistIdAction,
   setVideoUrlAction,
   setPlaylistUrlAction,
-} from "../action";
+} from "./action";
 import {
   ADD_FETCHED_VIDEO_ID,
   FETCH_PLAYLIST_DATA,
@@ -21,7 +21,7 @@ import {
   ADD_FETCHED_PLAYLIST_ID,
   SET_VIDEO_URL,
   SET_PLAYLIST_URL,
-} from "../../../utils/constants/actionConstants";
+} from "../../utils/constants/actionConstants";
 
 describe("ytapi actions", () => {
   /** @type {*} */
