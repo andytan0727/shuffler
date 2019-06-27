@@ -1,3 +1,3 @@
-import MiniPlayer from './MiniPlayer';
+import MiniPlayer from "./MiniPlayer";
 
 export default MiniPlayer;

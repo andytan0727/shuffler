@@ -1,3 +1,3 @@
-import VideoListPanel from './VideoListPanel';
+import VideoListPanel from "./VideoListPanel";
 
 export default VideoListPanel;

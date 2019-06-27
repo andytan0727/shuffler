@@ -1,3 +1,3 @@
-import PlayerBasicCtrlBtnGroup from './PlayerBasicCtrlBtnGroup';
+import PlayerBasicCtrlBtnGroup from "./PlayerBasicCtrlBtnGroup";
 
 export default PlayerBasicCtrlBtnGroup;

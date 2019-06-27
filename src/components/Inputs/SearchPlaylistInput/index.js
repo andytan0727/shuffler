@@ -1,3 +1,3 @@
-import SearchPlaylistInput from './SearchPlaylistInput';
+import SearchPlaylistInput from "./SearchPlaylistInput";
 
 export default SearchPlaylistInput;

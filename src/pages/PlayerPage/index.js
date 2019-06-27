@@ -1,3 +1,3 @@
-import PlayerPage from './PlayerPage';
+import PlayerPage from "./PlayerPage";
 
 export default PlayerPage;

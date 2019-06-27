@@ -1,3 +1,3 @@
-import SwitchPanelRadioBtn from './SwitchPanelRadioBtn';
+import SwitchPanelRadioBtn from "./SwitchPanelRadioBtn";
 
 export default SwitchPanelRadioBtn;

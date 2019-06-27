@@ -1,3 +1,3 @@
-import NoVideoFound from './NoVideoFound';
+import NoVideoFound from "./NoVideoFound";
 
 export default NoVideoFound;

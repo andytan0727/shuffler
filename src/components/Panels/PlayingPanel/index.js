@@ -1,3 +1,3 @@
-import PlayingPanel from './PlayingPanel';
+import PlayingPanel from "./PlayingPanel";
 
 export default PlayingPanel;

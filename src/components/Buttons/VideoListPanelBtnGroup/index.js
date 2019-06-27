@@ -1,3 +1,3 @@
-import VideoListPanelBtnGroup from './VideoListPanelBtnGroup';
+import VideoListPanelBtnGroup from "./VideoListPanelBtnGroup";
 
 export default VideoListPanelBtnGroup;
