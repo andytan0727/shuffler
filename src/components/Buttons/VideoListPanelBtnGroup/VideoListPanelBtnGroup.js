@@ -11,7 +11,7 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 
 import {
   addListToPlay,
-  removePlaylist,
+  removePlaylistsAction,
   removePlaylistFromPlaying,
 } from "../../../store/ytplaylist/action";
 import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
@@ -32,7 +32,7 @@ const VideoListPanelBtnGroup = (props) => {
     preferDarkTheme,
     checkedPlaylists,
     addListToPlay,
-    removePlaylist,
+    removePlaylistsAction,
     removePlaylistFromPlaying,
     setViewPlaylist,
   } = props;
@@ -77,7 +77,7 @@ const VideoListPanelBtnGroup = (props) => {
     });
 
     if (result.value) {
-      removePlaylist();
+      removePlaylistsAction(checkedPlaylists);
       notify("success", "Successfully deleted playlist(s) 😎");
     }
   };
@@ -135,7 +135,7 @@ VideoListPanelBtnGroup.propTypes = {
   preferDarkTheme: PropTypes.bool.isRequired,
   checkedPlaylists: PropTypes.array.isRequired,
   addListToPlay: PropTypes.func.isRequired,
-  removePlaylist: PropTypes.func.isRequired,
+  removePlaylistsAction: PropTypes.func.isRequired,
   removePlaylistFromPlaying: PropTypes.func.isRequired,
   setViewPlaylist: PropTypes.func.isRequired,
 };
@@ -152,7 +152,7 @@ export default connect(
   mapStatesToProps,
   {
     addListToPlay,
-    removePlaylist,
+    removePlaylistsAction,
     removePlaylistFromPlaying,
   }
 )(VideoListPanelBtnGroup);

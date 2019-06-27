@@ -24,69 +24,38 @@ import {
 } from "../../../utils/constants/actionConstants";
 
 describe("ytapi actions", () => {
-  const fetchedPlaylistItems = Array.from(
-    { length: 10 },
-    (_, idx) => idx + 1
-  ).map((val) => ({
-    id: val,
-    snippet: {
-      title: `video-${val}`,
-      resourceId: {
-        videoId: `vid-${val}`,
-      },
-    },
-  }));
-  const fetchedVideoItem = {
-    etag: "random_string",
-    id: "videoId",
-    kind: "youtube#video",
-    snippet: {
-      title: `video title`,
-      description: "video description",
-      thumbnails: {
-        default: "default size",
-        medium: "medium",
-        high: "high",
-        standard: "standard",
-        maxres: "maxres",
-      },
-    },
-  };
-  const playlist = {
-    id: "playlist",
-    items: fetchedPlaylistItems,
-  };
-  const video = {
-    id: "video",
-    items: fetchedVideoItem,
-  };
+  /** @type {*} */
+  const customGlobal = global;
 
-  const url = "http://sample.test.com";
-  const playlistParams = {
-    part: "snippet",
-    maxResults: "50",
-    playlistId: "",
-    fields: ["items", "nextPageToken", "pageInfo"],
-  };
-  const videoParams = {
-    part: "snippet",
-    id: "videoId",
-    maxResults: "5",
-    fields: ["items"],
-  };
+  /** @type {Playlist} */
+  const playlist = customGlobal.playlist;
+
+  /** @type {Video} */
+  const video = customGlobal.video;
+
+  /** @type {string} */
+  const url = customGlobal.url;
+
+  /** @type {BaseFetchParams & PlaylistParams} */
+  const playlistParams = customGlobal.playlistParams;
+
+  /** @type {BaseFetchParams & VideoParams} */
+  const videoParams = customGlobal.videoParams;
+
+  const fetchParams = { ...playlistParams, ...videoParams };
 
   test("should create FETCH_PLAYLIST_DATA action object", () => {
-    expect(fetchPlaylistDataAction(url, playlistParams)).toEqual({
+    expect(fetchPlaylistDataAction(url, fetchParams)).toEqual({
       type: FETCH_PLAYLIST_DATA,
       payload: {
         url,
-        params: playlistParams,
+        params: fetchParams,
       },
     });
   });
 
   test("should create FETCH_PLAYLIST_DATA_SUCCESS action object", () => {
-    const data = fetchedPlaylistItems;
+    const data = playlist;
     expect(fetchPlaylistDataSuccessAction(data)).toEqual({
       type: FETCH_PLAYLIST_DATA_SUCCESS,
       payload: {
@@ -125,17 +94,17 @@ describe("ytapi actions", () => {
   // ========================
 
   test("should create FETCH_VIDEO_DATA action object", () => {
-    expect(fetchVideoDataAction(url, videoParams)).toEqual({
+    expect(fetchVideoDataAction(url, fetchParams)).toEqual({
       type: FETCH_VIDEO_DATA,
       payload: {
         url,
-        params: videoParams,
+        params: fetchParams,
       },
     });
   });
 
   test("should create FETCH_VIDEO_DATA_SUCCESS action object", () => {
-    const data = fetchedVideoItem;
+    const data = video;
     expect(fetchVideoDataSuccessAction(data)).toEqual({
       type: FETCH_VIDEO_DATA_SUCCESS,
       payload: {

@@ -3,9 +3,9 @@ import axios from "axios";
  *
  * Fetch YouTube Data (Playlist/Video) from YouTube API v3
  * @param {string} baseUrl Base url of YouTube Data API
- * @param {object} params Params (query strings) for the GET request
- * @param {"playlist"|"video"} dataType Enum of data to fetch (playlist/video)
- * @return {object} Data object contains information about playlist
+ * @param {FetchParams} params Params (query strings) for the GET request
+ * @param {("playlist"|"video")} dataType Enum of data to fetch (playlist/video)
+ * @return {Promise<PlaylistItem>} Data object contains information about playlist
  */
 const fetchYoutubeAPIData = async (baseUrl, params, dataType) => {
   const {

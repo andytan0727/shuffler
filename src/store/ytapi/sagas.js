@@ -24,10 +24,10 @@ import {
 import { notify } from "../../utils/helper/notifyHelper";
 
 /**
- * @typedef {Object} FetchDataActionType
+ * @typedef FetchDataActionType
  * @property {Object} payload
  * @property {string} payload.url Base url for HTTP request
- * @property {Object} payload.params Extra params for request
+ * @property {FetchParams} payload.params Extra params for request
  */
 
 /**
@@ -39,11 +39,12 @@ export function* fetchPlaylistData(action) {
   try {
     let count = 2;
     const items = [];
+
+    /** @type {Playlist} */
     let data = yield call(fetchYoutubeAPIData, url, params, "playlist");
     items.push(...data.items);
 
     while (data.nextPageToken) {
-      console.log(`count: ${count}`);
       if (count > 5) {
         alert(
           "Number of videos in your playlist exceeded limit set by us (250 videos/playlist)"
@@ -64,7 +65,12 @@ export function* fetchPlaylistData(action) {
       count++;
     }
 
-    console.log("finished loop");
+    if (
+      ((Array.isArray && Array.isArray(items)) || items instanceof Array) &&
+      items.length === 0
+    )
+      throw new Error("Fetch Playlist Failed: Empty Response");
+
     yield call(fetchPlaylistDataSuccess, items);
   } catch (err) {
     yield put(fetchPlaylistDataFailedAction());
@@ -76,6 +82,12 @@ export function* fetchPlaylistData(action) {
   }
 }
 
+/**
+ * Saga to execute if fetch playlist data is successful
+ *
+ * @export
+ * @param {Array<PlaylistItem>} dataItems
+ */
 export function* fetchPlaylistDataSuccess(dataItems) {
   const items = Array.from(dataItems);
   const id = items[0].snippet.playlistId;
@@ -84,7 +96,7 @@ export function* fetchPlaylistDataSuccess(dataItems) {
     items,
   };
 
-  yield put(fetchPlaylistDataSuccessAction(dataItems));
+  yield put(fetchPlaylistDataSuccessAction(fetchedPlaylist));
 
   // add fetched playlist to playlists, listToPlay and playingPlaylists in redux store
   yield put(addPlaylistAction(fetchedPlaylist));
@@ -105,6 +117,7 @@ export function* fetchPlaylistDataSuccess(dataItems) {
 export function* fetchVideoData(action) {
   const { url, params } = action.payload;
   try {
+    /** @type {Video} */
     const data = yield call(fetchYoutubeAPIData, url, params, "video");
 
     if (
@@ -125,6 +138,12 @@ export function* fetchVideoData(action) {
   }
 }
 
+/**
+ * Saga to execut if video is successfully fetched
+ *
+ * @export
+ * @param {Video} data
+ */
 export function* fetchVideoDataSuccess(data) {
   const items = Array.from(data.items);
   const id = items[0].id;
@@ -148,10 +167,16 @@ export function* fetchVideoDataSuccess(data) {
 // Saga Watchers
 // =========================
 function* fetchPlaylistDataWatcher() {
+  // @ts-ignore
+  // ignore vscode implicit checkJs
+  // unable to resolve redux-saga typings problem using jsdoc
   yield takeLatest(FETCH_PLAYLIST_DATA, fetchPlaylistData);
 }
 
 function* fetchVideoDataWatcher() {
+  // @ts-ignore
+  // ignore vscode implicit checkJs
+  // unable to resolve redux-saga typings problem using jsdoc
   yield takeLatest(FETCH_VIDEO_DATA, fetchVideoData);
 }
 

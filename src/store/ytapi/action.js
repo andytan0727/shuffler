@@ -14,7 +14,7 @@ import {
 /**
  * Add fetched playlist asynchronously to Redux
  * @param {string} url Base url for HTTP request
- * @param {object} params Extra params for request
+ * @param {FetchParams} params Extra params for request
  * @returns FETCH_PLAYLIST_DATA action object
  */
 export const fetchPlaylistDataAction = (url, params) => ({
@@ -28,7 +28,7 @@ export const fetchPlaylistDataAction = (url, params) => ({
 /**
  * Executes when successfully fetched playlist data from YouTube Data API
  *
- * @param {*} data Data obtained from YouTube Data API
+ * @param {Playlist} data Data obtained from YouTube Data API
  * @returns FETCH_PLAYLIST_DATA_SUCCESS action object
  */
 export const fetchPlaylistDataSuccessAction = (data) => ({
@@ -75,7 +75,7 @@ export const setPlaylistUrlAction = (playlistUrl) => ({
 /**
  * Fetching videos information asynchronously from API to Redux
  * @param {string} url Base url for HTTP request
- * @param {object} params Extra params for request
+ * @param {FetchParams} params Extra params for request
  * @returns FETCH_VIDEO_DATA action object
  */
 export const fetchVideoDataAction = (url, params) => ({
@@ -89,7 +89,7 @@ export const fetchVideoDataAction = (url, params) => ({
 /**
  * Executes when successfully fetched video data from YouTube Data API
  *
- * @param {*} data Data obtained from YouTube Data API
+ * @param {Video} data Data obtained from YouTube Data API
  * @returns FETCH_VIDEO_DATA_SUCCESS action object
  */
 export const fetchVideoDataSuccessAction = (data) => ({

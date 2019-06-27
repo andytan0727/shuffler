@@ -8,6 +8,7 @@ const fetchedPlaylistItems = Array.from(
   id: val.toString(),
   snippet: {
     playlistId: "playlistId",
+    name: "Optional name",
     channelId: "testChannelId",
     channelTitle: "testChannelTitle",
     title: `video-${val}`,

@@ -59,7 +59,7 @@ export const ytapi = produce((draft, action) => {
 
       const dataToAdd = action.payload.data;
       const isDataFetched = draft.playlistItems.fetchedData.some(
-        (data) => data.items[0].id === dataToAdd.items[0].id
+        (data) => data.id === dataToAdd.id
       );
 
       // return if data already fetched before
