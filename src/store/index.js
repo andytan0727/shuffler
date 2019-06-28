@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore, combineReducers } from "redux";
+import { applyMiddleware, createStore, combineReducers, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import { persistStore, persistReducer } from "redux-persist";
@@ -66,7 +66,10 @@ const store =
         persistedReducer,
         composeWithDevTools(applyMiddleware(thunk, sagaMiddleware, logger))
       )
-    : createStore(persistedReducer, applyMiddleware(thunk));
+    : createStore(
+        persistedReducer,
+        compose(applyMiddleware(sagaMiddleware, thunk))
+      );
 
 sagaMiddleware.run(rootSaga);
 
