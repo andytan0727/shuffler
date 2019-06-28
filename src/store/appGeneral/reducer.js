@@ -85,6 +85,16 @@ const initialStates = {
       version: "2.4.1",
       changes: ["Fix: several vulnerabilities"],
     },
+    {
+      version: "3.0.0",
+      changes: [
+        "Shuffler now using local storage instead of indexedDB to store user data. Hence your previously saved videos and playlists will be LOST, but recoverable",
+        "Fix most broken layout colors in light mode",
+        "Fix transition problem in light mode",
+        "Update What's New page style, i.e. the page you are seeing now :)",
+        "Dark/Light mode switch is now updated to new style !",
+      ],
+    },
   ],
 };
 
