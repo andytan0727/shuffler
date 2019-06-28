@@ -133,13 +133,13 @@ export function* fetchVideoData(action) {
     console.error(`Error in fetchVideoData: ${err}`);
     notify("error", "❌ Error in searching video!");
   } finally {
-    // clear vieo url either success or failed
+    // clear video url either success or failed
     yield put(setVideoUrlAction(""));
   }
 }
 
 /**
- * Saga to execut if video is successfully fetched
+ * Saga to execute if video is successfully fetched
  *
  * @export
  * @param {Video} data
