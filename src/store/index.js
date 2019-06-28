@@ -18,13 +18,14 @@ import { ytplaylist as ytplaylistReducer } from "./ytplaylist/reducer";
 // sagas
 import ytapiSaga from "./ytapi/sagas";
 import ytplaylistSaga from "./ytplaylist/sagas";
+import userPreferencesSaga from "./userPreferences/sagas";
 
 // Disable immer auto freezing
 // To solve the problem of redux-persist _persist object is not extensible
 setAutoFreeze(false);
 
 function* rootSaga() {
-  yield all([ytapiSaga(), ytplaylistSaga()]);
+  yield all([ytapiSaga(), ytplaylistSaga(), userPreferencesSaga()]);
 }
 
 const rootPersistConfig = {

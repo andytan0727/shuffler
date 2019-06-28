@@ -8,6 +8,30 @@
   background-size: $cover;
 }
 
+:root {
+  /* Light mode */
+  --light-text: #222430;
+  --light-bg: #232323;
+  --light-theme: #d34a97;
+  --panel-light-bg: rgba(255, 255, 255, 0.4);
+
+  /* Dark mode */
+  --dark-black: #{$black};
+  --dark-blackLight: #{$blackLight};
+  --dark-blackDark: #{$blackDark};
+  --dark-softBlack: #{$softBlack};
+  --dark-text: #f7f7f7;
+  --dark-bg: var(--dark-black);
+  --dark-theme: #bd93f9;
+  --panel-dark-bg: rgba(0, 0, 0, 0.7);
+
+  /* Default mode (dark) */
+  --text-color: var(--dark-text);
+  --bg-color: var(--dark-bg);
+  --panel-bg-color: var(--panel-dark-bg);
+  --theme-color: var(--dark-theme);
+}
+
 html {
   min-height: 100vh;
 }
@@ -51,8 +75,8 @@ body {
 
 // global dark theme settings
 .dark {
-  background-color: $black;
-  color: white;
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
   transition: background-color 500ms !important;
   transition-timing-function: linear;
 

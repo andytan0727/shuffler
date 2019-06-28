@@ -34,6 +34,7 @@ const App = (props) => {
       primary: { main: purple[800] },
       secondary: { main: purple["A200"] },
       background: {
+        // @ts-ignore
         black: "#1a1a1a",
         blackLight: "#4e4b53",
         lightGrey: "#2a2a2a",
@@ -75,7 +76,10 @@ const App = (props) => {
     } else {
       document.body.className = "";
     }
-  }, [preferDarkTheme]);
+
+    // load saved theme on startup
+    setPreferDarkTheme(preferDarkTheme);
+  }, [preferDarkTheme, setPreferDarkTheme]);
 
   return (
     <BrowserRouter>
