@@ -2,7 +2,7 @@ import { applyMiddleware, createStore, combineReducers } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import { persistStore, persistReducer } from "redux-persist";
-import localforage from "localforage";
+import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -29,19 +29,19 @@ function* rootSaga() {
 
 const rootPersistConfig = {
   key: "root",
-  storage: localforage,
+  storage,
   whitelist: ["userPreferences"],
 };
 
 const ytplayerPersistConfig = {
   key: "ytplayer",
-  storage: localforage,
+  storage,
   whitelist: ["repeat"],
 };
 
 const ytplaylistPersistConfig = {
   key: "ytplaylist",
-  storage: localforage,
+  storage,
   blacklist: ["checkedPlaylists", "checkedVideos"],
 };
 
