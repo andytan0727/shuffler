@@ -4,11 +4,11 @@
  */
 
 /**
- * @typedef SetPreferDarkTheme
+ * @typedef SetPreferDarkThemeAction
  * @property {string} type
  * @property {{ isPreferDarkTheme: boolean }} payload
  */
 
 /**
- * @typedef {SetPreferDarkTheme} UserPreferencesActions
+ * @typedef {SetPreferDarkThemeAction} UserPreferencesActions
  */

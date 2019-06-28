@@ -9,36 +9,62 @@
 }
 
 :root {
-  /* Light mode */
-  --light-text: #222430;
-  --light-bg: #{$white};
-  --light-border: #{$black};
-  --yt-player-list-light-bg: #{$white};
-  --light-hover-bg: #{lighten($softBlack, 50%)};
-  --light-theme: #d34a97;
-  --panel-light-bg: rgba(255, 255, 255, 0.4);
+  /* special rgb colors mainly used in rgba function */
+  --black-color-rgb: #{red($black), green($black), blue($black)};
+  --white-color-rgb: #{red($white), green($white), blue($white)};
 
-  /* Dark mode */
+  /* colors */
   --dark-black: #{$black};
   --dark-blackLight: #{$blackLight};
   --dark-blackDark: #{$blackDark};
   --dark-softBlack: #{$softBlack};
-  --dark-text: #{$white};
-  --dark-bg: var(--dark-black);
-  --dark-border: #{$white};
-  --yt-player-list-dark-bg: #{lighten(black, 20%)};
+
+  /* Light mode */
+  --light-text-color: #222430;
+  --light-contrast-text-color: var(--dark-text-color);
+  --light-bg-color: #{$white};
+  --light-contrast-bg-color: var(--dark-bg-color);
+  --light-bg-color-rgb: var(--white-color-rgb);
+  --light-border-color: #{$black};
+  --light-hover-bg: #{lighten($softBlack, 50%)};
+  --light-panel-bg-color: rgba(255, 255, 255, 0.4);
+  --light-search-input-bg-color: var(--light-bg-color);
+  --light-switch-shadow-color: #373d4e;
+  --light-switch-icon: "🌚";
+  --light-switch-text: "dark mode";
+  --light-yt-player-list-bg: #{$white};
+  --light-theme: #d34a97;
+
+  /* Dark mode */
+  --dark-text-color: #{$white};
+  --dark-contrast-text-color: var(--light-text-color);
+  --dark-bg-color: var(--dark-black);
+  --dark-contrast-bg-color: var(--light-bg-color);
+  --dark-bg-color-rgb: var(--black-color-rgb);
+  --dark-border-color: #{$white};
   --dark-hover-bg: #{lighten(black, 15%)};
+  --dark-panel-bg-color: rgba(0, 0, 0, 0.7);
+  --dark-search-input-bg-color: var(--dark-bg-color);
+  --dark-switch-shadow-color: #fce477;
+  --dark-switch-icon: "🌝";
+  --dark-switch-text: "light mode";
+  --dark-yt-player-list-bg: #{lighten(black, 20%)};
   --dark-theme: #bd93f9;
-  --panel-dark-bg: rgba(0, 0, 0, 0.7);
 
   /* Default mode (dark) */
-  --text-color: var(--dark-text);
-  --bg-color: var(--dark-bg);
-  --border-color: var(--dark-border);
-  --panel-bg-color: var(--panel-dark-bg);
-  --search-input-bg-color: var(--dark-black);
-  --yt-player-list-bg: var(--yt-player-list-dark-bg);
+  --text-color: var(--dark-text-color);
+  --contrast-text-color: var(--dark-contrast-text-color);
+  --bg-color: var(--dark-bg-color);
+  --contrast-bg-color: var(--dark-contrast-bg-color);
+  --bg-color-rgb: var(--dark-bg-color-rgb);
+  --border-color: var(--dark-border-color);
   --hover-bg: var(--dark-hover-bg);
+  --panel-bg-color: var(--dark-panel-bg-color);
+  --search-input-bg-color: var(--dark-search-input-bg-color);
+  --switch-shadow-color: var(--dark-switch-shadow-color);
+  --switch-icon: var(--dark-switch-icon);
+  --switch-text: var(--dark-switch-text);
+  --yt-player-list-bg: var(--dark-yt-player-list-bg);
   --theme-color: var(--dark-theme);
 }
 
@@ -85,8 +111,8 @@ body {
 
 // global dark theme settings
 .dark {
-  background-color: var(--dark-bg);
-  color: var(--dark-text);
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-color);
   transition: background-color 500ms !important;
   transition-timing-function: linear;
 

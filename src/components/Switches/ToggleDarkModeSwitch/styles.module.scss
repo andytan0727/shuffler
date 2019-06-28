@@ -1,0 +1,28 @@
+.toggleDarkModeSwitch {
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+
+  &:focus {
+    text-shadow: 0 0 15px var(--switch-shadow-color);
+  }
+}
+
+.toggleDarkModeSwitchLabel {
+  position: fixed;
+  position: absolute;
+  top: 0%;
+  right: 5%;
+  cursor: pointer;
+
+  &::before {
+    content: var(--switch-icon);
+    font-size: 40px;
+    transition: text-shadow 0.2s;
+    text-shadow: 0 0 15px var(--switch-shadow-color);
+  }
+
+  &:hover::before {
+    text-shadow: 0 0 15px var(--switch-shadow-color);
+  }
+}

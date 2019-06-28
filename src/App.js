@@ -25,8 +25,24 @@ const WhatIsNewPage = lazy(() =>
 );
 const AboutPage = lazy(() => retryLazy(() => import("./pages/AboutPage")));
 
+// use a variable to assign fixed value that won't change after every re-render
+/** @type {boolean} */
+let initialTheme;
+
+/**
+ * @typedef AppProps
+ * @property {boolean} preferDarkTheme
+ * @property {function(boolean):void} setPreferDarkTheme
+ */
+
+/**
+ *
+ * @param {AppProps} props
+ * @returns
+ */
 const App = (props) => {
   const { preferDarkTheme, setPreferDarkTheme } = props;
+  initialTheme = preferDarkTheme;
 
   const theme = createMuiTheme({
     palette: {
@@ -76,10 +92,12 @@ const App = (props) => {
     } else {
       document.body.className = "";
     }
+  }, [preferDarkTheme]);
 
+  useEffect(() => {
     // load saved theme on startup
-    setPreferDarkTheme(preferDarkTheme);
-  }, [preferDarkTheme, setPreferDarkTheme]);
+    setPreferDarkTheme(initialTheme);
+  }, [setPreferDarkTheme]);
 
   return (
     <BrowserRouter>

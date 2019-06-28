@@ -38,39 +38,26 @@
     top: 100%;
     left: 20%;
     font-size: 18px;
-    background-color: white;
+    background-color: var(--bg-color);
     min-width: 150px;
     box-shadow: 10px 8px 16px 0px rgba(black, 0.5);
 
     a {
-      color: black;
+      color: var(--text-color);
       padding: 10px 20px;
       text-decoration: none;
       z-index: 2;
 
       &:hover {
-        background-color: $secondary;
-        color: white;
-      }
-    }
-  }
-
-  .playerDropDownItemDark {
-    background-color: $blackLight;
-    box-shadow: 10px 8px 16px 0px rgba(black, 0.5);
-
-    a {
-      color: white;
-
-      &:hover {
-        background-color: $black;
+        background-color: var(--bg-color);
         color: $secondaryLight;
       }
     }
   }
 }
 
-%navDiv {
+// TopBar settings for dark theme
+.navDark {
   nav {
     width: 100%;
     position: relative;
@@ -85,10 +72,23 @@
       width: 120px;
       height: 45px;
       margin-left: 10px;
+      fill: var(--text-color);
 
       @media screen and (min-width: $mobile-width) {
         width: 200px;
         margin-left: 0px;
+      }
+    }
+
+    .githubLogo {
+      path {
+        fill: var(--text-color);
+      }
+
+      &:hover {
+        path {
+          fill: $secondary;
+        }
       }
     }
 
@@ -104,67 +104,20 @@
     // include dropdown div as well
     .playerDropDown {
       font-size: 1.3rem;
-      color: black;
+
+      color: var(--text-color);
+
       text-decoration: none;
       padding: 0.4em 0.8em;
+
+      &:hover {
+        color: $secondaryLight !important;
+      }
     }
 
     .menuButton {
       display: inline-flex;
       margin-right: 15px;
-    }
-  }
-}
-
-.mainNavDiv {
-  @extend %navDiv;
-
-  nav {
-    .navItems > li {
-      &:not(:last-child) {
-        & > a:hover,
-        .playerDropDown:hover {
-          background-color: $secondary !important;
-          color: white !important;
-        }
-      }
-    }
-  }
-
-  .curActivePg {
-    border-bottom: 3px solid $secondary;
-    color: $secondary !important;
-  }
-}
-
-// topbar settings for dark theme
-.navDark {
-  @extend %navDiv;
-
-  nav {
-    .logo {
-      fill: white;
-    }
-
-    .githubLogo {
-      path {
-        fill: white;
-      }
-
-      &:hover {
-        path {
-          fill: $secondary;
-        }
-      }
-    }
-
-    .navItems > li > a,
-    .playerDropDown {
-      color: white;
-
-      &:hover {
-        color: $secondaryLight !important;
-      }
     }
   }
 

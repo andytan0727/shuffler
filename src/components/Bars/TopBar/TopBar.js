@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 // Material Components
@@ -25,9 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TopBar = (props) => {
-  const { preferDarkTheme } = props;
-  const classes = useStyles();
+const TopBar = () => {
+  const classes = useStyles({});
   const [anchorEl, setAnchorEl] = useState(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
@@ -40,7 +36,7 @@ const TopBar = (props) => {
   };
 
   return (
-    <div className={preferDarkTheme ? styles.navDark : styles.mainNavDiv}>
+    <div className={styles.navDark}>
       <nav>
         <NavLink to="/">
           <ShufflerTextLogo className={styles.logo} />
@@ -102,11 +98,7 @@ const TopBar = (props) => {
               <li>
                 <div className={styles.playerDropDown}>
                   Player <ArrowDropDownIcon />
-                  <div
-                    className={classNames(styles.playerDropDownItem, {
-                      [styles.playerDropDownItemDark]: preferDarkTheme,
-                    })}
-                  >
+                  <div className={styles.playerDropDownItem}>
                     <NavLink to="/player/ytplayer">YT Player</NavLink>
                     <NavLink to="/player/miniplayer">Mini Player</NavLink>
                   </div>
@@ -134,15 +126,4 @@ const TopBar = (props) => {
   );
 };
 
-const mapStatesToProps = ({ userPreferences: { preferDarkTheme } }) => ({
-  preferDarkTheme,
-});
-
-TopBar.propTypes = {
-  preferDarkTheme: PropTypes.bool.isRequired,
-};
-
-export default connect(
-  mapStatesToProps,
-  {}
-)(TopBar);
+export default TopBar;

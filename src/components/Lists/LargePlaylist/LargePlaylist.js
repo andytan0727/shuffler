@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import CloseIcon from "@material-ui/icons/Close";
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
 import {
@@ -13,7 +12,6 @@ import styles from "./styles.module.scss";
 const LargePlaylist = (props) => {
   const {
     handleHideLargePlaylist,
-    preferDarkTheme,
     curSongIdx,
     listToPlay,
     setCurSongIdx,
@@ -38,12 +36,7 @@ const LargePlaylist = (props) => {
   useKeyDown(setEscOverlay(handleHideLargePlaylist));
 
   return (
-    <div
-      className={classNames({
-        [styles.largePlaylistDivDark]: preferDarkTheme,
-        [styles.largePlaylistDivLight]: !preferDarkTheme,
-      })}
-    >
+    <div className={styles.largePlaylistDiv}>
       <button className={styles.closeButton} onClick={handleHideLargePlaylist}>
         <CloseIcon />
       </button>
@@ -87,7 +80,6 @@ const LargePlaylist = (props) => {
 
 LargePlaylist.propTypes = {
   handleHideLargePlaylist: PropTypes.func.isRequired,
-  preferDarkTheme: PropTypes.bool.isRequired,
   curSongIdx: PropTypes.number.isRequired,
   listToPlay: PropTypes.array.isRequired,
   playing: PropTypes.bool.isRequired,

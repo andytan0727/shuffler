@@ -12,7 +12,7 @@
 .whatIsNewDiv {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 4fr 8fr;
   grid-template-rows: auto;
   align-items: center;
   justify-items: center;
@@ -29,6 +29,7 @@
   }
 
   main {
+    padding: 5rem;
     grid-column: 2;
     display: grid;
     grid-template-columns: auto;
