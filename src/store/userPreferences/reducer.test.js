@@ -3,6 +3,7 @@ import { setPreferDarkTheme } from "./action";
 import { userPreferences as userPreferencesReducer } from "./reducer";
 
 describe("userPreferences reducer", () => {
+  /** @type {UserPreferencesState} */
   const initialState = {
     preferDarkTheme: true,
   };
@@ -10,10 +11,17 @@ describe("userPreferences reducer", () => {
   deepFreeze(initialState);
 
   test("should return initial state on default", () => {
-    expect(userPreferencesReducer(undefined, {})).toEqual(initialState);
+    expect(
+      userPreferencesReducer(
+        undefined,
+
+        // @ts-ignore
+        {}
+      )
+    ).toEqual(initialState);
   });
 
-  test("should handle SET_PERFER_DARK_THEME", () => {
+  test("should handle SET_PREFER_DARK_THEME", () => {
     const preferDarkTheme = setPreferDarkTheme(true);
 
     const preferLightTheme = setPreferDarkTheme(false);
