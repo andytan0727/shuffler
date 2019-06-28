@@ -11,7 +11,10 @@
 :root {
   /* Light mode */
   --light-text: #222430;
-  --light-bg: #232323;
+  --light-bg: #{$white};
+  --light-border: #{$black};
+  --yt-player-list-light-bg: #{$white};
+  --light-hover-bg: #{lighten($softBlack, 50%)};
   --light-theme: #d34a97;
   --panel-light-bg: rgba(255, 255, 255, 0.4);
 
@@ -20,15 +23,22 @@
   --dark-blackLight: #{$blackLight};
   --dark-blackDark: #{$blackDark};
   --dark-softBlack: #{$softBlack};
-  --dark-text: #f7f7f7;
+  --dark-text: #{$white};
   --dark-bg: var(--dark-black);
+  --dark-border: #{$white};
+  --yt-player-list-dark-bg: #{lighten(black, 20%)};
+  --dark-hover-bg: #{lighten(black, 15%)};
   --dark-theme: #bd93f9;
   --panel-dark-bg: rgba(0, 0, 0, 0.7);
 
   /* Default mode (dark) */
   --text-color: var(--dark-text);
   --bg-color: var(--dark-bg);
+  --border-color: var(--dark-border);
   --panel-bg-color: var(--panel-dark-bg);
+  --search-input-bg-color: var(--dark-black);
+  --yt-player-list-bg: var(--yt-player-list-dark-bg);
+  --hover-bg: var(--dark-hover-bg);
   --theme-color: var(--dark-theme);
 }
 
@@ -99,10 +109,7 @@ body {
 }
 
 // transition animation from dark theme to light theme
-.transition,
-.transition *,
-.transition *::before,
-.transition *::after {
+.transition {
   transition: background-color 500ms;
   transition-timing-function: linear;
 }

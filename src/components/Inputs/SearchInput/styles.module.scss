@@ -9,19 +9,17 @@
   input {
     margin-right: 10px;
     border: none;
-    border: 1px solid rgba(white, 0.5);
+    border: 1px solid var(--border-color);
     text-align: center;
     font-size: 15px;
     width: 100%;
     height: 36px;
-    background: lighten(black, 13%);
-    color: white;
+    background-color: var(--search-input-bg-color);
+    color: var(--search-input-text-color);
     outline: none;
     transition: transform 250ms ease;
 
     &:focus {
-      background-color: rgba($softBlack, 0.4);
-
       &::placeholder {
         transform: translateX(-200px);
         transition: transform 250ms ease-in;
@@ -29,7 +27,7 @@
     }
 
     &::placeholder {
-      color: rgba(white, 0.8);
+      color: var(--text-color);
     }
   }
 

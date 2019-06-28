@@ -14,7 +14,8 @@ $playing: #08d56a;
   grid-template-columns: 3fr 4fr;
   grid-template-rows: auto;
   grid-column-gap: 10px;
-  background-color: rgba(lighten(black, 20%), 0.9);
+  background-color: var(--bg-color);
+  color: var(--text-color);
   z-index: 2;
 
   .nowPlaying {
@@ -114,12 +115,14 @@ $playing: #08d56a;
         place-items: center;
         padding: 0.8em;
         margin-right: 20px;
-        background-color: lighten(black, 25%);
+        // background-color: lighten(black, 25%);
+        background-color: var(--bg-color);
         box-shadow: 5px 8px 20px 2px lighten(black, 6%);
         cursor: pointer;
 
         &:hover {
-          background-color: lighten(black, 15%);
+          // background-color: lighten(black, 15%);
+          background-color: var(--hover-bg);
         }
 
         img {

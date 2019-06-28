@@ -1,0 +1,63 @@
+%checkedList {
+  color: $secondaryLight;
+  background-color: var(--bg-color);
+  font-weight: bold;
+}
+
+%panelDiv {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content auto min-content;
+  grid-row-gap: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+%panelListItemsDiv {
+  height: 400px;
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-rows: min-content;
+  grid-row-gap: 15px;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+%panelListItem {
+  display: grid;
+  grid-template-columns: auto min-content;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--bg-color);
+  }
+
+  div {
+    width: 100%;
+    display: grid;
+    grid-template-columns: min-content 19rem min-content;
+    grid-column-gap: 0.8rem;
+    align-items: center;
+    position: relative;
+
+    // material-ui checkbox
+    .checkBox {
+      height: 25px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+
+      & span {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

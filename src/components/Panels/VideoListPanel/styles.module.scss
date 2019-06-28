@@ -1,8 +1,8 @@
 @import "../../../utils/styles/colors";
+@import "../../../utils/styles/panelStyles";
 
 .checkedPlaylists {
-  color: $secondaryLight;
-  background-color: $black;
+  @extend %checkedList;
 }
 
 .viewPlaylistDiv {
@@ -44,59 +44,13 @@
 }
 
 .videoListPanelDiv {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: min-content auto min-content;
-  grid-row-gap: 10px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
+  @extend %panelDiv;
 
   .videoListItems {
-    height: 400px;
-    display: grid;
-    grid-template-columns: auto;
-    grid-auto-rows: min-content;
-    grid-row-gap: 15px;
-    align-items: center;
-    overflow-x: hidden;
-    overflow-y: auto;
+    @extend %panelListItemsDiv;
 
     .videoListItem {
-      display: grid;
-      grid-template-columns: auto min-content;
-      align-items: center;
-      padding: 10px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: $black;
-      }
-
-      div {
-        width: 100%;
-        display: grid;
-        grid-template-columns: min-content 290px min-content;
-        grid-column-gap: 10px;
-        align-items: center;
-        position: relative;
-
-        // material-ui checkbox
-        .checkBox {
-          height: 25px;
-          padding: 0;
-          display: flex;
-          align-items: center;
-
-          & span {
-            display: flex;
-            align-items: center;
-          }
-        }
-      }
+      @extend %panelListItem;
     }
   }
 }
