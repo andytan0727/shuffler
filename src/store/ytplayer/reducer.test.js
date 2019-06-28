@@ -1,8 +1,9 @@
-// @ts-nocheck
+import deepFreeze from "deep-freeze";
 import { setCurSongIdx, setVideoPlaying } from "./action";
 import { ytplayer as ytplayerReducer } from "./reducer";
 
 describe("ytplayer reducer", () => {
+  /** @type {PlayerState} */
   const initialState = {
     playing: false,
     repeat: false,
@@ -18,19 +19,42 @@ describe("ytplayer reducer", () => {
     },
   };
 
+  deepFreeze(initialState);
+
   test("should return initial state on default", () => {
-    expect(ytplayerReducer(undefined, {})).toEqual(initialState);
+    expect(
+      ytplayerReducer(
+        undefined,
+
+        // @ts-ignore
+        {}
+      )
+    ).toEqual(initialState);
   });
 
   test("should handle SET_CURRENT_SONG_IDX", () => {
-    expect(ytplayerReducer(undefined, setCurSongIdx(1))).toEqual({
+    expect(
+      ytplayerReducer(
+        initialState,
+
+        // @ts-ignore
+        setCurSongIdx(1)
+      )
+    ).toEqual({
       ...initialState,
       curSongIdx: 1,
     });
   });
 
   test("should handle SET_VIDEO_PLAYING", () => {
-    expect(ytplayerReducer(undefined, setVideoPlaying(true))).toEqual({
+    expect(
+      ytplayerReducer(
+        initialState,
+
+        // @ts-ignore
+        setVideoPlaying(true)
+      )
+    ).toEqual({
       ...initialState,
       playing: true,
     });
