@@ -133,6 +133,7 @@ const VideoListPanel = (props) => {
             <CloseIcon />
           </button>
           {playlistToView.length ? (
+            // @ts-ignore
             <VideoList items={playlistToView} height={450} />
           ) : (
             <h3>No Playlist</h3>

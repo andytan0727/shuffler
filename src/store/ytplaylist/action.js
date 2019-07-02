@@ -142,24 +142,31 @@ export const removePlayingPlaylistsAction = (playlistIds) => ({
  */
 export const removePlaylistFromPlaying = () => {
   return (dispatch, getState) => {
+    /** @type {PlaylistStates} */
     const {
-      checkedPlaylists: playlistsToRemove,
+      checkedPlaylists: playlistIdsToRemove,
       playlists,
       listToPlay,
       playingPlaylists,
     } = getState().ytplaylist;
 
-    let songsToRemove = [];
+    /** @type {Array<string>} */
+    const songsToRemove = [];
 
-    if (!playlistsToRemove.length) {
+    if (!playlistIdsToRemove.length) {
       return;
     }
 
-    for (const playlistIdToRemove of playlistsToRemove) {
+    for (const playlistIdToRemove of playlistIdsToRemove) {
+      const playlistToRemove = playlists.filter(
+        (playlist) => playlist.id === playlistIdToRemove
+      )[0];
+      const playlistIdentifier = playlistToRemove.name || playlistIdToRemove;
+
       if (!playingPlaylists.includes(playlistIdToRemove)) {
         notify(
           "warning",
-          `playlist-${playlistIdToRemove} is not included in playing`
+          `playlist: ${playlistIdentifier} is not included in playing`
         );
         continue;
       }
@@ -167,13 +174,20 @@ export const removePlaylistFromPlaying = () => {
       songsToRemove.push(
         ...playlists
           .filter((playlist) => playlist.id === playlistIdToRemove)
-          .flatMap((filteredPlaylist) => filteredPlaylist.items)
-          .flatMap((filteredItem) => filteredItem.id)
+          // @ts-ignore
+          .flatMap(
+            /** @param {Playlist} filteredPlaylist */
+            (filteredPlaylist) => filteredPlaylist.items
+          )
+          .flatMap(
+            /** @param {Playlist} filteredItem */
+            (filteredItem) => filteredItem.id
+          )
       );
 
       notify(
         "success",
-        `Successfully removed playlist-${playlistIdToRemove} from playing 😎`
+        `Successfully removed playlist: ${playlistIdentifier} from playing 😎`
       );
     }
 
@@ -184,7 +198,7 @@ export const removePlaylistFromPlaying = () => {
 
     // update playingPlaylists
     const updatedPlayingPlaylists = playingPlaylists.filter(
-      (playlistId) => !playlistsToRemove.includes(playlistId)
+      (playlistId) => !playlistIdsToRemove.includes(playlistId)
     );
 
     // remove playlists and clear checked playlists
