@@ -3,7 +3,7 @@
 // ==============================
 
 /**
- * @typedef PlaylistStates
+ * @typedef PlaylistState
  * @property {Array<string>} checkedPlaylists
  * @property {Array<string>} checkedVideos
  * @property {Array<Playlist>} playlists

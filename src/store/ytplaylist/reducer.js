@@ -24,7 +24,7 @@ import {
   REMOVE_PLAYLISTS,
 } from "../../utils/constants/actionConstants";
 
-/** @type {PlaylistStates} */
+/** @type {PlaylistState} */
 const initialState = {
   checkedPlaylists: [], // pushed playlistId from selected playlists
   checkedVideos: [], // pushed videoId from checkbox
@@ -49,11 +49,12 @@ const initialState = {
 export const ytplaylist = produce(
   /**
    * ytplaylist reducer
-   * @param {PlaylistStates} draft
-   * @param {YTPlaylistActions} action
+   * @param {PlaylistState} draft
+   * @param {YTPlaylistActions=} action
    */
   (draft, action) => {
     switch (action.type) {
+      // NOTE: TESTED
       case ADD_PLAYLIST: {
         const playlistToAdd = action.payload.playlist;
         const isPlaylistExists = draft.playlists.some(
@@ -68,8 +69,8 @@ export const ytplaylist = produce(
         return draft;
       }
 
+      // NOTE: TESTED
       case REMOVE_PLAYLISTS: {
-        debugger;
         const playlistIdsToRemove = action.payload.playlistIds;
         draft.playlists = draft.playlists.filter(
           (playlist) => !playlistIdsToRemove.includes(playlist.id)
@@ -82,6 +83,7 @@ export const ytplaylist = produce(
         return draft;
       }
 
+      // NOTE: TESTED
       case SET_CHECKED_PLAYLISTS: {
         // clear checked videos before operating checked videos
         // prevent error caused by simultaneously checked videos and playlists
@@ -93,6 +95,7 @@ export const ytplaylist = produce(
         return draft;
       }
 
+      // NOTE: TESTED
       case ADD_PLAYING_PLAYLISTS: {
         const playlistIds = action.payload.playlistIds;
         const prevPlayingPlaylists = original(draft.playingPlaylists);
@@ -103,7 +106,6 @@ export const ytplaylist = produce(
       }
 
       case REMOVE_PLAYING_PLAYLISTS: {
-        debugger;
         const playlistIdsToRemove = action.payload.playlistIds;
         draft.playingPlaylists = draft.playingPlaylists.filter(
           (playlistId) => !playlistIdsToRemove.includes(playlistId)
@@ -197,7 +199,6 @@ export const ytplaylist = produce(
       }
 
       case REMOVE_FROM_LIST_TO_PLAY: {
-        debugger;
         const { itemIds, itemType } = action.payload;
         const prevListToPlay = original(draft.listToPlay);
         const filteredListToPlay =

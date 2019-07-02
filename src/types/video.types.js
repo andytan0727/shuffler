@@ -1,10 +1,4 @@
 /**
- * @typedef VideoParams
- * @property {string} id Video Id
- *
- */
-
-/**
  * @typedef VideoThumbnails
  * @property {VideoThumbnailsProperties} default
  * @property {VideoThumbnailsProperties} medium

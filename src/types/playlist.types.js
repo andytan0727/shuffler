@@ -1,10 +1,4 @@
 /**
- * @typedef PlaylistParams
- * @property {string} playlistId Playlist Id
- * @property {string} [pageToken] Token needed to fetch next unfinished request
- */
-
-/**
  * @typedef Playlist
  * @property {string} id Playlist id
  * @property {string} [name] Optional name assigned by user

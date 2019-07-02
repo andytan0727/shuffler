@@ -142,7 +142,7 @@ export const removePlayingPlaylistsAction = (playlistIds) => ({
  */
 export const removePlaylistFromPlaying = () => {
   return (dispatch, getState) => {
-    /** @type {PlaylistStates} */
+    /** @type {PlaylistState} */
     const {
       checkedPlaylists: playlistIdsToRemove,
       playlists,
