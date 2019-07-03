@@ -1,0 +1,61 @@
+@import "../styles/colors";
+
+.swalSuccessButton {
+  background-color: $primaryLight;
+  color: #fff;
+  font-size: 1.025em;
+  font-weight: bold;
+  padding: 0.65em 2em;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primaryDark;
+    transition: background-color 0.5s;
+  }
+}
+
+.swalCancelButton {
+  background-color: $error;
+  color: #fff;
+  font-size: 1.025em;
+  font-weight: bold;
+  padding: 0.65em 2em;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  margin-left: 1.2em;
+
+  &:hover {
+    background-color: darken($error, 30%);
+    transition: background-color 0.5s;
+  }
+}
+
+.toastError {
+  background: #ff0084; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #33001b, #ff0084);
+  background: linear-gradient(to right, #33001b, #ff0084);
+}
+
+.toastInfo {
+  background: #00c6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);
+  background: linear-gradient(to right, #0072ff, #00c6ff);
+}
+
+.toastWarning {
+  background: #d38312; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #a83279, #d38312);
+  background: linear-gradient(to right, #a83279, #d38312);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.toastSuccess {
+  background: #136a8a; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #267871, #136a8a);
+  background: linear-gradient(to right, #267871, #136a8a);
+  color: white;
+}

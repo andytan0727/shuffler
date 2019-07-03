@@ -1,22 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import { connect } from "react-redux";
 
 import styles from "./styles.module.scss";
 
-const WhatIsNewPage = ({ appUpdates, preferDarkTheme }) => {
+const WhatIsNewPage = ({ appUpdates }) => {
   const latestUpdates = appUpdates
     .concat()
     .reverse()
     .slice(0, 3);
 
   return (
-    <div
-      className={classNames(styles.whatIsNewDiv, {
-        [styles.dark]: preferDarkTheme,
-      })}
-    >
+    <div className={styles.whatIsNewDiv}>
       <header>
         <h2>Changelog</h2>
       </header>
@@ -37,7 +32,6 @@ const WhatIsNewPage = ({ appUpdates, preferDarkTheme }) => {
 
 WhatIsNewPage.propTypes = {
   appUpdates: PropTypes.array.isRequired,
-  preferDarkTheme: PropTypes.bool.isRequired,
 };
 
 const mapStatesToProps = ({ appGeneral: { appUpdates } }) => ({

@@ -3,14 +3,14 @@ import { retryLazy } from "./lazyImportHelper";
 const generateCustomSwal = async () => {
   try {
     const Swal = await retryLazy(() => import("sweetalert2"));
-    const swalStyles = await retryLazy(() =>
-      import("./swalStyles.module.scss")
+    const notifyStyles = await retryLazy(() =>
+      import("./notifyStyles.module.scss")
     );
 
     return Swal.default.mixin({
       customClass: {
-        confirmButton: swalStyles.swalSuccessButton,
-        cancelButton: swalStyles.swalCancelButton,
+        confirmButton: notifyStyles.swalSuccessButton,
+        cancelButton: notifyStyles.swalCancelButton,
       },
       buttonsStyling: false,
     });
@@ -22,7 +22,11 @@ const generateCustomSwal = async () => {
 const notify = async (type, message) => {
   try {
     const { toast } = await retryLazy(() => import("react-toastify"));
+    // @ts-ignore
     await import("react-toastify/dist/ReactToastify.min.css");
+    const notifyStyles = await retryLazy(() =>
+      import("./notifyStyles.module.scss")
+    );
 
     toast.configure();
 
@@ -34,29 +38,44 @@ const notify = async (type, message) => {
 
     switch (type) {
       case "error": {
-        toast.error(message, toastConfig);
+        toast.error(message, {
+          ...toastConfig,
+          className: notifyStyles.toastError,
+        });
         break;
       }
 
       case "info": {
-        toast.info(message, toastConfig);
+        toast.info(message, {
+          ...toastConfig,
+          className: notifyStyles.toastInfo,
+        });
         break;
       }
 
       case "warning": {
-        toast.warn(message, toastConfig);
+        toast.warn(message, {
+          ...toastConfig,
+          className: notifyStyles.toastWarning,
+        });
         break;
       }
 
       case "success": {
-        toast.success(message, toastConfig);
+        toast.success(message, {
+          ...toastConfig,
+          className: notifyStyles.toastSuccess,
+        });
         break;
       }
 
       default: {
         toast.warn(
           "Default toast is called. You may misconfigure notify function",
-          toastConfig
+          {
+            ...toastConfig,
+            className: notifyStyles.toastWarning,
+          }
         );
       }
     }

@@ -1,14 +1,5 @@
 @import "../../utils/styles/colors";
 
-.dark {
-  border-top: 2px solid white !important;
-
-  & > header {
-    background-color: $blackLight !important;
-    border-right: 2px solid white;
-  }
-}
-
 .whatIsNewDiv {
   width: 100%;
   display: grid;
