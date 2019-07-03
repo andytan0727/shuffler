@@ -6,13 +6,18 @@ import { retryLazy } from "../../utils/helper/lazyImportHelper";
 const YTPlayerPage = lazy(() => retryLazy(() => import("./YTPlayerPage")));
 const MiniPlayerPage = lazy(() => retryLazy(() => import("./MiniPlayerPage")));
 
-const PlayerPage = () => {
+const PlayerPage = ({ match }) => {
+  const playerPagePath = match.path;
+
   return (
     <React.Fragment>
       <Switch>
-        <Route path="/player/ytplayer" component={YTPlayerPage} />
-        <Route path="/player/miniplayer" component={MiniPlayerPage} />
-        <Redirect to="/player/ytplayer" />
+        <Route path={`${playerPagePath}/ytplayer`} component={YTPlayerPage} />
+        <Route
+          path={`${playerPagePath}/miniplayer`}
+          component={MiniPlayerPage}
+        />
+        <Redirect to={`${playerPagePath}/ytplayer`} />
       </Switch>
     </React.Fragment>
   );

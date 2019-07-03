@@ -33,3 +33,14 @@
 /**
  * @typedef {React.MouseEvent<HTMLButtonElement, MouseEvent>} ButtonOnClickEvent
  */
+
+// =====================================
+// React Router
+// =====================================
+/**
+ * @typedef MatchRoute
+ * @property {boolean} isExact
+ * @property {*} params
+ * @property {string} path
+ * @property {string} url
+ */

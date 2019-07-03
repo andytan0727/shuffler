@@ -126,15 +126,7 @@ const App = (props) => {
                     <MainPage preferDarkTheme={preferDarkTheme} {...props} />
                   )}
                 />
-                <Route
-                  path="/what-is-new"
-                  render={(props) => (
-                    <WhatIsNewPage
-                      preferDarkTheme={preferDarkTheme}
-                      {...props}
-                    />
-                  )}
-                />
+                <Route path="/what-is-new" component={WhatIsNewPage} />
                 <Route path="/playlistInput" component={PlaylistInputPage} />
                 <Route path="/player" component={PlayerPage} />
                 <Route path="/about" component={AboutPage} />
