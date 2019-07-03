@@ -95,6 +95,14 @@ const initialStates = {
         "Dark/Light mode switch is now updated to new style !",
       ],
     },
+    {
+      version: "3.0.1",
+      changes: [
+        "Fix wrongly display playlist name in notification when removing playlist from playing list",
+        "Update what's new page's style in dark mode",
+        "Update notification style",
+      ],
+    },
   ],
 };
 
