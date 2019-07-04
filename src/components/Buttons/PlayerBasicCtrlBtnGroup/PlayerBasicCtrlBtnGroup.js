@@ -14,7 +14,7 @@ import ShuffleIcon from "@material-ui/icons/Shuffle";
 
 import { useKeyDown } from "../../../utils/helper/keyboardShortcutHelper";
 import { setCurSongIdx, toggleRepeat } from "../../../store/ytplayer/action";
-import { shufflePlaylist } from "../../../store/ytplaylist/action";
+import { shuffleListToPlayAction } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
@@ -26,7 +26,7 @@ const PlayerBasicCtrlBtnGroup = (props) => {
     curSongIdx,
     listToPlay,
     setCurSongIdx,
-    shufflePlaylist,
+    shuffleListToPlayAction,
     toggleRepeat,
 
     // own props
@@ -63,7 +63,7 @@ const PlayerBasicCtrlBtnGroup = (props) => {
   };
 
   const handleShufflePlaylist = () => {
-    shufflePlaylist();
+    shuffleListToPlayAction();
     setCurSongIdx(0);
   };
 
@@ -203,7 +203,7 @@ PlayerBasicCtrlBtnGroup.propTypes = {
   curSongIdx: PropTypes.number.isRequired,
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
-  shufflePlaylist: PropTypes.func.isRequired,
+  shuffleListToPlayAction: PropTypes.func.isRequired,
   toggleRepeat: PropTypes.func.isRequired,
 };
 
@@ -224,7 +224,7 @@ export default connect(
   mapStateToProps,
   {
     setCurSongIdx,
-    shufflePlaylist,
+    shuffleListToPlayAction,
     toggleRepeat,
   }
 )(PlayerBasicCtrlBtnGroup);

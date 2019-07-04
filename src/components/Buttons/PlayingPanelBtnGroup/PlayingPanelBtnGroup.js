@@ -10,8 +10,8 @@ import ShuffleIcon from "@material-ui/icons/Shuffle";
 import ClearIcon from "@material-ui/icons/Clear";
 
 import {
-  clearListToPlay,
-  shufflePlaylist,
+  clearListToPlayAction,
+  shuffleListToPlayAction,
 } from "../../../store/ytplaylist/action";
 import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
 
@@ -22,8 +22,8 @@ const PlayingPanelBtnGroup = (props) => {
     preferDarkTheme,
     listToPlay,
     history,
-    clearListToPlay,
-    shufflePlaylist,
+    clearListToPlayAction,
+    shuffleListToPlayAction,
   } = props;
 
   const handleRedirectToPlayer = () => {
@@ -51,7 +51,7 @@ const PlayingPanelBtnGroup = (props) => {
     });
 
     if (result.value) {
-      clearListToPlay();
+      clearListToPlayAction();
       notify("success", "Successfully cleared playing playlist! 😎");
     }
   };
@@ -66,7 +66,10 @@ const PlayingPanelBtnGroup = (props) => {
       <button onClick={handleRedirectToPlayer} data-tooltip="Play">
         <PlayArrowIcon />
       </button>
-      <button onClick={shufflePlaylist} data-tooltip="Shuffle playing list">
+      <button
+        onClick={shuffleListToPlayAction}
+        data-tooltip="Shuffle playing list"
+      >
         <ShuffleIcon />
       </button>
       <button onClick={handleClearListToPlay} data-tooltip="Clear playing list">
@@ -80,8 +83,8 @@ PlayingPanelBtnGroup.propTypes = {
   preferDarkTheme: PropTypes.bool.isRequired,
   listToPlay: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
-  clearListToPlay: PropTypes.func.isRequired,
-  shufflePlaylist: PropTypes.func.isRequired,
+  clearListToPlayAction: PropTypes.func.isRequired,
+  shuffleListToPlayAction: PropTypes.func.isRequired,
 };
 
 const mapStatesToProps = ({
@@ -95,7 +98,7 @@ const mapStatesToProps = ({
 export default connect(
   mapStatesToProps,
   {
-    clearListToPlay,
-    shufflePlaylist,
+    clearListToPlayAction,
+    shuffleListToPlayAction,
   }
 )(withRouter(PlayingPanelBtnGroup));

@@ -4,8 +4,8 @@ import classNames from "classnames";
 import { connect } from "react-redux";
 
 import {
-  setCheckedPlaylists,
-  renamePlaylist,
+  setCheckedPlaylistsAction,
+  renamePlaylistAction,
 } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
@@ -17,8 +17,8 @@ const RenameInput = (props) => {
     name,
 
     // redux actions
-    setCheckedPlaylists,
-    renamePlaylist,
+    setCheckedPlaylistsAction,
+    renamePlaylistAction,
   } = props;
   const [editName, setEditName] = useState({});
 
@@ -29,22 +29,23 @@ const RenameInput = (props) => {
       [selectedPlaylistId]: true,
     });
 
-    setCheckedPlaylists([selectedPlaylistId]);
+    setCheckedPlaylistsAction([selectedPlaylistId]);
   };
 
   const handleEditNameInputChange = (e) => {
     const playlistId = e.target.getAttribute("data-playlistid");
-    renamePlaylist(e.target.value, playlistId);
+    renamePlaylistAction(e.target.value, playlistId);
   };
 
   // clear input and checked checkbox after finished rename
   const handleEditNameInputBlur = () => {
     setEditName({});
-    setCheckedPlaylists([]);
+    setCheckedPlaylistsAction([]);
   };
 
   // focus on currently selected playlist's input on double click
   useEffect(() => {
+    /** @type {HTMLInputElement} */
     const input = document.querySelector('input[name="edit-name"]');
     if (Object.keys(editName).length && input) {
       input.focus();
@@ -74,12 +75,13 @@ const RenameInput = (props) => {
 RenameInput.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
+  renamePlaylistAction: PropTypes.func.isRequired,
 };
 
 export default connect(
   null,
   {
-    setCheckedPlaylists,
-    renamePlaylist,
+    setCheckedPlaylistsAction,
+    renamePlaylistAction,
   }
 )(RenameInput);

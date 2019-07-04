@@ -14,14 +14,14 @@ import { VideoListPanelBtnGroup } from "../../Buttons";
 import { SearchInput, SearchPlaylistInput, RenameInput } from "../../Inputs";
 import { VideoList } from "../../Lists";
 
-import { setCheckedPlaylists } from "../../../store/ytplaylist/action";
+import { setCheckedPlaylistsAction } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
 
 const VideoListPanel = (props) => {
   const {
     ytplaylist: { playlists, checkedPlaylists, playingPlaylists },
-    setCheckedPlaylists,
+    setCheckedPlaylistsAction,
   } = props;
   const [viewPlaylist, setViewPlaylist] = useState(false);
   const [playlistToView, setPlaylistToView] = useState([]);
@@ -36,12 +36,12 @@ const VideoListPanel = (props) => {
       newSelected.splice(currentIndex, 1);
     }
 
-    setCheckedPlaylists(newSelected);
+    setCheckedPlaylistsAction(newSelected);
   };
 
   const handleCloseViewPlaylist = () => {
     setViewPlaylist(false);
-    setCheckedPlaylists([]);
+    setCheckedPlaylistsAction([]);
   };
 
   const handleCheckPlaylists = (e) => {
@@ -146,7 +146,7 @@ const VideoListPanel = (props) => {
 
 VideoListPanel.propTypes = {
   ytplaylist: PropTypes.object.isRequired,
-  setCheckedPlaylists: PropTypes.func.isRequired,
+  setCheckedPlaylistsAction: PropTypes.func.isRequired,
 };
 
 const mapStatesToVideoListPanelProps = ({ ytplaylist }) => ({
@@ -156,6 +156,6 @@ const mapStatesToVideoListPanelProps = ({ ytplaylist }) => ({
 export default connect(
   mapStatesToVideoListPanelProps,
   {
-    setCheckedPlaylists,
+    setCheckedPlaylistsAction,
   }
 )(VideoListPanel);

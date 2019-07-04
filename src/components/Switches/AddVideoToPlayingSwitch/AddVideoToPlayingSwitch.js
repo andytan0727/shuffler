@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Switch } from "@material-ui/core";
 
-import { togglePlayingVideo } from "../../../store/ytplaylist/action";
+import { togglePlayingVideoAction } from "../../../store/ytplaylist/action";
 
 const AddVideoToPlayingSwitch = (props) => {
   const {
@@ -11,16 +11,19 @@ const AddVideoToPlayingSwitch = (props) => {
 
     // redux
     playingVideos,
-    togglePlayingVideo,
+    togglePlayingVideoAction,
   } = props;
 
-  const handleToggleSwitch = (id) => () => {
-    togglePlayingVideo(id);
-  };
+  const handleToggleSwitch = useCallback(
+    (id) => () => {
+      togglePlayingVideoAction(id);
+    },
+    [togglePlayingVideoAction]
+  );
 
   useEffect(() => {
     if (playingVideos.includes(itemId)) handleToggleSwitch(itemId);
-  }, []);
+  }, [handleToggleSwitch, itemId, playingVideos]);
 
   return (
     <Switch
@@ -34,7 +37,7 @@ const AddVideoToPlayingSwitch = (props) => {
 AddVideoToPlayingSwitch.propTypes = {
   itemId: PropTypes.string.isRequired,
   playingVideos: PropTypes.arrayOf(PropTypes.string).isRequired,
-  togglePlayingVideo: PropTypes.func.isRequired,
+  togglePlayingVideoAction: PropTypes.func.isRequired,
 };
 
 const mapStatesToProps = ({ ytplaylist: { playingVideos } }) => ({
@@ -44,6 +47,6 @@ const mapStatesToProps = ({ ytplaylist: { playingVideos } }) => ({
 export default connect(
   mapStatesToProps,
   {
-    togglePlayingVideo,
+    togglePlayingVideoAction,
   }
 )(AddVideoToPlayingSwitch);

@@ -10,9 +10,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import ViewListIcon from "@material-ui/icons/ViewList";
 
 import {
-  addListToPlay,
-  removePlaylistsAction,
-  removePlaylistFromPlaying,
+  addPlaylistsToListToPlayAction,
+  deletePlaylistsAction,
+  removePlaylistsFromListToPlayAction,
 } from "../../../store/ytplaylist/action";
 import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
 
@@ -31,9 +31,9 @@ const VideoListPanelBtnGroup = (props) => {
   const {
     preferDarkTheme,
     checkedPlaylists,
-    addListToPlay,
-    removePlaylistsAction,
-    removePlaylistFromPlaying,
+    addPlaylistsToListToPlayAction,
+    deletePlaylistsAction,
+    removePlaylistsFromListToPlayAction,
     setViewPlaylist,
   } = props;
 
@@ -43,9 +43,7 @@ const VideoListPanelBtnGroup = (props) => {
       return;
     }
 
-    addListToPlay({
-      checked: true,
-    });
+    addPlaylistsToListToPlayAction(checkedPlaylists);
 
     notify("success", "Successfully added selected playlist(s) to playing 😎");
   };
@@ -56,7 +54,7 @@ const VideoListPanelBtnGroup = (props) => {
       return;
     }
 
-    removePlaylistFromPlaying();
+    removePlaylistsFromListToPlayAction(checkedPlaylists);
   };
 
   const handleRemovePlaylist = async () => {
@@ -77,7 +75,7 @@ const VideoListPanelBtnGroup = (props) => {
     });
 
     if (result.value) {
-      removePlaylistsAction(checkedPlaylists);
+      deletePlaylistsAction(checkedPlaylists);
       notify("success", "Successfully deleted playlist(s) 😎");
     }
   };
@@ -134,9 +132,9 @@ const VideoListPanelBtnGroup = (props) => {
 VideoListPanelBtnGroup.propTypes = {
   preferDarkTheme: PropTypes.bool.isRequired,
   checkedPlaylists: PropTypes.array.isRequired,
-  addListToPlay: PropTypes.func.isRequired,
-  removePlaylistsAction: PropTypes.func.isRequired,
-  removePlaylistFromPlaying: PropTypes.func.isRequired,
+  addPlaylistsToListToPlayAction: PropTypes.func.isRequired,
+  deletePlaylistsAction: PropTypes.func.isRequired,
+  removePlaylistsFromListToPlayAction: PropTypes.func.isRequired,
   setViewPlaylist: PropTypes.func.isRequired,
 };
 
@@ -151,8 +149,8 @@ const mapStatesToProps = ({
 export default connect(
   mapStatesToProps,
   {
-    addListToPlay,
-    removePlaylistsAction,
-    removePlaylistFromPlaying,
+    addPlaylistsToListToPlayAction,
+    deletePlaylistsAction,
+    removePlaylistsFromListToPlayAction,
   }
 )(VideoListPanelBtnGroup);

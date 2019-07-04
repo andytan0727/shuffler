@@ -3,7 +3,7 @@
  * @property {string} id Playlist id
  * @property {string} [name] Optional name assigned by user
  * @property {string} [nextPageToken] Token for next page request
- * @property {Array<Object>} items
+ * @property {Array<PlaylistItem>} items
  */
 
 /**

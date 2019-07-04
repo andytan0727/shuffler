@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import YouTube from "react-youtube";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { setCurSongIdx, setVideoPlaying } from "../../../store/ytplayer/action";
-import { shufflePlaylist } from "../../../store/ytplaylist/action";
+import { shuffleListToPlayAction } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";
 
 const YouTubeIFrame = (props) => {
@@ -21,14 +21,14 @@ const YouTubeIFrame = (props) => {
     // actions
     setCurSongIdx,
     setVideoPlaying,
-    shufflePlaylist,
+    shuffleListToPlayAction,
   } = props;
   const matchesMobile = useMediaQuery("(max-width: 420px)");
   const [vidWidth, setVidWidth] = useState(0);
 
   const _setVidSize = () => {
     const vidWrapper = document.getElementById("player");
-    setVidWidth(vidWrapper.width);
+    setVidWidth(vidWrapper.offsetWidth);
   };
 
   const setPlaying = () => {
@@ -57,10 +57,10 @@ const YouTubeIFrame = (props) => {
         setPause(); // set pause to prevent playing bug on last video
       } else {
         // if repeat is turned on
-        // reindex to the first item in playing list
+        // re-index to the first item in playing list
         // and shuffle it
         setCurSongIdx(0);
-        shufflePlaylist();
+        shuffleListToPlayAction();
       }
       return;
     }
@@ -101,8 +101,8 @@ const YouTubeIFrame = (props) => {
             : listToPlay[curSongIdx].id
         }
         opts={{
-          width: matchesMobile ? vidWidth : 640,
-          height: matchesMobile ? 200 : 390,
+          width: matchesMobile ? vidWidth.toString() : "640",
+          height: matchesMobile ? "200" : "390",
           playerVars: {
             ...playerVars,
           },
@@ -125,7 +125,7 @@ YouTubeIFrame.propTypes = {
   listToPlay: PropTypes.array,
   setCurSongIdx: PropTypes.func.isRequired,
   setVideoPlaying: PropTypes.func.isRequired,
-  shufflePlaylist: PropTypes.func.isRequired,
+  shuffleListToPlayAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -147,7 +147,7 @@ const ConnectedYouTubeIFrame = connect(
   {
     setCurSongIdx,
     setVideoPlaying,
-    shufflePlaylist,
+    shuffleListToPlayAction,
   }
 )(YouTubeIFrame);
 

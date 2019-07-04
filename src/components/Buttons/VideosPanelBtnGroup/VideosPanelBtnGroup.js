@@ -9,9 +9,9 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import {
-  addListToPlay,
-  removeVideo,
-  removeVideoFromPlaying,
+  addVideosToListToPlayAction,
+  deleteVideosAction,
+  removeVideosFromListToPlayAction,
 } from "../../../store/ytplaylist/action";
 import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
 
@@ -30,9 +30,10 @@ const VideosPanelBtnGroup = (props) => {
   const {
     preferDarkTheme,
     checkedVideos,
-    removeVideo,
-    addListToPlay,
-    removeVideoFromPlaying,
+    addVideosToListToPlayAction,
+
+    deleteVideosAction,
+    removeVideosFromListToPlayAction,
   } = props;
 
   const handleAddVideosToPlaying = async () => {
@@ -41,9 +42,7 @@ const VideosPanelBtnGroup = (props) => {
       return;
     }
 
-    addListToPlay({
-      checked: true,
-    });
+    addVideosToListToPlayAction(checkedVideos);
 
     notify("success", "Successfully added selected video(s) to playing 😎");
   };
@@ -66,7 +65,7 @@ const VideosPanelBtnGroup = (props) => {
     });
 
     if (result.value) {
-      removeVideo();
+      deleteVideosAction(checkedVideos);
       await customSwal.fire("Deleted!", "Video(s) deleted 😎", "success");
     }
   };
@@ -77,7 +76,7 @@ const VideosPanelBtnGroup = (props) => {
       return;
     }
 
-    removeVideoFromPlaying();
+    removeVideosFromListToPlayAction(checkedVideos);
   };
 
   return (
@@ -109,9 +108,9 @@ const VideosPanelBtnGroup = (props) => {
 VideosPanelBtnGroup.propTypes = {
   preferDarkTheme: PropTypes.bool.isRequired,
   checkedVideos: PropTypes.array.isRequired,
-  removeVideo: PropTypes.func.isRequired,
-  addListToPlay: PropTypes.func.isRequired,
-  removeVideoFromPlaying: PropTypes.func.isRequired,
+  addVideosToListToPlayAction: PropTypes.func.isRequired,
+  deleteVideosAction: PropTypes.func.isRequired,
+  removeVideosFromListToPlayAction: PropTypes.func.isRequired,
 };
 
 const mapStatesToProps = ({
@@ -125,8 +124,8 @@ const mapStatesToProps = ({
 export default connect(
   mapStatesToProps,
   {
-    addListToPlay,
-    removeVideo,
-    removeVideoFromPlaying,
+    addVideosToListToPlayAction,
+    deleteVideosAction,
+    removeVideosFromListToPlayAction,
   }
 )(VideosPanelBtnGroup);

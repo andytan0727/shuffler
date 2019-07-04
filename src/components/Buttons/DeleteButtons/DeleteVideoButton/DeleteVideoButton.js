@@ -4,14 +4,17 @@ import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import { Delete as DeleteIcon } from "@material-ui/icons";
 
-import { deleteVideo } from "../../../../store/ytplaylist/action";
+import { deleteVideosAction } from "../../../../store/ytplaylist/action";
 
-const DeleteVideoButton = ({ itemId, deleteVideo }) => {
+const DeleteVideoButton = ({ itemId, deleteVideosAction }) => {
   return (
     <IconButton
       edge="end"
       aria-label="delete-video"
-      onClick={useCallback(() => deleteVideo(itemId), [itemId])}
+      onClick={useCallback(() => deleteVideosAction([itemId]), [
+        deleteVideosAction,
+        itemId,
+      ])}
     >
       <DeleteIcon />
     </IconButton>
@@ -20,12 +23,12 @@ const DeleteVideoButton = ({ itemId, deleteVideo }) => {
 
 DeleteVideoButton.propTypes = {
   itemId: PropTypes.string.isRequired,
-  deleteVideo: PropTypes.func.isRequired,
+  deleteVideosAction: PropTypes.func.isRequired,
 };
 
 export default connect(
   null,
   {
-    deleteVideo,
+    deleteVideosAction,
   }
 )(DeleteVideoButton);

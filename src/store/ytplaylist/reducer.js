@@ -5,23 +5,20 @@ import {
   ADD_PLAYLIST,
   RENAME_PLAYLIST,
   SET_CHECKED_PLAYLISTS,
-  ADD_LIST_TO_PLAY,
   UPDATE_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
   ADD_PLAYING_PLAYLISTS,
-  REMOVE_PLAYLIST_FROM_PLAYING,
 
   // videos
   ADD_VIDEO,
-  REMOVE_VIDEO,
-  DELETE_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
   REMOVE_PLAYING_VIDEOS,
   APPEND_LIST_TO_PLAY,
   REMOVE_PLAYING_PLAYLISTS,
   REMOVE_FROM_LIST_TO_PLAY,
-  REMOVE_PLAYLISTS,
+  DELETE_PLAYLISTS,
+  DELETE_VIDEOS,
 } from "../../utils/constants/actionConstants";
 
 /** @type {PlaylistState} */
@@ -70,7 +67,7 @@ export const ytplaylist = produce(
       }
 
       // NOTE: TESTED
-      case REMOVE_PLAYLISTS: {
+      case DELETE_PLAYLISTS: {
         const playlistIdsToRemove = action.payload.playlistIds;
         draft.playlists = draft.playlists.filter(
           (playlist) => !playlistIdsToRemove.includes(playlist.id)
@@ -78,8 +75,20 @@ export const ytplaylist = produce(
         return draft;
       }
 
+      // NOTE: TESTED
       case RENAME_PLAYLIST: {
-        draft.playlists = action.payload.updatedPlaylists;
+        const { newName, playlistIdToRename } = action.payload;
+        const prevPlaylists = original(draft.playlists);
+
+        draft.playlists =
+          prevPlaylists &&
+          prevPlaylists.map((playlist) => {
+            if (playlist.id === playlistIdToRename) {
+              playlist.name = newName;
+            }
+            return playlist;
+          });
+
         return draft;
       }
 
@@ -113,11 +122,6 @@ export const ytplaylist = produce(
         return draft;
       }
 
-      case REMOVE_PLAYLIST_FROM_PLAYING: {
-        draft.playingPlaylists = action.payload.updatedPlayingPlaylists;
-        return draft;
-      }
-
       // ------------------------------------------
       // videos
       // ------------------------------------------
@@ -137,14 +141,14 @@ export const ytplaylist = produce(
         return draft;
       }
 
-      case REMOVE_VIDEO: {
-        draft.videos = action.payload.updatedVideos;
-        draft.checkedVideos = [];
-        return draft;
-      }
+      case DELETE_VIDEOS: {
+        const videoIdsToRemove = action.payload.videoIds;
+        const prevVideos = original(draft.videos);
 
-      case DELETE_VIDEO: {
-        draft.videos = action.payload.videos;
+        draft.videos =
+          prevVideos &&
+          prevVideos.filter((video) => !videoIdsToRemove.includes(video.id));
+
         return draft;
       }
 
@@ -168,7 +172,14 @@ export const ytplaylist = produce(
       }
 
       case REMOVE_PLAYING_VIDEOS: {
-        draft.playingVideos = action.payload.playingVideos;
+        const videoIdsToRemove = action.payload.videoIds;
+        const prevPlayingVideos = original(draft.playingVideos);
+
+        draft.playingVideos =
+          prevPlayingVideos &&
+          prevPlayingVideos.filter(
+            (videoId) => !videoIdsToRemove.includes(videoId)
+          );
 
         return draft;
       }
@@ -176,20 +187,7 @@ export const ytplaylist = produce(
       // ------------------------------------------
       // list to play / playingList
       // ------------------------------------------
-      case ADD_LIST_TO_PLAY: {
-        const { updatedPlayingPlaylists, checkedListToClear } = action.payload;
-
-        draft.playingPlaylists = updatedPlayingPlaylists;
-
-        if (checkedListToClear === "playlist") {
-          draft.checkedPlaylists = [];
-        } else {
-          draft.checkedVideos = [];
-        }
-
-        return draft;
-      }
-
+      // NOTE: TESTED
       case APPEND_LIST_TO_PLAY: {
         const items = action.payload.items;
         const prevListToPlay = original(draft.listToPlay);
@@ -198,39 +196,30 @@ export const ytplaylist = produce(
         return draft;
       }
 
+      // NOTE: TESTED
       case REMOVE_FROM_LIST_TO_PLAY: {
         const { itemIds, itemType } = action.payload;
         const prevListToPlay = original(draft.listToPlay);
-        const filteredListToPlay =
+        draft.listToPlay =
           prevListToPlay &&
-          prevListToPlay.filter((item) =>
-            itemType === "playlist"
-              ? item.kind === "youtube#playlistItem"
-              : item.kind === "youtube#video"
-          );
-
-        if (itemType === "playlist") {
-          draft.listToPlay = filteredListToPlay.filter(
+          prevListToPlay.filter(
             /** @param {PlaylistItem} item */
-            (item) => !itemIds.includes(item.snippet.playlistId)
+            (item) =>
+              itemType === "playlist"
+                ? !itemIds.includes(item.snippet.playlistId)
+                : !itemIds.includes(item.id)
           );
-        }
-
-        if (itemType === "video") {
-          draft.listToPlay = filteredListToPlay.filter(
-            /** @param {VideoItem} item  */
-            (item) => !itemIds.includes(item.id)
-          );
-        }
 
         return draft;
       }
 
+      // NOTE: TESTED
       case UPDATE_LIST_TO_PLAY: {
         draft.listToPlay = action.payload.listToPlay;
         return draft;
       }
 
+      // NOTE: TESTED
       case CLEAR_LIST_TO_PLAY: {
         // clear listToPlay
         draft.listToPlay = [];

@@ -3,12 +3,17 @@
 // ==============================
 
 /**
+ * @typedef {Array<PlaylistItem | VideoItem>} ListToPlay
+ *
+ */
+
+/**
  * @typedef PlaylistState
  * @property {Array<string>} checkedPlaylists
  * @property {Array<string>} checkedVideos
  * @property {Array<Playlist>} playlists
  * @property {Array<Video>} videos
- * @property {Array<PlaylistItem | VideoItem>} listToPlay
+ * @property {ListToPlay} listToPlay
  * @property {Array<string>} playingPlaylists
  * @property {Array<string>} playingVideos
  */
@@ -20,7 +25,7 @@
  */
 
 /**
- * @typedef RemovePlaylistsAction
+ * @typedef DeletePlaylistsAction
  * @property {string} type
  * @property {{ playlistIds: Array<string> }} payload
  */
@@ -28,7 +33,7 @@
 /**
  * @typedef RenamePlaylistAction
  * @property {string} type
- * @property {{ updatedPlaylists: Array<Playlist> }} payload
+ * @property {{ newName: string; playlistIdToRename: string; }} payload
  */
 
 /**
@@ -50,9 +55,15 @@
  */
 
 /**
- * @typedef RemovePlaylistFromPlayingAction
+ * @typedef AddPlaylistsToListToPlayAction
+ * @property {"ADD_PLAYLISTS_TO_LIST_TO_PLAY"} type
+ * @property {{ playlistIds: Array<string>; }} payload
+ */
+
+/**
+ * @typedef RemovePlaylistsFromListToPlayAction
  * @property {string} type
- * @property {{ updatedPlayingPlaylists: Array<string> }} payload
+ * @property {{ playlistIds: Array<string>; }} payload
  */
 
 // ==============================
@@ -72,9 +83,9 @@
  */
 
 /**
- * @typedef DeleteVideoAction
+ * @typedef DeleteVideosAction
  * @property {string} type
- * @property {{ videos: Array<Video> }} payload
+ * @property {{ videoIds: Array<string>; }} payload
  */
 
 /**
@@ -92,24 +103,31 @@
 /**
  * @typedef RemovePlayingVideosAction
  * @property {string} type
- * @property {{ playingVideos: Array<string> }} payload
+ * @property {{ videoIds: Array<string> }} payload
  */
 
 /**
  * @typedef TogglePlayingVideoAction
  * @property {string} type
+ * @property {{ videoId: string; }} payload
  */
 
 /**
- * @typedef AddListToPlayAction PENDING TO BE REMOVED
+ * @typedef AddVideosToListToPlayAction
+ * @property {"ADD_VIDEOS_TO_LIST_TO_PLAY"} type
+ * @property {{ videoIds: Array<string>; }} payload
+ */
+
+/**
+ * @typedef RemoveVideosFromListToPlayAction
  * @property {string} type
- * @property {{ updatedPlayingPlaylists: Array<string>; checkedListToClear: ("playlist"|"video") }} payload
+ * @property {{ videoIds: Array<string>; }} payload
  */
 
 /**
  * @typedef AppendListToPlayAction
- * @property {string} type
- * @property {{ items: Array<(PlaylistItem | VideoItem)> }} payload
+ * @property {"APPEND_LIST_TO_PLAY"} type
+ * @property {{ items: ListToPlay }} payload
  */
 
 /**
@@ -121,35 +139,40 @@
 /**
  * @typedef UpdateListToPlayAction
  * @property {string} type
- * @property {{ listToPlay: Array<(PlaylistItem & VideoItem)> }} payload
+ * @property {{ listToPlay: ListToPlay }} payload
  */
 
 /**
  * @typedef ClearListToPlayAction
- * @property {string} type
+ * @property {"CLEAR_LIST_TO_PLAY"} type
+ */
+
+/**
+ * @typedef ShuffleListToPlayAction
+ * @property {"SHUFFLE_LIST_TO_PLAY"} type
  */
 
 /**
  * @typedef RemoveVideoFromPlayingAction
- * @property {string} typedef
+ * @property {string} type
  */
 
 /**
  * @typedef {AddPlaylistAction &
- *  RemovePlaylistsAction &
+ *  DeletePlaylistsAction &
  *  RenamePlaylistAction &
  *  SetCheckedPlaylistsAction &
  *  AddPlayingPlaylistsAction &
  *  RemovePlayingPlaylistsAction &
- *  RemovePlaylistFromPlayingAction &
+ *  AddPlaylistsToListToPlayAction &
+ *  RemovePlaylistsFromListToPlayAction &
  *  AddVideoAction &
  *  RemoveVideoAction &
- *  DeleteVideoAction &
+ *  DeleteVideosAction &
  *  SetCheckedVideosAction &
  *  AddPlayingVideoAction &
  *  RemovePlayingVideosAction &
  *  TogglePlayingVideoAction &
- *  AddListToPlayAction &
  *  AppendListToPlayAction &
  *  RemoveFromListToPlayAction &
  *  UpdateListToPlayAction &

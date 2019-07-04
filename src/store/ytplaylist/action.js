@@ -1,31 +1,28 @@
-import uniqBy from "lodash.uniqby";
-import shuffle from "lodash.shuffle";
 import {
   ADD_PLAYLIST,
   RENAME_PLAYLIST,
   SET_CHECKED_PLAYLISTS,
   ADD_PLAYING_PLAYLISTS,
-  ADD_LIST_TO_PLAY,
   UPDATE_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
-  REMOVE_PLAYLIST_FROM_PLAYING,
 
   // videos
   ADD_VIDEO,
-  REMOVE_VIDEO,
-  DELETE_VIDEO,
   SET_CHECKED_VIDEOS,
   ADD_PLAYING_VIDEOS,
   REMOVE_PLAYING_VIDEOS,
   TOGGLE_PLAYING_VIDEO,
-  REMOVE_VIDEO_FROM_PLAYING,
   APPEND_LIST_TO_PLAY,
   REMOVE_PLAYING_PLAYLISTS,
-  REMOVE_PLAYLISTS,
+  DELETE_PLAYLISTS,
   REMOVE_FROM_LIST_TO_PLAY,
+  SHUFFLE_LIST_TO_PLAY,
+  REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
+  DELETE_VIDEOS,
+  REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
+  ADD_PLAYLISTS_TO_LIST_TO_PLAY,
+  ADD_VIDEOS_TO_LIST_TO_PLAY,
 } from "../../utils/constants/actionConstants";
-
-import { notify } from "../../utils/helper/notifyHelper";
 
 // ============================
 // Playlist
@@ -44,13 +41,13 @@ export const addPlaylistAction = (playlist) => ({
 });
 
 /**
- * Remove playlist(s) from playlists
+ * Delete playlist(s) from playlists
  *
  * @param {Array<string>} playlistIds Playlist id(s) to remove
- * @returns {RemovePlaylistsAction} REMOVE_PLAYLISTS action object
+ * @returns {DeletePlaylistsAction} DELETE_PLAYLISTS action object
  */
-export const removePlaylistsAction = (playlistIds) => ({
-  type: REMOVE_PLAYLISTS,
+export const deletePlaylistsAction = (playlistIds) => ({
+  type: DELETE_PLAYLISTS,
   payload: {
     playlistIds,
   },
@@ -61,52 +58,27 @@ export const removePlaylistsAction = (playlistIds) => ({
  *
  * @param {string} newName New name of selected playlist
  * @param {string} playlistIdToRename Selected playlist's id
- * @returns {function} Thunk function
+ * @returns {RenamePlaylistAction} RENAME_PLAYLIST action object
  */
-export const renamePlaylist = (newName, playlistIdToRename) => {
-  return (dispatch, getState) => {
-    const { playlists } = getState().ytplaylist;
-
-    const updatedPlaylists = playlists.map((playlist) => {
-      if (playlist.id === playlistIdToRename) {
-        playlist.name = newName;
-      }
-      return playlist;
-    });
-
-    dispatch({
-      type: RENAME_PLAYLIST,
-      payload: {
-        updatedPlaylists,
-      },
-    });
-  };
-};
+export const renamePlaylistAction = (newName, playlistIdToRename) => ({
+  type: RENAME_PLAYLIST,
+  payload: {
+    newName,
+    playlistIdToRename,
+  },
+});
 
 /**
  * Set checked playlist in Redux store
  * @param {Array<string>} checkedPlaylists selected playlists
  * @returns {SetCheckedPlaylistsAction} SET_CHECKED_PLAYLISTS action object for redux store
  */
-export const setCheckedPlaylists = (checkedPlaylists) => ({
+export const setCheckedPlaylistsAction = (checkedPlaylists) => ({
   type: SET_CHECKED_PLAYLISTS,
   payload: {
     checkedPlaylists,
   },
 });
-
-/**
- * Shuffle listToPlay
- * @returns {function} Thunk function
- *
- */
-export const shufflePlaylist = () => {
-  return (dispatch, getState) => {
-    const { listToPlay } = getState().ytplaylist;
-
-    if (listToPlay.length) dispatch(updateListToPlay(shuffle(listToPlay)));
-  };
-};
 
 /**
  * Add playlist id(s) in playlistIds to playingPlaylists
@@ -135,83 +107,30 @@ export const removePlayingPlaylistsAction = (playlistIds) => ({
 });
 
 /**
- * Remove selected playlist(s) from playingList
+ * Add playlists to listToPlay
  *
- * @returns {function} Thunk function
- *
+ * @param {Array<string>} playlistIds Id array of playlists to add to listToPlay
+ * @returns {AddPlaylistsToListToPlayAction} ADD_PLAYLISTS_TO_LIST_TO_PLAY action object
  */
-export const removePlaylistFromPlaying = () => {
-  return (dispatch, getState) => {
-    /** @type {PlaylistState} */
-    const {
-      checkedPlaylists: playlistIdsToRemove,
-      playlists,
-      listToPlay,
-      playingPlaylists,
-    } = getState().ytplaylist;
+export const addPlaylistsToListToPlayAction = (playlistIds) => ({
+  type: ADD_PLAYLISTS_TO_LIST_TO_PLAY,
+  payload: {
+    playlistIds,
+  },
+});
 
-    /** @type {Array<string>} */
-    const songsToRemove = [];
-
-    if (!playlistIdsToRemove.length) {
-      return;
-    }
-
-    for (const playlistIdToRemove of playlistIdsToRemove) {
-      const playlistToRemove = playlists.filter(
-        (playlist) => playlist.id === playlistIdToRemove
-      )[0];
-      const playlistIdentifier = playlistToRemove.name || playlistIdToRemove;
-
-      if (!playingPlaylists.includes(playlistIdToRemove)) {
-        notify(
-          "warning",
-          `playlist: ${playlistIdentifier} is not included in playing`
-        );
-        continue;
-      }
-
-      songsToRemove.push(
-        ...playlists
-          .filter((playlist) => playlist.id === playlistIdToRemove)
-          // @ts-ignore
-          .flatMap(
-            /** @param {Playlist} filteredPlaylist */
-            (filteredPlaylist) => filteredPlaylist.items
-          )
-          .flatMap(
-            /** @param {Playlist} filteredItem */
-            (filteredItem) => filteredItem.id
-          )
-      );
-
-      notify(
-        "success",
-        `Successfully removed playlist: ${playlistIdentifier} from playing 😎`
-      );
-    }
-
-    // update listToPlay
-    const updatedListToPlay = listToPlay.filter(
-      (video) => !songsToRemove.includes(video.id)
-    );
-
-    // update playingPlaylists
-    const updatedPlayingPlaylists = playingPlaylists.filter(
-      (playlistId) => !playlistIdsToRemove.includes(playlistId)
-    );
-
-    // remove playlists and clear checked playlists
-    dispatch({
-      type: REMOVE_PLAYLIST_FROM_PLAYING,
-      payload: {
-        updatedPlayingPlaylists,
-      },
-    });
-    dispatch(updateListToPlay(updatedListToPlay));
-    dispatch(setCheckedPlaylists([]));
-  };
-};
+/**
+ * Remove playlist(s) from current playing list (listToPlay)
+ *
+ * @param {Array<string>} playlistIds An array of playlist Ids to remove
+ * @returns {RemovePlaylistsFromListToPlayAction} REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY action object
+ */
+export const removePlaylistsFromListToPlayAction = (playlistIds) => ({
+  type: REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
+  payload: {
+    playlistIds,
+  },
+});
 
 // ===============================================
 // videos
@@ -229,65 +148,24 @@ export const addVideoAction = (videoToAdd) => ({
 });
 
 /**
- * Remove checked video in checkedVideos array
- * @returns {function} Thunk function
- */
-export const removeVideo = () => {
-  return (dispatch, getState) => {
-    const { checkedVideos: videosToRemove, videos } = getState().ytplaylist;
-    if (!videosToRemove.length) {
-      return;
-    }
-
-    const updatedVideos = videos.filter(
-      (video) => !videosToRemove.includes(video.id)
-    );
-
-    dispatch({
-      type: REMOVE_VIDEO,
-      payload: {
-        updatedVideos,
-      },
-    });
-    dispatch(removePlayingVideos(videosToRemove));
-  };
-};
-
-/**
- * Delete ONE video from saved videos
+ * Delete selected videos from redux store
  *
- * @param {string} videoId Id for video to be deleted
- * @returns {function} Thunk function
+ * @param {Array<string>} videoIds An array of video ids to delete
+ * @returns {DeleteVideosAction} DELETE_VIDEOS action object
  */
-export const deleteVideo = (videoId) => {
-  return (dispatch, getState) => {
-    const { videos, listToPlay } = getState().ytplaylist;
-
-    // updates videos array
-    const updatedVideos = videos.filter((video) => video.id !== videoId);
-
-    // updates listToPlay
-    const updatedListToPlay = listToPlay.filter(
-      (video) => video.id !== videoId
-    );
-
-    dispatch({
-      type: DELETE_VIDEO,
-      payload: {
-        videos: updatedVideos,
-      },
-    });
-    dispatch(updateListToPlay(updatedListToPlay));
-    dispatch(removePlayingVideos([videoId]));
-  };
-};
+export const deleteVideosAction = (videoIds) => ({
+  type: DELETE_VIDEOS,
+  payload: {
+    videoIds,
+  },
+});
 
 /**
  * Set checked videos in Redux store
  * @param {Array<string>} checkedVideos An array of checked video id to store
  * @returns {SetCheckedVideosAction} SET_CHECKED_VIDEOS action object for redux store
  */
-export const setCheckedVideos = (checkedVideos) => ({
+export const setCheckedVideosAction = (checkedVideos) => ({
   type: SET_CHECKED_VIDEOS,
   payload: {
     checkedVideos,
@@ -310,147 +188,59 @@ export const addPlayingVideosAction = (videoIds) => ({
 /**
  * Remove videos specified by videoIds array from playingVideos
  *
- * @param {Array<string>} videoIds Videos id to remove array
- * @returns {function} Thunk function for redux store
+ * @param {Array<string>} videoIds An array of video ids to remove from playingVideos
+ * @returns {RemovePlayingVideosAction} REMOVE_PLAYING_VIDEOS action object
  */
-export const removePlayingVideos = (videoIds) => {
-  return (dispatch, getState) => {
-    const { playingVideos } = getState().ytplaylist;
+export const removePlayingVideosAction = (videoIds) => ({
+  type: REMOVE_PLAYING_VIDEOS,
+  payload: {
+    videoIds,
+  },
+});
 
-    const updatedPlayingVideos = playingVideos.filter(
-      (videoId) => !videoIds.includes(videoId)
-    );
+/**
+ * Add video items to listToPlay
+ *
+ * @param {Array<string>} videoIds Video ids array to add
+ * @returns {AddVideosToListToPlayAction} ADD_VIDEOS_TO_LIST_TO_PLAY action object
+ */
+export const addVideosToListToPlayAction = (videoIds) => ({
+  type: ADD_VIDEOS_TO_LIST_TO_PLAY,
+  payload: {
+    videoIds,
+  },
+});
 
-    dispatch({
-      type: REMOVE_PLAYING_VIDEOS,
-      payload: {
-        playingVideos: updatedPlayingVideos,
-      },
-    });
-  };
-};
+/**
+ * Remove video(s) from current playing list (listToPlay)
+ *
+ * @param {Array<string>} videoIds An array of video Ids to remove
+ * @returns {RemoveVideosFromListToPlayAction} REMOVE_VIDEOS_FROM_LIST_TO_PLAY action object
+ */
+export const removeVideosFromListToPlayAction = (videoIds) => ({
+  type: REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
+  payload: {
+    videoIds,
+  },
+});
 
 /**
  * Toggle add or remove video from listToPlay
  *
- * @param {string} id Video id to add/remove from listToPlay
- * @returns {function} Thunk function
+ * @param {string} videoId Id of video to toggle add or remove
+ * @returns {TogglePlayingVideoAction} TOGGLE_PLAYING_VIDEO action object
  */
-export const togglePlayingVideo = (id) => {
-  return (dispatch, getState) => {
-    const { videos, playingVideos, listToPlay } = getState().ytplaylist;
-
-    const isPlayingVideoPreviously = playingVideos.includes(id);
-
-    const updatedListToPlay = !isPlayingVideoPreviously
-      ? uniqBy(
-          [
-            ...listToPlay,
-            ...videos
-              .filter((video) => video.id === id)
-              .flatMap((filteredVideo) => filteredVideo.items),
-          ],
-          "id"
-        )
-      : listToPlay.filter((video) => video.id !== id);
-
-    dispatch({
-      type: TOGGLE_PLAYING_VIDEO,
-    });
-
-    if (isPlayingVideoPreviously) {
-      dispatch(removePlayingVideos([id]));
-    } else {
-      dispatch(addPlayingVideosAction([id]));
-    }
-
-    dispatch(updateListToPlay(updatedListToPlay));
-  };
-};
+export const togglePlayingVideoAction = (videoId) => ({
+  type: TOGGLE_PLAYING_VIDEO,
+  payload: {
+    videoId,
+  },
+});
 
 // ===============================================
 // listToPlay
 // ===============================================
 /**
- * Add playlists/videos to listToPlay
- * @param {object} params
- * @param {boolean} params.checked Use checkedPlaylists/checkedVideos in Redux store if true
- * @param {Array<string>} params.listToAdd An array of video to add
- * @returns Thunk function
- */
-export const addListToPlay = ({ checked, listToAdd }) => {
-  return (dispatch, getState) => {
-    const {
-      playingPlaylists,
-      playingVideos,
-      checkedPlaylists,
-      checkedVideos,
-      listToPlay,
-      playlists,
-      videos,
-    } = getState().ytplaylist;
-    let updatedListToPlay, checkedListToClear;
-
-    // fix accidentally mutated state problem in playlists and videos
-    const newPlayingPlaylists = [...playingPlaylists];
-    const newPlayingVideos = [...playingVideos];
-
-    // add playlists
-    if (checked && !checkedVideos.length) {
-      updatedListToPlay = [
-        ...listToPlay,
-        ...playlists
-          .filter((playlist) => checkedPlaylists.includes(playlist.id))
-          .flatMap((filteredPlaylist) => filteredPlaylist.items),
-      ];
-
-      // push chosen playlists' id to playingPlaylists array
-      checkedPlaylists.forEach((playlistId) => {
-        if (!newPlayingPlaylists.includes(playlistId)) {
-          newPlayingPlaylists.push(playlistId);
-        }
-      });
-
-      checkedListToClear = "playlist";
-
-      // add videos
-    } else if (checked && !checkedPlaylists.length) {
-      updatedListToPlay = [
-        ...listToPlay,
-        ...videos
-          .filter((video) => checkedVideos.includes(video.id))
-          .flatMap((filteredVideo) => filteredVideo.items),
-      ];
-
-      // push chosen videos' id to playingVideos array
-      checkedVideos.forEach((videoId) => {
-        if (!newPlayingVideos.includes(videoId)) {
-          newPlayingVideos.push(videoId);
-        }
-      });
-
-      dispatch(addPlayingVideosAction(newPlayingVideos));
-      checkedListToClear = "video";
-    } else {
-      // for hydration
-      updatedListToPlay = [...listToPlay, ...listToAdd];
-    }
-
-    const uniqueListToPlay = uniqBy(updatedListToPlay, "id");
-
-    dispatch({
-      type: ADD_LIST_TO_PLAY,
-      payload: {
-        updatedPlayingPlaylists: newPlayingPlaylists,
-        checkedListToClear,
-      },
-    });
-    dispatch(updateListToPlay(uniqueListToPlay));
-  };
-};
-
-/** NOTE: (mayb) replace addListToPlay action in the future
- * Action to append new item(s) (video/playlist) to listToPlay
  *
  * @param {Array<(PlaylistItem | VideoItem)>} items Items obtained from API (items key in json returned)
  * @returns {AppendListToPlayAction} APPEND_LIST_TO_PLAY action object
@@ -466,7 +256,7 @@ export const appendListToPlayAction = (items) => ({
  * Remove item(s) containing itemIds from listToPlay
  *
  * @param {Array<string>} itemIds Playlist/Video' ids
- * @param {"playlist"|"video"} itemType  Type of item to remove (playlist/video)
+ * @param {ItemType} itemType  Type of item to remove (playlist/video)
  */
 export const removeFromListToPlayAction = (itemIds, itemType) => ({
   type: REMOVE_FROM_LIST_TO_PLAY,
@@ -480,76 +270,28 @@ export const removeFromListToPlayAction = (itemIds, itemType) => ({
  * Update listToPlay with updatedList supplied
  *
  * @param {Array<(PlaylistItem | VideoItem)>} updatedList Updated array of listToPlay
- * @returns {function} Thunk function for redux store
+ * @returns {UpdateListToPlayAction} UPDATE_LIST_TO_PLAY action object
  */
-export const updateListToPlay = (updatedList) => {
-  return (dispatch) => {
-    dispatch({
-      type: UPDATE_LIST_TO_PLAY,
-      payload: {
-        listToPlay: updatedList,
-      },
-    });
-  };
-};
+export const updateListToPlay = (updatedList) => ({
+  type: UPDATE_LIST_TO_PLAY,
+  payload: {
+    listToPlay: updatedList,
+  },
+});
 
 /**
  * Clear current playing playlist
- * @returns CLEAR_LIST_TO_PLAY action object for redux store
+ * @returns {ClearListToPlayAction} CLEAR_LIST_TO_PLAY action object for redux store
  */
-export const clearListToPlay = () => ({
+export const clearListToPlayAction = () => ({
   type: CLEAR_LIST_TO_PLAY,
 });
 
 /**
- * Remove selected video(s) from playingList
+ * Shuffle listToPlay
  *
- * @returns {function} Thunk function
- *
+ * @returns {ShuffleListToPlayAction} SHUFFLE_LIST_TO_PLAY action object
  */
-export const removeVideoFromPlaying = () => {
-  return (dispatch, getState) => {
-    const {
-      checkedVideos: videosToRemove,
-      listToPlay,
-      playingVideos,
-    } = getState().ytplaylist;
-
-    if (!videosToRemove.length) {
-      return;
-    }
-
-    const filteredVideosToRemove = videosToRemove.filter((videoId) => {
-      const isVideoIdIncluded = playingVideos.includes(videoId);
-
-      if (!isVideoIdIncluded) {
-        notify(
-          "warning",
-          `Video-${videoId} does not included in playing list.`
-        );
-      }
-
-      return isVideoIdIncluded;
-    });
-
-    // clear checkedVideos and return if no video to remove
-    if (filteredVideosToRemove.length === 0) {
-      dispatch(setCheckedVideos([]));
-      return;
-    }
-
-    // proceed if filteredVideosToRemove is not empty
-    const updatedListToPlay = listToPlay.filter(
-      (video) => !filteredVideosToRemove.includes(video.id)
-    );
-
-    dispatch({
-      type: REMOVE_VIDEO_FROM_PLAYING,
-    });
-    dispatch(removePlayingVideos(filteredVideosToRemove));
-    dispatch(updateListToPlay(updatedListToPlay));
-    dispatch(setCheckedVideos([]));
-
-    notify("success", "Successfully removed selected video(s) from playing 😎");
-  };
-};
+export const shuffleListToPlayAction = () => ({
+  type: SHUFFLE_LIST_TO_PLAY,
+});

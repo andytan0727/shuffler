@@ -12,14 +12,14 @@ import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import { SearchInput, SearchVideoInput } from "../../Inputs";
 import { VideosPanelBtnGroup } from "../../Buttons";
 
-import { setCheckedVideos } from "../../../store/ytplaylist/action";
+import { setCheckedVideosAction } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
 
 const VideosPanel = (props) => {
   const {
     ytplaylist: { videos, checkedVideos, playingVideos },
-    setCheckedVideos,
+    setCheckedVideosAction,
   } = props;
 
   const _checkVideos = (videoId) => {
@@ -32,7 +32,7 @@ const VideosPanel = (props) => {
       newSelected.splice(currentIndex, 1);
     }
 
-    setCheckedVideos(newSelected);
+    setCheckedVideosAction(newSelected);
   };
 
   const handleCheckVideos = (e) => {
@@ -51,7 +51,7 @@ const VideosPanel = (props) => {
       newSelected.splice(currentIndex, 1);
     }
 
-    setCheckedVideos(newSelected);
+    setCheckedVideosAction(newSelected);
   };
 
   return (
@@ -109,7 +109,7 @@ const VideosPanel = (props) => {
 
 VideosPanel.propTypes = {
   ytplaylist: PropTypes.object.isRequired,
-  setCheckedVideos: PropTypes.func.isRequired,
+  setCheckedVideosAction: PropTypes.func.isRequired,
 };
 
 const mapStatesToVideosPanelProps = ({ ytplaylist }) => ({
@@ -119,6 +119,6 @@ const mapStatesToVideosPanelProps = ({ ytplaylist }) => ({
 export default connect(
   mapStatesToVideosPanelProps,
   {
-    setCheckedVideos,
+    setCheckedVideosAction,
   }
 )(VideosPanel);
