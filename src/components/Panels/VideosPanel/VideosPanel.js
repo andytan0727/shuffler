@@ -9,12 +9,14 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 
-import { SearchInput, SearchVideoInput } from "../../Inputs";
+import { withSearchInput } from "../../Inputs";
 import { VideosPanelBtnGroup } from "../../Buttons";
 
 import { setCheckedVideosAction } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
+
+const SearchVideoInput = withSearchInput("video");
 
 const VideosPanel = (props) => {
   const {
@@ -57,11 +59,7 @@ const VideosPanel = (props) => {
   return (
     <React.Fragment>
       <div className={styles.videosPanelDiv}>
-        <SearchVideoInput name="search-video" placeholder="Video Url">
-          {({ ref, ...videosInputProps }) => (
-            <SearchInput ref={ref} {...videosInputProps} />
-          )}
-        </SearchVideoInput>
+        <SearchVideoInput />
         <div className={styles.videos}>
           {videos.length !== 0 ? (
             videos.map((video) => (

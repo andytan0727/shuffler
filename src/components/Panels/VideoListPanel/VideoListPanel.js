@@ -11,12 +11,14 @@ import CloseIcon from "@material-ui/icons/Close";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 
 import { VideoListPanelBtnGroup } from "../../Buttons";
-import { SearchInput, SearchPlaylistInput, RenameInput } from "../../Inputs";
+import { withSearchInput, RenameInput } from "../../Inputs";
 import { VideoList } from "../../Lists";
 
 import { setCheckedPlaylistsAction } from "../../../store/ytplaylist/action";
 
 import styles from "./styles.module.scss";
+
+const SearchPlaylistInput = withSearchInput("playlist");
 
 const VideoListPanel = (props) => {
   const {
@@ -76,11 +78,7 @@ const VideoListPanel = (props) => {
   return (
     <React.Fragment>
       <div className={styles.videoListPanelDiv}>
-        <SearchPlaylistInput name="search-playlist" placeholder="Playlist Url">
-          {({ ref, ...playlistInputProps }) => (
-            <SearchInput ref={ref} {...playlistInputProps} />
-          )}
-        </SearchPlaylistInput>
+        <SearchPlaylistInput />
         <div className={styles.videoListItems}>
           {playlists.length !== 0 ? (
             playlists.map((playlist) => (
