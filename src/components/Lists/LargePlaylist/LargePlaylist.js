@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
@@ -20,17 +20,20 @@ const LargePlaylist = (props) => {
   const listLen = listToPlay.length;
   const displayList = listToPlay.slice(curSongIdx + 1, listLen);
 
-  const handleClickSong = (e) => {
-    const songToPlay = e.currentTarget.getAttribute("data-index");
-    setCurSongIdx(parseInt(songToPlay));
-  };
+  const handleClickSong = useCallback(
+    (e) => {
+      const songToPlay = e.currentTarget.getAttribute("data-index");
+      setCurSongIdx(parseInt(songToPlay));
+    },
+    [setCurSongIdx]
+  );
 
-  const handleScrollToListTop = () => {
+  const handleScrollToListTop = useCallback(() => {
     listRef.current.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  };
+  }, []);
 
   // set shortcut to close LargePlaylist overlay
   useKeyDown(setEscOverlay(handleHideLargePlaylist));

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -36,7 +36,7 @@ const VideosPanelBtnGroup = (props) => {
     removeVideosFromListToPlayAction,
   } = props;
 
-  const handleAddVideosToPlaying = async () => {
+  const handleAddVideosToPlaying = useCallback(async () => {
     if (!checkedVideos.length) {
       await noVideoSelectedAlert();
       return;
@@ -45,9 +45,9 @@ const VideosPanelBtnGroup = (props) => {
     addVideosToListToPlayAction(checkedVideos);
 
     notify("success", "Successfully added selected video(s) to playing 😎");
-  };
+  }, [addVideosToListToPlayAction, checkedVideos]);
 
-  const handleRemoveVideo = async () => {
+  const handleRemoveVideo = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
     if (!checkedVideos.length) {
@@ -68,16 +68,16 @@ const VideosPanelBtnGroup = (props) => {
       deleteVideosAction(checkedVideos);
       await customSwal.fire("Deleted!", "Video(s) deleted 😎", "success");
     }
-  };
+  }, [checkedVideos, deleteVideosAction]);
 
-  const handleRemoveVideoFromPlaying = async () => {
+  const handleRemoveVideoFromPlaying = useCallback(async () => {
     if (!checkedVideos.length) {
       await noVideoSelectedAlert();
       return;
     }
 
     removeVideosFromListToPlayAction(checkedVideos);
-  };
+  }, [checkedVideos, removeVideosFromListToPlayAction]);
 
   return (
     <div

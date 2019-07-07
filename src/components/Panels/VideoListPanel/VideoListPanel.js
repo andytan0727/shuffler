@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -9,12 +9,11 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
-
 import { VideoListPanelBtnGroup } from "../../Buttons";
 import { withSearchInput, RenameInput } from "../../Inputs";
 import { VideoList } from "../../Lists";
-
 import { setCheckedPlaylistsAction } from "../../../store/ytplaylist/action";
+import { addOrRemove } from "../../../utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
 
@@ -28,43 +27,20 @@ const VideoListPanel = (props) => {
   const [viewPlaylist, setViewPlaylist] = useState(false);
   const [playlistToView, setPlaylistToView] = useState([]);
 
-  const _checkPlaylist = (playlistId) => {
-    const currentIndex = checkedPlaylists.indexOf(playlistId);
-    const newSelected = [...checkedPlaylists];
+  const handleCheckPlaylists = useCallback(
+    (id) => (e) => {
+      // stop event bubbling to parent div and checks checkbox twice
+      e.stopPropagation();
 
-    if (currentIndex === -1) {
-      newSelected.push(playlistId);
-    } else {
-      newSelected.splice(currentIndex, 1);
-    }
+      setCheckedPlaylistsAction(addOrRemove(checkedPlaylists, id));
+    },
+    [checkedPlaylists, setCheckedPlaylistsAction]
+  );
 
-    setCheckedPlaylistsAction(newSelected);
-  };
-
-  const handleCloseViewPlaylist = () => {
+  const handleCloseViewPlaylist = useCallback(() => {
     setViewPlaylist(false);
     setCheckedPlaylistsAction([]);
-  };
-
-  const handleCheckPlaylists = (e) => {
-    // stop event bubbling to parent div and checks checkbox twice
-    e.stopPropagation();
-
-    const selectedPlaylistId = e.target.value;
-    _checkPlaylist(selectedPlaylistId);
-  };
-
-  // place on parent div
-  const handleClick = (e) => {
-    // stop event delegation to checkbox
-    e.stopPropagation();
-
-    // obtain playlist id from span child
-    const playlistId = Array.from(e.currentTarget.childNodes)[1].getAttribute(
-      "data-playlistid"
-    );
-    _checkPlaylist(playlistId);
-  };
+  }, [setCheckedPlaylistsAction]);
 
   useEffect(() => {
     if (viewPlaylist && playlists.length) {
@@ -90,14 +66,13 @@ const VideoListPanel = (props) => {
                     ),
                   })}
                 >
-                  <div onClick={handleClick}>
+                  <div onClick={handleCheckPlaylists(playlist.id)}>
                     <Checkbox
                       className={styles.checkBox}
                       checked={checkedPlaylists.includes(playlist.id)}
                       icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
                       checkedIcon={<CheckBoxIcon fontSize="small" />}
-                      value={playlist.id}
-                      onChange={handleCheckPlaylists}
+                      onChange={handleCheckPlaylists(playlist.id)}
                     />
                     <RenameInput id={playlist.id} name={playlist.name} />
                     {playingPlaylists.includes(playlist.id) && (

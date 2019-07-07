@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 
 // Material Components
@@ -27,13 +27,13 @@ const TopBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const matchesMobile = useMediaQuery("(max-width: 420px)");
 
-  const handleMenuButtonClick = (e) => {
+  const handleMenuButtonClick = useCallback((e) => {
     setAnchorEl(e.currentTarget);
-  };
+  }, []);
 
-  const handleMenuClose = (e) => {
+  const handleMenuClose = useCallback((e) => {
     setAnchorEl(null);
-  };
+  }, []);
 
   return (
     <div className={styles.navDark}>

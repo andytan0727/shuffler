@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -33,119 +33,131 @@ const PlayerBasicCtrlBtnGroup = (props) => {
     ytPlayerRef,
   } = props;
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (curSongIdx > 0) {
       setCurSongIdx(curSongIdx - 1);
       return;
     }
     notify("warning", "💢 This is the first video in your playlist!");
-  };
+  }, [curSongIdx, setCurSongIdx]);
 
-  const handlePlay = () => {
+  const handlePlay = useCallback(() => {
     if (ytPlayerRef) {
       ytPlayerRef.current.internalPlayer.playVideo();
     }
-  };
+  }, [ytPlayerRef]);
 
-  const handlePause = () => {
+  const handlePause = useCallback(() => {
     if (ytPlayerRef) {
       ytPlayerRef.current.internalPlayer.pauseVideo();
     }
-  };
+  }, [ytPlayerRef]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (curSongIdx === listToPlay.length - 1) {
       notify("info", "🚀 You have reached last video in your playlist");
       return;
     }
 
     setCurSongIdx(curSongIdx + 1);
-  };
+  }, [curSongIdx, listToPlay.length, setCurSongIdx]);
 
-  const handleShufflePlaylist = () => {
+  const handleShufflePlaylist = useCallback(() => {
     shuffleListToPlayAction();
     setCurSongIdx(0);
-  };
+  }, [setCurSongIdx, shuffleListToPlayAction]);
 
   // fix play/pause problem when spacebar is pressed after clicking buttons
-  const handleBlur = (e) => {
+  const handleBlur = useCallback((e) => {
     e.target.blur();
-  };
+  }, []);
 
-  const playerKeyboardShortcuts = async (e) => {
-    const keyCode = e.keyCode;
-    const arrowCode = { left: 37, up: 38, right: 39, down: 40 };
+  const playerKeyboardShortcuts = useCallback(
+    async (e) => {
+      const keyCode = e.keyCode;
+      const arrowCode = { left: 37, up: 38, right: 39, down: 40 };
 
-    // spacekey (play/pause)
-    if (keyCode === 32 || e.keyC === " " || e.key === "Spacebar") {
-      // blur anything else to prevent spacebar bugs
-      handleBlur(e);
+      // spacekey (play/pause)
+      if (keyCode === 32 || e.keyC === " " || e.key === "Spacebar") {
+        // blur anything else to prevent spacebar bugs
+        handleBlur(e);
 
-      if (playing) {
-        handlePause();
-        return;
-      }
-
-      if (!playing) {
-        handlePlay();
-        return;
-      }
-    }
-
-    if (e.ctrlKey) {
-      // ctrl+alt+s (shuffle playing list)
-      if (e.ctrlKey && e.altKey && e.key === "s") {
-        handleShufflePlaylist();
-        return;
-      }
-
-      // ctrl+arrow (fast forward/backward)
-      switch (keyCode) {
-        case arrowCode.left: {
-          handlePrevious();
-          break;
+        if (playing) {
+          handlePause();
+          return;
         }
 
-        case arrowCode.right: {
-          handleNext();
-          break;
-        }
-
-        default: {
-          break;
+        if (!playing) {
+          handlePlay();
+          return;
         }
       }
-      return;
-    }
 
-    // arrow (volume)
-    if (keyCode >= arrowCode.left && keyCode <= arrowCode.down) {
-      const curVolume = await ytPlayerRef.current.internalPlayer.getVolume();
+      if (e.ctrlKey) {
+        // ctrl+alt+s (shuffle playing list)
+        if (e.ctrlKey && e.altKey && e.key === "s") {
+          handleShufflePlaylist();
+          return;
+        }
 
-      switch (keyCode) {
-        case arrowCode.up: {
-          if (curVolume >= 100) {
-            return;
+        // ctrl+arrow (fast forward/backward)
+        switch (keyCode) {
+          case arrowCode.left: {
+            handlePrevious();
+            break;
           }
-          ytPlayerRef.current.internalPlayer.setVolume(curVolume + 5);
-          break;
-        }
 
-        case arrowCode.down: {
-          if (curVolume <= 0) {
-            return;
+          case arrowCode.right: {
+            handleNext();
+            break;
           }
-          ytPlayerRef.current.internalPlayer.setVolume(curVolume - 5);
-          break;
-        }
 
-        default: {
-          break;
+          default: {
+            break;
+          }
         }
+        return;
       }
-      return;
-    }
-  };
+
+      // arrow (volume)
+      if (keyCode >= arrowCode.left && keyCode <= arrowCode.down) {
+        const curVolume = await ytPlayerRef.current.internalPlayer.getVolume();
+
+        switch (keyCode) {
+          case arrowCode.up: {
+            if (curVolume >= 100) {
+              return;
+            }
+            ytPlayerRef.current.internalPlayer.setVolume(curVolume + 5);
+            break;
+          }
+
+          case arrowCode.down: {
+            if (curVolume <= 0) {
+              return;
+            }
+            ytPlayerRef.current.internalPlayer.setVolume(curVolume - 5);
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
+        return;
+      }
+    },
+    [
+      handleBlur,
+      handleNext,
+      handlePause,
+      handlePlay,
+      handlePrevious,
+      handleShufflePlaylist,
+      playing,
+      ytPlayerRef,
+    ]
+  );
 
   // handle keyboard shortcuts for controlling player
   useKeyDown(playerKeyboardShortcuts);

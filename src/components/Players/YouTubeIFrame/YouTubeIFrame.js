@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from "react";
+import React, { forwardRef, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
@@ -6,6 +6,11 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { setCurSongIdx, setVideoPlaying } from "../../../store/ytplayer/action";
 import { shuffleListToPlayAction } from "../../../store/ytplaylist/action";
 import { notify } from "../../../utils/helper/notifyHelper";
+
+// focus window to listen for keyboard shortcuts
+// fix the problem of unable to trigger keydown event
+// when YT IFrame is focused
+const _setFocusWindow = () => window.focus();
 
 const YouTubeIFrame = (props) => {
   const {
@@ -26,68 +31,77 @@ const YouTubeIFrame = (props) => {
   const matchesMobile = useMediaQuery("(max-width: 420px)");
   const [vidWidth, setVidWidth] = useState(0);
 
-  const _setVidSize = () => {
+  const setVidSize = useCallback(() => {
     const vidWrapper = document.getElementById("player");
     setVidWidth(vidWrapper.offsetWidth);
-  };
+  }, []);
 
-  const setPlaying = () => {
+  const setPlaying = useCallback(() => {
     setVideoPlaying(true);
     document.title = listToPlay[curSongIdx].snippet.title;
-  };
+  }, [curSongIdx, listToPlay, setVideoPlaying]);
 
-  const setPause = () => setVideoPlaying(false);
+  const setPause = useCallback(() => setVideoPlaying(false), [setVideoPlaying]);
 
-  // focus window to listen for keyboard shortcuts
-  // fix the problem of unable to trigger keydown event
-  // when YT IFrame is focused
-  const setFocusWindow = () => window.focus();
+  const setNext = useCallback(
+    (e) => {
+      const listLength = listToPlay.length;
 
-  const setNext = (e) => {
-    // special condition: loop one song
-    // seek to 0 second using YouTube Iframe API
-    if (listToPlay.length === 1 && repeat) {
-      e.target.seekTo(0);
-      return;
-    }
-
-    if (curSongIdx === listToPlay.length - 1) {
-      if (!repeat) {
-        notify("info", "🚀 You have reached last video in your playlist");
-        setPause(); // set pause to prevent playing bug on last video
-      } else {
-        // if repeat is turned on
-        // re-index to the first item in playing list
-        // and shuffle it
-        setCurSongIdx(0);
-        shuffleListToPlayAction();
+      // special condition: loop one song
+      // seek to 0 second using YouTube Iframe API
+      if (listLength === 1 && repeat) {
+        e.target.seekTo(0);
+        return;
       }
-      return;
-    }
 
-    setCurSongIdx(curSongIdx + 1);
-  };
+      if (curSongIdx === listLength - 1) {
+        if (!repeat) {
+          notify("info", "🚀 You have reached last video in your playlist");
+          setPause(); // set pause to prevent playing bug on last video
+        } else {
+          // if repeat is turned on
+          // re-index to the first item in playing list
+          // and shuffle it
+          setCurSongIdx(0);
+          shuffleListToPlayAction();
+        }
+        return;
+      }
 
-  const handleVideoError = (e) => {
-    switch (e.data) {
-      case 101:
-      case 150:
-        // skip to next song when video playback in iframe is prohibited
-        setNext();
-        break;
-      default:
-        console.log("error code: " + e.data);
-    }
-  };
+      setCurSongIdx(curSongIdx + 1);
+    },
+    [
+      curSongIdx,
+      listToPlay.length,
+      repeat,
+      setCurSongIdx,
+      setPause,
+      shuffleListToPlayAction,
+    ]
+  );
+
+  const handleVideoError = useCallback(
+    (e) => {
+      switch (e.data) {
+        case 101:
+        case 150:
+          // skip to next song when video playback in iframe is prohibited
+          setNext();
+          break;
+        default:
+          console.log("error code: " + e.data);
+      }
+    },
+    [setNext]
+  );
 
   useEffect(() => {
-    window.addEventListener("resize", _setVidSize);
+    window.addEventListener("resize", setVidSize);
 
     return () => {
-      // remove listeners
-      window.removeEventListener("resize", _setVidSize);
+      window.removeEventListener("resize", setVidSize);
     };
-  }, []);
+  }, [setVidSize]);
 
   return (
     <div id="player">
@@ -109,7 +123,7 @@ const YouTubeIFrame = (props) => {
         }}
         onPlay={setPlaying}
         onPause={setPause}
-        onStateChange={setFocusWindow}
+        onStateChange={_setFocusWindow}
         onEnd={setNext}
         onError={handleVideoError}
       />

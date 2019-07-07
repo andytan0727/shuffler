@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -24,13 +24,13 @@ const ToggleDarkModeSwitch = (props) => {
    *
    * @param {import("react").ChangeEvent<HTMLInputElement>} e
    */
-  const handleToggleDarkMode = (e) => {
-    setChecked(e.target.checked);
-  };
-
-  useEffect(() => {
-    setPreferDarkTheme(checked);
-  }, [checked, setPreferDarkTheme]);
+  const handleToggleDarkMode = useCallback(
+    (e) => {
+      setChecked(e.target.checked);
+      setPreferDarkTheme(e.target.checked);
+    },
+    [setPreferDarkTheme]
+  );
 
   return (
     <div>

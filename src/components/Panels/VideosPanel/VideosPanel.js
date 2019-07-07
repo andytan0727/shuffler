@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -11,8 +11,8 @@ import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 
 import { withSearchInput } from "../../Inputs";
 import { VideosPanelBtnGroup } from "../../Buttons";
-
 import { setCheckedVideosAction } from "../../../store/ytplaylist/action";
+import { addOrRemove } from "../../../utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
 
@@ -24,37 +24,15 @@ const VideosPanel = (props) => {
     setCheckedVideosAction,
   } = props;
 
-  const _checkVideos = (videoId) => {
-    const currentIndex = checkedVideos.indexOf(videoId);
-    const newSelected = [...checkedVideos];
+  const handleCheckVideos = useCallback(
+    (id) => (e) => {
+      // stop event bubbling to parent div and checks checkbox twice
+      e.stopPropagation();
 
-    if (currentIndex === -1) {
-      newSelected.push(videoId);
-    } else {
-      newSelected.splice(currentIndex, 1);
-    }
-
-    setCheckedVideosAction(newSelected);
-  };
-
-  const handleCheckVideos = (e) => {
-    const selectedVideosId = e.target.value;
-    _checkVideos(selectedVideosId);
-  };
-
-  const handleSelectVideoItem = (e) => {
-    const selectedVideoId = e.currentTarget.getAttribute("data-videoid");
-    const currentIndex = checkedVideos.indexOf(selectedVideoId);
-    const newSelected = [...checkedVideos];
-
-    if (currentIndex === -1) {
-      newSelected.push(selectedVideoId);
-    } else {
-      newSelected.splice(currentIndex, 1);
-    }
-
-    setCheckedVideosAction(newSelected);
-  };
+      setCheckedVideosAction(addOrRemove(checkedVideos, id));
+    },
+    [checkedVideos, setCheckedVideosAction]
+  );
 
   return (
     <React.Fragment>
@@ -68,8 +46,7 @@ const VideosPanel = (props) => {
                   className={classNames(styles.videosItem, {
                     [styles.checkedVideos]: checkedVideos.includes(video.id),
                   })}
-                  onClick={handleSelectVideoItem}
-                  data-videoid={video.id}
+                  onClick={handleCheckVideos(video.id)}
                 >
                   <div>
                     <Checkbox
@@ -77,8 +54,7 @@ const VideosPanel = (props) => {
                       checked={checkedVideos.includes(video.id)}
                       icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
                       checkedIcon={<CheckBoxIcon fontSize="small" />}
-                      value={video.id}
-                      onChange={handleCheckVideos}
+                      onChange={handleCheckVideos(video.id)}
                     />
                     <span>{video.items[0].snippet.title}</span>
                     {playingVideos.includes(video.id) && <MusicVideoIcon />}

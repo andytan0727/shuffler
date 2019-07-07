@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -37,7 +37,7 @@ const VideoListPanelBtnGroup = (props) => {
     setViewPlaylist,
   } = props;
 
-  const handleAddPlaylistToPlaying = async () => {
+  const handleAddPlaylistToPlaying = useCallback(async () => {
     if (!checkedPlaylists.length) {
       await noPlaylistSelectedAlert();
       return;
@@ -46,18 +46,18 @@ const VideoListPanelBtnGroup = (props) => {
     addPlaylistsToListToPlayAction(checkedPlaylists);
 
     notify("success", "Successfully added selected playlist(s) to playing 😎");
-  };
+  }, [addPlaylistsToListToPlayAction, checkedPlaylists]);
 
-  const handleRemovePlaylistFromPlaying = async () => {
+  const handleRemovePlaylistFromPlaying = useCallback(async () => {
     if (!checkedPlaylists.length) {
       await noPlaylistSelectedAlert();
       return;
     }
 
     removePlaylistsFromListToPlayAction(checkedPlaylists);
-  };
+  }, [checkedPlaylists, removePlaylistsFromListToPlayAction]);
 
-  const handleRemovePlaylist = async () => {
+  const handleRemovePlaylist = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
     if (!checkedPlaylists.length) {
@@ -78,9 +78,9 @@ const VideoListPanelBtnGroup = (props) => {
       deletePlaylistsAction(checkedPlaylists);
       notify("success", "Successfully deleted playlist(s) 😎");
     }
-  };
+  }, [checkedPlaylists, deletePlaylistsAction]);
 
-  const handleViewPlaylist = async () => {
+  const handleViewPlaylist = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
     if (!checkedPlaylists.length) {
@@ -98,7 +98,7 @@ const VideoListPanelBtnGroup = (props) => {
     }
 
     setViewPlaylist(true);
-  };
+  }, [checkedPlaylists.length, setViewPlaylist]);
 
   return (
     <div

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -43,50 +43,56 @@ const MiniPlayer = (props) => {
     leave: { opacity: 0 },
   });
 
-  const handleWheel = (e) => {
-    const deltaY = e.deltaY;
+  const handleWheel = useCallback(
+    (e) => {
+      const deltaY = e.deltaY;
 
-    if (deltaY > 0 && curDisplayIdx < listToPlay.length - 1) {
-      setCurDisplayIdx(curDisplayIdx + 1);
-    }
+      if (deltaY > 0 && curDisplayIdx < listToPlay.length - 1) {
+        setCurDisplayIdx(curDisplayIdx + 1);
+      }
 
-    if (deltaY < 0 && curDisplayIdx > 0) {
-      setCurDisplayIdx(curDisplayIdx - 1);
-    }
-  };
+      if (deltaY < 0 && curDisplayIdx > 0) {
+        setCurDisplayIdx(curDisplayIdx - 1);
+      }
+    },
+    [curDisplayIdx, listToPlay.length]
+  );
 
-  const handlePlayClicked = () => {
+  const handlePlayClicked = useCallback(() => {
     setCurSongIdx(curDisplayIdx);
-  };
+  }, [curDisplayIdx, setCurSongIdx]);
 
-  const handleSetCurDisplayIdx = (e) => {
-    e.preventDefault();
-    setCurDisplayIdx(curSongIdx);
-  };
+  const handleSetCurDisplayIdx = useCallback(
+    (e) => {
+      e.preventDefault();
+      setCurDisplayIdx(curSongIdx);
+    },
+    [curSongIdx]
+  );
 
-  const handleShowYT = (e) => {
+  const handleShowYT = useCallback((e) => {
     e.preventDefault();
     setShowYT(true);
     setBlurBg(true);
-  };
+  }, []);
 
-  const handleHideYT = (e) => {
+  const handleHideYT = useCallback((e) => {
     e.preventDefault();
     setShowYT(false);
     setBlurBg(false);
-  };
+  }, []);
 
-  const handleShowLargePlaylist = (e) => {
+  const handleShowLargePlaylist = useCallback((e) => {
     e.preventDefault();
     setShowLargePlaylist(true);
     setBlurBg(true);
-  };
+  }, []);
 
-  const handleHideLargePlaylist = (e) => {
+  const handleHideLargePlaylist = useCallback((e) => {
     e.preventDefault();
     setShowLargePlaylist(false);
     setBlurBg(false);
-  };
+  }, []);
 
   // set shortcut to close YT overlay
   useKeyDown(setEscOverlay(handleHideYT));
@@ -206,7 +212,6 @@ const MiniPlayer = (props) => {
             >
               <LargePlaylist
                 handleHideLargePlaylist={handleHideLargePlaylist}
-                preferDarkTheme={preferDarkTheme}
                 curSongIdx={curSongIdx}
                 listToPlay={listToPlay}
                 playing={playing}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -26,7 +26,7 @@ const PlayingPanelBtnGroup = (props) => {
     shuffleListToPlayAction,
   } = props;
 
-  const handleRedirectToPlayer = () => {
+  const handleRedirectToPlayer = useCallback(() => {
     if (!listToPlay.length) {
       notify(
         "warning",
@@ -36,9 +36,9 @@ const PlayingPanelBtnGroup = (props) => {
     }
 
     history.push("/player/ytplayer");
-  };
+  }, [history, listToPlay.length]);
 
-  const handleClearListToPlay = async () => {
+  const handleClearListToPlay = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
     const result = await customSwal.fire({
@@ -54,7 +54,7 @@ const PlayingPanelBtnGroup = (props) => {
       clearListToPlayAction();
       notify("success", "Successfully cleared playing playlist! 😎");
     }
-  };
+  }, [clearListToPlayAction]);
 
   return (
     <div

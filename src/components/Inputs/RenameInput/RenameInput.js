@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
@@ -23,25 +23,33 @@ const RenameInput = (props) => {
   const [editName, setEditName] = useState({});
 
   // on videoItem span child
-  const handleDoubleClick = (e) => {
-    const selectedPlaylistId = e.currentTarget.getAttribute("data-playlistid");
-    setEditName({
-      [selectedPlaylistId]: true,
-    });
+  const handleDoubleClick = useCallback(
+    (e) => {
+      const selectedPlaylistId = e.currentTarget.getAttribute(
+        "data-playlistid"
+      );
+      setEditName({
+        [selectedPlaylistId]: true,
+      });
 
-    setCheckedPlaylistsAction([selectedPlaylistId]);
-  };
+      setCheckedPlaylistsAction([selectedPlaylistId]);
+    },
+    [setCheckedPlaylistsAction]
+  );
 
-  const handleEditNameInputChange = (e) => {
-    const playlistId = e.target.getAttribute("data-playlistid");
-    renamePlaylistAction(e.target.value, playlistId);
-  };
+  const handleEditNameInputChange = useCallback(
+    (e) => {
+      const playlistId = e.target.getAttribute("data-playlistid");
+      renamePlaylistAction(e.target.value, playlistId);
+    },
+    [renamePlaylistAction]
+  );
 
   // clear input and checked checkbox after finished rename
-  const handleEditNameInputBlur = () => {
+  const handleEditNameInputBlur = useCallback(() => {
     setEditName({});
     setCheckedPlaylistsAction([]);
-  };
+  }, [setCheckedPlaylistsAction]);
 
   // focus on currently selected playlist's input on double click
   useEffect(() => {
