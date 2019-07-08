@@ -1,5 +1,15 @@
 @import "../styles/colors";
 
+.swalPopup {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.swalTitle,
+.swalContent {
+  color: var(--text-color);
+}
+
 .swalSuccessButton {
   background-color: $primaryLight;
   color: #fff;
@@ -31,31 +41,4 @@
     background-color: darken($error, 30%);
     transition: background-color 0.5s;
   }
-}
-
-.toastError {
-  background: #ff0084; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #33001b, #ff0084);
-  background: linear-gradient(to right, #33001b, #ff0084);
-}
-
-.toastInfo {
-  background: #00c6ff; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);
-  background: linear-gradient(to right, #0072ff, #00c6ff);
-}
-
-.toastWarning {
-  background: #d38312; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #a83279, #d38312);
-  background: linear-gradient(to right, #a83279, #d38312);
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.toastSuccess {
-  background: #136a8a; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #267871, #136a8a);
-  background: linear-gradient(to right, #267871, #136a8a);
-  color: white;
 }
