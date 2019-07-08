@@ -49,6 +49,9 @@ export function* setPreferDarkThemeWatcher() {
     // Set background color for rgba
     _setCSSWithPreferredMode("--bg-color-rgb");
 
+    // Set gradient background image
+    _setCSSWithPreferredMode("--gradient-bg");
+
     // Set border color
     _setCSSWithPreferredMode("--border-color");
 
@@ -58,8 +61,11 @@ export function* setPreferDarkThemeWatcher() {
     // ===============================
     // /playlistInput route
     // ===============================
-    // Set panel color according to theme preference
+    // Set panel bg color
     _setCSSWithPreferredMode("--panel-bg-color");
+
+    // Set gradient panel bg color
+    _setCSSWithPreferredMode("--panel-gradient-bg");
 
     // Set search input color according to theme preference
     _setCSSWithPreferredMode("--search-input-bg-color");

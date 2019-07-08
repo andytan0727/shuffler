@@ -17,3 +17,42 @@ $softBlack: #414a4c;
 
 // light colors
 $white: #f7f7f7;
+
+// gradients
+$lightPurpleRadialGradient: radial-gradient(
+  circle,
+  #360035,
+  #300333,
+  #2a0630,
+  #24072d,
+  #1f072a,
+  #1d0627,
+  #1a0523,
+  #180420,
+  #16031d,
+  #130219,
+  #100116,
+  #0c0012
+);
+$darkPurpleRadialGradient: radial-gradient(
+  circle,
+  #2a0429,
+  #270529,
+  #240628,
+  #210627,
+  #1e0626,
+  #1c0625,
+  #1a0524,
+  #180523,
+  #170422,
+  #160320,
+  #14011f,
+  #13001e
+);
+$lightPinkLinearGradient: linear-gradient(to top, #feada6 0%, #f5efef 100%);
+$darkPinkLinearGradient: linear-gradient(
+  to top,
+  #ff9a9e 0%,
+  #fecfef 99%,
+  #fecfef 100%
+);

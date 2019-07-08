@@ -6,9 +6,19 @@
   grid-template-areas:
     "header"
     "main";
+  background-image: var(--gradient-bg);
 
   .App-header {
     grid-area: header;
+    position: sticky;
+    top: 0px;
+    z-index: 2; // stacks playerDropdownItem up
+  }
+
+  // prevent transparent bg when user scrolls
+  .App-header-scroll {
+    background-color: rgba(#{var(--bg-color-rgb)}, 0.8);
+    backdrop-filter: blur(5px);
   }
 
   .App-main {

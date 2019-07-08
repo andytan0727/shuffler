@@ -1,6 +1,18 @@
+@import "./colors";
+
+/* style for Management Panels' div */
+%managementPanelDiv {
+  width: 100%;
+  margin: 1.5rem;
+  display: grid;
+  grid-auto-rows: min-content;
+  grid-row-gap: 1.8rem;
+  grid-template-columns: auto;
+}
+
+/* styles for InputTabs div */
 %checkedList {
-  color: $secondaryLight;
-  background-color: var(--bg-color);
+  color: $secondary;
   font-weight: bold;
 }
 
@@ -36,7 +48,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: var(--bg-color);
+    background-color: rgba(white, 0.3);
   }
 
   div {

@@ -12,7 +12,7 @@
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background-color: $blackDark;
+  background-color: var(--bg-color);
   opacity: 1;
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@
     left: 20px;
     border: none;
     background-color: transparent;
-    color: white;
+    color: var(--text-color);
     z-index: 3;
 
     svg {

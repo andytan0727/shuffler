@@ -1,7 +1,8 @@
-import React, { Suspense, lazy, useEffect } from "react";
+import React, { Suspense, lazy, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
+import throttle from "lodash.throttle";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { setPreferDarkTheme } from "./store/userPreferences/action";
 import { useKeyDown } from "./utils/helper/keyboardShortcutHelper";
@@ -42,6 +43,7 @@ let initialTheme;
  */
 const App = (props) => {
   const { preferDarkTheme, setPreferDarkTheme } = props;
+  const [scrolling, setScrolling] = useState(false);
   initialTheme = preferDarkTheme;
 
   const theme = createMuiTheme({
@@ -83,6 +85,26 @@ const App = (props) => {
 
   useKeyDown(setPreferDarkThemeShortcut);
 
+  // add background and blur to navbar if user scrolls down
+  // to prevent transparent background
+  const handleScroll = useCallback(() => {
+    const offsetTop = window.pageYOffset;
+    if (offsetTop > 0) {
+      setScrolling(true);
+    } else {
+      setScrolling(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const throttledHandleScroll = throttle(handleScroll, 500);
+    window.addEventListener("scroll", throttledHandleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", throttledHandleScroll);
+    };
+  }, [handleScroll]);
+
   useEffect(() => {
     // add dark class to body when preferDarkTheme
     // primarily use for applying scrollbar styles on body
@@ -114,7 +136,11 @@ const App = (props) => {
           )}
         >
           <Suspense fallback={<div>loading...</div>}>
-            <div className="App-header">
+            <div
+              className={classNames("App-header", {
+                "App-header-scroll": scrolling,
+              })}
+            >
               <PgNavbar />
             </div>
             <div className="App-main">

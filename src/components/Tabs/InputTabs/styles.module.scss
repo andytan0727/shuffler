@@ -46,44 +46,33 @@
         top: 0%;
         left: 0%;
         background-color: var(--panel-bg-color);
+        opacity: 0.7;
         z-index: 4;
       }
     }
 
-    %panelDiv {
+    %tabsPanelDiv {
       width: 440px;
       height: 550px;
-      background: lighten(black, 8%);
+      background-image: var(--panel-gradient-bg);
       box-shadow: 5px 10px 13px -2px black;
       padding: 1em 1.5em;
     }
 
     .videolistPanel {
-      @extend %panelDiv;
+      @extend %tabsPanelDiv;
       display: grid;
       grid-template-columns: 100%;
       position: relative;
     }
 
-    .videolistPanelLight {
-      background: white !important;
-    }
-
     .videoPanel {
-      @extend %panelDiv;
+      @extend %tabsPanelDiv;
       position: relative;
     }
 
-    .videoPanelLight {
-      background: white !important;
-    }
-
     .playingPanel {
-      @extend %panelDiv;
-    }
-
-    .playingPanelLight {
-      background: white !important;
+      @extend %tabsPanelDiv;
     }
   }
 }
