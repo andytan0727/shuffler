@@ -1,3 +1,3 @@
 import InputTabs from "./InputTabs";
 
-export { InputTabs };
+export default InputTabs;

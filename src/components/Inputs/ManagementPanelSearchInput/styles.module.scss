@@ -1,0 +1,44 @@
+@import "../../../utils/styles/colors";
+
+.searchInputDiv {
+  position: relative;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+
+  .searchInput {
+    outline: none;
+    border: 2px solid var(--border-color);
+    border-radius: 36px;
+    position: absolute;
+    width: 26rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    transition: width 0.25s ease-out;
+    background-color: transparent;
+    color: var(--text-color);
+    padding-left: 25px;
+    padding-right: 4.5rem;
+
+    &:focus {
+      box-shadow: 0 0 15px var(--text-color);
+    }
+  }
+
+  .searchButton {
+    outline: none;
+    border-radius: 50%;
+    background-color: var(--contrast-bg-color);
+    color: var(--contrast-text-color);
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    transform: translateX(22rem);
+    transition: all 0.25s ease-out;
+    cursor: pointer;
+
+    svg {
+      font-size: 3rem;
+    }
+  }
+}

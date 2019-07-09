@@ -48,3 +48,16 @@
  * @property {string} path
  * @property {string} url
  */
+
+// =====================================
+// Redux
+// =====================================
+/**
+ * @typedef AppState
+ * @property {*} appGeneral
+ * @property {UserPreferencesState} userPreferences
+ * @property {YTAPIState} ytapi
+ * @property {PlayerState} ytplayer
+ * @property {PlaylistState} ytplaylist
+ *
+ */
