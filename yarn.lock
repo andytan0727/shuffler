@@ -8585,6 +8585,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+re-reselect@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/re-reselect/-/re-reselect-3.3.0.tgz#87f76d8948102fd2c6e17e403f3933b6f465bdd8"
+  integrity sha512-lo+2V5fift4JOHQ7TQkSE65irFgUZduT0woPsI2FlmKfBLCp1a4NhDVwaMU/ULqtKQ8i/zojd1a8Aav1zyMB6Q==
+
 react-app-polyfill@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-1.0.1.tgz#809a858e44f9564c7f4205e173076f90048274f1"
