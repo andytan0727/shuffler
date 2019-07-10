@@ -86,7 +86,7 @@
       &:hover {
         background-color: $softBlack;
         color: white;
-        box-shadow: 3px 8px 15px 2px black;
+        box-shadow: $blackBoxShadow;
       }
 
       &:focus {
@@ -115,7 +115,7 @@
         padding: 0.8em;
         margin-right: 20px;
         background-color: var(--bg-color);
-        box-shadow: 5px 8px 20px 2px lighten(black, 6%);
+        box-shadow: $blackBoxShadow;
         cursor: pointer;
 
         &:hover {

@@ -40,7 +40,7 @@
     font-size: 18px;
     background-color: var(--bg-color);
     min-width: 150px;
-    box-shadow: 10px 8px 16px 0px rgba(black, 0.5);
+    box-shadow: $blackBoxShadow;
 
     a {
       color: var(--text-color);

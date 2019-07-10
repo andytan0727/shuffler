@@ -55,7 +55,7 @@
       width: 440px;
       height: 550px;
       background-image: var(--panel-gradient-bg);
-      box-shadow: 5px 10px 13px -2px black;
+      box-shadow: $blackBoxShadow;
       padding: 1em 1.5em;
     }
 

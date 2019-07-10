@@ -1,3 +1,5 @@
+@import "../../../../../utils/styles/colors";
+
 .panelGridDiv {
   .panelGrid {
     width: 100%;
@@ -29,8 +31,7 @@
 
         transition: transform 200ms ease-in;
         transform: scale(1.05);
-        box-shadow: -3px 6px 10px 0px rgba(black, 0.5),
-          2px 0px 20px 0px rgba(black, 0.3), -12px 11px 0px 0px rgba(black, 0.1);
+        box-shadow: $blackBoxShadow;
       }
     }
 

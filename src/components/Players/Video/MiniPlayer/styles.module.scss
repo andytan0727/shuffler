@@ -7,7 +7,7 @@
   grid-template-rows: max-content auto auto;
   grid-row-gap: 2em;
   justify-items: center;
-  box-shadow: 8px 8px 15px 5px rgba(black, 0.5);
+  box-shadow: $blackBoxShadow;
 
   h3 {
     width: 80%;
@@ -22,11 +22,11 @@
   }
 
   .thumbnailPlaying {
-    box-shadow: 0px 0px 20px 5px rgba(black, 0.5);
+    box-shadow: 0px 0px 20px 5px rgba(black, 0.3);
   }
 
   .thumbnailDarkPlaying {
-    box-shadow: 0px 0px 20px 5px rgba(white, 0.5);
+    box-shadow: 0px 0px 20px 5px rgba(white, 0.3);
   }
 
   .paused {
@@ -39,7 +39,7 @@
 
     &:nth-child(3) {
       background-color: white;
-      box-shadow: 5px 5px 20px 5px rgba(black, 0.5);
+      box-shadow: $blackBoxShadow;
 
       svg {
         fill: black;
@@ -56,7 +56,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  box-shadow: 8px 8px 15px 5px rgba(black, 0.5);
+  box-shadow: $blackBoxShadow;
   position: relative;
   z-index: 1;
 
@@ -91,7 +91,7 @@
 
       &:hover {
         cursor: pointer;
-        box-shadow: 8px 8px 15px 5px rgba(black, 0.5);
+        box-shadow: $blackBoxShadow;
         background-color: darken($blackLight, 10%);
 
         @for $i from 1 through 3 {
@@ -137,7 +137,7 @@
       // middle list item
       &:nth-child(3) {
         width: 85%;
-        box-shadow: 8px 8px 15px 5px rgba(black, 0.5);
+        box-shadow: $blackBoxShadow;
         display: flex;
         font-weight: bold;
         cursor: pointer;

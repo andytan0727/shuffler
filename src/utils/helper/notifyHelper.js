@@ -75,7 +75,8 @@ const notify = async (type, message) => {
     }
   } catch (err) {
     if (customSwal.isVisible()) customSwal.close();
-    console.error(err.message);
+    document.querySelector(".swal2-container").remove();
+    console.error("Swal: ", err.message);
   }
 };
 
