@@ -1,5 +1,6 @@
 import { schema, normalize } from "normalizr";
 import { Video } from "store/ytplaylist/types";
+import { DeepReadonly } from "utility-types";
 
 export const videoItemSnippetSchema = new schema.Entity(
   "snippets",
@@ -19,5 +20,5 @@ export const videoItemsSchema = new schema.Entity("videos", {
 
 export const videosSchema = new schema.Array(videoItemsSchema);
 
-export const normalizeVideos = (originalVideos: Video[]) =>
+export const normalizeVideos = (originalVideos: DeepReadonly<Video[]>) =>
   normalize(originalVideos, videosSchema);

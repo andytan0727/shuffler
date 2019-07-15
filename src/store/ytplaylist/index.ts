@@ -1,4 +1,3 @@
-import { ytplaylist } from "./reducer";
-import { ytplaylistNormalized } from "./normalizedReducer";
-
-export { ytplaylist, ytplaylistNormalized };
+export { ytplaylist } from "./reducer";
+export { ytplaylistNormed } from "./normReducer";
+export { default as ytplaylistSaga } from "./sagas";

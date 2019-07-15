@@ -78,6 +78,7 @@
     "prettier": "^1.18.2",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "utility-types": "^3.7.0"
   }
 }

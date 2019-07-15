@@ -1,11 +1,12 @@
 import { schema, NormalizedSchema, normalize, denormalize } from "normalizr";
 import {
-  ListToPlayEntities,
-  ListToPlayResultItem,
+  NormListToPlayEntities,
+  NormListToPlayResultItem,
   PlaylistItem,
   VideoItem,
   Video,
 } from "store/ytplaylist/types";
+import { DeepReadonly } from "utility-types";
 
 const listToPlayVideoItem = new schema.Entity(
   "videoItems",
@@ -49,13 +50,17 @@ export const listToPlayItemSchema = new schema.Array(
 );
 
 export const normalizeListToPlay = (
-  originalListToPlay: (PlaylistItem | VideoItem)[]
-) => normalize(originalListToPlay, listToPlayItemSchema);
+  originalListToPlay: DeepReadonly<(PlaylistItem | VideoItem)[]>
+) =>
+  normalize<NormListToPlayEntities, NormListToPlayResultItem[]>(
+    originalListToPlay,
+    listToPlayItemSchema
+  );
 
 export const denormalizeListToPlay = (
   normalizedListToPlay: NormalizedSchema<
-    ListToPlayEntities,
-    ListToPlayResultItem
+    NormListToPlayEntities,
+    NormListToPlayResultItem
   >
 ) =>
   denormalize(

@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import YouTube from "react-youtube";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { setCurSongIdx, setVideoPlaying } from "../../../store/ytplayer/action";
-import { shuffleListToPlayAction } from "../../../store/ytplaylist/action";
-import { notify } from "../../../utils/helper/notifyHelper";
+import { setCurSongIdx, setVideoPlaying } from "store/ytplayer/action";
+import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
+import { notify } from "utils/helper/notifyHelper";
 
 // focus window to listen for keyboard shortcuts
 // fix the problem of unable to trigger keydown event

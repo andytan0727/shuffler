@@ -1,5 +1,6 @@
 import { applyMiddleware, createStore, combineReducers, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
+import { StateType } from "typesafe-actions";
 import { all } from "redux-saga/effects";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -15,12 +16,12 @@ import { ytapi as ytapiReducer } from "./ytapi/reducer";
 import { ytplayer as ytplayerReducer } from "./ytplayer/reducer";
 import {
   ytplaylist as ytplaylistReducer,
-  ytplaylistNormalized as ytplaylistNormalizedReducer,
+  ytplaylistNormed as ytplaylistNormedReducer,
+  ytplaylistSaga,
 } from "./ytplaylist";
 
 // sagas
 import ytapiSaga from "./ytapi/sagas";
-import ytplaylistSaga from "./ytplaylist/sagas";
 import userPreferencesSaga from "./userPreferences/sagas";
 
 // Disable immer auto freezing
@@ -59,7 +60,7 @@ const rootReducer = combineReducers({
   ytapi: ytapiReducer,
   ytplayer: persistReducer(ytplayerPersistConfig, ytplayerReducer),
   ytplaylist: persistReducer(ytplaylistPersistConfig, ytplaylistReducer),
-  ytplaylistNormalized: ytplaylistNormalizedReducer,
+  ytplaylistNormed: ytplaylistNormedReducer,
 });
 
 export const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
@@ -78,5 +79,5 @@ const store =
 sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
-export type AppState = ReturnType<typeof rootReducer>;
+export type AppState = StateType<typeof rootReducer>;
 export default store;

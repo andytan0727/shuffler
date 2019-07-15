@@ -12,8 +12,8 @@ import ClearIcon from "@material-ui/icons/Clear";
 import {
   clearListToPlayAction,
   shuffleListToPlayAction,
-} from "../../../store/ytplaylist/action";
-import { generateCustomSwal, notify } from "../../../utils/helper/notifyHelper";
+} from "store/ytplaylist/sharedAction";
+import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
 

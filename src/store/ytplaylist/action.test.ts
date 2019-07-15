@@ -20,7 +20,7 @@ import {
   REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
   ADD_PLAYLISTS_TO_LIST_TO_PLAY,
   SET_CHECKED_PLAYLISTS,
-} from "../../utils/constants/actionConstants";
+} from "utils/constants/actionConstants";
 import {
   addPlaylistAction,
   addPlayingPlaylistsAction,
@@ -31,8 +31,6 @@ import {
   deletePlaylistsAction,
   removeFromListToPlayAction,
   renamePlaylistAction,
-  shuffleListToPlayAction,
-  clearListToPlayAction,
   updateListToPlayAction,
   togglePlayingVideoAction,
   removeVideosFromListToPlayAction,
@@ -44,6 +42,7 @@ import {
   addPlaylistsToListToPlayAction,
   setCheckedPlaylistsAction,
 } from "./action";
+import { clearListToPlayAction, shuffleListToPlayAction } from "./sharedAction";
 import { Playlist, Video } from "./types";
 
 describe("ytplaylist actions", () => {

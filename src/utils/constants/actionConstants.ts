@@ -36,10 +36,13 @@ export const REMOVE_PLAYING_PLAYLISTS = "REMOVE_PLAYING_PLAYLISTS" as const;
 export const REMOVE_PLAYLIST_FROM_PLAYING = "REMOVE_PLAYLIST_FROM_PLAYING" as const; // deprecated
 export const ADD_PLAYLISTS_TO_LIST_TO_PLAY = "ADD_PLAYLISTS_TO_LIST_TO_PLAY" as const;
 export const REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY = "REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY" as const;
-export const ADD_FETCHED_PLAYLIST = "ADD_FETCHED_PLAYLIST" as const;
-export const DELETE_PLAYLIST_BY_ID = "DELETE_PLAYLIST_BY_ID" as const;
-export const UPDATE_PLAYLIST_NAME_BY_ID = "UPDATE_PLAYLIST_NAME_BY_ID" as const;
-export const SET_WHOLE_PLAYLIST_IN_PLAYING_BY_ID = "SET_WHOLE_PLAYLIST_IN_PLAYING_BY_ID" as const;
+
+export const ADD_NORM_PLAYLIST = "ADD_NORM_PLAYLIST" as const;
+export const DELETE_NORM_PLAYLIST_BY_ID = "DELETE_NORM_PLAYLIST_BY_ID" as const;
+export const UPDATE_NORM_PLAYLIST_NAME_BY_ID = "UPDATE_NORM_PLAYLIST_NAME_BY_ID" as const;
+export const LABEL_NORM_PLAYLIST_AS_PLAYING_BY_ID = "LABEL_NORM_PLAYLIST_AS_PLAYING_BY_ID" as const;
+export const REMOVE_NORM_PLAYLIST_AS_PLAYING_BY_ID =
+  "REMOVE_NORM_PLAYLIST_AS_PLAYING_BY_ID";
 
 // =========================
 // ytplaylist videos
@@ -53,19 +56,20 @@ export const TOGGLE_PLAYING_VIDEO = "TOGGLE_PLAYING_VIDEO" as const;
 export const ADD_VIDEOS_TO_LIST_TO_PLAY = "ADD_VIDEOS_TO_LIST_TO_PLAY" as const;
 export const REMOVE_VIDEOS_FROM_LIST_TO_PLAY = "REMOVE_VIDEOS_FROM_LIST_TO_PLAY" as const;
 
-export const ADD_FETCHED_VIDEO = "ADD_FETCHED_VIDEO" as const;
-export const DELETE_VIDEO_BY_ID = "DELETE_VIDEO_BY_ID" as const;
-export const UPDATE_VIDEO_NAME_BY_ID = "UPDATE_VIDEO_NAME_BY_ID" as const;
+export const ADD_NORM_VIDEO = "ADD_NORM_VIDEO" as const;
+export const DELETE_NORM_VIDEO_BY_ID = "DELETE_NORM_VIDEO_BY_ID" as const;
+export const UPDATE_NORM_VIDEO_NAME_BY_ID = "UPDATE_NORM_VIDEO_NAME_BY_ID" as const;
 
 // =========================
 // ytplaylist listToPlay
 // =========================
-export const ADD_LIST_TO_PLAY_ITEM = "ADD_LIST_TO_PLAY_ITEM" as const;
-export const ADD_LIST_TO_PLAY_ITEMS = "ADD_LIST_TO_PLAY_ITEMS" as const;
-export const DELETE_LIST_TO_PLAY_ITEM_BY_ID = "DELETE_LIST_TO_PLAY_ITEM_BY_ID" as const;
-export const DELETE_LIST_TO_PLAY_ITEMS = "DELETE_LIST_TO_PLAY_ITEMS" as const;
 export const APPEND_LIST_TO_PLAY = "APPEND_LIST_TO_PLAY" as const;
 export const REMOVE_FROM_LIST_TO_PLAY = "REMOVE_FROM_LIST_TO_PLAY" as const;
 export const UPDATE_LIST_TO_PLAY = "UPDATE_LIST_TO_PLAY" as const;
 export const CLEAR_LIST_TO_PLAY = "CLEAR_LIST_TO_PLAY" as const;
 export const SHUFFLE_LIST_TO_PLAY = "SHUFFLE_LIST_TO_PLAY" as const;
+
+export const ADD_NORM_LIST_TO_PLAY_ITEM = "ADD_NORM_LIST_TO_PLAY_ITEM" as const;
+export const ADD_NORM_LIST_TO_PLAY_ITEMS = "ADD_NORM_LIST_TO_PLAY_ITEMS" as const;
+export const DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID = "DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID" as const;
+export const DELETE_NORM_LIST_TO_PLAY_ITEMS = "DELETE_NORM_LIST_TO_PLAY_ITEMS" as const;

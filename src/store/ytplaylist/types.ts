@@ -1,5 +1,8 @@
 import * as ytplaylistAction from "./action";
+import * as ytplaylistNormedAction from "./normAction";
+import * as sharedAction from "./sharedAction";
 import { ActionType } from "typesafe-actions";
+import { DeepReadonly } from "utility-types";
 
 export interface MediaItem {
   id: string;
@@ -31,6 +34,8 @@ export interface YTPlaylistState {
   playingVideos: string[];
 }
 
+export type DeepROYtPlaylistState = DeepReadonly<YTPlaylistState>;
+
 // =====================================================
 // Playlists
 // =====================================================
@@ -58,33 +63,35 @@ export interface PlaylistItemSnippet {
   thumbnails: VideoThumbnails;
 }
 
-export interface PlaylistsEntities {
-  playlistItems: PlaylistItemsEntity;
-  playlists: PlaylistsSourceEntity;
-  snippets: PlaylistsSnippetsEntity;
-}
-
-export interface PlaylistItemsEntity {
+export interface NormPlaylistItemsEntity {
   [key: string]: {
     snippet: string;
   } & BaseItemsEntity;
 }
 
-export interface PlaylistsSourceEntity {
+export interface NormPlaylistsSourceEntity {
   [key: string]: {
     name?: string;
     allInPlaying?: boolean;
   } & BaseSourceEntity;
 }
 
-export interface PlaylistsSnippetsEntity {
+export interface NormPlaylistsSnippetsEntity {
   [key: string]: PlaylistItemSnippet;
 }
 
-export interface NormalizedPlaylistsState {
-  entities: PlaylistsEntities;
+export interface NormPlaylistsEntities {
+  playlistItems: NormPlaylistItemsEntity;
+  playlists: NormPlaylistsSourceEntity;
+  snippets: NormPlaylistsSnippetsEntity;
+}
+
+export interface NormPlaylists {
+  entities: NormPlaylistsEntities;
   result: string[];
 }
+
+export type DeepRONormPlaylists = DeepReadonly<NormPlaylists>;
 
 // =====================================================
 // Videos
@@ -112,69 +119,89 @@ export interface VideoItemSnippet {
   localized: { title: string; description: string };
 }
 
-export interface NormalizedVideosState {
-  entities: VideosEntities;
-  result: string[];
-}
-
-export interface VideosEntities {
-  videoItems: VideoItemsEntity;
-  videos: VideosSourceEntity;
-  snippets: VideosSnippetsEntity;
-}
-
-export interface VideoItemsEntity {
+export interface NormVideoItemsEntity {
   [key: string]: {
     snippet: string;
   } & BaseItemsEntity;
 }
 
-export interface VideosSourceEntity {
+export interface NormVideosSourceEntity {
   [key: string]: BaseSourceEntity;
 }
 
-export interface VideosSnippetsEntity {
+export interface NormVideosSnippetsEntity {
   [key: string]: VideoItemSnippet;
 }
 
-export type NormalizedPlaylistsOrVideosStates =
-  | NormalizedPlaylistsState
-  | NormalizedVideosState;
-export type PlaylistsOrVideosEntities = PlaylistsEntities | VideosEntities;
-export type PlaylistsOrVideosItemsEntity =
-  | PlaylistItemsEntity
-  | VideoItemsEntity;
+export interface NormVideosEntities {
+  videoItems: NormVideoItemsEntity;
+  videos: NormVideosSourceEntity;
+  snippets: NormVideosSnippetsEntity;
+}
 
-export interface ListToPlayResultItem {
+export interface NormVideos {
+  entities: NormVideosEntities;
+  result: string[];
+}
+
+export type DeepRONormVideos = DeepReadonly<NormVideos>;
+
+// grouped normalized playlists/videos union type exports
+export type NormPlaylistsOrVideos = NormPlaylists | NormVideos;
+export type NormPlaylistsOrVideosEntities =
+  | NormPlaylistsEntities
+  | NormVideosEntities;
+export type NormPlaylistsOrVideosItemsEntity =
+  | NormPlaylistItemsEntity
+  | NormVideoItemsEntity;
+
+// ====================================================
+// List To Play
+// ====================================================
+export interface NormListToPlayMediaSourceItem {
+  id: string;
+  foreignKey: string;
+}
+
+export interface NormListToPlayPlaylistItemsEntity {
+  [key: string]: NormListToPlayMediaSourceItem;
+}
+
+export interface NormListToPlayVideoItemsEntity {
+  [key: string]: NormListToPlayMediaSourceItem;
+}
+
+export interface NormListToPlayEntities {
+  playlistItems: NormListToPlayPlaylistItemsEntity;
+  videoItems: NormListToPlayVideoItemsEntity;
+}
+
+export interface NormListToPlayResultItem {
   id: string;
   source: MediaSourceType;
   schema: SchemaType;
 }
 
-export interface ListToPlayMediaSourceItem {
-  id: string;
-  foreignKey: string;
+export interface NormListToPlay {
+  entities: NormListToPlayEntities;
+  result: NormListToPlayResultItem[];
 }
 
-export interface ListToPlayVideoItemsEntity {
-  [key: string]: ListToPlayMediaSourceItem;
-}
+export type DeepRONormListToPlay = DeepReadonly<NormListToPlay>;
 
-export interface ListToPlayPlaylistItemsEntity {
-  [key: string]: ListToPlayMediaSourceItem;
-}
-
-export interface ListToPlayEntities {
-  playlistItems: ListToPlayPlaylistItemsEntity;
-  videoItems: ListToPlayVideoItemsEntity;
-}
-
-export interface NormalizedListToPlayStates {
-  entities: ListToPlayEntities;
-  result: ListToPlayResultItem[];
+export interface YTPlaylistNormedState {
+  playlists: DeepRONormPlaylists;
+  videos: DeepRONormVideos;
+  listToPlay: DeepRONormListToPlay;
 }
 
 // ==================================================
 // Actions
 // ==================================================
-export type YTPlaylistAction = ActionType<typeof ytplaylistAction>;
+type SharedAction = ActionType<typeof sharedAction>;
+export type YTPlaylistAction =
+  | ActionType<typeof ytplaylistAction>
+  | SharedAction;
+export type YTPlaylistNormedAction =
+  | ActionType<typeof ytplaylistNormedAction>
+  | SharedAction;

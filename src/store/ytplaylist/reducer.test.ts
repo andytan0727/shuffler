@@ -8,8 +8,8 @@ import {
   setCheckedPlaylistsAction,
   renamePlaylistAction,
   updateListToPlayAction,
-  clearListToPlayAction,
 } from "./action";
+import { clearListToPlayAction } from "./sharedAction";
 import { ytplaylist as ytplaylistReducer } from "./reducer";
 import { Playlist, Video, YTPlaylistState } from "./types";
 

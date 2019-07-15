@@ -8,17 +8,14 @@
  *
  */
 
-import store from "../../store";
-
-import { normalizePlaylists } from "../../schemas/playlist";
-import { normalizeVideos } from "../../schemas/video";
-import { normalizeListToPlay } from "../../schemas/listToPlay";
+import store from "store";
 import {
-  addFetchedPlaylistAction,
-  addFetchedVideoAction,
-  addListToPlayItemsAction,
-  setWholePlaylistInPlayingByIdAction,
-} from "../../store/ytplaylist/action";
+  addNormPlaylistAction,
+  addNormVideoAction,
+  addNormListToPlayItemsAction,
+  labelNormPlaylistAsPlayingByIdAction,
+} from "store/ytplaylist/normAction";
+import * as schemas from "schemas";
 
 export default () => {
   const appState = store.getState();
@@ -28,21 +25,21 @@ export default () => {
   const listToPlayFromRedux = ytplaylist.listToPlay;
   const playingPlaylists = ytplaylist.playingPlaylists;
 
-  const normPlaylists = normalizePlaylists(playlistsFromRedux);
-  const normVideos = normalizeVideos(videosFromRedux);
-  const normListToPlay = normalizeListToPlay(listToPlayFromRedux);
+  const normPlaylists = schemas.normalizePlaylists(playlistsFromRedux);
+  const normVideos = schemas.normalizeVideos(videosFromRedux);
+  const normListToPlay = schemas.normalizeListToPlay(listToPlayFromRedux);
 
   store.dispatch(
-    addFetchedPlaylistAction(normPlaylists.entities, normPlaylists.result)
+    addNormPlaylistAction(normPlaylists.entities, normPlaylists.result)
   );
 
-  store.dispatch(addFetchedVideoAction(normVideos.entities, normVideos.result));
+  store.dispatch(addNormVideoAction(normVideos.entities, normVideos.result));
 
   store.dispatch(
-    addListToPlayItemsAction(normListToPlay.entities, normListToPlay.result)
+    addNormListToPlayItemsAction(normListToPlay.entities, normListToPlay.result)
   );
 
   playingPlaylists.forEach((id) => {
-    store.dispatch(setWholePlaylistInPlayingByIdAction(id));
+    store.dispatch(labelNormPlaylistAsPlayingByIdAction(id));
   });
 };

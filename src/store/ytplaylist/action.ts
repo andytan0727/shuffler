@@ -1,19 +1,10 @@
 import { createAction } from "typesafe-actions";
-import * as ActionTypes from "../../utils/constants/actionConstants";
-import {
-  Playlist,
-  PlaylistsEntities,
-  Video,
-  VideosEntities,
-  PlaylistItem,
-  VideoItem,
-  ListToPlayResultItem,
-  ListToPlayEntities,
-} from "./types";
+import * as ActionTypes from "utils/constants/actionConstants";
+import { Playlist, Video, PlaylistItem, VideoItem } from "./types";
 
-// ============================
+// ===============================================
 // Playlist
-// ============================
+// ===============================================
 /**
  * Add playlist to Redux store
  * @param playlist A playlist object structured according to YouTube Data Api
@@ -126,74 +117,6 @@ export const removePlaylistsFromListToPlayAction = createAction(
     return (playlistIds: string[]) =>
       action({
         playlistIds,
-      });
-  }
-);
-
-/**
- * Add normalized fetched playlist data to redux store
- *
- * @param entities Normalized states entities of playlists
- * @param result Normalized states result of playlists
- * @returns ADD_FETCHED_PLAYLIST action object
- */
-export const addFetchedPlaylistAction = createAction(
-  ActionTypes.ADD_FETCHED_PLAYLIST,
-  (action) => {
-    return (entities: PlaylistsEntities, result: string[]) =>
-      action({
-        entities,
-        result,
-      });
-  }
-);
-
-/**
- * Delete playlist by id
- *
- * @param id Playlist id to delete
- * @returns DELETE_PLAYLIST_BY_ID action object
- */
-export const deletePlaylistByIdAction = createAction(
-  ActionTypes.DELETE_PLAYLIST_BY_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
-
-/**
- * Update playlist name by id
- *
- * @param id Playlist id
- * @param name New name for playlist
- * @returns UPDATE_PLAYLIST_NAME_BY_ID action object
- */
-export const updatePlaylistNameByIdAction = createAction(
-  ActionTypes.UPDATE_PLAYLIST_NAME_BY_ID,
-  (action) => {
-    return (id: string, name: string) =>
-      action({
-        id,
-        name,
-      });
-  }
-);
-
-/**
- * Action to label whole playlist in playing (listToPlay) if all of its items
- * are in listToPlay
- *
- * @param id Playlist id to label/set
- */
-export const setWholePlaylistInPlayingByIdAction = createAction(
-  ActionTypes.SET_WHOLE_PLAYLIST_IN_PLAYING_BY_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
       });
   }
 );
@@ -324,58 +247,6 @@ export const togglePlayingVideoAction = createAction(
   }
 );
 
-/**
- * Add fetched video data from API to redux store
- *
- * @param entities Normalized videos entities from videos states
- * @param result Normalized videos result from videos states
- * @returns ADD_FETCHED_VIDEO action object
- */
-export const addFetchedVideoAction = createAction(
-  ActionTypes.ADD_FETCHED_VIDEO,
-  (action) => {
-    return (entities: VideosEntities, result: string[]) =>
-      action({
-        entities,
-        result,
-      });
-  }
-);
-
-/**
- * Update video name by id
- *
- * @param id Video id to rename
- * @param name New name for the specified video
- * @returns UPDATE_VIDEO_NAME_BY_ID action object
- */
-export const updateVideoNameByIdAction = createAction(
-  ActionTypes.UPDATE_VIDEO_NAME_BY_ID,
-  (action) => {
-    return (id: string, name: string) =>
-      action({
-        id,
-        name,
-      });
-  }
-);
-
-/**
- * Delete per video from store by id
- *
- * @param id Video id to delete
- * @returns DELETE_VIDEO_BY_ID action object
- */
-export const deleteVideoByIdAction = createAction(
-  ActionTypes.DELETE_VIDEO_BY_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
-
 // ===============================================
 // listToPlay
 // ===============================================
@@ -424,91 +295,6 @@ export const updateListToPlayAction = createAction(
     return (updatedList: (PlaylistItem | VideoItem)[]) =>
       action({
         listToPlay: updatedList,
-      });
-  }
-);
-
-/**
- * Clear current playing playlist
- * @returns CLEAR_LIST_TO_PLAY action object for redux store
- */
-export const clearListToPlayAction = createAction(
-  ActionTypes.CLEAR_LIST_TO_PLAY
-);
-
-/**
- * Shuffle listToPlay
- *
- * @returns SHUFFLE_LIST_TO_PLAY action object
- */
-export const shuffleListToPlayAction = createAction(
-  ActionTypes.SHUFFLE_LIST_TO_PLAY
-);
-
-/**
- * Add per item to listToPlay
- *
- * @param resultItem List item with item's id and its schema
- * @param foreignKey Id of playlist/video that owns this item
- * @returns ADD_LIST_TO_PLAY_ITEM action object
- */
-export const addListToPlayItemAction = createAction(
-  ActionTypes.ADD_LIST_TO_PLAY_ITEM,
-  (action) => {
-    return (resultItem: ListToPlayResultItem, foreignKey: string) =>
-      action({
-        resultItem,
-        foreignKey,
-      });
-  }
-);
-
-/**
- * Add normalized listToPlay entities to store
- *
- * @param entities Normalized entities of listToPlay
- * @param result Normalized result of listToPlay
- * @returns ADD_LIST_TO_PLAY_ITEMS action object
- */
-export const addListToPlayItemsAction = createAction(
-  ActionTypes.ADD_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
-      action({
-        entities,
-        result,
-      });
-  }
-);
-
-/**
- * Delete per listToPlay item by itemId
- *
- * @param id Item id to be deleted
- * @returns DELETE_LIST_TO_PLAY_ITEM_BY_ID action object
- */
-export const deleteListToPlayItemByIdAction = createAction(
-  ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
-
-/**
- * Delete listToPlay items by itemIds
- *
- * @param ids Item ids array to be deleted
- * @returns DELETE_LIST_TO_PLAY_ITEMS action object
- */
-export const deleteListToPlayItemsAction = createAction(
-  ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (ids: string[]) =>
-      action({
-        ids,
       });
   }
 );

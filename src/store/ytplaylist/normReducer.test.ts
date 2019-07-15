@@ -2,18 +2,15 @@ import produce, { Draft } from "immer";
 import deepFreeze from "deep-freeze";
 import get from "lodash/get";
 import partial from "lodash/partial";
+import { deletePlaylistOrVideoById, isPlaylistsEntities } from "./utils";
 import {
-  deletePlaylistOrVideoById,
-  isPlaylistsEntities,
-} from "./normalizedReducer";
-import {
-  NormalizedPlaylistsState,
-  NormalizedVideosState,
-  VideosEntities,
-  PlaylistsEntities,
+  NormPlaylists,
+  NormVideos,
+  NormVideosEntities,
+  NormPlaylistsEntities,
 } from "./types";
 
-const basePlaylistsState: NormalizedPlaylistsState = {
+const basePlaylistsState: NormPlaylists = {
   entities: {
     playlistItems: {},
     playlists: {},
@@ -22,7 +19,7 @@ const basePlaylistsState: NormalizedPlaylistsState = {
   result: [],
 };
 
-const baseVideosState: NormalizedVideosState = {
+const baseVideosState: NormVideos = {
   entities: {
     videoItems: {},
     videos: {},
@@ -41,7 +38,7 @@ deepFreeze(baseVideosState);
  * @param videoId Dummy id to assign
  */
 function makeVideosEntitiesState(
-  entities: VideosEntities,
+  entities: NormVideosEntities,
   videoId: number,
   itemsLength?: number
 ) {
@@ -83,7 +80,7 @@ function makeVideosEntitiesState(
 }
 
 function makePlaylistsEntitiesStates(
-  entities: PlaylistsEntities,
+  entities: NormPlaylistsEntities,
   playlistId: number,
   itemsLength?: number
 ) {
@@ -158,13 +155,13 @@ function makePlaylistsEntitiesStates(
  * @returns Mutated states
  */
 function _stateMaker(
-  states: NormalizedPlaylistsState | NormalizedVideosState,
+  states: NormPlaylists | NormVideos,
   customizer?: {
     sourceLength?: number;
     itemsLength?: number;
     excludeId?: number;
   }
-): NormalizedPlaylistsState | NormalizedVideosState {
+): NormPlaylists | NormVideos {
   const sourceLength = get(customizer, "sourceLength");
   const itemsLength = get(customizer, "itemsLength");
   const excludeId = get(customizer, "excludeId");
@@ -206,7 +203,7 @@ describe("test deletePlaylistOrVideoById util functions", () => {
   test("should delete playlist by id property using deletePlaylistOrVideoById function", () => {
     const nextPlaylistsState = produce(
       initialPlaylistsState,
-      (draft: Draft<NormalizedPlaylistsState>) => {
+      (draft: Draft<NormPlaylists>) => {
         deletePlaylistOrVideoById(draft, "playlistId-1");
       }
     );
@@ -222,7 +219,7 @@ describe("test deletePlaylistOrVideoById util functions", () => {
   test("should delete video by id property using deletePlaylistOrVideoById function", () => {
     const nextVideosState = produce(
       initialVideosState,
-      (draft: Draft<NormalizedVideosState>) => {
+      (draft: Draft<NormVideos>) => {
         deletePlaylistOrVideoById(draft, "videoId-10");
       }
     );
@@ -239,7 +236,7 @@ describe("test deletePlaylistOrVideoById util functions", () => {
     // playlists
     const nextPlaylistsState = produce(
       initialPlaylistsState,
-      (draft: Draft<NormalizedPlaylistsState>) => {
+      (draft: Draft<NormPlaylists>) => {
         deletePlaylistOrVideoById(draft, "playlistId-11");
       }
     );
@@ -253,7 +250,7 @@ describe("test deletePlaylistOrVideoById util functions", () => {
     // videos
     const nextVideosState = produce(
       initialVideosState,
-      (draft: Draft<NormalizedVideosState>) => {
+      (draft: Draft<NormVideos>) => {
         deletePlaylistOrVideoById(draft, "videoId-11");
       }
     );

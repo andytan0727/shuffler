@@ -12,10 +12,10 @@ import PauseIcon from "@material-ui/icons/Pause";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 
-import { useKeyDown } from "../../../utils/helper/keyboardShortcutHelper";
-import { setCurSongIdx, toggleRepeat } from "../../../store/ytplayer/action";
-import { shuffleListToPlayAction } from "../../../store/ytplaylist/action";
-import { notify } from "../../../utils/helper/notifyHelper";
+import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
+import { setCurSongIdx, toggleRepeat } from "store/ytplayer/action";
+import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
+import { notify } from "utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
 

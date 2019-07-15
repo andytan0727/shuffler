@@ -1,67 +1,142 @@
 import { takeLatest, put, call, all } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
-import { fetchYoutubeAPIData } from "../../utils/helper/fetchHelper";
-import {
-  FETCH_PLAYLIST_DATA,
-  FETCH_VIDEO_DATA,
-} from "../../utils/constants/actionConstants";
-import {
-  addPlaylistAction,
-  addPlayingPlaylistsAction,
-  addVideoAction,
-  addPlayingVideosAction,
-  appendListToPlayAction,
-} from "../ytplaylist/action";
-import {
-  fetchPlaylistDataSuccessAction,
-  fetchPlaylistDataFailedAction,
-  addFetchedPlaylistIdAction,
-  setPlaylistUrlAction,
-  fetchVideoDataSuccessAction,
-  fetchVideoDataFailedAction,
-  addFetchedVideoIdAction,
-  setVideoUrlAction,
-  fetchPlaylistDataAction,
-  fetchVideoDataAction,
-} from "./action";
-import { notify } from "../../utils/helper/notifyHelper";
-import { PlaylistItem, Video, Playlist } from "store/ytplaylist/types";
+import * as ActionTypes from "utils/constants/actionConstants";
+import * as YTPlaylistTypes from "store/ytplaylist/types";
+import * as ytplaylist from "store/ytplaylist/action";
+import * as ytplaylistNormed from "store/ytplaylist/normAction";
+import * as ytapi from "./action";
+import * as schemas from "schemas";
 
-type FetchPlaylistDataAction = ActionType<typeof fetchPlaylistDataAction>;
-type FetchVideoDataAction = ActionType<typeof fetchVideoDataAction>;
+import { fetchYoutubeAPIData } from "utils/helper/fetchHelper";
+import { notify } from "utils/helper/notifyHelper";
 
+type FetchPlaylistDataAction = ActionType<typeof ytapi.fetchPlaylistDataAction>;
+type FetchVideoDataAction = ActionType<typeof ytapi.fetchVideoDataAction>;
+
+// ====================================================
+// Helper sagas
+// ====================================================
 /**
- * Saga to execute if fetch playlist data is successful
+ * Helper function to add items to normalized listToPlay
  *
  * @export
- * @param dataItems
+ * @param items Playlist/video items before normalized
  */
-export function* fetchPlaylistDataSuccess(dataItems: PlaylistItem[]) {
+export function* addFetchItemsToNormListToPlay(
+  items: (YTPlaylistTypes.PlaylistItem | YTPlaylistTypes.VideoItem)[]
+) {
+  const {
+    entities: listToPlayEntities,
+    result: listToPlayResult,
+  } = schemas.normalizeListToPlay(items);
+
+  yield put(
+    ytplaylistNormed.addNormListToPlayItemsAction(
+      listToPlayEntities,
+      listToPlayResult
+    )
+  );
+}
+
+/**
+ * Helper function to add playlist to playlists, listToPlay and finally add playlistId to playingPlaylists
+ *
+ * @export
+ * @param playlist Playlist data
+ */
+export function* addFetchedPlaylist(playlist: YTPlaylistTypes.Playlist) {
+  yield put(ytplaylist.addPlaylistAction(playlist));
+  yield put(ytplaylist.appendListToPlayAction(playlist.items));
+  yield put(ytplaylist.addPlayingPlaylistsAction([playlist.id]));
+}
+
+/**
+ *
+ *
+ * @export
+ * @param playlist Playlist data
+ */
+export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
+  const {
+    entities: playlistEntities,
+    result: playlistResult,
+  } = schemas.normalizePlaylists([playlist]);
+  const playlistId = playlistResult[0];
+
+  if (playlistResult.length === 0 || playlistResult.length > 1)
+    throw new Error("Saga: No or more than one playlist is found");
+
+  // add playlist
+  yield put(
+    ytplaylistNormed.addNormPlaylistAction(playlistEntities, playlistResult)
+  );
+
+  // add all fetched playlist's items to listToPlay
+  // and label the playlist as playing (all playlistItems in listToPlay)
+  yield call(addFetchItemsToNormListToPlay, playlist.items);
+
+  yield put(ytplaylistNormed.labelNormPlaylistAsPlayingByIdAction(playlistId));
+}
+
+/**
+ * Add fetched video data to videos state in ytplaylist
+ * and append its items to listToPlay,
+ * and finally add its videoId to playingVideos
+ *
+ * @export
+ * @param video Video data
+ */
+export function* addFetchedVideo(video: YTPlaylistTypes.Video) {
+  yield put(ytplaylist.addVideoAction(video));
+  yield put(ytplaylist.appendListToPlayAction(video.items));
+  yield put(ytplaylist.addPlayingVideosAction([video.id]));
+}
+
+/**
+ * Add fetched video to normalized videos state
+ *
+ * @export
+ * @param video Video data
+ */
+export function* addFetchedNormVideo(video: YTPlaylistTypes.Video) {
+  const {
+    entities: videoEntities,
+    result: videoResult,
+  } = schemas.normalizeVideos([video]);
+
+  if (videoResult.length === 0 || videoResult.length > 1)
+    throw new Error("Saga: No or more than one video is found");
+
+  // add video
+  yield put(ytplaylistNormed.addNormVideoAction(videoEntities, videoResult));
+
+  // add fetched video items to listToPlay
+  yield call(addFetchItemsToNormListToPlay, video.items);
+}
+
+export function* fetchPlaylistDataSuccess(
+  dataItems: YTPlaylistTypes.PlaylistItem[]
+) {
   const items = Array.from(dataItems);
   const id = items[0].snippet.playlistId;
-  const fetchedPlaylist = {
+  const fetchedPlaylist: YTPlaylistTypes.Playlist = {
     id,
     items,
   };
 
-  yield put(fetchPlaylistDataSuccessAction(fetchedPlaylist));
+  yield put(ytapi.fetchPlaylistDataSuccessAction(fetchedPlaylist));
 
-  // add fetched playlist to playlists, listToPlay and playingPlaylists in redux store
-  yield put(addPlaylistAction(fetchedPlaylist));
-  yield put(appendListToPlayAction(items));
-  yield put(addPlayingPlaylistsAction([id]));
+  // add playlist to normal playlists array
+  yield call(addFetchedPlaylist, fetchedPlaylist);
+
+  // add playlist to normalized playlists
+  yield call(addFetchedNormPlaylist, fetchedPlaylist);
 
   // add fetched playlist's id to redux store
-  yield put(addFetchedPlaylistIdAction(id));
+  yield put(ytapi.addFetchedPlaylistIdAction(id));
 }
 
-/**
- * Saga to execute if video is successfully fetched
- *
- * @export
- * @param data
- */
-export function* fetchVideoDataSuccess(data: Video) {
+export function* fetchVideoDataSuccess(data: YTPlaylistTypes.Video) {
   const items = Array.from(data.items);
   const id = items[0].id;
   const fetchedVideo = {
@@ -69,17 +144,22 @@ export function* fetchVideoDataSuccess(data: Video) {
     items,
   };
 
-  yield put(fetchVideoDataSuccessAction(data));
+  yield put(ytapi.fetchVideoDataSuccessAction(data));
 
-  // add fetched videos to videos, listToPlay and playingVideos in redux store
-  yield put(addVideoAction(fetchedVideo));
-  yield put(appendListToPlayAction(items));
-  yield put(addPlayingVideosAction([id]));
+  // add fetched video to normal videos array
+  yield call(addFetchedVideo, fetchedVideo);
+
+  // add fetched video to normalized videos
+  yield call(addFetchedNormVideo, fetchedVideo);
 
   // add fetched video's id to redux store
-  yield put(addFetchedVideoIdAction(id));
+  yield put(ytapi.addFetchedVideoIdAction(id));
 }
+// ====================================================
 
+// ====================================================
+// Main saga which listen for API fetching action
+// ====================================================
 /**
  * Fetching videos information asynchronously from API to Redux
  * @param action
@@ -90,7 +170,7 @@ export function* fetchPlaylistData(action: FetchPlaylistDataAction) {
     let count = 2;
     const items = [];
 
-    let data: Playlist = yield call(
+    let data: YTPlaylistTypes.Playlist = yield call(
       fetchYoutubeAPIData,
       url,
       params,
@@ -127,18 +207,15 @@ export function* fetchPlaylistData(action: FetchPlaylistDataAction) {
 
     yield call(fetchPlaylistDataSuccess, items);
   } catch (err) {
-    yield put(fetchPlaylistDataFailedAction());
+    yield put(ytapi.fetchPlaylistDataFailedAction());
     console.error(`Error in fetchPlaylistData: ${err}`);
     notify("error", "❌ Error in searching playlist!");
   } finally {
     // clear playlist url either success or failed
-    yield put(setPlaylistUrlAction(""));
+    yield put(ytapi.setPlaylistUrlAction(""));
   }
 }
 
-// =========================
-// Videos
-// =========================
 /**
  * Fetching videos information asynchronously from API to Redux
  * @param action
@@ -146,7 +223,12 @@ export function* fetchPlaylistData(action: FetchPlaylistDataAction) {
 export function* fetchVideoData(action: FetchVideoDataAction) {
   const { url, params } = action.payload;
   try {
-    const data: Video = yield call(fetchYoutubeAPIData, url, params, "videos");
+    const data: YTPlaylistTypes.Video = yield call(
+      fetchYoutubeAPIData,
+      url,
+      params,
+      "videos"
+    );
 
     if (
       ((Array.isArray && Array.isArray(data.items)) ||
@@ -157,30 +239,24 @@ export function* fetchVideoData(action: FetchVideoDataAction) {
 
     yield call(fetchVideoDataSuccess, data);
   } catch (err) {
-    yield put(fetchVideoDataFailedAction());
+    yield put(ytapi.fetchVideoDataFailedAction());
     console.error(`Error in fetchVideoData: ${err}`);
     notify("error", "❌ Error in searching video!");
   } finally {
     // clear video url either success or failed
-    yield put(setVideoUrlAction(""));
+    yield put(ytapi.setVideoUrlAction(""));
   }
 }
 
-// =========================
+// ====================================================
 // Saga Watchers
-// =========================
+// ====================================================
 function* fetchPlaylistDataWatcher() {
-  // @ts-ignore
-  // ignore vscode implicit checkJs
-  // unable to resolve redux-saga typings problem using jsdoc
-  yield takeLatest(FETCH_PLAYLIST_DATA, fetchPlaylistData);
+  yield takeLatest(ActionTypes.FETCH_PLAYLIST_DATA, fetchPlaylistData);
 }
 
 function* fetchVideoDataWatcher() {
-  // @ts-ignore
-  // ignore vscode implicit checkJs
-  // unable to resolve redux-saga typings problem using jsdoc
-  yield takeLatest(FETCH_VIDEO_DATA, fetchVideoData);
+  yield takeLatest(ActionTypes.FETCH_VIDEO_DATA, fetchVideoData);
 }
 
 export default function* ytapiSaga() {
