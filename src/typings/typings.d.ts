@@ -32,6 +32,12 @@ declare global {
     fields: string[];
   }
 
+  interface MatchRoute {
+    url: string;
+    pathname: string;
+    path: string;
+  }
+
   type PlaylistParams = BaseFetchParams & {
     playlistId?: string;
     pageToken?: string;

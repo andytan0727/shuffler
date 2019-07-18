@@ -3,10 +3,10 @@ import Typography from "@material-ui/core/Typography";
 
 import styles from "./styles.module.scss";
 
-const ManagementRecentlyPlayedPanel = (props) => {
+const ManagementNowPlayingPanel = () => {
   return (
-    <div className={styles.managementRecentlyPlayedPanelDiv}>
-      <Typography variant="h4">Recently Played</Typography>
+    <div className={styles.managementNowPlayingPanelDiv}>
+      <Typography variant="h4">Now Playing</Typography>
       <div className={styles.underConstruction}>
         <Typography variant="h2">Under Construction</Typography>
       </div>
@@ -14,6 +14,4 @@ const ManagementRecentlyPlayedPanel = (props) => {
   );
 };
 
-ManagementRecentlyPlayedPanel.propTypes = {};
-
-export default ManagementRecentlyPlayedPanel;
+export default ManagementNowPlayingPanel;

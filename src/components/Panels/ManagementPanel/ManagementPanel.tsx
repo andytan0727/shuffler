@@ -1,12 +1,14 @@
 import React, { Suspense, lazy } from "react";
-import PropTypes from "prop-types";
 import { Route, Redirect, Switch } from "react-router-dom";
-
+import FullPageSpinner from "components/Loadings/FullPageSpinner";
+import { retryLazy, delayLazy } from "utils/helper/lazyImportHelper";
 import ManagementPanelDrawer from "./ManagementPanelDrawer";
-import FullPageSpinner from "../../Loadings/FullPageSpinner";
-import { retryLazy, delayLazy } from "../../../utils/helper/lazyImportHelper";
 
 import styles from "./styles.module.scss";
+
+interface ManagementPanelProps {
+  match: MatchRoute;
+}
 
 const ManagementVideosPanel = lazy(() =>
   delayLazy(() => retryLazy(() => import("./ManagementVideosPanel")))
@@ -29,10 +31,8 @@ const ManagementPlaylistsPanel = lazy(() =>
  * A component that holds the routes for videos, playlists and other panels
  * related to video management
  *
- * @param {{ match: MatchRoute }} props
- * @returns
  */
-const ManagementPanel = ({ match }) => {
+const ManagementPanel = ({ match }: ManagementPanelProps) => {
   const managementPanelPath = match.path;
 
   return (
@@ -61,10 +61,6 @@ const ManagementPanel = ({ match }) => {
       </Suspense>
     </div>
   );
-};
-
-ManagementPanel.propTypes = {
-  match: PropTypes.object.isRequired,
 };
 
 export default ManagementPanel;

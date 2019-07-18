@@ -4,6 +4,4 @@ const ManagementPlaylistsPanelList = () => {
   return <div>under construction</div>;
 };
 
-ManagementPlaylistsPanelList.propTypes = {};
-
 export default ManagementPlaylistsPanelList;

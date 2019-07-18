@@ -9,22 +9,28 @@ import {
   Delete as DeleteIcon,
   PlaylistAddCheck as PlaylistAddCheckIcon,
 } from "@material-ui/icons";
+import {
+  playingPlaylistsSelector,
+  playlistsSelector,
+} from "store/ytplaylist/selector";
 
 import styles from "./styles.module.scss";
+
+interface ManagementPlaylistsPanelGridItemBtnProps {
+  playlistId: string;
+}
 
 /**
  * ManagementPlaylistsPanelGridItemBtn component
  *
  * Button group for grid item
  *
- * @param {{ playlistId: string; }} props
- * @returns
  */
-const ManagementPlaylistsPanelGridItemBtn = (props) => {
+const ManagementPlaylistsPanelGridItemBtn = (
+  props: ManagementPlaylistsPanelGridItemBtnProps
+) => {
   const { playlistId } = props;
-  const playingPlaylists = useSelector(
-    (state) => state.ytplaylist.playingPlaylists
-  );
+  const playingPlaylists = useSelector(playingPlaylistsSelector);
 
   return (
     <div>
@@ -64,12 +70,8 @@ const ManagementPlaylistsPanelGridItemBtn = (props) => {
 };
 
 const ManagementPlaylistsPanelGrid = () => {
-  /** @type {Array<Playlist>} */
-  const playlists = useSelector((state) => state.ytplaylist.playlists);
-  /** @type {Array<string>} */
-  const playingPlaylists = useSelector(
-    (state) => state.ytplaylist.playingPlaylists
-  );
+  const playlists = useSelector(playlistsSelector);
+  const playingPlaylists = useSelector(playingPlaylistsSelector);
   const [enterPlaylist, setEnterPlaylist] = useState({});
 
   const handlePlaylistMouseEnter = useCallback(
@@ -111,7 +113,7 @@ const ManagementPlaylistsPanelGrid = () => {
                 onMouseEnter={handlePlaylistMouseEnter(playlist.id)}
                 onMouseLeave={handlePlaylistMouseLeave(playlist.id)}
               >
-                {enterPlaylist[playlist.id] && (
+                {(enterPlaylist as PlainObject)[playlist.id] && (
                   <ManagementPlaylistsPanelGridItemBtn
                     playlistId={playlist.id}
                   />

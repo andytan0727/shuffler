@@ -1,5 +1,4 @@
 import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -19,6 +18,22 @@ import {
   PlayCircleOutline as PlayCircleOutlineIcon,
   PlaylistPlay as PlaylistPlayIcon,
 } from "@material-ui/icons";
+import { playlistsSelector } from "store/ytplaylist/selector";
+
+interface DrawerNavListItemProps {
+  pathUrl: string;
+  icon: React.ReactElement<import("@material-ui/core/SvgIcon").SvgIconProps>;
+  primaryText: string;
+  secondaryActionItem?: React.ReactElement;
+}
+
+interface DrawerPlaylistsNavListProps {
+  playlistUrl: string;
+}
+
+interface ManagementPanelDrawerProps {
+  match: MatchRoute;
+}
 
 const useStyles = makeStyles((theme) => ({
   drawerPlaceholder: {
@@ -50,36 +65,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ListItemLink = forwardRef(
-  /**
-   * ListItemLink forwardRef
-   *
-   * @param {{ to: string; }} props
-   * @param {React.Ref<HTMLDivElement>} ref
-   */
-  ({ to, ...rest }, ref) => (
+  (
+    { to, ...rest }: { to: string; rest: any },
+    ref: React.Ref<HTMLDivElement>
+  ) => (
     <div ref={ref}>
       <Link to={to} {...rest} />
     </div>
   )
 );
 
+ListItemLink.displayName = "ListItemLink";
+
 /**
  * DrawerNavListItem for ManagementPanelDrawer's nav
- *
- * @param {{
- *   pathUrl: string;
- *   icon:React.ReactElement<import("@material-ui/core/SvgIcon").SvgIconProps>;
- *   primaryText: string;
- *   secondaryActionItem?: React.ReactElement; }} props
- * @returns
+
  */
-const DrawerNavListItem = (props) => {
+const DrawerNavListItem = (props: DrawerNavListItemProps) => {
   const classes = useStyles({});
   const { pathUrl, icon, primaryText, secondaryActionItem } = props;
 
   return (
-    // @ts-ignore
-    <ListItem button component={ListItemLink} to={pathUrl}>
+    <ListItem button component={ListItemLink as any} to={pathUrl}>
       <ListItemIcon className={classes.listItemIcon}>{icon}</ListItemIcon>
       <ListItemText primary={primaryText} />
       {secondaryActionItem}
@@ -87,27 +94,17 @@ const DrawerNavListItem = (props) => {
   );
 };
 
-DrawerNavListItem.propTypes = {
-  pathUrl: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
-  primaryText: PropTypes.string.isRequired,
-  secondaryActionItem: PropTypes.node,
-};
-
 /**
  * DrawerPlaylistsNavList component for drawer
  *
  * Lower half of ManagementPanelDrawer. Used to store playlist home & individual items' link
  *
- * @param {{ playlistUrl: string; }} props
- * @returns
  */
-const DrawerPlaylistsNavList = (props) => {
+const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
   const { playlistUrl } = props;
   const classes = useStyles({});
 
-  /** @type {Array<Playlist>} */
-  const playlists = useSelector((state) => state.ytplaylist.playlists);
+  const playlists = useSelector(playlistsSelector);
 
   return (
     <List className={classes.drawerPlaylistsNavContainer} component="nav">
@@ -140,19 +137,13 @@ const DrawerPlaylistsNavList = (props) => {
   );
 };
 
-DrawerPlaylistsNavList.propTypes = {
-  playlistUrl: PropTypes.string.isRequired,
-};
-
 /**
  * ManagementPanelDrawer
  *
  * Drawer for ManagementPanels, e.g. VideosPanel, PlaylistsPanel and so on.
  *
- * @param {{ match: MatchRoute; }} props
- * @returns
  */
-const ManagementPanelDrawer = ({ match }) => {
+const ManagementPanelDrawer = ({ match }: ManagementPanelDrawerProps) => {
   const classes = useStyles({});
   const panelUrl = match.url;
 
@@ -182,10 +173,6 @@ const ManagementPanelDrawer = ({ match }) => {
       <div className={classes.drawerPlaceholder}></div>
     </div>
   );
-};
-
-ManagementPanelDrawer.propTypes = {
-  match: PropTypes.object.isRequired,
 };
 
 export default ManagementPanelDrawer;

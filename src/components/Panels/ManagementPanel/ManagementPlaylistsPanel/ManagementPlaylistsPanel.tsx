@@ -1,12 +1,12 @@
 import React from "react";
 import { Divider, Typography } from "@material-ui/core";
-import { withManagementPanelSearchInput } from "../../../Inputs/ManagementPanelSearchInput";
+import { makeManagementPanelSearchInput } from "components/Inputs/ManagementPanelSearchInput";
 
 import ManagementPlaylistsPanelGrid from "./ManagementPlaylistsPanelGrid";
 
 import styles from "./styles.module.scss";
 
-const SearchPlaylistInput = withManagementPanelSearchInput("playlist");
+const SearchPlaylistInput = makeManagementPanelSearchInput("playlists");
 
 const LargePlaylistsPanel = () => {
   return (
