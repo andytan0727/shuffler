@@ -9,6 +9,8 @@ import {
   NormVideosEntities,
   NormPlaylistsEntities,
 } from "./types";
+import { playlistsReducer } from "./normReducer";
+import { deleteNormPlaylistItemByIdAction } from "./normAction";
 
 const basePlaylistsState: NormPlaylists = {
   entities: {
@@ -148,8 +150,6 @@ function makePlaylistsEntitiesStates(
 
 /**
  *
- * **Note:** This function mutates states
- *
  * @param states
  * @param idxToExclude
  * @returns Mutated states
@@ -260,5 +260,42 @@ describe("test deletePlaylistOrVideoById util functions", () => {
         itemsLength: 10,
       })
     );
+  });
+});
+
+describe("normalized playlistsReducer", () => {
+  test("should handle DELETE_NORM_PLAYLIST_ITEM_BY_ID action correctly", () => {
+    const initialStates = _stateMaker(basePlaylistsState, {
+      itemsLength: 2,
+      sourceLength: 1,
+    }) as NormPlaylists;
+
+    const newStates = playlistsReducer(
+      initialStates,
+      deleteNormPlaylistItemByIdAction("playlistId-1", "itemId-1-1")
+    );
+
+    expect(newStates).toEqual({
+      ...initialStates,
+      entities: {
+        playlistItems: {
+          ...initialStates.entities.playlistItems,
+          "itemId-1-1": undefined,
+        },
+        playlists: {
+          ...initialStates.entities.playlists,
+          "playlistId-1": {
+            ...initialStates.entities.playlists["playlistId-1"],
+            items: initialStates.entities.playlists[
+              "playlistId-1"
+            ].items.filter((id) => id !== "itemId-1-1"),
+          },
+        },
+        snippets: {
+          ...initialStates.entities.snippets,
+          "snippetId-1-1": undefined,
+        },
+      },
+    });
   });
 });

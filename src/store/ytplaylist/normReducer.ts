@@ -47,6 +47,27 @@ export const playlistsReducer: Reducer<
       return deletePlaylistOrVideoById(draft, id);
     }
 
+    case ActionTypes.DELETE_NORM_PLAYLIST_ITEM_BY_ID: {
+      const { playlistId, itemId } = action.payload;
+
+      if (!draft.entities.playlistItems[itemId]) return draft;
+
+      const itemToDelete = draft.entities.playlistItems[itemId];
+
+      // first, delete the snippet corresponds to the playlistItem
+      delete draft.entities.snippets[itemToDelete.snippet];
+
+      // next, delete the corresponding playlistItem
+      delete draft.entities.playlistItems[itemId];
+
+      // finally, delete the itemId from items array in parent playlist
+      draft.entities.playlists[playlistId].items = draft.entities.playlists[
+        playlistId
+      ].items.filter((id) => id !== itemId);
+
+      return draft;
+    }
+
     case ActionTypes.UPDATE_NORM_PLAYLIST_NAME_BY_ID: {
       const { id, name } = action.payload;
 

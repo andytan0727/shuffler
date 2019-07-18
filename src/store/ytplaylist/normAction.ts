@@ -45,6 +45,24 @@ export const deleteNormPlaylistByIdAction = createAction(
 );
 
 /**
+ * Delete playlist's item and snippet by specifying itemId with the id of
+ * the belonging playlist
+ *
+ * @param {string} playlistId Playlist id in which the playlistItem is located
+ * @param {string} itemId PlaylistItem id to delete
+ */
+export const deleteNormPlaylistItemByIdAction = createAction(
+  ActionTypes.DELETE_NORM_PLAYLIST_ITEM_BY_ID,
+  (action) => {
+    return (playlistId: string, itemId: string) =>
+      action({
+        playlistId,
+        itemId,
+      });
+  }
+);
+
+/**
  * Update playlist name by id
  *
  * @param id Playlist id

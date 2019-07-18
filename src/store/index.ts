@@ -18,6 +18,7 @@ import {
   ytplaylist as ytplaylistReducer,
   ytplaylistNormed as ytplaylistNormedReducer,
   ytplaylistSaga,
+  ytplaylistNormedSaga,
 } from "./ytplaylist";
 
 // sagas
@@ -29,7 +30,12 @@ import userPreferencesSaga from "./userPreferences/sagas";
 setAutoFreeze(false);
 
 function* rootSaga() {
-  yield all([ytapiSaga(), ytplaylistSaga(), userPreferencesSaga()]);
+  yield all([
+    ytapiSaga(),
+    userPreferencesSaga(),
+    ytplaylistSaga(),
+    ytplaylistNormedSaga(),
+  ]);
 }
 
 const rootPersistConfig = {

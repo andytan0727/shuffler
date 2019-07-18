@@ -174,3 +174,22 @@ export const deleteListToPlayItemById = (
 
   return draft;
 };
+
+// =====================================================
+// Utils for selectors
+// =====================================================
+export const getSnippetFromItemId = (
+  entities: NormPlaylistsOrVideosEntities,
+  itemId: string
+) => {
+  const snippetId = isPlaylistsEntities(entities)
+    ? entities.playlistItems[itemId].snippet
+    : entities.videoItems[itemId].snippet;
+
+  // assign snippet's key as the id of the returning object
+  // for the usage in views
+  return {
+    ...entities.snippets[snippetId],
+    id: snippetId,
+  };
+};
