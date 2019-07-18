@@ -1,0 +1,1 @@
+export { makeManagementPanelSearchInput } from "./ManagementPanelSearchInput";

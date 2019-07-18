@@ -1,20 +1,11 @@
 import { useState, useCallback } from "react";
-import store from "../../../store";
-import { notify } from "../../../utils/helper/notifyHelper";
+import store from "store";
 import {
   fetchVideoDataAction,
   fetchPlaylistDataAction,
-} from "../../../store/ytapi/action";
+} from "store/ytapi/action";
+import { notify } from "utils/helper/notifyHelper";
 
-/**
- *  @typedef {function(InputChangeEvent):void} InputChangeHandler
- */
-
-/**
- * @typedef {function(ButtonOnClickEvent):void} ButtonClickHandler
- */
-
-/** @type {Partial<YTAPIState>} */
 const {
   apiKey,
   videos: {
@@ -38,12 +29,12 @@ const {
 /**
  * Validate whether playlist/video url is valid
  *
- * @param {ItemType} inputType Type of url to validate
- * @param {string} value Input value to be validated
+ * @param inputType Type of url to validate
+ * @param value Input value to be validated
  */
-const _validateInput = (inputType, value) => {
+const _validateInput = (inputType: MediaSourceType, value: string) => {
   const regex =
-    inputType === "playlist"
+    inputType === "playlists"
       ? /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:list)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/
       : /^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?.*?(?:v)=(.*?)(?:&|$)|^(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?(?:(?!=).)*\/(.*)$/;
 
@@ -55,10 +46,10 @@ const _validateInput = (inputType, value) => {
 /**
  * Search playlist when search button is pressed
  *
- * @param {string} value Input value
+ * @param value Input value
  */
-const _searchPlaylist = (value) => {
-  const playlistId = _validateInput("playlist", value);
+const _searchPlaylist = (value: string) => {
+  const playlistId = _validateInput("playlists", value);
 
   if (!value) {
     notify("warning", "⚠️ Please don't submit empty input");
@@ -84,10 +75,10 @@ const _searchPlaylist = (value) => {
 /**
  * Search video when search button is pressed
  *
- * @param {string} value Input value
+ * @param value Input value
  */
-const _searchVideo = (value) => {
-  const videoId = _validateInput("video", value);
+const _searchVideo = (value: string) => {
+  const videoId = _validateInput("videos", value);
 
   if (!value) {
     notify("warning", "⚠️ Please don't submit empty input");
@@ -114,17 +105,18 @@ const _searchVideo = (value) => {
  *
  * useSearchYT hook - search for video/playlist from YouTube Data API
  *
- * @param {ItemType} searchType
- * @returns {{
- *   inputVal: string;
- *   setInputVal?: function(string):void;
- *   searchYT?: function(string):void;
- *   handleInputChange?: InputChangeHandler;
- *   handleSearchYT?: ButtonClickHandler;
- * }}
+ * @param searchType
  *
  */
-export const useSearchYT = (searchType) => {
+export const useSearchYT = (
+  searchType: MediaSourceType
+): {
+  inputVal: string;
+  setInputVal?: (arg0: string) => void;
+  searchYT?: (arg0: string) => void;
+  handleInputChange?: (e: InputChangeEvent) => void;
+  handleSearchYT?: (e: OnClickEvent) => void;
+} => {
   const [inputVal, setInputVal] = useState("");
 
   /**
@@ -134,10 +126,7 @@ export const useSearchYT = (searchType) => {
    *
    */
   const handleInputChange = useCallback(
-    /**
-     * @param {InputChangeEvent} e
-     */
-    (e) => {
+    (e: InputChangeEvent) => {
       setInputVal(e.target.value);
     },
     [setInputVal]
@@ -150,7 +139,7 @@ export const useSearchYT = (searchType) => {
    *
    */
   const searchYT = useCallback(
-    searchType === "playlist" ? _searchPlaylist : _searchVideo,
+    searchType === "playlists" ? _searchPlaylist : _searchVideo,
     [searchType]
   );
 
@@ -160,10 +149,7 @@ export const useSearchYT = (searchType) => {
    * Recommended function to import for default search behavior
    */
   const handleSearchYT = useCallback(
-    /**
-     * @param {ButtonOnClickEvent} e
-     */
-    (e) => {
+    (e: OnClickEvent) => {
       e.preventDefault();
       searchYT(inputVal);
       setInputVal("");

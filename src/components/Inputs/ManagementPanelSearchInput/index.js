@@ -1,1 +1,0 @@
-export { withManagementPanelSearchInput } from "./ManagementPanelSearchInput";
