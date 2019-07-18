@@ -44,7 +44,7 @@ declare global {
   type FetchParams = PlaylistParams & VideoParams;
 
   type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
-  type ButtonOnClickEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
+  type OnClickEvent = React.MouseEvent<HTMLDivElement | HTMLButtonElement>;
 }
 
 declare module "typesafe-actions" {

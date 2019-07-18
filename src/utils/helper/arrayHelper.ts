@@ -32,5 +32,5 @@ export const move = <T>(arr: T[], from: number, to: number): T[] =>
  *                       or add (if absent) from/to new array
  * @returns Newly generated array
  */
-export const addOrRemove = (arr: string[], value: string) =>
+export const addOrRemove = <T extends string | number>(arr: T[], value: T) =>
   !arr.includes(value) ? [...arr, value] : arr.filter((val) => val !== value);
