@@ -1,31 +1,30 @@
 import React, { useState, useCallback } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
-import { setPreferDarkTheme } from "../../../store/userPreferences/action";
+import { AppState } from "store";
+import { setPreferDarkTheme } from "store/userPreferences/action";
 
 import styles from "./styles.module.scss";
 
-/**
- * @typedef ToggleDarkModeSwitchProps
- * @property {boolean} preferDarkTheme
- * @property {function(boolean):void} setPreferDarkTheme
- */
+interface ConnectedState {
+  preferDarkTheme: boolean;
+}
 
-/**
- * @param {ToggleDarkModeSwitchProps} props
- */
-const ToggleDarkModeSwitch = (props) => {
+interface ConnectedDispatch {
+  setPreferDarkTheme: typeof setPreferDarkTheme;
+}
+
+type ToggleDarkModeSwitchProps = ConnectedState & ConnectedDispatch;
+
+const ToggleDarkModeSwitch = (props: ToggleDarkModeSwitchProps) => {
   const { preferDarkTheme, setPreferDarkTheme } = props;
   const [checked, setChecked] = useState(preferDarkTheme);
 
   /**
    * Handle toggle dark mode based on checkbox checked state
    *
-   * @param {import("react").ChangeEvent<HTMLInputElement>} e
    */
   const handleToggleDarkMode = useCallback(
-    (e) => {
+    (e: InputChangeEvent) => {
       setChecked(e.target.checked);
       setPreferDarkTheme(e.target.checked);
     },
@@ -46,12 +45,8 @@ const ToggleDarkModeSwitch = (props) => {
   );
 };
 
-ToggleDarkModeSwitch.propTypes = {
-  setPreferDarkTheme: PropTypes.func.isRequired,
-};
-
-const mapStatesToProps = ({ userPreferences: { preferDarkTheme } }) => ({
-  preferDarkTheme,
+const mapStatesToProps = (state: AppState) => ({
+  preferDarkTheme: state.userPreferences.preferDarkTheme,
 });
 
 export default connect(

@@ -1,10 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { AppState } from "store";
 
 import styles from "./styles.module.scss";
 
-const WhatIsNewPage = ({ appUpdates }) => {
+interface WhatIsNewPageProps {
+  appUpdates: any[];
+}
+
+const WhatIsNewPage = ({ appUpdates }: WhatIsNewPageProps) => {
   const latestUpdates = appUpdates
     .concat()
     .reverse()
@@ -20,7 +24,7 @@ const WhatIsNewPage = ({ appUpdates }) => {
           latestUpdates.map((update) => (
             <ul key={update.version}>
               <h3>v{update.version}</h3>
-              {update.changes.map((change, idx) => (
+              {update.changes.map((change: string, idx: number) => (
                 <li key={idx}>{change}</li>
               ))}
             </ul>
@@ -30,12 +34,8 @@ const WhatIsNewPage = ({ appUpdates }) => {
   );
 };
 
-WhatIsNewPage.propTypes = {
-  appUpdates: PropTypes.array.isRequired,
-};
-
-const mapStatesToProps = ({ appGeneral: { appUpdates } }) => ({
-  appUpdates,
+const mapStatesToProps = (state: AppState) => ({
+  appUpdates: state.appGeneral.appUpdates,
 });
 
 export default connect(

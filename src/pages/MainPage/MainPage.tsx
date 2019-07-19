@@ -1,11 +1,16 @@
 import React, { forwardRef } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { ReactComponent as ShufflerLogo } from "../../assets/shuffler-logo.svg";
+import { ReactComponent as ShufflerLogo } from "assets/shuffler-logo.svg";
 import styles from "./styles.module.scss";
+
+interface MainPageConnectedState {
+  preferDarkTheme: boolean;
+}
+
+type MainPageProps = MainPageConnectedState;
 
 const useStyles = makeStyles({
   lightVariant: {
@@ -28,11 +33,13 @@ const useStyles = makeStyles({
   },
 });
 
-const GetStartedLink = forwardRef((props, ref) => (
+const GetStartedLink = forwardRef((props, ref: React.Ref<Link>) => (
   <Link to="/playlistInput" {...props} ref={ref} />
 ));
 
-const MainPage = ({ preferDarkTheme }) => {
+GetStartedLink.displayName = "GetStartedLink";
+
+const MainPage = ({ preferDarkTheme }: MainPageProps) => {
   const classes = useStyles();
 
   return (
@@ -51,17 +58,13 @@ const MainPage = ({ preferDarkTheme }) => {
           className={
             !preferDarkTheme ? classes.lightVariant : classes.darkVariant
           }
-          component={GetStartedLink}
+          component={GetStartedLink as any}
         >
           Get Started
         </Button>
       </div>
     </React.Fragment>
   );
-};
-
-MainPage.propTypes = {
-  preferDarkTheme: PropTypes.bool.isRequired,
 };
 
 export default MainPage;

@@ -10,7 +10,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 
-import AddVideoToPlayingSwitch from "components/Switches";
+import { AddVideoToPlayingSwitch } from "components/Switches";
 import { DeleteItemButton } from "components/Buttons/DeleteButtons";
 import { deleteVideosAction } from "store/ytplaylist/action";
 import {

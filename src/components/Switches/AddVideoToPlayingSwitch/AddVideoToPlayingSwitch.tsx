@@ -1,9 +1,26 @@
 import React, { useEffect, useCallback } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Switch, makeStyles } from "@material-ui/core";
+import { AppState } from "store";
+import { togglePlayingVideoAction } from "store/ytplaylist/action";
+import { selectPlayingVideos } from "store/ytplaylist/selector";
+import { DeepReadonly } from "utility-types";
 
-import { togglePlayingVideoAction } from "../../../store/ytplaylist/action";
+interface OwnProps {
+  itemId: string;
+}
+
+interface ConnectedState {
+  playingVideos: DeepReadonly<string[]>;
+}
+
+interface ConnectedDispatch {
+  togglePlayingVideoAction: typeof togglePlayingVideoAction;
+}
+
+type AddVideoToPlayingSwitchProps = OwnProps &
+  ConnectedState &
+  ConnectedDispatch;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   focusVisible: {},
 }));
 
-const AddVideoToPlayingSwitch = (props) => {
+const AddVideoToPlayingSwitch = (props: AddVideoToPlayingSwitchProps) => {
   const {
     itemId,
 
@@ -54,7 +71,7 @@ const AddVideoToPlayingSwitch = (props) => {
   const classes = useStyles({});
 
   const handleToggleSwitch = useCallback(
-    (id) => () => {
+    (id: string) => () => {
       togglePlayingVideoAction(id);
     },
     [togglePlayingVideoAction]
@@ -81,14 +98,8 @@ const AddVideoToPlayingSwitch = (props) => {
   );
 };
 
-AddVideoToPlayingSwitch.propTypes = {
-  itemId: PropTypes.string.isRequired,
-  playingVideos: PropTypes.arrayOf(PropTypes.string).isRequired,
-  togglePlayingVideoAction: PropTypes.func.isRequired,
-};
-
-const mapStatesToProps = ({ ytplaylist: { playingVideos } }) => ({
-  playingVideos,
+const mapStatesToProps = (state: AppState) => ({
+  playingVideos: selectPlayingVideos(state),
 });
 
 export default connect(

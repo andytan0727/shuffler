@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as ShufflerLogo } from "../../assets/shufflerLogoLarge.svg";
-import Typography from "@material-ui/core/Typography";
+import { Typography } from "@material-ui/core";
+import { ReactComponent as ShufflerLogo } from "assets/shufflerLogoLarge.svg";
 
 import styles from "./styles.module.scss";
 
@@ -18,7 +18,7 @@ const AboutPage = () => {
         </p>
         <br />
         <hr />
-        2019 &copy; Andy Tan
+        {new Date().getUTCFullYear()} &copy; Andy Tan
       </main>
     </div>
   );

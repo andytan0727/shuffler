@@ -1,12 +1,18 @@
 import React, { useState, useCallback } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
-import { SwitchPanelRadioBtn } from "../../Buttons";
-import * as PanelComponent from "../../Panels";
-import { move } from "../../../utils/helper/arrayHelper";
+import { SwitchPanelRadioBtn } from "components/Buttons";
+import * as PanelComponent from "components/Panels";
+import { AppState } from "store";
+import { move } from "utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
+
+interface ConnectedState {
+  preferDarkTheme: boolean;
+}
+
+type InputTabsProps = ConnectedState;
 
 const _radios = ["radio-videolist", "radio-video", "radio-playing"];
 
@@ -37,20 +43,18 @@ const _tabPanels = [
  * Component for /playlistInput. Used to display panel showing current status
  * of videos, playlists and playing
  *
- * @param {{ preferDarkTheme: boolean; }} props
- * @returns
  */
-const InputTabs = (props) => {
+const InputTabs = (props: InputTabsProps) => {
   const { preferDarkTheme } = props;
   const [checkedButton, setCheckedButton] = useState("radio-playing");
 
-  const handleChangePanel = useCallback((e) => {
+  const handleChangePanel = useCallback((e: InputChangeEvent) => {
     setCheckedButton(e.target.value);
   }, []);
 
-  const handleClickSwitchPanel = useCallback((e) => {
+  const handleClickSwitchPanel = useCallback((e: OnClickEvent) => {
     const panel = e.currentTarget.getAttribute("data-panel");
-    setCheckedButton(_radios[panel]);
+    setCheckedButton(_radios[+panel!]);
   }, []);
 
   return (
@@ -71,7 +75,7 @@ const InputTabs = (props) => {
             })}
             data-panel={panel.panelIdx}
             onClick={
-              checkedButton !== panel.radio ? handleClickSwitchPanel : null
+              checkedButton !== panel.radio ? handleClickSwitchPanel : undefined
             }
           >
             <panel.Component />
@@ -82,12 +86,8 @@ const InputTabs = (props) => {
   );
 };
 
-InputTabs.propTypes = {
-  preferDarkTheme: PropTypes.bool.isRequired,
-};
-
-const mapStatesToProps = ({ userPreferences: { preferDarkTheme } }) => ({
-  preferDarkTheme,
+const mapStatesToProps = (state: AppState) => ({
+  preferDarkTheme: state.userPreferences.preferDarkTheme,
 });
 
 export default connect(

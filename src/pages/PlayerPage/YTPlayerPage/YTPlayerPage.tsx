@@ -1,26 +1,37 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import VideoPlayer from "../../../components/Players/Video/VideoPlayer";
+import { DeepReadonly } from "utility-types";
+import { AppState } from "store";
+import { setCurSongIdx } from "store/ytplayer/action";
+import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
+import { selectListToPlay } from "store/ytplaylist/selector";
+import VideoPlayer from "components/Players/Video/VideoPlayer";
 import PlayerPageList from "./PlayerPageList";
 import NoVideoFound from "../NoVideoFound";
-import { setCurSongIdx } from "../../../store/ytplayer/action";
 
 import styles from "./styles.module.scss";
 
-const YTPlayerPage = (props) => {
-  const {
-    ytplayer: { curSongIdx },
-    ytplaylist: { listToPlay },
-    setCurSongIdx,
-  } = props;
+interface YTPlayerPageConnectedState {
+  curSongIdx: number;
+  listToPlay: DeepReadonly<(PlaylistItem | VideoItem)[]>;
+}
+
+interface YTPlayerPageConnectedDispatch {
+  setCurSongIdx: typeof setCurSongIdx;
+}
+
+type YTPlayerPageProps = YTPlayerPageConnectedState &
+  YTPlayerPageConnectedDispatch;
+
+const YTPlayerPage = (props: YTPlayerPageProps) => {
+  const { curSongIdx, listToPlay, setCurSongIdx } = props;
 
   useEffect(() => {
     // reset curSongIdx to prevent bugs when routing pages
     setCurSongIdx(0);
 
     return () => {
-      // also reset curSongIdx when unmounting
+      // also reset curSongIdx when un-mounting
       setCurSongIdx(0);
     };
   }, [setCurSongIdx]);
@@ -46,14 +57,9 @@ const YTPlayerPage = (props) => {
   );
 };
 
-YTPlayerPage.propTypes = {
-  ytplayer: PropTypes.object,
-  ytplaylist: PropTypes.object,
-};
-
-const mapStateToProps = ({ ytplayer, ytplaylist }) => ({
-  ytplayer,
-  ytplaylist,
+const mapStateToProps = (state: AppState) => ({
+  curSongIdx: state.ytplayer.curSongIdx,
+  listToPlay: selectListToPlay(state),
 });
 
 export default connect(

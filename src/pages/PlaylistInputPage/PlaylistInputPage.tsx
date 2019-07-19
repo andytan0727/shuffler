@@ -1,24 +1,27 @@
 import React, { Suspense, lazy } from "react";
-import PropTypes from "prop-types";
 import { Route, Redirect, Switch } from "react-router-dom";
-import { retryLazy } from "../../utils/helper/lazyImportHelper";
-import ToggleDarkModeSwitch from "../../components/Switches/ToggleDarkModeSwitch";
+import { ToggleDarkModeSwitch } from "components/Switches";
+import { retryLazy } from "utils/helper/lazyImportHelper";
 
 import styles from "./styles.module.scss";
 
-const InputTabs = lazy(() => retryLazy(() => import("../../components/Tabs")));
+interface PlaylistInputPageProps {
+  match: MatchRoute;
+}
+
+const InputTabs = lazy(() =>
+  retryLazy(() => import("components/Tabs/InputTabs"))
+);
 const ManagementPanel = lazy(() =>
-  retryLazy(() => import("../../components/Panels/ManagementPanel"))
+  retryLazy(() => import("components/Panels/ManagementPanel"))
 );
 
 /**
  * PlaylistInputPage component
  * A route switcher to playlist tabs or panels
  *
- * @param {{ match: MatchRoute }} props
- * @returns
  */
-const PlaylistInputPage = ({ match }) => {
+const PlaylistInputPage = ({ match }: PlaylistInputPageProps) => {
   const playlistInputPath = match.path;
 
   return (
@@ -36,10 +39,6 @@ const PlaylistInputPage = ({ match }) => {
       <ToggleDarkModeSwitch />
     </div>
   );
-};
-
-PlaylistInputPage.propTypes = {
-  match: PropTypes.object.isRequired,
 };
 
 export default PlaylistInputPage;

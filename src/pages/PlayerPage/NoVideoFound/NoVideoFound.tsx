@@ -1,5 +1,5 @@
 import React from "react";
-import novideo from "../../../assets/novideo.svg";
+import novideo from "assets/novideo.svg";
 
 import styles from "./styles.module.scss";
 
