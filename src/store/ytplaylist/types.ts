@@ -114,7 +114,7 @@ export interface VideoItemSnippet {
   liveBroadcastContent: string;
   publishedAt: string;
   tags: string[];
-  thumbnails: VideoThumbnails[];
+  thumbnails: VideoThumbnails;
   title: string;
   localized: { title: string; description: string };
 }
@@ -194,6 +194,8 @@ export interface YTPlaylistNormedState {
   videos: DeepRONormVideos;
   listToPlay: DeepRONormListToPlay;
 }
+
+export type ListToPlayItems = DeepReadonly<(PlaylistItem | VideoItem)[]>;
 
 // ==================================================
 // Actions

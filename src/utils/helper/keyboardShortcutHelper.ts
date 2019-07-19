@@ -35,7 +35,7 @@ export const useKeyDown = (handler: (arg0: React.KeyboardEvent) => void) => {
  * @param fn function to execute for escaping overlay
  * @returns event handler function for useKeyDown
  */
-export const setEscOverlay = (fn: Function) => (e: KeyboardEvent) => {
+export const setEscOverlay = (fn: Function) => (e: React.KeyboardEvent) => {
   if (e.keyCode === 27) {
     fn(e);
   }
