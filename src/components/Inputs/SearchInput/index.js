@@ -1,1 +1,0 @@
-export { withSearchInput } from "./SearchInput";

@@ -9,14 +9,14 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 
-import { withSearchInput } from "../../Inputs";
+import { makeSearchInput } from "../../Inputs";
 import { VideosPanelBtnGroup } from "../../Buttons";
 import { setCheckedVideosAction } from "../../../store/ytplaylist/action";
 import { addOrRemove } from "../../../utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
 
-const SearchVideoInput = withSearchInput("video");
+const SearchVideoInput = makeSearchInput("videos");
 
 const VideosPanel = (props) => {
   const {

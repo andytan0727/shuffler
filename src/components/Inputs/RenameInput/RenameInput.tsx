@@ -1,22 +1,39 @@
 import React, { useState, useEffect, useCallback } from "react";
-import PropTypes from "prop-types";
 import classNames from "classnames";
 import { connect } from "react-redux";
-
+import { AppState } from "store";
 import {
   setCheckedPlaylistsAction,
   renamePlaylistAction,
-} from "../../../store/ytplaylist/action";
+} from "store/ytplaylist/action";
+import { selectPlaylistName } from "store/ytplaylist/selector";
 
 import styles from "./styles.module.scss";
 
-const RenameInput = (props) => {
+interface OwnProps {
+  id: string;
+}
+
+interface ConnectedStates {
+  playlistName: string | undefined;
+}
+
+interface ConnectedDispatch {
+  setCheckedPlaylistsAction: typeof setCheckedPlaylistsAction;
+  renamePlaylistAction: typeof renamePlaylistAction;
+}
+
+type RenameInputProps = OwnProps & ConnectedStates & ConnectedDispatch;
+
+const RenameInput = (props: RenameInputProps) => {
   const {
     // own props
     id,
-    name,
 
-    // redux actions
+    // connected state
+    playlistName,
+
+    // connected dispatch
     setCheckedPlaylistsAction,
     renamePlaylistAction,
   } = props;
@@ -24,22 +41,18 @@ const RenameInput = (props) => {
 
   // on videoItem span child
   const handleDoubleClick = useCallback(
-    (e) => {
-      const selectedPlaylistId = e.currentTarget.getAttribute(
-        "data-playlistid"
-      );
+    (playlistId: string) => () => {
       setEditName({
-        [selectedPlaylistId]: true,
+        [playlistId]: true,
       });
 
-      setCheckedPlaylistsAction([selectedPlaylistId]);
+      setCheckedPlaylistsAction([playlistId]);
     },
     [setCheckedPlaylistsAction]
   );
 
   const handleEditNameInputChange = useCallback(
-    (e) => {
-      const playlistId = e.target.getAttribute("data-playlistid");
+    (playlistId: string) => (e: InputChangeEvent) => {
       renamePlaylistAction(e.target.value, playlistId);
     },
     [renamePlaylistAction]
@@ -53,41 +66,35 @@ const RenameInput = (props) => {
 
   // focus on currently selected playlist's input on double click
   useEffect(() => {
-    /** @type {HTMLInputElement} */
-    const input = document.querySelector('input[name="edit-name"]');
+    const input: HTMLInputElement | null = document.querySelector(
+      'input[name="edit-name"]'
+    );
     if (Object.keys(editName).length && input) {
       input.focus();
     }
   }, [editName]);
 
-  return editName[id] ? (
+  return (editName as PlainObject)[id] ? (
     <input
       className={classNames(styles.editNameInput, `edit-name-${id}`)}
       name="edit-name"
-      value={name}
-      onChange={handleEditNameInputChange}
+      value={playlistName}
+      onChange={handleEditNameInputChange(id)}
       onBlur={handleEditNameInputBlur}
-      data-playlistid={id}
     />
   ) : (
-    <span
-      className={styles.editNameSpan}
-      onDoubleClick={handleDoubleClick}
-      data-playlistid={id}
-    >
-      {name || `Playlist - ${id}`}
+    <span className={styles.editNameSpan} onDoubleClick={handleDoubleClick(id)}>
+      {playlistName || `Playlist - ${id}`}
     </span>
   );
 };
 
-RenameInput.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  renamePlaylistAction: PropTypes.func.isRequired,
-};
+const mapStatesToProps = (state: AppState, props: OwnProps) => ({
+  playlistName: selectPlaylistName(state as never, props.id),
+});
 
 export default connect(
-  null,
+  mapStatesToProps,
   {
     setCheckedPlaylistsAction,
     renamePlaylistAction,

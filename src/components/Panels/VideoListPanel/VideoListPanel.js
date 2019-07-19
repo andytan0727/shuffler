@@ -10,14 +10,14 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import { VideoListPanelBtnGroup } from "../../Buttons";
-import { withSearchInput, RenameInput } from "../../Inputs";
+import { makeSearchInput, RenameInput } from "../../Inputs";
 import { VideoList } from "../../Lists";
 import { setCheckedPlaylistsAction } from "../../../store/ytplaylist/action";
 import { addOrRemove } from "../../../utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
 
-const SearchPlaylistInput = withSearchInput("playlist");
+const SearchPlaylistInput = makeSearchInput("playlists");
 
 const VideoListPanel = (props) => {
   const {
@@ -74,7 +74,7 @@ const VideoListPanel = (props) => {
                       checkedIcon={<CheckBoxIcon fontSize="small" />}
                       onChange={handleCheckPlaylists(playlist.id)}
                     />
-                    <RenameInput id={playlist.id} name={playlist.name} />
+                    <RenameInput id={playlist.id} />
                     {playingPlaylists.includes(playlist.id) && (
                       <MusicVideoIcon />
                     )}

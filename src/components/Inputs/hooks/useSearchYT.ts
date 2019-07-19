@@ -112,10 +112,10 @@ export const useSearchYT = (
   searchType: MediaSourceType
 ): {
   inputVal: string;
-  setInputVal?: (arg0: string) => void;
-  searchYT?: (arg0: string) => void;
-  handleInputChange?: (e: InputChangeEvent) => void;
-  handleSearchYT?: (e: OnClickEvent) => void;
+  setInputVal: (arg0: string) => void;
+  searchYT: (arg0: string) => void;
+  handleInputChange: (e: InputChangeEvent) => void;
+  handleSearchYT: (e: OnClickEvent) => void;
 } => {
   const [inputVal, setInputVal] = useState("");
 

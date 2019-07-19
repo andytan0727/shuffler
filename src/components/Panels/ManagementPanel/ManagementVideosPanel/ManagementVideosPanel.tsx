@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Typography, Divider } from "@material-ui/core";
 import { selectAllNormVideoItemIds } from "store/ytplaylist/normSelector";
-import { makeManagementPanelSearchInput } from "components/Inputs/ManagementPanelSearchInput";
+import { makeManagementPanelSearchInput } from "components/Inputs";
 import {
   ManagementPanelVirtualList,
   makeManagementPanelVirtualListItem,
