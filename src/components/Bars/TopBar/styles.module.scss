@@ -56,7 +56,9 @@
 }
 
 // TopBar settings for dark theme
-.navDark {
+.nav {
+  user-select: none;
+
   nav {
     width: 100%;
     position: relative;
