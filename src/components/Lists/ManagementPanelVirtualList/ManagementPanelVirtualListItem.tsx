@@ -106,7 +106,7 @@ export const makeManagementPanelVirtualListItem = (
         <ListItemIcon>
           <Checkbox
             edge="start"
-            checked={checked.includes(snippetId)}
+            checked={checked.includes(currentItemId)}
             disableRipple
             inputProps={{ "aria-labelledby": snippetId }}
           />
