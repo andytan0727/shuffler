@@ -10,8 +10,8 @@ import {
   PlaylistAddCheck as PlaylistAddCheckIcon,
 } from "@material-ui/icons";
 import {
-  playingPlaylistsSelector,
-  playlistsSelector,
+  selectPlayingPlaylists,
+  selectPlaylists,
 } from "store/ytplaylist/selector";
 
 import styles from "./styles.module.scss";
@@ -30,7 +30,7 @@ const ManagementPlaylistsPanelGridItemBtn = (
   props: ManagementPlaylistsPanelGridItemBtnProps
 ) => {
   const { playlistId } = props;
-  const playingPlaylists = useSelector(playingPlaylistsSelector);
+  const playingPlaylists = useSelector(selectPlayingPlaylists);
 
   return (
     <div>
@@ -70,8 +70,8 @@ const ManagementPlaylistsPanelGridItemBtn = (
 };
 
 const ManagementPlaylistsPanelGrid = () => {
-  const playlists = useSelector(playlistsSelector);
-  const playingPlaylists = useSelector(playingPlaylistsSelector);
+  const playlists = useSelector(selectPlaylists);
+  const playingPlaylists = useSelector(selectPlayingPlaylists);
   const [enterPlaylist, setEnterPlaylist] = useState({});
 
   const handlePlaylistMouseEnter = useCallback(

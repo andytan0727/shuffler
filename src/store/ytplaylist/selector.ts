@@ -2,54 +2,61 @@ import { createSelector } from "reselect";
 import createCachedSelector from "re-reselect";
 import { AppState } from "store";
 
-const ytplaylistSelector = (state: AppState) => state.ytplaylist;
+const selectYtplaylist = (state: AppState) => state.ytplaylist;
 
 // ===================================================
 // Playlists
 // ===================================================
-export const playlistsSelector = createSelector(
-  ytplaylistSelector,
+export const selectPlaylists = createSelector(
+  selectYtplaylist,
   (ytplaylist) => ytplaylist.playlists
 );
 
-export const checkedPlaylistsSelector = createSelector(
-  ytplaylistSelector,
+export const selectCheckedPlaylists = createSelector(
+  selectYtplaylist,
   (ytplaylist) => ytplaylist.checkedPlaylists
 );
 
-export const playingPlaylistsSelector = createSelector(
-  ytplaylistSelector,
+export const selectPlayingPlaylists = createSelector(
+  selectYtplaylist,
   (ytplaylist) => ytplaylist.playingPlaylists
 );
 
-export const playlistItemsSelector = createCachedSelector(
-  playlistsSelector,
+export const selectPlaylistItems = createCachedSelector(
+  selectPlaylists,
   (_: never, playlistId: number) => playlistId,
   (playlists, id) => playlists[id].items
 )((_, id) => `playlists:${id}`);
+
+export const selectPlaylistName = createCachedSelector(
+  selectPlaylists,
+  (_: never, playlistId: string) => playlistId,
+  (playlists, playlistId) =>
+    playlists.filter((playlist) => playlist.id === playlistId)[0].name
+)((_, id) => `playlist-name-${id}`);
 
 // ===================================================
 // ===================================================
 // Videos
 // ===================================================
 // ===================================================
-export const videosSelector = createSelector(
-  ytplaylistSelector,
+export const selectVideos = createSelector(
+  selectYtplaylist,
   (ytplaylist) => ytplaylist.videos
 );
 
-export const checkedVideosSelector = createSelector(
-  ytplaylistSelector,
+export const selectCheckedVideos = createSelector(
+  selectYtplaylist,
   (ytplaylist) => ytplaylist.checkedVideos
 );
 
-export const playingVideosSelector = createSelector(
-  ytplaylistSelector,
+export const selectPlayingVideos = createSelector(
+  selectYtplaylist,
   (ytplaylist) => ytplaylist.playingVideos
 );
 
-export const videoItemsSelector = createSelector(
-  videosSelector,
+export const selectVideoItems = createSelector(
+  selectVideos,
   (videos) =>
     videos
       // @ts-ignore
@@ -61,7 +68,7 @@ export const videoItemsSelector = createSelector(
 // ===================================================
 // List To Play
 // ===================================================
-export const listToPlaySelector = createSelector(
-  ytplaylistSelector,
+export const selectListToPlay = createSelector(
+  selectYtplaylist,
   (ytplaylist) => ytplaylist.listToPlay
 );

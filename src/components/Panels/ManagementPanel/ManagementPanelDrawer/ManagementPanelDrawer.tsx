@@ -18,7 +18,7 @@ import {
   PlayCircleOutline as PlayCircleOutlineIcon,
   PlaylistPlay as PlaylistPlayIcon,
 } from "@material-ui/icons";
-import { playlistsSelector } from "store/ytplaylist/selector";
+import { selectPlaylists } from "store/ytplaylist/selector";
 
 interface DrawerNavListItemProps {
   pathUrl: string;
@@ -104,7 +104,7 @@ const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
   const { playlistUrl } = props;
   const classes = useStyles({});
 
-  const playlists = useSelector(playlistsSelector);
+  const playlists = useSelector(selectPlaylists);
 
   return (
     <List className={classes.drawerPlaylistsNavContainer} component="nav">
