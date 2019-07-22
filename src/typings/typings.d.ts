@@ -33,9 +33,10 @@ declare global {
   }
 
   interface MatchRoute {
+    isExact: boolean;
     url: string;
-    pathname: string;
     path: string;
+    params: any;
   }
 
   type PlaylistParams = BaseFetchParams & {

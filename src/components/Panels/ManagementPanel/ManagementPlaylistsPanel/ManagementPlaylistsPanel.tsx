@@ -1,22 +1,37 @@
-import React from "react";
-import { Divider, Typography } from "@material-ui/core";
-import { makeManagementPanelSearchInput } from "components/Inputs";
+import React, { Suspense, lazy } from "react";
+import { Redirect, Switch, Route } from "react-router";
+import FullPageSpinner from "components/Loadings/FullPageSpinner";
+import { retryLazy, delayLazy } from "utils/helper/lazyImportHelper";
 
-import ManagementPlaylistsPanelGrid from "./ManagementPlaylistsPanelGrid";
+interface ManagementPlaylistsPanelProps {
+  match: MatchRoute;
+}
 
-import styles from "./styles.module.scss";
+const ManagementPlaylistsPanelHome = lazy(() =>
+  delayLazy(() => retryLazy(() => import("./ManagementPlaylistsPanelHome")))
+);
 
-const SearchPlaylistInput = makeManagementPanelSearchInput("playlists");
+const ManagementPlaylistPanel = lazy(() =>
+  delayLazy(() => retryLazy(() => import("./ManagementPlaylistPanel")))
+);
 
-const LargePlaylistsPanel = () => {
+const ManagementPlaylistsPanel = ({ match }: ManagementPlaylistsPanelProps) => {
+  const path = match.path;
+
   return (
-    <div className={styles.managementPlaylistsPanelDiv}>
-      <Typography variant="h4">My Playlists</Typography>
-      <SearchPlaylistInput />
-      <Divider />
-      <ManagementPlaylistsPanelGrid />
-    </div>
+    <Suspense fallback={<FullPageSpinner />}>
+      <Switch>
+        <Route
+          exact
+          path={`${path}`}
+          component={ManagementPlaylistsPanelHome}
+        />
+        <Route path={`${path}/:id`} component={ManagementPlaylistPanel} />
+
+        <Redirect to={`${path}`} />
+      </Switch>
+    </Suspense>
   );
 };
 
-export default LargePlaylistsPanel;
+export default ManagementPlaylistsPanel;

@@ -15,6 +15,11 @@ export const selectNormListToPlayEntities = (state: AppState) =>
 export const selectNormListToPlayResult = (state: AppState) =>
   state.ytplaylistNormed.listToPlay.result;
 
+// ===================================================
+// ===================================================
+// Playlists
+// ===================================================
+// ===================================================
 export const selectAllNormPlaylistItems = createSelector(
   selectNormPlaylistsEntities,
   (entities) => entities.playlistItems
@@ -25,14 +30,20 @@ export const selectAllNormPlaylistSnippets = createSelector(
   (entities) => entities.snippets
 );
 
-export const selectNormPlaylistItemIdsByPlaylistId = createCachedSelector(
+export const selectNormPlaylistNameById = createCachedSelector(
+  selectNormPlaylistsEntities,
+  (_: never, playlistId: string) => playlistId,
+  (entities, id) => entities.playlists[id].name
+)((_, id) => `playlist-name-${id}`);
+
+export const selectNormPlaylistItemIdsById = createCachedSelector(
   selectNormPlaylistsEntities,
   (_: never, playlistId: string) => playlistId,
   (entities, id) => entities.playlists[id].items
 )((_, playlistId) => `playlists-${playlistId}`);
 
 export const selectNormPlaylistSnippetIdsByItemIds = createCachedSelector(
-  selectNormPlaylistItemIdsByPlaylistId,
+  selectNormPlaylistItemIdsById,
   selectAllNormPlaylistItems,
   (itemIds, playlistItems) =>
     itemIds.map((id: string) => playlistItems[id].snippet)
