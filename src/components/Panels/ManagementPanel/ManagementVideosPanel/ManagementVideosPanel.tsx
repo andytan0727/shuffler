@@ -9,6 +9,8 @@ import {
 } from "components/Lists/ManagementPanelVirtualList";
 
 import styles from "./styles.module.scss";
+import { useCheckbox } from "components/Checkbox/hooks";
+import { createItemData } from "components/Lists/ManagementPanelVirtualList";
 
 const SearchVideoInput = makeManagementPanelSearchInput("videos");
 
@@ -18,6 +20,8 @@ const ManagementPanelVirtualListVideoItem = makeManagementPanelVirtualListItem(
 
 const ManagementVideosPanel = () => {
   const videoItemIds = useSelector(selectAllNormVideoItemIds);
+  const { checked, handleSetChecked } = useCheckbox();
+  const videoItemData = createItemData(checked, handleSetChecked, videoItemIds);
 
   return (
     <div className={styles.managementVideosPanelDiv}>
@@ -29,7 +33,7 @@ const ManagementVideosPanel = () => {
       </div>
 
       <Divider className={styles.header} />
-      <ManagementPanelVirtualList items={videoItemIds}>
+      <ManagementPanelVirtualList itemData={videoItemData}>
         {ManagementPanelVirtualListVideoItem}
       </ManagementPanelVirtualList>
     </div>

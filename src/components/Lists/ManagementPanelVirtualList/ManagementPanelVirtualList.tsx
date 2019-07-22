@@ -2,7 +2,11 @@ import React, { MemoExoticComponent } from "react";
 import memoizeOne from "memoize-one";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { useCheckbox } from "components/Checkbox/hooks";
+
+interface ManagementPanelVirtualListProps {
+  itemData: ItemData;
+  children: MemoExoticComponent<any>; // shut TS up with the usage of Memo on ListItem
+}
 
 export interface ItemData {
   checked: string[];
@@ -20,12 +24,11 @@ export interface ItemData {
 const _getItemKey = (index: number, data: ItemData): string | number =>
   data.items[index];
 
-interface ManagementPanelVirtualListProps {
-  items: string[];
-  children: MemoExoticComponent<any>; // shut TS up with the usage of Memo on ListItem
-}
-
-const createItemData = memoizeOne(
+/**
+ * Memoized function to create itemData for react-window list
+ *
+ */
+export const createItemData = memoizeOne(
   (
     checked: string[],
     handleSetChecked: (id: string) => (e: OnClickEvent) => void,
@@ -45,10 +48,7 @@ const createItemData = memoizeOne(
  *
  */
 const ManagementPanelVirtualList = (props: ManagementPanelVirtualListProps) => {
-  // items is an array containing id of playlistItem/videoItem
-  const { items, children } = props;
-  const { checked, handleSetChecked } = useCheckbox();
-  const itemData = createItemData(checked, handleSetChecked, items);
+  const { itemData, children } = props;
 
   return (
     <AutoSizer>
@@ -58,7 +58,7 @@ const ManagementPanelVirtualList = (props: ManagementPanelVirtualListProps) => {
           width={width}
           itemKey={_getItemKey}
           itemData={itemData}
-          itemCount={items.length}
+          itemCount={itemData.items.length}
           itemSize={80}
         >
           {children}
