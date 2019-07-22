@@ -182,6 +182,20 @@ export const listToPlayReducer: Reducer<
       return mergeNormalizedEntities(draft, action);
     }
 
+    // Update entire normalized listToPlay without preserving previous details
+    case ActionTypes.UPDATE_NORM_LIST_TO_PLAY: {
+      const { source, sourceId: foreignKey, itemIds } = action.payload;
+
+      const schema = source === "playlists" ? "playlistItems" : "videoItems";
+
+      itemIds.forEach((itemId) => {
+        draft.entities[schema][itemId] = { id: itemId, foreignKey };
+        draft.result.push({ id: itemId, source, schema });
+      });
+
+      return draft;
+    }
+
     case ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID: {
       return deleteListToPlayItemById(draft, action.payload.id);
     }
