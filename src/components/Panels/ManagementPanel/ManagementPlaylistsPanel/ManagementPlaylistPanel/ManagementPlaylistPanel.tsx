@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import shuffle from "lodash/shuffle";
 import { Typography, Divider } from "@material-ui/core";
 import {
   ManagementPanelVirtualList,
@@ -13,6 +12,7 @@ import { ManagementPanelCtrlBtnGroup } from "components/Buttons";
 import {
   deleteNormPlaylistItemByIdAction,
   updateNormListToPlayAction,
+  shuffleNormPlaylistItems,
 } from "store/ytplaylist/normAction";
 import {
   selectNormPlaylistItemIdsById,
@@ -41,10 +41,13 @@ const ManagementPlaylistPanel = ({
   const playlistItemIds = useSelector((state: never) =>
     selectNormPlaylistItemIdsById(state, playlistId)
   ) as string[];
-  const [itemIds, setItemIds] = useState(playlistItemIds);
   const { checked, handleSetChecked } = useCheckbox();
 
-  const playlistItemData = createItemData(checked, handleSetChecked, itemIds);
+  const playlistItemData = createItemData(
+    checked,
+    handleSetChecked,
+    playlistItemIds
+  );
 
   const handlePlayPlaylist = useCallback(() => {
     dispatch(updateNormListToPlayAction("playlists", playlistId, checked));
@@ -53,18 +56,14 @@ const ManagementPlaylistPanel = ({
   }, [history, dispatch, playlistId, checked]);
 
   const handleShufflePlaylist = useCallback(() => {
-    setItemIds(shuffle(playlistItemIds));
-  }, [playlistItemIds]);
+    dispatch(shuffleNormPlaylistItems(playlistId));
+  }, [playlistId, dispatch]);
 
   const handleDeletePlaylistItems = useCallback(() => {
     checked.forEach((itemId) => {
       dispatch(deleteNormPlaylistItemByIdAction(playlistId, itemId));
     });
   }, [checked, dispatch, playlistId]);
-
-  useEffect(() => {
-    setItemIds(playlistItemIds);
-  }, [playlistItemIds]);
 
   return (
     <div className={styles.managementPlaylistPanelDiv}>

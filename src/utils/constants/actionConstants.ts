@@ -61,6 +61,7 @@ export const REMOVE_VIDEOS_FROM_LIST_TO_PLAY = "REMOVE_VIDEOS_FROM_LIST_TO_PLAY"
 export const ADD_NORM_VIDEO = "ADD_NORM_VIDEO" as const;
 export const DELETE_NORM_VIDEO_BY_ID = "DELETE_NORM_VIDEO_BY_ID" as const;
 export const UPDATE_NORM_VIDEO_NAME_BY_ID = "UPDATE_NORM_VIDEO_NAME_BY_ID" as const;
+export const SHUFFLE_NORM_PLAYLIST_ITEMS = "SHUFFLE_NORM_PLAYLIST_ITEMS" as const;
 
 // =========================
 // ytplaylist listToPlay

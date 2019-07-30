@@ -1,4 +1,4 @@
-import produce, { Draft } from "immer";
+import produce, { Draft, original } from "immer";
 import { combineReducers } from "redux";
 import { Reducer } from "typesafe-actions";
 import shuffle from "lodash/shuffle";
@@ -94,6 +94,17 @@ export const playlistsReducer: Reducer<
       // if playlist id existed and all its items are in listToPlay previously
       if (playlists[id] && playlists[id].allInPlaying) {
         playlists[id].allInPlaying = false;
+      }
+
+      return draft;
+    }
+
+    case ActionTypes.SHUFFLE_NORM_PLAYLIST_ITEMS: {
+      const { id } = action.payload;
+      const prevPlaylistItems = original(draft.entities.playlists[id].items);
+
+      if (prevPlaylistItems) {
+        draft.entities.playlists[id].items = shuffle(prevPlaylistItems);
       }
 
       return draft;

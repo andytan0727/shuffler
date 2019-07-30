@@ -91,8 +91,21 @@ export const labelNormPlaylistAsPlayingByIdAction = createAction(
   (action) => (id: string) => action({ id })
 );
 
+/**
+ * Remove playlist playing label
+ * @param id Playlist id
+ */
 export const removeNormPlaylistAsPlayingById = createAction(
   ActionTypes.REMOVE_NORM_PLAYLIST_AS_PLAYING_BY_ID,
+  (action) => (id: string) => action({ id })
+);
+
+/**
+ * Shuffle norm playlist items by playlist id
+ * @param id Playlist id to shuffle
+ */
+export const shuffleNormPlaylistItems = createAction(
+  ActionTypes.SHUFFLE_NORM_PLAYLIST_ITEMS,
   (action) => (id: string) => action({ id })
 );
 
