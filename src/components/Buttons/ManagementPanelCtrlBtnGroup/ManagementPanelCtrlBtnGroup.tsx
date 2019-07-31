@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, IconButton, Tooltip } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import {
   PlayArrow as PlayArrowIcon,
   Shuffle as ShuffleIcon,
@@ -19,7 +19,6 @@ const ManagementPanelCtrlBtnGroup = (
 
   return (
     <div>
-      <Input color="secondary" placeholder="filter..." />
       <Tooltip title="Play">
         <IconButton color="secondary" onClick={handlePlay}>
           <PlayArrowIcon />
