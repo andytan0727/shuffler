@@ -199,6 +199,12 @@ export const listToPlayReducer: Reducer<
 
       const schema = source === "playlists" ? "playlistItems" : "videoItems";
 
+      // clear previous state
+      draft.entities.playlistItems = {};
+      draft.entities.videoItems = {};
+      draft.result = [];
+
+      // update cleared states with new states
       itemIds.forEach((itemId) => {
         draft.entities[schema][itemId] = { id: itemId, foreignKey };
         draft.result.push({ id: itemId, source, schema });
