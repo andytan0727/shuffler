@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectPlaylists } from "store/ytplaylist/selector";
-import ManagementPlaylistsPanelGridItem from "../ManagementPlaylistsPanelGridItem";
+import ManagementPlaylistsPanelGridItem from "components/Grids/ManagementPlaylistsPanelGridItem";
 
 import styles from "./styles.module.scss";
 

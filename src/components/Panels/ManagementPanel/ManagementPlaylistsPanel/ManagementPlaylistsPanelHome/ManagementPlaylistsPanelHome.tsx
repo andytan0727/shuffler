@@ -2,7 +2,7 @@ import React from "react";
 import { Divider, Typography } from "@material-ui/core";
 import { makeManagementPanelSearchInput } from "components/Inputs";
 
-import ManagementPlaylistsPanelGrid from "../ManagementPlaylistsPanelGrid";
+import ManagementPlaylistsPanelGrid from "components/Grids/ManagementPlaylistsPanelGrid";
 
 import styles from "./styles.module.scss";
 

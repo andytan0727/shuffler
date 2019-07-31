@@ -12,7 +12,7 @@ const ManagementPlaylistsPanelHome = lazy(() =>
 );
 
 const ManagementPlaylistPanel = lazy(() =>
-  delayLazy(() => retryLazy(() => import("./ManagementPlaylistPanel")))
+  delayLazy(() => retryLazy(() => import("../ManagementPlaylistPanel")))
 );
 
 const ManagementPlaylistsPanel = ({ match }: ManagementPlaylistsPanelProps) => {
