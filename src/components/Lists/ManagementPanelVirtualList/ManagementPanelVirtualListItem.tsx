@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { areEqual } from "react-window";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,9 +9,8 @@ import {
   Checkbox,
   makeStyles,
 } from "@material-ui/core";
-
-import { AddVideoToPlayingSwitch } from "components/Switches";
 import { DeleteItemButton } from "components/Buttons/DeleteButtons";
+import { makeToggleItemToListToPlaySwitch } from "components/Switches";
 import { deleteVideosAction } from "store/ytplaylist/action";
 import {
   deleteNormVideoByIdAction,
@@ -58,7 +57,6 @@ export const makeManagementPanelVirtualListItem = (
     const {
       index,
       style,
-      // data: { checked, handleSetChecked, snippets },
       data: { checked, handleSetChecked, items },
     } = props;
     const classes = useStyles({ index });
@@ -71,6 +69,12 @@ export const makeManagementPanelVirtualListItem = (
     );
     const snippetId = currentSnippet.id;
     const listItemText = currentSnippet && currentSnippet.title;
+
+    // Switch component which depends on the sourceType
+    const AddItemToListToPlaySwitch = useMemo(
+      () => makeToggleItemToListToPlaySwitch(sourceType),
+      []
+    );
 
     if (!snippetId) throw new Error("VirtualListItem: Id not found in snippet");
 
@@ -120,7 +124,7 @@ export const makeManagementPanelVirtualListItem = (
         {/* ListItemSecondaryAction should be last child */}
         <ListItemSecondaryAction>
           <div>
-            <AddVideoToPlayingSwitch itemId={snippetId} />
+            <AddItemToListToPlaySwitch itemId={currentItemId} />
             <DeleteItemButton
               handleOnClick={
                 sourceType === "playlists"

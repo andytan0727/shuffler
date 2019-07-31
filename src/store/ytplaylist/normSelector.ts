@@ -4,7 +4,11 @@ import map from "lodash/map";
 import pick from "lodash/pick";
 import { AppState } from "store";
 import { getSnippetFromItemId } from "./utils";
-import { NormVideosEntities, NormPlaylistsEntities } from "./types";
+import {
+  NormVideosEntities,
+  NormPlaylistsEntities,
+  PlaylistItemSnippet,
+} from "./types";
 
 export const selectNormPlaylistsEntities = (state: AppState) =>
   state.ytplaylistNormed.playlists.entities;
@@ -65,6 +69,11 @@ export const selectNormPlaylistSnippetsBySnippetIds = createCachedSelector(
     }))
 )((_, id) => `PS-SID-${id}`);
 
+export const selectNormPlaylistIdByItemId = createCachedSelector(
+  selectNormPlaylistSnippetByItemId,
+  (snippet) => (snippet as PlaylistItemSnippet).playlistId
+)((_, itemId) => `playlistId-playlistItemId-${itemId}`);
+
 // ===================================================
 // ===================================================
 // Videos
@@ -109,6 +118,12 @@ export const selectNormVideoSnippetsByItemIds = createCachedSelector(
     return snippetIds.map((snippetId) => entities.snippets[snippetId]);
   }
 )((_, id) => `snippets-itemId-${id.toString()}`);
+
+export const selectNormVideoIdByItemId = createCachedSelector(
+  selectNormVideosEntities,
+  (_: never, itemId: string) => itemId,
+  (entities, itemId) => entities.videoItems[itemId].id
+)((_, itemId) => `videoId-itemId-${itemId}`);
 
 // ===================================================
 // ===================================================

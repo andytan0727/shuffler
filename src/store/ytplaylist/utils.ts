@@ -12,6 +12,7 @@ import {
   NormPlaylistsOrVideos,
   NormPlaylistsOrVideosItemsEntity,
   NormPlaylistsOrVideosEntities,
+  NormListToPlayEntities,
 } from "./types";
 
 // ==================================================
@@ -174,6 +175,19 @@ export const deleteListToPlayItemById = (
 
   return draft;
 };
+
+/**
+ * Check if particular item from playlists/videos exists in listToPlay
+ *
+ * @param entities Normalized listToPlay entities
+ * @param schema listToPlay item schema (playlistItems/videoItems)
+ * @param itemId listToPlay item's id
+ */
+export const isListToPlayItemExists = (
+  entities: NormListToPlayEntities,
+  schema: SchemaType,
+  itemId: string
+) => !!entities[schema][itemId];
 
 // =====================================================
 // Utils for selectors
