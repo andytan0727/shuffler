@@ -4,6 +4,7 @@ import SwitchPanelRadioBtn from "./SwitchPanelRadioBtn";
 import VideoListPanelBtnGroup from "./VideoListPanelBtnGroup";
 import VideosPanelBtnGroup from "./VideosPanelBtnGroup";
 import ManagementPanelCtrlBtnGroup from "./ManagementPanelCtrlBtnGroup";
+import ManagementPlaylistsPanelGridItemBtn from "./ManagementPlaylistsPanelGridItemBtn";
 
 export {
   PlayerBasicCtrlBtnGroup,
@@ -12,4 +13,5 @@ export {
   VideoListPanelBtnGroup,
   VideosPanelBtnGroup,
   ManagementPanelCtrlBtnGroup,
+  ManagementPlaylistsPanelGridItemBtn,
 };
