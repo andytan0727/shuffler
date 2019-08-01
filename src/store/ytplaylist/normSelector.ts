@@ -21,11 +21,11 @@ export const selectNormListToPlayEntities = (state: AppState) =>
 export const selectNormListToPlayResult = (state: AppState) =>
   state.ytplaylistNormed.listToPlay.result;
 
-// ===================================================
-// ===================================================
+// =====================================
+// =====================================
 // Playlists
-// ===================================================
-// ===================================================
+// =====================================
+// =====================================
 export const selectAllNormPlaylistItems = createSelector(
   selectNormPlaylistsEntities,
   (entities) => entities.playlistItems
@@ -82,11 +82,11 @@ export const selectNormPlaylistIdByItemId = createCachedSelector(
   (snippet) => (snippet as PlaylistItemSnippet).playlistId
 )((_, itemId) => `playlistId-playlistItemId-${itemId}`);
 
-// ===================================================
-// ===================================================
+// =====================================
+// =====================================
 // Videos
-// ===================================================
-// ===================================================
+// =====================================
+// =====================================
 export const selectAllNormVideoSnippets = createSelector(
   selectNormVideosEntities,
   (entities) => entities.snippets
@@ -133,11 +133,11 @@ export const selectNormVideoIdByItemId = createCachedSelector(
   (entities, itemId) => entities.videoItems[itemId].id
 )((_, itemId) => `videoId-itemId-${itemId}`);
 
-// ===================================================
-// ===================================================
+// =====================================
+// =====================================
 // List To Play
-// ===================================================
-// ===================================================
+// =====================================
+// =====================================
 export const selectNormListToPlayPlaylistItems = createSelector(
   selectNormListToPlayEntities,
   (entities) => entities.playlistItems
@@ -159,3 +159,27 @@ export const selectNormListToPlayVideoItemByItemId = createCachedSelector(
   (_: never, itemId: string) => itemId,
   (videoItems, itemId) => videoItems[itemId]
 )((_, id) => `LTP-VI-${id}`);
+
+export const selectAllNormListToPlayItemIds = createSelector(
+  selectNormListToPlayResult,
+  (results) => results.map((result) => result.id)
+);
+
+// =====================================
+// =====================================
+// General
+// =====================================
+// =====================================
+
+/**
+ * Select snippet from either playlist/video side based on the present of
+ * playlistId property in snippet.
+ * If playlistId exists then the snippet is belong to playlist, and vice versa.
+ *
+ */
+export const selectNormSnippetByItemId = createCachedSelector(
+  selectNormPlaylistSnippetByItemId,
+  selectNormVideoSnippetByItemId,
+  (playlistSnippet, videoSnippet) =>
+    playlistSnippet ? playlistSnippet : videoSnippet
+)((_: never, itemId) => `ltp-snippet-itemId-${itemId}`);
