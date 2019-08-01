@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import { areEqual } from "react-window";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   ListItem,
   ListItemIcon,
@@ -9,19 +9,21 @@ import {
   Checkbox,
   makeStyles,
 } from "@material-ui/core";
-import { DeleteItemButton } from "components/Buttons/DeleteButtons";
-import { makeToggleItemToListToPlaySwitch } from "components/Switches";
-import { deleteVideosAction } from "store/ytplaylist/action";
-import {
-  deleteNormVideoByIdAction,
-  deleteNormPlaylistItemByIdAction,
-} from "store/ytplaylist/normAction";
-import {
-  selectNormVideoSnippetByItemId,
-  selectNormPlaylistSnippetByItemId,
-} from "store/ytplaylist/normSelector";
-import { PlaylistItemSnippet } from "store/ytplaylist/types";
+import { selectNormSnippetByItemId } from "store/ytplaylist/normSelector";
+import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
+
 import { ItemData } from "./ManagementPanelVirtualList";
+
+interface WrappedSecondaryActionItemsProps {
+  itemId: string;
+  snippet: PlaylistItemSnippet | VideoItemSnippet;
+}
+
+interface ManagementPanelVirtualListItemProps {
+  index: number;
+  style: any;
+  data: ItemData;
+}
 
 const useStyles = makeStyles({
   listItem: {
@@ -35,23 +37,16 @@ const useStyles = makeStyles({
   },
 });
 
-interface ManagementPanelVirtualListItemProps {
-  index: number;
-  style: any;
-  data: ItemData;
-}
-
 /**
- * makeManagementPanelVirtualListItem factory
+ * ManagementPanelVirtualListItem
  *
- * Used to generate list item component for ManagementPanelVirtualList,
- * with the option of either showing playlists or videos
- *
- * @param sourceType Specify the list item type to produce (playlists/videos)
+ * List item component for ManagementPanelVirtualList,
  *
  */
-export const makeManagementPanelVirtualListItem = (
-  sourceType: MediaSourceType
+export const withListItemSecondaryAction = (
+  WrappedSecondaryActionItems: React.ComponentType<
+    WrappedSecondaryActionItemsProps
+  >
 ) =>
   React.memo((props: ManagementPanelVirtualListItemProps) => {
     const {
@@ -59,40 +54,16 @@ export const makeManagementPanelVirtualListItem = (
       style,
       data: { checked, handleSetChecked, items },
     } = props;
-    const classes = useStyles({ index });
-    const dispatch = useDispatch();
+    const classes = useStyles({});
     const currentItemId = items[index];
     const currentSnippet = useSelector((state: never) =>
-      sourceType === "playlists"
-        ? selectNormPlaylistSnippetByItemId(state, currentItemId)
-        : selectNormVideoSnippetByItemId(state, currentItemId)
+      selectNormSnippetByItemId(state, currentItemId)
     );
+
+    if (!currentSnippet) throw new Error("VirtualListItem: Snippet not found");
+
     const snippetId = currentSnippet.id;
-    const listItemText = currentSnippet && currentSnippet.title;
-
-    // Switch component which depends on the sourceType
-    const AddItemToListToPlaySwitch = useMemo(
-      () => makeToggleItemToListToPlaySwitch(sourceType),
-      []
-    );
-
-    if (!snippetId) throw new Error("VirtualListItem: Id not found in snippet");
-
-    const handleDeleteVideo = useCallback(() => {
-      dispatch(deleteNormVideoByIdAction(snippetId));
-
-      // backward-compatible support
-      dispatch(deleteVideosAction([snippetId]));
-    }, [snippetId, dispatch]);
-
-    const handleDeletePlaylistItem = useCallback(() => {
-      dispatch(
-        deleteNormPlaylistItemByIdAction(
-          (currentSnippet as PlaylistItemSnippet).playlistId,
-          currentItemId
-        )
-      );
-    }, [currentSnippet, currentItemId, dispatch]);
+    const listItemText = currentSnippet.title;
 
     return (
       <ListItem
@@ -123,16 +94,10 @@ export const makeManagementPanelVirtualListItem = (
 
         {/* ListItemSecondaryAction should be last child */}
         <ListItemSecondaryAction>
-          <div>
-            <AddItemToListToPlaySwitch itemId={currentItemId} />
-            <DeleteItemButton
-              handleOnClick={
-                sourceType === "playlists"
-                  ? handleDeletePlaylistItem
-                  : handleDeleteVideo
-              }
-            />
-          </div>
+          <WrappedSecondaryActionItems
+            itemId={currentItemId}
+            snippet={currentSnippet}
+          />
         </ListItemSecondaryAction>
       </ListItem>
     );

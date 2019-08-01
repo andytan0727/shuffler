@@ -4,7 +4,8 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Typography, Divider } from "@material-ui/core";
 import {
   ManagementPanelVirtualList,
-  makeManagementPanelVirtualListItem,
+  withListItemSecondaryAction,
+  PlaylistVideoListItemSecondaryAction,
 } from "components/Lists/ManagementPanelVirtualList";
 import { useCheckbox } from "components/Checkbox/hooks";
 import { createItemData } from "components/Lists/ManagementPanelVirtualList";
@@ -25,8 +26,8 @@ interface ManagementPlaylistPanelProps extends RouteComponentProps {
   match: MatchRoute;
 }
 
-const ManagementPanelVirtualListPlaylistItem = makeManagementPanelVirtualListItem(
-  "playlists"
+const ManagementPanelVirtualListPlaylistItem = withListItemSecondaryAction(
+  PlaylistVideoListItemSecondaryAction
 );
 
 const ManagementPlaylistPanel = ({

@@ -2,6 +2,10 @@ export {
   default as ManagementPanelVirtualList,
   createItemData,
 } from "./ManagementPanelVirtualList";
+export { withListItemSecondaryAction } from "./ManagementPanelVirtualListItem";
 export {
-  makeManagementPanelVirtualListItem,
-} from "./ManagementPanelVirtualListItem";
+  default as PlaylistVideoListItemSecondaryAction,
+} from "./PlaylistVideoListItemSecondaryAction";
+export {
+  default as ListToPlayListItemSecondaryAction,
+} from "./ListToPlayListItemSecondaryAction";

@@ -5,7 +5,8 @@ import { selectAllNormVideoItemIds } from "store/ytplaylist/normSelector";
 import { makeManagementPanelSearchInput } from "components/Inputs";
 import {
   ManagementPanelVirtualList,
-  makeManagementPanelVirtualListItem,
+  withListItemSecondaryAction,
+  PlaylistVideoListItemSecondaryAction,
 } from "components/Lists/ManagementPanelVirtualList";
 
 import styles from "./styles.module.scss";
@@ -14,8 +15,8 @@ import { createItemData } from "components/Lists/ManagementPanelVirtualList";
 
 const SearchVideoInput = makeManagementPanelSearchInput("videos");
 
-const ManagementPanelVirtualListVideoItem = makeManagementPanelVirtualListItem(
-  "videos"
+const ManagementPanelVirtualListVideoItem = withListItemSecondaryAction(
+  PlaylistVideoListItemSecondaryAction
 );
 
 const ManagementVideosPanel = () => {
