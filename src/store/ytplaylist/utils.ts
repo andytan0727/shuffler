@@ -13,6 +13,8 @@ import {
   NormPlaylistsOrVideosItemsEntity,
   NormPlaylistsOrVideosEntities,
   NormListToPlayEntities,
+  PlaylistItemSnippet,
+  VideoItemSnippet,
 } from "./types";
 
 // ==================================================
@@ -29,6 +31,17 @@ export const isPlaylistsEntities = (
   entities: NormPlaylistsOrVideosEntities
 ): entities is NormPlaylistsEntities =>
   (entities as NormPlaylistsEntities).playlists !== undefined;
+
+/**
+ * Type guard for checking whether the supplied snippet belongs to playlist/video
+ *
+ * @param snippet Playlist or video item snippet
+ * @returns
+ */
+export const isPlaylistItemSnippet = (
+  snippet: PlaylistItemSnippet | VideoItemSnippet
+): snippet is PlaylistItemSnippet =>
+  (snippet as PlaylistItemSnippet).playlistId !== undefined;
 
 // ==================================================
 // Util functions
@@ -197,13 +210,15 @@ export const getSnippetFromItemId = (
   itemId: string
 ) => {
   const snippetId = isPlaylistsEntities(entities)
-    ? get(entities.playlistItems[itemId], "snippet", "Id Not Found")
-    : get(entities.videoItems[itemId], "snippet", "Id Not Found");
+    ? get(entities.playlistItems[itemId], "snippet", undefined)
+    : get(entities.videoItems[itemId], "snippet", undefined);
 
   // assign snippet's key as the id of the returning object
   // for the usage in views
-  return {
-    ...entities.snippets[snippetId],
-    id: snippetId,
-  };
+  return snippetId
+    ? {
+        ...entities.snippets[snippetId],
+        id: snippetId,
+      }
+    : undefined;
 };

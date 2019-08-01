@@ -25,7 +25,7 @@ const ManagementPlaylistsPanelGridItem = (
     selectNormPlaylistSnippetByItemId(state, playlist.items[0])
   );
 
-  const thumbnails = firstSnippet.thumbnails;
+  const thumbnails = firstSnippet && firstSnippet.thumbnails;
 
   const handlePlaylistMouseEnter = useCallback(
     (playlistId) => () =>
@@ -50,8 +50,11 @@ const ManagementPlaylistsPanelGridItem = (
       <li
         className={styles.gridItem}
         style={{
-          backgroundImage: `url(${(thumbnails.high && thumbnails.high.url) ||
-            thumbnails.default.url})`,
+          backgroundImage:
+            thumbnails &&
+            `url(${(thumbnails.high && thumbnails.high.url) ||
+              thumbnails.default.url})`,
+          backgroundColor: "white",
           backgroundSize: "cover",
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
