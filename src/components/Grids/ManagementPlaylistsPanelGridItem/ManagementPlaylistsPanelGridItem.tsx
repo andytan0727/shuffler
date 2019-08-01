@@ -1,26 +1,31 @@
 import React, { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { PlaylistAddCheck as PlaylistAddCheckIcon } from "@material-ui/icons";
-import { DeepReadonly } from "utility-types";
-
-import { selectPlayingPlaylists } from "store/ytplaylist/selector";
-import { Playlist } from "store/ytplaylist/types";
 import { ManagementPlaylistsPanelGridItemBtn } from "components/Buttons";
+import {
+  selectNormPlaylistById,
+  selectNormPlaylistSnippetByItemId,
+} from "store/ytplaylist/normSelector";
 
 import styles from "./styles.module.scss";
 
 interface ManagementPlaylistsPanelGridItemProps {
-  playlist: DeepReadonly<Playlist>;
+  playlistId: string;
 }
 
 const ManagementPlaylistsPanelGridItem = (
   props: ManagementPlaylistsPanelGridItemProps
 ) => {
-  const { playlist } = props;
+  const { playlistId } = props;
   const [enterPlaylist, setEnterPlaylist] = useState({});
-  const playingPlaylists = useSelector(selectPlayingPlaylists);
+  const playlist = useSelector((state: never) =>
+    selectNormPlaylistById(state, playlistId)
+  );
+  const firstSnippet = useSelector((state: never) =>
+    selectNormPlaylistSnippetByItemId(state, playlist.items[0])
+  );
 
-  const thumbnails = playlist.items[0].snippet.thumbnails;
+  const thumbnails = firstSnippet.thumbnails;
 
   const handlePlaylistMouseEnter = useCallback(
     (playlistId) => () =>
@@ -41,7 +46,7 @@ const ManagementPlaylistsPanelGridItem = (
   );
 
   return (
-    <div key={playlist.id}>
+    <div key={playlistId}>
       <li
         className={styles.gridItem}
         style={{
@@ -51,18 +56,18 @@ const ManagementPlaylistsPanelGridItem = (
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
         }}
-        onMouseEnter={handlePlaylistMouseEnter(playlist.id)}
-        onMouseLeave={handlePlaylistMouseLeave(playlist.id)}
+        onMouseEnter={handlePlaylistMouseEnter(playlistId)}
+        onMouseLeave={handlePlaylistMouseLeave(playlistId)}
       >
-        {(enterPlaylist as PlainObject)[playlist.id] && (
-          <ManagementPlaylistsPanelGridItemBtn playlistId={playlist.id} />
+        {(enterPlaylist as PlainObject)[playlistId] && (
+          <ManagementPlaylistsPanelGridItemBtn playlistId={playlistId} />
         )}
       </li>
       <div className={styles.gridItemTitle}>
-        <h2>{playlist.name || `Playlist-${playlist.id}`}</h2>
+        <h2>{playlist.name || `Playlist-${playlistId}`}</h2>
 
         <div className={styles.gridItemTitleIcon}>
-          {playingPlaylists.includes(playlist.id) && <PlaylistAddCheckIcon />}
+          {playlist.allInPlaying && <PlaylistAddCheckIcon />}
         </div>
       </div>
     </div>
