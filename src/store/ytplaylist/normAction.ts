@@ -1,10 +1,11 @@
 import { createAction } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
+
 import {
-  NormPlaylistsEntities,
-  NormVideosEntities,
   NormListToPlayEntities,
   NormListToPlayResultItem,
+  NormPlaylistsEntities,
+  NormVideosEntities,
 } from "./types";
 
 // ===============================================

@@ -1,9 +1,9 @@
 import React, { forwardRef, memo } from "react";
 import {
-  VariableSizeList,
-  FixedSizeList,
   areEqual,
+  FixedSizeList,
   ListChildComponentProps,
+  VariableSizeList,
 } from "react-window";
 import { ListToPlayItems } from "store/ytplaylist/types";
 

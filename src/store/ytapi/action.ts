@@ -1,6 +1,6 @@
-import { createAction } from "typesafe-actions";
-import * as ActionTypes from "../../utils/constants/actionConstants";
 import { Playlist, Video } from "store/ytplaylist/types";
+import { createAction } from "typesafe-actions";
+import * as ActionTypes from "utils/constants/actionConstants";
 
 /**
  * Add fetched playlist asynchronously to Redux

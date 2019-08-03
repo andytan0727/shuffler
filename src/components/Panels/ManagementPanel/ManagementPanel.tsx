@@ -1,9 +1,9 @@
-import React, { Suspense, lazy } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
 import FullPageSpinner from "components/Loadings/FullPageSpinner";
-import { retryLazy, delayLazy } from "utils/helper/lazyImportHelper";
-import ManagementPanelDrawer from "./ManagementPanelDrawer";
+import React, { lazy, Suspense } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { delayLazy, retryLazy } from "utils/helper/lazyImportHelper";
 
+import ManagementPanelDrawer from "./ManagementPanelDrawer";
 import styles from "./styles.module.scss";
 
 interface ManagementPanelProps {

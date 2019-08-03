@@ -1,17 +1,17 @@
-import React, { Suspense, lazy, useState, useEffect, useCallback } from "react";
-import { connect } from "react-redux";
+import "./App.scss";
+
 import classNames from "classnames";
 import throttle from "lodash/throttle";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+
+import purple from "@material-ui/core/colors/purple";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
 import { setPreferDarkTheme } from "./store/userPreferences/action";
 import { useKeyDown } from "./utils/helper/keyboardShortcutHelper";
 import { retryLazy } from "./utils/helper/lazyImportHelper";
-
-// MUI styles
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import purple from "@material-ui/core/colors/purple";
-
-import "./App.scss";
 
 // lazy loading pages
 const PgNavbar = lazy(() => retryLazy(() => import("./pages/PgNavbar")));

@@ -1,7 +1,7 @@
-import React, { MemoExoticComponent } from "react";
 import memoizeOne from "memoize-one";
-import { FixedSizeList } from "react-window";
+import React, { MemoExoticComponent } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { FixedSizeList } from "react-window";
 
 interface ManagementPanelVirtualListProps {
   itemData: ItemData;

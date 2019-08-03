@@ -1,22 +1,23 @@
-import React, { useCallback } from "react";
 import classNames from "classnames";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import { AppState } from "store";
+import { setCurSongIdx, toggleRepeat } from "store/ytplayer/action";
+import { selectListToPlay } from "store/ytplaylist/selector";
+import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
+import { ListToPlayItems } from "store/ytplaylist/types";
+import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
+import { notify } from "utils/helper/notifyHelper";
+
 import { IconButton } from "@material-ui/core";
 import {
   Loop as LoopIcon,
-  SkipPrevious as SkipPreviousIcon,
-  PlayArrow as PlayArrowIcon,
   Pause as PauseIcon,
-  SkipNext as SkipNextIcon,
+  PlayArrow as PlayArrowIcon,
   Shuffle as ShuffleIcon,
+  SkipNext as SkipNextIcon,
+  SkipPrevious as SkipPreviousIcon,
 } from "@material-ui/icons";
-import { AppState } from "store";
-import { ListToPlayItems } from "store/ytplaylist/types";
-import { selectListToPlay } from "store/ytplaylist/selector";
-import { setCurSongIdx, toggleRepeat } from "store/ytplayer/action";
-import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
-import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
-import { notify } from "utils/helper/notifyHelper";
 
 import styles from "./styles.module.scss";
 

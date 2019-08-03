@@ -1,10 +1,11 @@
-import { take, put, all } from "redux-saga/effects";
+import { all, put, take } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
+
 import {
-  deleteNormVideoByIdAction,
   deleteNormListToPlayItemByIdAction,
   deleteNormPlaylistItemByIdAction,
+  deleteNormVideoByIdAction,
 } from "./normAction";
 
 export function* deleteNormVideoByIdWatcher() {

@@ -1,5 +1,6 @@
-import { ActionType } from "typesafe-actions";
 import { Playlist, Video } from "store/ytplaylist/types";
+import { ActionType } from "typesafe-actions";
+
 import * as ytapiAction from "./action";
 
 export interface YTAPIState {

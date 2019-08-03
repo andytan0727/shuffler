@@ -1,12 +1,6 @@
-import React, { useCallback } from "react";
 import classNames from "classnames";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import {
-  Add as AddIcon,
-  Remove as RemoveIcon,
-  Delete as DeleteIcon,
-  ViewList as ViewListIcon,
-} from "@material-ui/icons";
 import { AppState } from "store";
 import {
   addPlaylistsToListToPlayAction,
@@ -14,6 +8,13 @@ import {
   removePlaylistsFromListToPlayAction,
 } from "store/ytplaylist/action";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
+
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Remove as RemoveIcon,
+  ViewList as ViewListIcon,
+} from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 

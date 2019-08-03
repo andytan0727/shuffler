@@ -1,14 +1,15 @@
-import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
+import { VideoList } from "components/Lists";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import { AppState } from "store";
+import { setCurSongIdx } from "store/ytplayer/action";
+import { selectListToPlay } from "store/ytplaylist/selector";
+import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
+
 import { useMediaQuery } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import { VideoList } from "components/Lists";
-import { AppState } from "store";
-import { selectListToPlay } from "store/ytplaylist/selector";
-import { setCurSongIdx } from "store/ytplayer/action";
-import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
 
 import styles from "./styles.module.scss";
 

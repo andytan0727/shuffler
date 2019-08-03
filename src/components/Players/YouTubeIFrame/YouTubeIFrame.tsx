@@ -1,12 +1,13 @@
-import React, { forwardRef, useState, useEffect, useCallback } from "react";
+import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import YouTube, { PlayerVars } from "react-youtube";
-import { useMediaQuery } from "@material-ui/core";
 import { AppState } from "store";
-import { ListToPlayItems, PlaylistItem } from "store/ytplaylist/types";
 import { setCurSongIdx, setVideoPlaying } from "store/ytplayer/action";
 import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
+import { ListToPlayItems, PlaylistItem } from "store/ytplaylist/types";
 import { notify } from "utils/helper/notifyHelper";
+
+import { useMediaQuery } from "@material-ui/core";
 
 interface YouTubeIFrameConnectedState {
   repeat: boolean;

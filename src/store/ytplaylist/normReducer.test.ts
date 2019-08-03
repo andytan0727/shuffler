@@ -1,16 +1,17 @@
-import produce, { Draft } from "immer";
 import deepFreeze from "deep-freeze";
+import produce, { Draft } from "immer";
 import get from "lodash/get";
 import partial from "lodash/partial";
-import { deletePlaylistOrVideoById, isPlaylistsEntities } from "./utils";
+
+import { deleteNormPlaylistItemByIdAction } from "./normAction";
+import { playlistsReducer } from "./normReducer";
 import {
   NormPlaylists,
+  NormPlaylistsEntities,
   NormVideos,
   NormVideosEntities,
-  NormPlaylistsEntities,
 } from "./types";
-import { playlistsReducer } from "./normReducer";
-import { deleteNormPlaylistItemByIdAction } from "./normAction";
+import { deletePlaylistOrVideoById, isPlaylistsEntities } from "./utils";
 
 const basePlaylistsState: NormPlaylists = {
   entities: {

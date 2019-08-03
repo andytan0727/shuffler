@@ -1,6 +1,7 @@
 import { createAction } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
-import { Playlist, Video, PlaylistItem, VideoItem } from "./types";
+
+import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
 
 // ===============================================
 // Playlist

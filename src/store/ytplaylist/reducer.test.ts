@@ -1,16 +1,17 @@
 import deepFreeze from "deep-freeze";
+
 import {
-  addPlaylistAction,
   addPlayingPlaylistsAction,
+  addPlaylistAction,
   appendListToPlayAction,
   deletePlaylistsAction,
   removeFromListToPlayAction,
-  setCheckedPlaylistsAction,
   renamePlaylistAction,
+  setCheckedPlaylistsAction,
   updateListToPlayAction,
 } from "./action";
-import { clearListToPlayAction } from "./sharedAction";
 import { ytplaylist as ytplaylistReducer } from "./reducer";
+import { clearListToPlayAction } from "./sharedAction";
 import { Playlist, Video, YTPlaylistState } from "./types";
 
 describe("ytplaylist reducer", () => {

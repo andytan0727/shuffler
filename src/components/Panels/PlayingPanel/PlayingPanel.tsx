@@ -1,10 +1,10 @@
+import { PlayingPanelBtnGroup } from "components/Buttons";
+import { CombinedPlaylist } from "components/Lists";
 import React from "react";
 import { connect } from "react-redux";
-import { CombinedPlaylist } from "components/Lists";
-import { PlayingPanelBtnGroup } from "components/Buttons";
 import { AppState } from "store";
-import { ListToPlayItems } from "store/ytplaylist/types";
 import { selectListToPlay } from "store/ytplaylist/selector";
+import { ListToPlayItems } from "store/ytplaylist/types";
 
 import styles from "./styles.module.scss";
 

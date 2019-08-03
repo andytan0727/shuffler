@@ -1,8 +1,9 @@
+import { ActionType } from "typesafe-actions";
+import { DeepReadonly } from "utility-types";
+
 import * as ytplaylistAction from "./action";
 import * as ytplaylistNormedAction from "./normAction";
 import * as sharedAction from "./sharedAction";
-import { ActionType } from "typesafe-actions";
-import { DeepReadonly } from "utility-types";
 
 export interface MediaItem {
   id: string;

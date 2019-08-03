@@ -1,16 +1,17 @@
 import React from "react";
-import { areEqual } from "react-window";
 import { useSelector } from "react-redux";
+import { areEqual } from "react-window";
+import { selectNormSnippetByItemId } from "store/ytplaylist/normSelector";
+import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
+
 import {
+  Checkbox,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Checkbox,
   makeStyles,
 } from "@material-ui/core";
-import { selectNormSnippetByItemId } from "store/ytplaylist/normSelector";
-import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 
 import { ItemData } from "./ManagementPanelVirtualList";
 

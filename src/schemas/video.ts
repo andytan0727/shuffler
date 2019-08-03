@@ -1,4 +1,4 @@
-import { schema, normalize } from "normalizr";
+import { normalize, schema } from "normalizr";
 import { Video } from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
 

@@ -1,8 +1,9 @@
 import produce, { Draft } from "immer";
-import { Reducer } from "typesafe-actions";
 import union from "lodash/union";
-import * as ActionTypes from "../../utils/constants/actionConstants";
-import { YTAPIState, YTAPIAction } from "./types";
+import { Reducer } from "typesafe-actions";
+import * as ActionTypes from "utils/constants/actionConstants";
+
+import { YTAPIAction, YTAPIState } from "./types";
 
 const initialState: YTAPIState = {
   apiKey: process.env.REACT_APP_API_KEY!,

@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { retryLazy } from "utils/helper/lazyImportHelper";
 
 interface PlayerPageProps {

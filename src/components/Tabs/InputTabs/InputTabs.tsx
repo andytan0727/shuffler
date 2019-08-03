@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react";
-import { connect } from "react-redux";
 import classNames from "classnames";
 import { SwitchPanelRadioBtn } from "components/Buttons";
 import * as PanelComponent from "components/Panels";
+import React, { useCallback, useState } from "react";
+import { connect } from "react-redux";
 import { AppState } from "store";
 import { move } from "utils/helper/arrayHelper";
 

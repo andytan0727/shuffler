@@ -1,14 +1,14 @@
+import VideoPlayer from "components/Players/Video/VideoPlayer";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { DeepReadonly } from "utility-types";
 import { AppState } from "store";
 import { setCurSongIdx } from "store/ytplayer/action";
-import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
 import { selectListToPlay } from "store/ytplaylist/selector";
-import VideoPlayer from "components/Players/Video/VideoPlayer";
-import PlayerPageList from "./PlayerPageList";
-import NoVideoFound from "../NoVideoFound";
+import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
+import { DeepReadonly } from "utility-types";
 
+import NoVideoFound from "../NoVideoFound";
+import PlayerPageList from "./PlayerPageList";
 import styles from "./styles.module.scss";
 
 interface YTPlayerPageConnectedState {

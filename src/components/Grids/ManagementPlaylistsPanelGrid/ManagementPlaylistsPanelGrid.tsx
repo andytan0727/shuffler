@@ -1,6 +1,6 @@
+import ManagementPlaylistsPanelGridItem from "components/Grids/ManagementPlaylistsPanelGridItem";
 import React from "react";
 import { useSelector } from "react-redux";
-import ManagementPlaylistsPanelGridItem from "components/Grids/ManagementPlaylistsPanelGridItem";
 import { selectNormPlaylistsResult } from "store/ytplaylist/normSelector";
 
 import styles from "./styles.module.scss";

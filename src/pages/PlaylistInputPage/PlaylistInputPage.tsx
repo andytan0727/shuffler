@@ -1,6 +1,6 @@
-import React, { Suspense, lazy } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
 import { ToggleDarkModeSwitch } from "components/Switches";
+import React, { lazy, Suspense } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { retryLazy } from "utils/helper/lazyImportHelper";
 
 import styles from "./styles.module.scss";

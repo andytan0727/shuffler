@@ -1,13 +1,14 @@
-import produce, { original, Draft } from "immer";
-import uniqBy from "lodash/uniqBy";
+import produce, { Draft, original } from "immer";
 import union from "lodash/union";
-import {
-  YTPlaylistState,
-  YTPlaylistAction,
-  DeepROYtPlaylistState,
-} from "./types";
-import * as ActionTypes from "../../utils/constants/actionConstants";
+import uniqBy from "lodash/uniqBy";
 import { Reducer } from "redux";
+import * as ActionTypes from "utils/constants/actionConstants";
+
+import {
+  DeepROYtPlaylistState,
+  YTPlaylistAction,
+  YTPlaylistState,
+} from "./types";
 
 const initialState: DeepROYtPlaylistState = {
   checkedPlaylists: [],

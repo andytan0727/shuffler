@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 // -----------------------------------------
 // solve Redux state update problem due to javascript closure

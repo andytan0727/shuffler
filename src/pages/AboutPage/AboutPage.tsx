@@ -1,6 +1,7 @@
-import React from "react";
-import { Typography } from "@material-ui/core";
 import { ReactComponent as ShufflerLogo } from "assets/shufflerLogoLarge.svg";
+import React from "react";
+
+import { Typography } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
 

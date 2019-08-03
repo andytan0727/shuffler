@@ -1,19 +1,19 @@
-import React, { useState, useCallback } from "react";
+import { ReactComponent as GithubLogo } from "assets/githubLogo.svg";
+import { ReactComponent as ShufflerTextLogo } from "assets/shufflerTextLogo.svg";
+import React, { useCallback, useState } from "react";
 import { NavLink } from "react-router-dom";
-import {
-  Menu as MenuIcon,
-  ArrowDropDown as ArrowDropDownIcon,
-} from "@material-ui/icons";
+
 import {
   IconButton,
-  MenuItem,
-  Menu,
   makeStyles,
+  Menu,
+  MenuItem,
   useMediaQuery,
 } from "@material-ui/core";
-
-import { ReactComponent as ShufflerTextLogo } from "assets/shufflerTextLogo.svg";
-import { ReactComponent as GithubLogo } from "assets/githubLogo.svg";
+import {
+  ArrowDropDown as ArrowDropDownIcon,
+  Menu as MenuIcon,
+} from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 

@@ -1,9 +1,10 @@
+import { ReactComponent as ShufflerLogo } from "assets/shuffler-logo.svg";
 import React, { forwardRef } from "react";
 import { Link } from "react-router-dom";
+
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { ReactComponent as ShufflerLogo } from "assets/shuffler-logo.svg";
 import styles from "./styles.module.scss";
 
 interface MainPageConnectedState {

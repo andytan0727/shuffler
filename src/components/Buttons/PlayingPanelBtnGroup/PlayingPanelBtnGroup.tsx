@@ -1,20 +1,20 @@
-import React, { useCallback } from "react";
 import classNames from "classnames";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import {
-  PlayArrow as PlayArrowIcon,
-  Shuffle as ShuffleIcon,
-  Clear as ClearIcon,
-} from "@material-ui/icons";
-
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
-import { ListToPlayItems } from "store/ytplaylist/types";
 import {
   clearListToPlayAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/sharedAction";
+import { ListToPlayItems } from "store/ytplaylist/types";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
+
+import {
+  Clear as ClearIcon,
+  PlayArrow as PlayArrowIcon,
+  Shuffle as ShuffleIcon,
+} from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 

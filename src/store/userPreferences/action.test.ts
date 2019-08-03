@@ -1,4 +1,5 @@
-import { SET_PREFER_DARK_THEME } from "../../utils/constants/actionConstants";
+import { SET_PREFER_DARK_THEME } from "utils/constants/actionConstants";
+
 import { setPreferDarkTheme } from "./action";
 
 describe("userPreferences actions", () => {

@@ -1,9 +1,9 @@
 import React from "react";
+
 import { Button } from "@material-ui/core";
 import { SearchOutlined as SearchOutlinedIcon } from "@material-ui/icons";
 
 import { useSearchYT } from "../hooks";
-
 import styles from "./styles.module.scss";
 
 /**

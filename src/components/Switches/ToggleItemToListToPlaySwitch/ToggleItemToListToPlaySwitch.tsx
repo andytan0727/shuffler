@@ -1,17 +1,18 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Switch, makeStyles } from "@material-ui/core";
 import { AppState } from "store";
 import {
   addNormListToPlayItemAction,
   deleteNormListToPlayItemByIdAction,
 } from "store/ytplaylist/normAction";
 import {
+  selectNormListToPlayEntities,
   selectNormPlaylistIdByItemId,
   selectNormVideoIdByItemId,
-  selectNormListToPlayEntities,
 } from "store/ytplaylist/normSelector";
 import { isListToPlayItemExists } from "store/ytplaylist/utils";
+
+import { makeStyles, Switch } from "@material-ui/core";
 
 interface ToggleItemToListToPlaySwitchProps {
   itemId: string;

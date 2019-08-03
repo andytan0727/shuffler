@@ -1,9 +1,10 @@
-import React from "react";
 import classNames from "classnames";
+import React from "react";
+
 import {
-  PlaylistPlay as PlaylistPlayIcon,
   MusicNote as MusicNoteIcon,
   PlayArrow as PlayArrowIcon,
+  PlaylistPlay as PlaylistPlayIcon,
 } from "@material-ui/icons";
 
 import styles from "./styles.module.scss";

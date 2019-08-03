@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from "react";
-import { connect } from "react-redux";
-import YouTubeIFrame from "components/Players/YouTubeIFrame";
 import { PlayerBasicCtrlBtnGroup } from "components/Buttons";
+import YouTubeIFrame from "components/Players/YouTubeIFrame";
+import React, { useEffect, useRef } from "react";
+import { connect } from "react-redux";
 import { AppState } from "store";
-import { ListToPlayItems } from "store/ytplaylist/types";
 import { selectListToPlay } from "store/ytplaylist/selector";
+import { ListToPlayItems } from "store/ytplaylist/types";
 
 import styles from "./styles.module.scss";
 

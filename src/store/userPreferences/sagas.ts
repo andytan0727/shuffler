@@ -1,10 +1,11 @@
 import { take } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
-import { SET_PREFER_DARK_THEME } from "../../utils/constants/actionConstants";
+import { SET_PREFER_DARK_THEME } from "utils/constants/actionConstants";
 import {
   getRootCssVariable,
   setRootCssVariable,
-} from "../../utils/helper/stylesHelper";
+} from "utils/helper/stylesHelper";
+
 import { setPreferDarkTheme } from "./action";
 
 type setPreferDarkThemeAction = ActionType<typeof setPreferDarkTheme>;

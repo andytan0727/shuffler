@@ -1,17 +1,15 @@
-import React, { useMemo, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { DeleteItemButton } from "components/Buttons";
 import { makeToggleItemToListToPlaySwitch } from "components/Switches";
-
+import React, { useCallback, useMemo } from "react";
+import { useDispatch } from "react-redux";
+// backward-compat
+import { deleteVideosAction } from "store/ytplaylist/action";
 import {
-  deleteNormVideoByIdAction,
   deleteNormPlaylistItemByIdAction,
+  deleteNormVideoByIdAction,
 } from "store/ytplaylist/normAction";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 import { isPlaylistItemSnippet } from "store/ytplaylist/utils";
-
-// backward-compat
-import { deleteVideosAction } from "store/ytplaylist/action";
 
 export interface PlaylistVideoListItemSecondaryActionProps {
   itemId: string;

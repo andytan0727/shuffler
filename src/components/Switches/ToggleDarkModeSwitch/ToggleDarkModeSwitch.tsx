@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
 import { AppState } from "store";
 import { setPreferDarkTheme } from "store/userPreferences/action";

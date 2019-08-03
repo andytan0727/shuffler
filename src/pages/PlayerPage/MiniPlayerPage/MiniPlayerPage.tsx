@@ -1,10 +1,11 @@
+import { MiniPlayer } from "components/Players";
 import React from "react";
 import { connect } from "react-redux";
-import { DeepReadonly } from "utility-types";
 import { AppState } from "store";
 import { selectListToPlay } from "store/ytplaylist/selector";
 import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
-import { MiniPlayer } from "components/Players";
+import { DeepReadonly } from "utility-types";
+
 import NoVideoFound from "../NoVideoFound";
 
 interface MiniPlayerPageConnectedState {

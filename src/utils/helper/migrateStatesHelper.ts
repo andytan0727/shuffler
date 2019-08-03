@@ -8,14 +8,14 @@
  *
  */
 
+import * as schemas from "schemas";
 import store from "store";
 import {
+  addNormListToPlayItemsAction,
   addNormPlaylistAction,
   addNormVideoAction,
-  addNormListToPlayItemsAction,
   labelNormPlaylistAsPlayingByIdAction,
 } from "store/ytplaylist/normAction";
-import * as schemas from "schemas";
 
 export default () => {
   const appState = store.getState();

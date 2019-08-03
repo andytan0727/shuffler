@@ -1,15 +1,16 @@
+import "./index.scss";
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import App from "./App";
-import store, { persistor } from "./store";
 import { PersistGate } from "redux-persist/integration/react";
-import "./index.scss";
 
 // MUI styles
 import CssBaseline from "@material-ui/core/CssBaseline";
 
+import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import store, { persistor } from "./store";
 
 ReactDOM.render(
   // @ts-ignore temporary

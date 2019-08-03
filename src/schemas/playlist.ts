@@ -1,5 +1,5 @@
-import { schema, normalize, denormalize, NormalizedSchema } from "normalizr";
-import { Playlist, NormPlaylistsEntities } from "store/ytplaylist/types";
+import { denormalize, normalize, NormalizedSchema, schema } from "normalizr";
+import { NormPlaylistsEntities, Playlist } from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
 
 export const playlistItemSnippetSchema = new schema.Entity(

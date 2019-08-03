@@ -1,11 +1,12 @@
-import React, { useRef, useCallback } from "react";
+import React, { useCallback, useRef } from "react";
+import { setCurSongIdx } from "store/ytplayer/action";
+import { ListToPlayItems } from "store/ytplaylist/types";
+import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
+
 import {
   Close as CloseIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
 } from "@material-ui/icons";
-import { ListToPlayItems } from "store/ytplaylist/types";
-import { setCurSongIdx } from "store/ytplayer/action";
-import { useKeyDown, setEscOverlay } from "utils/helper/keyboardShortcutHelper";
 
 import styles from "./styles.module.scss";
 

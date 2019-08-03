@@ -1,10 +1,11 @@
 import React, { lazy, Suspense } from "react";
 import { connect } from "react-redux";
-import { useMediaQuery } from "@material-ui/core";
 import { AppState } from "store";
-import { ListToPlayItems } from "store/ytplaylist/types";
 import { selectListToPlay } from "store/ytplaylist/selector";
+import { ListToPlayItems } from "store/ytplaylist/types";
 import { retryLazy } from "utils/helper/lazyImportHelper";
+
+import { useMediaQuery } from "@material-ui/core";
 
 interface CombinedPlaylistConnectedState {
   listToPlay: ListToPlayItems;

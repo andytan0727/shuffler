@@ -1,6 +1,7 @@
 import { Reducer } from "typesafe-actions";
-import { SET_PREFER_DARK_THEME } from "../../utils/constants/actionConstants";
-import { UserPreferencesState, UserPreferencesAction } from "./types";
+import { SET_PREFER_DARK_THEME } from "utils/constants/actionConstants";
+
+import { UserPreferencesAction, UserPreferencesState } from "./types";
 
 const initialStates: UserPreferencesState = {
   preferDarkTheme: true,

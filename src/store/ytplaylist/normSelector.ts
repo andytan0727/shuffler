@@ -1,14 +1,15 @@
-import { createSelector } from "reselect";
-import createCachedSelector from "re-reselect";
 import map from "lodash/map";
 import pick from "lodash/pick";
+import createCachedSelector from "re-reselect";
+import { createSelector } from "reselect";
 import { AppState } from "store";
-import { getSnippetFromItemId } from "./utils";
+
 import {
-  NormVideosEntities,
   NormPlaylistsEntities,
+  NormVideosEntities,
   PlaylistItemSnippet,
 } from "./types";
+import { getSnippetFromItemId } from "./utils";
 
 export const selectNormPlaylistsEntities = (state: AppState) =>
   state.ytplaylistNormed.playlists.entities;

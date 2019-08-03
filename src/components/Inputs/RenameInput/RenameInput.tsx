@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
 import classNames from "classnames";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { AppState } from "store";
 import {
-  setCheckedPlaylistsAction,
   renamePlaylistAction,
+  setCheckedPlaylistsAction,
 } from "store/ytplaylist/action";
 import { selectPlaylistName } from "store/ytplaylist/selector";
 

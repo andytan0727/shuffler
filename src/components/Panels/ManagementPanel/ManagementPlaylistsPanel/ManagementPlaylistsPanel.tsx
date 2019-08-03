@@ -1,7 +1,7 @@
-import React, { Suspense, lazy } from "react";
-import { Redirect, Switch, Route } from "react-router";
 import FullPageSpinner from "components/Loadings/FullPageSpinner";
-import { retryLazy, delayLazy } from "utils/helper/lazyImportHelper";
+import React, { lazy, Suspense } from "react";
+import { Redirect, Route, Switch } from "react-router";
+import { delayLazy, retryLazy } from "utils/helper/lazyImportHelper";
 
 interface ManagementPlaylistsPanelProps {
   match: MatchRoute;

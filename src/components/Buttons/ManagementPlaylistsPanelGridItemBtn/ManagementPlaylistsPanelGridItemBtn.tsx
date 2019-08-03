@@ -1,23 +1,24 @@
 import React, { useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Tooltip, IconButton } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
-  PlayArrow as PlayArrowIcon,
-  Shuffle as ShuffleIcon,
-  Remove as RemoveIcon,
-  Add as AddIcon,
-  Delete as DeleteIcon,
-} from "@material-ui/icons";
-import { selectNormPlaylistById } from "store/ytplaylist/normSelector";
-import {
-  updateNormListToPlayAction,
-  shuffleNormPlaylistItems,
+  deleteNormPlaylistByIdAction,
   labelNormPlaylistAsPlayingByIdAction,
   removeNormPlaylistAsPlayingById,
-  deleteNormPlaylistByIdAction,
+  shuffleNormPlaylistItems,
+  updateNormListToPlayAction,
 } from "store/ytplaylist/normAction";
+import { selectNormPlaylistById } from "store/ytplaylist/normSelector";
 import { notify } from "utils/helper/notifyHelper";
+
+import { IconButton, Tooltip } from "@material-ui/core";
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  PlayArrow as PlayArrowIcon,
+  Remove as RemoveIcon,
+  Shuffle as ShuffleIcon,
+} from "@material-ui/icons";
 
 interface ManagementPlaylistsPanelGridItemBtnProps {
   playlistId: string;

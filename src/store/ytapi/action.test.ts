@@ -1,28 +1,29 @@
+import { Playlist, Video } from "store/ytplaylist/types";
 import {
-  addFetchedVideoIdAction,
-  fetchPlaylistDataAction,
-  fetchPlaylistDataSuccessAction,
-  fetchPlaylistDataFailedAction,
-  fetchVideoDataAction,
-  fetchVideoDataSuccessAction,
-  fetchVideoDataFailedAction,
-  addFetchedPlaylistIdAction,
-  setVideoUrlAction,
-  setPlaylistUrlAction,
-} from "./action";
-import {
+  ADD_FETCHED_PLAYLIST_ID,
   ADD_FETCHED_VIDEO_ID,
   FETCH_PLAYLIST_DATA,
-  FETCH_PLAYLIST_DATA_SUCCESS,
   FETCH_PLAYLIST_DATA_FAILED,
-  FETCH_VIDEO_DATA_SUCCESS,
-  FETCH_VIDEO_DATA_FAILED,
+  FETCH_PLAYLIST_DATA_SUCCESS,
   FETCH_VIDEO_DATA,
-  ADD_FETCHED_PLAYLIST_ID,
-  SET_VIDEO_URL,
+  FETCH_VIDEO_DATA_FAILED,
+  FETCH_VIDEO_DATA_SUCCESS,
   SET_PLAYLIST_URL,
-} from "../../utils/constants/actionConstants";
-import { Playlist, Video } from "store/ytplaylist/types";
+  SET_VIDEO_URL,
+} from "utils/constants/actionConstants";
+
+import {
+  addFetchedPlaylistIdAction,
+  addFetchedVideoIdAction,
+  fetchPlaylistDataAction,
+  fetchPlaylistDataFailedAction,
+  fetchPlaylistDataSuccessAction,
+  fetchVideoDataAction,
+  fetchVideoDataFailedAction,
+  fetchVideoDataSuccessAction,
+  setPlaylistUrlAction,
+  setVideoUrlAction,
+} from "./action";
 
 describe("ytapi actions", () => {
   const customGlobal: unknown = global;

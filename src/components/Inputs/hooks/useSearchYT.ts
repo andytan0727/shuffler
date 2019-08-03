@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import store from "store";
 import {
-  fetchVideoDataAction,
   fetchPlaylistDataAction,
+  fetchVideoDataAction,
 } from "store/ytapi/action";
 import { notify } from "utils/helper/notifyHelper";
 

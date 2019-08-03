@@ -1,10 +1,11 @@
-import { take, takeEvery, put, all, select } from "redux-saga/effects";
 import shuffle from "lodash/shuffle";
-import { Playlist, Video, PlaylistItem, VideoItem } from "./types";
-import * as ActionTypes from "../../utils/constants/actionConstants";
-import * as ytplaylistAction from "./action";
-import { notify } from "../../utils/helper/notifyHelper";
+import { all, put, select, take, takeEvery } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
+import * as ActionTypes from "utils/constants/actionConstants";
+import { notify } from "utils/helper/notifyHelper";
+
+import * as ytplaylistAction from "./action";
+import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
 
 type DeletePlaylistsAction = ActionType<
   typeof ytplaylistAction.deletePlaylistsAction

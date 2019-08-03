@@ -1,17 +1,18 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Typography, Divider } from "@material-ui/core";
-import { selectAllNormVideoItemIds } from "store/ytplaylist/normSelector";
+import { useCheckbox } from "components/Checkbox/hooks";
 import { makeManagementPanelSearchInput } from "components/Inputs";
 import {
+  createItemData,
   ManagementPanelVirtualList,
-  withListItemSecondaryAction,
   PlaylistVideoListItemSecondaryAction,
+  withListItemSecondaryAction,
 } from "components/Lists/ManagementPanelVirtualList";
+import React from "react";
+import { useSelector } from "react-redux";
+import { selectAllNormVideoItemIds } from "store/ytplaylist/normSelector";
+
+import { Divider, Typography } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
-import { useCheckbox } from "components/Checkbox/hooks";
-import { createItemData } from "components/Lists/ManagementPanelVirtualList";
 
 const SearchVideoInput = makeManagementPanelSearchInput("videos");
 

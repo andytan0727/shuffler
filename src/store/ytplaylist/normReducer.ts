@@ -1,23 +1,24 @@
 import produce, { Draft, original } from "immer";
+import shuffle from "lodash/shuffle";
 import { combineReducers } from "redux";
 import { Reducer } from "typesafe-actions";
-import shuffle from "lodash/shuffle";
 import * as ActionTypes from "utils/constants/actionConstants";
+
 import {
-  NormPlaylists,
-  NormVideos,
-  NormListToPlay,
-  NormListToPlayResultItem,
+  DeepRONormListToPlay,
   DeepRONormPlaylists,
   DeepRONormVideos,
-  DeepRONormListToPlay,
+  NormListToPlay,
+  NormListToPlayResultItem,
+  NormPlaylists,
+  NormVideos,
   YTPlaylistNormedAction,
 } from "./types";
 import {
+  deleteListToPlayItemById,
+  deletePlaylistOrVideoById,
   mergeNormalizedEntities,
   updatePlaylistOrVideoNameById,
-  deletePlaylistOrVideoById,
-  deleteListToPlayItemById,
 } from "./utils";
 
 // ==================================================

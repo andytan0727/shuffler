@@ -1,7 +1,8 @@
 import React from "react";
-import AddIcon from "@material-ui/icons/Add";
-import IconButton from "@material-ui/core/IconButton";
 import { addVideosToListToPlayAction } from "store/ytplaylist/action";
+
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
 
 interface AddVideoToPlayingBtnConnectedDispatch {
   addVideosToListToPlayAction: typeof addVideosToListToPlayAction;

@@ -1,10 +1,10 @@
-import { schema, NormalizedSchema, normalize, denormalize } from "normalizr";
+import { denormalize, normalize, NormalizedSchema, schema } from "normalizr";
 import {
   NormListToPlayEntities,
   NormListToPlayResultItem,
   PlaylistItem,
-  VideoItem,
   Video,
+  VideoItem,
 } from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
 

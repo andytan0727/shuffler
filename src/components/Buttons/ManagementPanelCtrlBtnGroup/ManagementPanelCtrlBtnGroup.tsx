@@ -1,9 +1,10 @@
 import React from "react";
+
 import { IconButton, Tooltip } from "@material-ui/core";
 import {
+  Delete as DeleteIcon,
   PlayArrow as PlayArrowIcon,
   Shuffle as ShuffleIcon,
-  Delete as DeleteIcon,
 } from "@material-ui/icons";
 
 interface ManagementPanelCtrlBtnGroupProps {

@@ -1,11 +1,12 @@
-import React, { useState, useCallback } from "react";
-import { useSelector } from "react-redux";
-import { PlaylistAddCheck as PlaylistAddCheckIcon } from "@material-ui/icons";
 import { ManagementPlaylistsPanelGridItemBtn } from "components/Buttons";
+import React, { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   selectNormPlaylistById,
   selectNormPlaylistSnippetByItemId,
 } from "store/ytplaylist/normSelector";
+
+import { PlaylistAddCheck as PlaylistAddCheckIcon } from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 

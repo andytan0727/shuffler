@@ -1,5 +1,5 @@
-import { SET_PREFER_DARK_THEME } from "../../utils/constants/actionConstants";
 import { createAction } from "typesafe-actions";
+import { SET_PREFER_DARK_THEME } from "utils/constants/actionConstants";
 
 /**
  * Set user theme preference to Redux store

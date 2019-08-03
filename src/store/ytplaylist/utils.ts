@@ -1,18 +1,19 @@
-import merge from "lodash/merge";
-import set from "lodash/set";
+import at from "lodash/at";
 import get from "lodash/get";
 import has from "lodash/has";
+import merge from "lodash/merge";
 import pull from "lodash/pull";
 import remove from "lodash/remove";
-import at from "lodash/at";
+import set from "lodash/set";
+
 import {
   MediaItem,
   NormListToPlay,
+  NormListToPlayEntities,
   NormPlaylistsEntities,
   NormPlaylistsOrVideos,
-  NormPlaylistsOrVideosItemsEntity,
   NormPlaylistsOrVideosEntities,
-  NormListToPlayEntities,
+  NormPlaylistsOrVideosItemsEntity,
   PlaylistItemSnippet,
   VideoItemSnippet,
 } from "./types";

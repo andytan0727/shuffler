@@ -1,5 +1,5 @@
 import { createAction } from "typesafe-actions";
-import * as ActionTypes from "../../utils/constants/actionConstants";
+import * as ActionTypes from "utils/constants/actionConstants";
 
 /**
  * Set index of current playing song/video

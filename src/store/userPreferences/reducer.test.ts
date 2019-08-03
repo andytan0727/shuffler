@@ -1,4 +1,5 @@
 import deepFreeze from "deep-freeze";
+
 import { setPreferDarkTheme } from "./action";
 import { userPreferences as userPreferencesReducer } from "./reducer";
 import { UserPreferencesState } from "./types";

@@ -1,6 +1,7 @@
-import * as ytplayerAction from "./action";
-import { ActionType } from "typesafe-actions";
 import { PlayerVars } from "react-youtube";
+import { ActionType } from "typesafe-actions";
+
+import * as ytplayerAction from "./action";
 
 export interface PlayerState {
   playing: boolean;

@@ -1,24 +1,25 @@
-import React, { useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Typography, Divider } from "@material-ui/core";
-import {
-  ManagementPanelVirtualList,
-  withListItemSecondaryAction,
-  PlaylistVideoListItemSecondaryAction,
-} from "components/Lists/ManagementPanelVirtualList";
-import { useCheckbox } from "components/Checkbox/hooks";
-import { createItemData } from "components/Lists/ManagementPanelVirtualList";
 import { ManagementPanelCtrlBtnGroup } from "components/Buttons";
+import { useCheckbox } from "components/Checkbox/hooks";
+import {
+  createItemData,
+  ManagementPanelVirtualList,
+  PlaylistVideoListItemSecondaryAction,
+  withListItemSecondaryAction,
+} from "components/Lists/ManagementPanelVirtualList";
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
   deleteNormPlaylistItemByIdAction,
-  updateNormListToPlayAction,
   shuffleNormPlaylistItems,
+  updateNormListToPlayAction,
 } from "store/ytplaylist/normAction";
 import {
   selectNormPlaylistItemIdsById,
   selectNormPlaylistNameById,
 } from "store/ytplaylist/normSelector";
+
+import { Divider, Typography } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
 

@@ -1,6 +1,7 @@
 import produce, { Draft } from "immer";
 import { Reducer } from "typesafe-actions";
-import * as ActionTypes from "../../utils/constants/actionConstants";
+import * as ActionTypes from "utils/constants/actionConstants";
+
 import { PlayerState, YTPlayerAction } from "./types";
 
 const initialState: PlayerState = {

@@ -1,18 +1,19 @@
-import React, { useCallback } from "react";
 import classNames from "classnames";
+import { VideosPanelBtnGroup } from "components/Buttons";
+import { makeSearchInput } from "components/Inputs";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import { AppState } from "store";
+import { setCheckedVideosAction } from "store/ytplaylist/action";
+import { DeepROYtPlaylistState } from "store/ytplaylist/types";
+import { addOrRemove } from "utils/helper/arrayHelper";
+
 import { Checkbox } from "@material-ui/core";
 import {
-  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
   CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
   MusicVideo as MusicVideoIcon,
 } from "@material-ui/icons";
-import { makeSearchInput } from "components/Inputs";
-import { VideosPanelBtnGroup } from "components/Buttons";
-import { AppState } from "store";
-import { DeepROYtPlaylistState } from "store/ytplaylist/types";
-import { setCheckedVideosAction } from "store/ytplaylist/action";
-import { addOrRemove } from "utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
 

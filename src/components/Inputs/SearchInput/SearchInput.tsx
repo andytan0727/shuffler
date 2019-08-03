@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
-import { IconButton } from "@material-ui/core";
-import { Search as SearchIcon, Cancel as CancelIcon } from "@material-ui/icons";
-import { useSearchYT } from "../hooks";
 
+import { IconButton } from "@material-ui/core";
+import { Cancel as CancelIcon, Search as SearchIcon } from "@material-ui/icons";
+
+import { useSearchYT } from "../hooks";
 import styles from "./styles.module.scss";
 
 /**

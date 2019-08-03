@@ -1,23 +1,23 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
 import classNames from "classnames";
-import { connect } from "react-redux";
-import { useTransition, animated } from "react-spring";
-import {
-  PlayArrow as PlayArrowIcon,
-  MusicVideo as MusicVideoIcon,
-  PlayCircleFilled as PlayCircleIcon,
-  List as ListIcon,
-  Close as CloseIcon,
-} from "@material-ui/icons";
-
-import YouTubeIFrame from "components/Players/YouTubeIFrame";
 import { PlayerBasicCtrlBtnGroup } from "components/Buttons";
 import { LargePlaylist } from "components/Lists";
+import YouTubeIFrame from "components/Players/YouTubeIFrame";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { connect } from "react-redux";
+import { animated, useTransition } from "react-spring";
 import { AppState } from "store";
-import { ListToPlayItems } from "store/ytplaylist/types";
-import { selectListToPlay } from "store/ytplaylist/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
-import { useKeyDown, setEscOverlay } from "utils/helper/keyboardShortcutHelper";
+import { selectListToPlay } from "store/ytplaylist/selector";
+import { ListToPlayItems } from "store/ytplaylist/types";
+import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
+
+import {
+  Close as CloseIcon,
+  List as ListIcon,
+  MusicVideo as MusicVideoIcon,
+  PlayArrow as PlayArrowIcon,
+  PlayCircleFilled as PlayCircleIcon,
+} from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 
