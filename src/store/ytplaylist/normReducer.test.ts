@@ -73,7 +73,33 @@ function makeVideosEntitiesState(
       liveBroadcastContent: `broadcast-${videoId}-${itemId}`,
       publishedAt: `published-${videoId}-${itemId}`,
       tags: [`tag-${videoId}-${itemId}`],
-      thumbnails: [],
+      thumbnails: {
+        default: {
+          height: itemId,
+          width: itemId,
+          url: `url-${videoId}-${itemId}`,
+        },
+        medium: {
+          height: itemId,
+          width: itemId,
+          url: `url-${videoId}-${itemId}`,
+        },
+        standard: {
+          height: itemId,
+          width: itemId,
+          url: `url-${videoId}-${itemId}`,
+        },
+        high: {
+          height: itemId,
+          width: itemId,
+          url: `url-${videoId}-${itemId}`,
+        },
+        maxres: {
+          height: itemId,
+          width: itemId,
+          url: `url-${videoId}-${itemId}`,
+        },
+      },
       localized: {
         title: `test-${videoId}-${itemId}`,
         description: `test-${videoId}-${itemId}`,

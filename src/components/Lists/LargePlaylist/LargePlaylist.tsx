@@ -62,7 +62,7 @@ const LargePlaylist = (props: LargePlaylistProps) => {
         {listToPlay[curSongIdx].snippet.thumbnails ? (
           <img
             className={styles.nowPlayingThumbnail}
-            src={listToPlay[curSongIdx].snippet.thumbnails.high.url}
+            src={listToPlay[curSongIdx].snippet.thumbnails!.high.url}
             alt="thumbnail"
           />
         ) : (
