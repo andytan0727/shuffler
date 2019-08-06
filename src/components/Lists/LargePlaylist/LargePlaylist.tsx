@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useCallback, useRef } from "react";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { ListToPlayItems } from "store/ytplaylist/types";
@@ -58,10 +59,20 @@ const LargePlaylist = (props: LargePlaylistProps) => {
         <CloseIcon />
       </button>
       <div className={styles.nowPlaying}>
-        <img
-          src={listToPlay[curSongIdx].snippet.thumbnails.high.url}
-          alt="thumbnail"
-        />
+        {listToPlay[curSongIdx].snippet.thumbnails ? (
+          <img
+            className={styles.nowPlayingThumbnail}
+            src={listToPlay[curSongIdx].snippet.thumbnails.high.url}
+            alt="thumbnail"
+          />
+        ) : (
+          <div
+            className={classNames(
+              styles.nowPlayingThumbnail,
+              styles.deletedVideo
+            )}
+          ></div>
+        )}
         <h3>{listToPlay[curSongIdx].snippet.title}</h3>
       </div>
       <div className={styles.list}>
@@ -81,10 +92,15 @@ const LargePlaylist = (props: LargePlaylistProps) => {
                 onClick={handleClickSong}
                 data-index={curSongIdx + 1 + idx}
               >
-                <img
-                  src={song.snippet.thumbnails.default.url}
-                  alt="thumbnail"
-                />
+                {song.snippet.thumbnails ? (
+                  <img
+                    className={styles.thumbnail}
+                    src={song.snippet.thumbnails.default.url}
+                    alt="thumbnail"
+                  />
+                ) : (
+                  <div className={styles.deletedVideoThumbnail}></div>
+                )}
                 <span>{song.snippet.title}</span>
               </li>
             ))}

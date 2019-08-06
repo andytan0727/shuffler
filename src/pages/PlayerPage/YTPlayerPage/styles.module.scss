@@ -74,14 +74,19 @@
     background-color: $primaryLight;
   }
 
-  img {
+  .thumbnail {
     grid-column: 2 / 3;
     border-radius: 50%;
     width: 3em;
     height: 3em;
   }
 
-  span {
+  .deletedVideoThumbnail {
+    @extend .thumbnail;
+    background-color: black;
+  }
+
+  .playlistItemVideoTitle {
     grid-column: 3 / 4;
     padding-right: 2.2em;
 
