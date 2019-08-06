@@ -144,7 +144,8 @@ const MiniPlayer = (props: MiniPlayerProps) => {
               backgroundColor: "white",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              backgroundImage: `url(${curSong.snippet.thumbnails.high.url})`,
+              backgroundImage: `url(${curSong.snippet.thumbnails &&
+                curSong.snippet.thumbnails.high.url})`,
               transition: "box-shadow 750ms linear",
             }}
           />

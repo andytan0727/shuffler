@@ -73,13 +73,20 @@ class CurrentPlaylistItem extends React.PureComponent<
         {!matchesMobile && (
           <React.Fragment>
             {index === curSongIdx && <PlayArrowIcon />}
-            <img
-              src={data[index].snippet.thumbnails.default.url}
-              alt="thumbnail"
-            />
+            {data[index].snippet.thumbnails ? (
+              <img
+                className={styles.thumbnail}
+                src={data[index].snippet.thumbnails.default.url}
+                alt="thumbnail"
+              />
+            ) : (
+              <div className={styles.deletedVideoThumbnail}></div>
+            )}
           </React.Fragment>
         )}
-        <span>{data[index].snippet.title}</span>
+        <span className={styles.playlistItemVideoTitle}>
+          {data[index].snippet.title}
+        </span>
       </div>
     );
   }

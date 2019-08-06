@@ -1,6 +1,10 @@
 @import "../../../utils/styles/colors";
 @import "../../../utils/styles/variables";
 
+.deletedVideo {
+  background-color: black;
+}
+
 .largePlaylistDiv {
   width: 100%;
   height: 100%;
@@ -36,7 +40,7 @@
       font-weight: bold;
     }
 
-    img {
+    .nowPlayingThumbnail {
       width: 350px;
       height: 350px;
       margin-top: 20px;
@@ -122,8 +126,14 @@
           background-color: var(--hover-bg);
         }
 
-        img {
+        .thumbnail {
           height: 6em;
+        }
+
+        .deletedVideoThumbnail {
+          @extend .thumbnail;
+          @extend .deletedVideo;
+          width: 8em;
         }
 
         span {
