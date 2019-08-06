@@ -61,7 +61,7 @@ export interface PlaylistItemSnippet {
   publishedAt: string;
   title: string;
   resourceId: { kind: string; videoId: string };
-  thumbnails: VideoThumbnails;
+  thumbnails?: VideoThumbnails;
 }
 
 export interface NormPlaylistItemsEntity {
