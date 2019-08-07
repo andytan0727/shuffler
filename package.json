@@ -43,7 +43,8 @@
     "eject": "react-scripts eject",
     "format": "prettier --config \".prettierrc\" --write \"{src/*.js,src/**/*.js}\"",
     "lint": "eslint src/**/*.{ts,tsx}",
-    "lint:fix": "eslint --fix src/**/*.{ts,tsx}"
+    "lint:fix": "eslint --fix src/**/*.{ts,tsx}",
+    "type-check": "tsc -p ./tsconfig.json --noEmit"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -80,6 +81,8 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-react-hooks": "^1.6.1",
+    "husky": "^3.0.2",
+    "lint-staged": "^9.2.1",
     "prettier": "^1.18.2",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
