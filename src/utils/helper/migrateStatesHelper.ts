@@ -14,7 +14,7 @@ import {
   addNormListToPlayItemsAction,
   addNormPlaylistAction,
   addNormVideoAction,
-  labelNormPlaylistAsPlayingByIdAction,
+  addAllInPlayingLabelByIdAction,
 } from "store/ytplaylist/normAction";
 
 export default () => {
@@ -40,6 +40,6 @@ export default () => {
   );
 
   playingPlaylists.forEach((id) => {
-    store.dispatch(labelNormPlaylistAsPlayingByIdAction(id));
+    store.dispatch(addAllInPlayingLabelByIdAction(id));
   });
 };

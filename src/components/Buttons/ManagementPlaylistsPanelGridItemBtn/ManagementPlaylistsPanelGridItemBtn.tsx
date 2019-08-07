@@ -2,9 +2,9 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
+  addNormPlaylistToNormListToPlayAction,
   deleteNormPlaylistByIdAction,
-  labelNormPlaylistAsPlayingByIdAction,
-  removeNormPlaylistAsPlayingById,
+  removeNormPlaylistFromNormListToPlayAction,
   shuffleNormPlaylistItems,
   updateNormListToPlayAction,
 } from "store/ytplaylist/normAction";
@@ -39,19 +39,16 @@ const ManagementPlaylistsPanelGridItemBtn = (
     selectNormPlaylistById(state, playlistId)
   );
   const playlistInPlaying = !!(playlist && playlist.allInPlaying);
+  const itemIds = playlist.items;
 
   const handlePlayPlaylist = useCallback(() => {
     // play whole playlist
     dispatch(
-      updateNormListToPlayAction(
-        "playlists",
-        playlistId,
-        playlist.items as string[]
-      )
+      updateNormListToPlayAction("playlists", playlistId, itemIds as string[])
     );
 
     history.push("/player/ytplayer");
-  }, [dispatch, playlistId, playlist, history]);
+  }, [dispatch, playlistId, itemIds, history]);
 
   const handleShufflePlaylist = useCallback(() => {
     dispatch(shuffleNormPlaylistItems(playlistId));
@@ -60,12 +57,19 @@ const ManagementPlaylistsPanelGridItemBtn = (
   }, [dispatch, playlistId]);
 
   const handleAddPlaylistAsPlaying = useCallback(() => {
-    dispatch(labelNormPlaylistAsPlayingByIdAction(playlistId));
-  }, [dispatch, playlistId]);
+    dispatch(
+      addNormPlaylistToNormListToPlayAction(playlistId, itemIds as string[])
+    );
+  }, [dispatch, playlistId, itemIds]);
 
   const handleRemovePlaylistAsPlaying = useCallback(() => {
-    dispatch(removeNormPlaylistAsPlayingById(playlistId));
-  }, [dispatch, playlistId]);
+    dispatch(
+      removeNormPlaylistFromNormListToPlayAction(
+        playlistId,
+        itemIds as string[]
+      )
+    );
+  }, [dispatch, playlistId, itemIds]);
 
   const handleDeletePlaylist = useCallback(() => {
     dispatch(deleteNormPlaylistByIdAction(playlistId));

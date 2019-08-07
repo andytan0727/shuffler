@@ -79,7 +79,7 @@ export const playlistsReducer: Reducer<
       });
     }
 
-    case ActionTypes.LABEL_NORM_PLAYLIST_AS_PLAYING_BY_ID: {
+    case ActionTypes.ADD_ALL_IN_PLAYING_LABEL_BY_ID: {
       const { id } = action.payload;
       const playlists = draft.entities.playlists;
 
@@ -88,7 +88,7 @@ export const playlistsReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.REMOVE_NORM_PLAYLIST_AS_PLAYING_BY_ID: {
+    case ActionTypes.REMOVE_ALL_IN_PLAYING_LABEL_BY_ID: {
       const { id } = action.payload;
       const playlists = draft.entities.playlists;
 

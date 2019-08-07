@@ -30,6 +30,46 @@ export const addNormPlaylistAction = createAction(
 );
 
 /**
+ * Add all items in the specified normalized playlist into normalized listToPlay
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
+ * @param playlistId Playlist id
+ * @param itemIds Playlist's itemIds to add
+ * @returns ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY action object
+ */
+export const addNormPlaylistToNormListToPlayAction = createAction(
+  ActionTypes.ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY,
+  (action) => {
+    return (playlistId: string, itemIds: string[]) =>
+      action({
+        playlistId,
+        itemIds,
+      });
+  }
+);
+
+/**
+ * Remove all items in the specified normalized playlist from normalized listToPlay
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
+ * @param playlistId Playlist id
+ * @param itemIds Playlist's itemIds to add
+ *
+ */
+export const removeNormPlaylistFromNormListToPlayAction = createAction(
+  ActionTypes.REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY,
+  (action) => {
+    return (playlistId: string, itemIds: string[]) =>
+      action({
+        playlistId,
+        itemIds,
+      });
+  }
+);
+
+/**
  * Delete playlist by id
  *
  * @param id Playlist id to delete
@@ -82,22 +122,22 @@ export const updateNormPlaylistNameByIdAction = createAction(
 );
 
 /**
- * Action to label whole playlist in playing (listToPlay) if all of its items
- * are in listToPlay
+ * Add allInPlaying label to the playlist in normalized listToPlay (if all of
+ * its items are in normalized listToPlay)
  *
- * @param id Playlist id to label/set
+ * @param id Playlist id to add allInPlaying label
  */
-export const labelNormPlaylistAsPlayingByIdAction = createAction(
-  ActionTypes.LABEL_NORM_PLAYLIST_AS_PLAYING_BY_ID,
+export const addAllInPlayingLabelByIdAction = createAction(
+  ActionTypes.ADD_ALL_IN_PLAYING_LABEL_BY_ID,
   (action) => (id: string) => action({ id })
 );
 
 /**
- * Remove playlist playing label
- * @param id Playlist id
+ * Remove allInPlaying label of playlist, after removing it from normalized listToPlay
+ * @param id Playlist id to remove allInPlaying label
  */
-export const removeNormPlaylistAsPlayingById = createAction(
-  ActionTypes.REMOVE_NORM_PLAYLIST_AS_PLAYING_BY_ID,
+export const removeAllInPlayingLabelByIdAction = createAction(
+  ActionTypes.REMOVE_ALL_IN_PLAYING_LABEL_BY_ID,
   (action) => (id: string) => action({ id })
 );
 

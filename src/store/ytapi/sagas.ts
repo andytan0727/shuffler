@@ -75,7 +75,7 @@ export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
   // and label the playlist as playing (all playlistItems in listToPlay)
   yield call(addFetchItemsToNormListToPlay, playlist.items);
 
-  yield put(ytplaylistNormed.labelNormPlaylistAsPlayingByIdAction(playlistId));
+  yield put(ytplaylistNormed.addAllInPlayingLabelByIdAction(playlistId));
 }
 
 /**
