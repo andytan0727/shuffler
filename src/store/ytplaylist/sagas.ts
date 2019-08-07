@@ -1,10 +1,13 @@
 import shuffle from "lodash/shuffle";
 import { all, put, select, take, takeEvery } from "redux-saga/effects";
+import * as schemas from "schemas";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 import { notify } from "utils/helper/notifyHelper";
 
 import * as ytplaylistAction from "./action";
+import * as ytplaylistNormedAction from "./normAction";
+import { selectNormPlaylistItemIdsById } from "./normSelector";
 import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
 
 type DeletePlaylistsAction = ActionType<
@@ -60,6 +63,8 @@ export function* deletePlaylists(action: DeletePlaylistsAction) {
  * APPEND_LIST_TO_PLAY action,
  * and SET_CHECKED_PLAYLISTS action
  *
+ * NOTE: added logic to update normalized states as well
+ *
  * @export
  * @param action
  */
@@ -82,6 +87,24 @@ export function* addPlaylistsToListToPlay(
   yield put(ytplaylistAction.addPlayingPlaylistsAction(playlistIds));
   yield put(ytplaylistAction.appendListToPlayAction(playlistItemsToAdd));
   yield put(ytplaylistAction.setCheckedPlaylistsAction([]));
+
+  // =============================================
+  // Porting to normalized states
+  // =============================================
+  const normalizedPlaylistItemsToAdd = schemas.normalizeListToPlay(
+    playlistItemsToAdd
+  );
+  // =============================================
+  // End porting
+  // =============================================
+
+  // add playlist items to normalized listToPlay
+  yield put(
+    ytplaylistNormedAction.addNormListToPlayItemsAction(
+      normalizedPlaylistItemsToAdd.entities,
+      normalizedPlaylistItemsToAdd.result
+    )
+  );
 }
 
 /**
@@ -91,6 +114,8 @@ export function* addPlaylistsToListToPlay(
  * then dispatch REMOVE_FROM_LIST_TO_PLAY action to remove
  * playlist items on listToPlay, and finally clear the checked
  * playlists on view
+ *
+ * NOTE: added logic to update normalized states as well
  *
  * @export
  * @param action
@@ -112,16 +137,18 @@ export function* removePlaylistsFromListToPlay(
     const playlistToRemove = playlists.filter(
       (playlist) => playlist.id === playlistIdToRemove
     )[0];
-    const playlistIdentifier =
-      (playlistToRemove && playlistToRemove.name) || playlistIdToRemove;
+
+    if (!playlistToRemove) {
+      continue;
+    }
+
+    const playlistIdentifier = playlistToRemove.name || playlistIdToRemove;
 
     if (!playingPlaylists.includes(playlistIdToRemove)) {
-      if (playlistToRemove) {
-        notify(
-          "warning",
-          `playlist: ${playlistIdentifier} is not included in playing`
-        );
-      }
+      notify(
+        "warning",
+        `playlist: ${playlistIdentifier} is not included in playing`
+      );
 
       continue;
     }
@@ -130,14 +157,24 @@ export function* removePlaylistsFromListToPlay(
       ytplaylistAction.removePlayingPlaylistsAction([playlistIdToRemove])
     );
 
-    // only notify user if the user is removing playlist from listToPlay
-    // instead of deleting playlist
-    if (playlistToRemove) {
-      notify(
-        "success",
-        `Successfully removed playlist: ${playlistIdentifier} from playing 😎`
-      );
-    }
+    // =============================================
+    // Porting to normalized states
+    // =============================================
+    const playlistItemIds = yield select((state) =>
+      selectNormPlaylistItemIdsById(state as never, playlistIdToRemove)
+    );
+    yield put(
+      ytplaylistNormedAction.deleteNormListToPlayItemsAction(playlistItemIds)
+    );
+    // =============================================
+    // End porting
+    // =============================================
+
+    // notify user if playlist(s) are removed from listToPlay and normalized listToPlay
+    notify(
+      "success",
+      `Successfully removed playlist: ${playlistIdentifier} from playing 😎`
+    );
   }
 
   yield put(

@@ -11,10 +11,10 @@
 import * as schemas from "schemas";
 import store from "store";
 import {
+  addAllInPlayingLabelByIdAction,
   addNormListToPlayItemsAction,
   addNormPlaylistAction,
   addNormVideoAction,
-  addAllInPlayingLabelByIdAction,
 } from "store/ytplaylist/normAction";
 
 export default () => {
