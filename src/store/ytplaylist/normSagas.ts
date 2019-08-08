@@ -1,4 +1,4 @@
-import { all, put, take } from "redux-saga/effects";
+import { all, put, takeEvery } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
@@ -7,6 +7,7 @@ import {
   addNormListToPlayItemAction,
   addNormPlaylistToNormListToPlayAction,
   deleteNormListToPlayItemByIdAction,
+  deleteNormListToPlayItemsAction,
   deleteNormPlaylistItemByIdAction,
   deleteNormVideoByIdAction,
   removeAllInPlayingLabelByIdAction,
@@ -20,16 +21,16 @@ import {
  *
  */
 export function* deleteNormVideoByIdWatcher() {
-  while (true) {
+  yield takeEvery(ActionTypes.DELETE_NORM_VIDEO_BY_ID, function*(
+    action: ActionType<typeof deleteNormVideoByIdAction>
+  ) {
     const {
       payload: { id },
-    }: ActionType<typeof deleteNormVideoByIdAction> = yield take(
-      ActionTypes.DELETE_NORM_VIDEO_BY_ID
-    );
+    } = action;
 
     // remove item from normalized listToPlay videoItems
     yield put(deleteNormListToPlayItemByIdAction(id));
-  }
+  });
 }
 
 /**
@@ -39,16 +40,16 @@ export function* deleteNormVideoByIdWatcher() {
  *
  */
 export function* deleteNormPlaylistItemByIdWatcher() {
-  while (true) {
+  yield takeEvery(ActionTypes.DELETE_NORM_PLAYLIST_ITEM_BY_ID, function*(
+    action: ActionType<typeof deleteNormPlaylistItemByIdAction>
+  ) {
     const {
       payload: { itemId },
-    }: ActionType<typeof deleteNormPlaylistItemByIdAction> = yield take(
-      ActionTypes.DELETE_NORM_PLAYLIST_ITEM_BY_ID
-    );
+    } = action;
 
     // remove item from normalized listToPlay playlistItems
     yield put(deleteNormListToPlayItemByIdAction(itemId));
-  }
+  });
 }
 
 /**
@@ -59,12 +60,12 @@ export function* deleteNormPlaylistItemByIdWatcher() {
  *
  */
 export function* addNormPlaylistToNormListToPlayWatcher() {
-  while (true) {
+  yield takeEvery(ActionTypes.ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof addNormPlaylistToNormListToPlayAction>
+  ) {
     const {
       payload: { playlistId, itemIds },
-    }: ActionType<typeof addNormPlaylistToNormListToPlayAction> = yield take(
-      ActionTypes.ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY
-    );
+    } = action;
 
     // add allInPlaying label to this playlist
     yield put(addAllInPlayingLabelByIdAction(playlistId));
@@ -82,7 +83,7 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
         )
       );
     }
-  }
+  });
 }
 
 /**
@@ -93,21 +94,22 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
  *
  */
 export function* removeNormPlaylistFromNormListToPlayWatcher() {
-  while (true) {
-    const {
-      payload: { playlistId, itemIds },
-    }: ActionType<
-      typeof removeNormPlaylistFromNormListToPlayAction
-    > = yield take(ActionTypes.REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY);
+  yield takeEvery(
+    ActionTypes.REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY,
+    function*(
+      action: ActionType<typeof removeNormPlaylistFromNormListToPlayAction>
+    ) {
+      const {
+        payload: { playlistId, itemIds },
+      } = action;
 
-    // remove allInPlaying label
-    yield put(removeAllInPlayingLabelByIdAction(playlistId));
+      // remove allInPlaying label
+      yield put(removeAllInPlayingLabelByIdAction(playlistId));
 
-    // remove all items from normListToPlay
-    for (const itemId of itemIds) {
-      yield put(deleteNormListToPlayItemByIdAction(itemId));
+      // remove all items from normListToPlay
+      yield put(deleteNormListToPlayItemsAction(itemIds));
     }
-  }
+  );
 }
 
 export default function* ytplaylistNormedSaga() {
