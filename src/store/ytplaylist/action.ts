@@ -232,24 +232,6 @@ export const removeVideosFromListToPlayAction = createAction(
   }
 );
 
-/**
- * Toggle add or remove video from listToPlay
- *
- * TODO: pending to remove
- *
- * @param videoId Id of video to toggle add or remove
- * @returns TOGGLE_PLAYING_VIDEO action object
- */
-export const togglePlayingVideoAction = createAction(
-  ActionTypes.TOGGLE_PLAYING_VIDEO,
-  (action) => {
-    return (videoId: string) =>
-      action({
-        videoId,
-      });
-  }
-);
-
 // ===============================================
 // listToPlay
 // ===============================================

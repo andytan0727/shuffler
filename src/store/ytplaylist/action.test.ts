@@ -18,7 +18,6 @@ import {
   SET_CHECKED_PLAYLISTS,
   SET_CHECKED_VIDEOS,
   SHUFFLE_LIST_TO_PLAY,
-  TOGGLE_PLAYING_VIDEO,
   UPDATE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
 
@@ -40,7 +39,6 @@ import {
   renamePlaylistAction,
   setCheckedPlaylistsAction,
   setCheckedVideosAction,
-  togglePlayingVideoAction,
   updateListToPlayAction,
 } from "./action";
 import { clearListToPlayAction, shuffleListToPlayAction } from "./sharedAction";
@@ -221,15 +219,6 @@ describe("ytplaylist actions", () => {
       type: REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
       payload: {
         videoIds: ["videoId"],
-      },
-    });
-  });
-
-  test("should create TOGGLE_PLAYING_VIDEO action object", () => {
-    expect(togglePlayingVideoAction("videoId")).toEqual({
-      type: TOGGLE_PLAYING_VIDEO,
-      payload: {
-        videoId: "videoId",
       },
     });
   });

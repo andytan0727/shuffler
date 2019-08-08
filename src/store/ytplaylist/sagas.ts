@@ -30,9 +30,6 @@ type AddVideosToListToPlayAction = ActionType<
 type RemoveVideosFromListToPlayAction = ActionType<
   typeof ytplaylistAction.removeVideosFromListToPlayAction
 >;
-type TogglePlayingVideoAction = ActionType<
-  typeof ytplaylistAction.togglePlayingVideoAction
->;
 
 // =============================================
 // Playlist
@@ -394,31 +391,6 @@ export function* removeVideosFromListToPlay(
   yield put(ytplaylistAction.setCheckedVideosAction([])); // clear checkedVideos
 }
 
-/**
- * Toggle add or remove video from listToPlay
- *
- * TODO: Pending to remove
- *
- * @exports
- * @param action
- *
- */
-export function* togglePlayingVideo(action: TogglePlayingVideoAction) {
-  const videoId = action.payload.videoId;
-  const playingVideos: string[] = yield select(
-    (state) => state.ytplaylist.playingVideos
-  );
-
-  const isPlayingVideoPreviously = playingVideos.includes(videoId);
-
-  // update playingVideos array accordingly
-  if (isPlayingVideoPreviously) {
-    yield put(ytplaylistAction.removeVideosFromListToPlayAction([videoId]));
-  } else {
-    yield put(ytplaylistAction.addVideosToListToPlayAction([videoId]));
-  }
-}
-
 // =============================================
 // Saga Watchers
 // =============================================
@@ -458,10 +430,6 @@ function* removeVideosFromListToPlayWatcher() {
   );
 }
 
-function* togglePlayingVideoWatcher() {
-  yield takeEvery(ActionTypes.TOGGLE_PLAYING_VIDEO, togglePlayingVideo);
-}
-
 function* shuffleListToPlayWatcher() {
   while (true) {
     yield take(ActionTypes.SHUFFLE_LIST_TO_PLAY);
@@ -484,7 +452,6 @@ export default function* ytplaylistSaga() {
     deleteVideosWatcher(),
     addVideosToListToPlayWatcher(),
     removeVideosFromListToPlayWatcher(),
-    togglePlayingVideoWatcher(),
     shuffleListToPlayWatcher(),
   ]);
 }
