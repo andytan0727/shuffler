@@ -209,6 +209,27 @@ export const deleteNormVideoByIdAction = createAction(
 // List To Play
 // ===============================================
 /**
+ * Add normalized listToPlay entities to store
+ *
+ * @param entities Normalized entities of listToPlay
+ * @param result Normalized result of listToPlay
+ * @returns ADD_NORM_LIST_TO_PLAY action object
+ */
+export const addNormListToPlayAction = createAction(
+  ActionTypes.ADD_NORM_LIST_TO_PLAY,
+  (action) => {
+    return (
+      entities: NormListToPlayEntities,
+      result: NormListToPlayResultItem[]
+    ) =>
+      action({
+        entities,
+        result,
+      });
+  }
+);
+
+/**
  * Add per item to listToPlay
  *
  * @param resultItem List item with item's id and its schema
@@ -222,27 +243,6 @@ export const addNormListToPlayItemAction = createAction(
       action({
         resultItem,
         foreignKey,
-      });
-  }
-);
-
-/**
- * Add normalized listToPlay entities to store
- *
- * @param entities Normalized entities of listToPlay
- * @param result Normalized result of listToPlay
- * @returns ADD_LIST_TO_PLAY_ITEMS action object
- */
-export const addNormListToPlayItemsAction = createAction(
-  ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (
-      entities: NormListToPlayEntities,
-      result: NormListToPlayResultItem[]
-    ) =>
-      action({
-        entities,
-        result,
       });
   }
 );

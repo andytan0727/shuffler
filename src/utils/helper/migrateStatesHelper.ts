@@ -12,7 +12,7 @@ import * as schemas from "schemas";
 import store from "store";
 import {
   addAllInPlayingLabelByIdAction,
-  addNormListToPlayItemsAction,
+  addNormListToPlayAction,
   addNormPlaylistAction,
   addNormVideoAction,
 } from "store/ytplaylist/normAction";
@@ -36,7 +36,7 @@ export default () => {
   store.dispatch(addNormVideoAction(normVideos.entities, normVideos.result));
 
   store.dispatch(
-    addNormListToPlayItemsAction(normListToPlay.entities, normListToPlay.result)
+    addNormListToPlayAction(normListToPlay.entities, normListToPlay.result)
   );
 
   playingPlaylists.forEach((id) => {

@@ -31,7 +31,7 @@ export function* addFetchItemsToNormListToPlay(
   } = schemas.normalizeListToPlay(items);
 
   yield put(
-    ytplaylistNormed.addNormListToPlayItemsAction(
+    ytplaylistNormed.addNormListToPlayAction(
       listToPlayEntities,
       listToPlayResult
     )

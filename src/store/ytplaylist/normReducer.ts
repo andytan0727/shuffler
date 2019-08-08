@@ -175,6 +175,12 @@ export const listToPlayReducer: Reducer<
   YTPlaylistNormedAction
 > = produce((draft: Draft<NormListToPlay>, action: YTPlaylistNormedAction) => {
   switch (action.type) {
+    // for batch addition of items directly through normalized listToPlay
+    // entities and result
+    case ActionTypes.ADD_NORM_LIST_TO_PLAY: {
+      return mergeNormalizedEntities(draft, action);
+    }
+
     case ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEM: {
       const {
         resultItem: { id, source, schema },
@@ -187,11 +193,6 @@ export const listToPlayReducer: Reducer<
       draft.entities[schema][id] = { id, foreignKey };
       draft.result.push({ id, source, schema });
       return draft;
-    }
-
-    // for batch addition of items directly through normalized listToPlay entities and result
-    case ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS: {
-      return mergeNormalizedEntities(draft, action);
     }
 
     // Update entire normalized listToPlay without preserving previous details
