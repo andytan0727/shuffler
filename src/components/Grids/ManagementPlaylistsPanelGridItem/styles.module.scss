@@ -27,11 +27,17 @@
   }
 }
 
-.gridItemTitle {
+.gridItemTitleDiv {
   display: flex;
   padding: 0px 10px;
   align-items: center;
   justify-content: space-between;
+
+  .gridItemTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   .gridItemTitleIcon {
     width: 40px;

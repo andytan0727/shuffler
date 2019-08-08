@@ -67,8 +67,10 @@ const ManagementPlaylistsPanelGridItem = (
           <ManagementPlaylistsPanelGridItemBtn playlistId={playlistId} />
         )}
       </li>
-      <div className={styles.gridItemTitle}>
-        <h2>{playlist.name || `Playlist-${playlistId}`}</h2>
+      <div className={styles.gridItemTitleDiv}>
+        <h2 className={styles.gridItemTitle}>
+          {playlist.name || `Playlist-${playlistId}`}
+        </h2>
 
         <div className={styles.gridItemTitleIcon}>
           {playlist.allInPlaying && <PlaylistAddCheckIcon />}

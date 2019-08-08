@@ -59,6 +59,15 @@ const useStyles = makeStyles((theme) => ({
     // 16px = padding top + padding bottom of MUI list item
     height: "calc(100% - 48px*3 + 16px)",
     overflowY: "auto",
+
+    // prevent text overflow of long playlist id/name
+    "& span": {
+      display: "inline-block",
+      width: "10rem",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+    },
   },
   listItemIcon: {
     minWidth: 40,
