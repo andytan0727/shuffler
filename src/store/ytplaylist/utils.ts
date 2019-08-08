@@ -206,20 +206,28 @@ export const isListToPlayItemExists = (
 // =====================================================
 // Utils for selectors
 // =====================================================
+/**
+ * Get snippet of playlist/video item from itemId provided. Returns snippet if
+ * snippet could be found using itemId, else return an object containing undefined
+ * id property
+ *
+ * @param entities Playlists or videos entities used to get snippetId
+ * @param itemId Id of item to be search for
+ * @returns snippet
+ *
+ */
 export const getSnippetFromItemId = (
   entities: NormPlaylistsOrVideosEntities,
   itemId: string
 ) => {
   const snippetId = isPlaylistsEntities(entities)
-    ? get(entities.playlistItems[itemId], "snippet", undefined)
-    : get(entities.videoItems[itemId], "snippet", undefined);
+    ? get(entities.playlistItems[itemId], "snippet")
+    : get(entities.videoItems[itemId], "snippet");
 
   // assign snippet's key as the id of the returning object
   // for the usage in views
-  return snippetId
-    ? {
-        ...entities.snippets[snippetId],
-        id: snippetId,
-      }
-    : undefined;
+  return {
+    ...entities.snippets[snippetId],
+    id: snippetId,
+  };
 };

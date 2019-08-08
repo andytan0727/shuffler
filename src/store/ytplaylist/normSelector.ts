@@ -5,9 +5,11 @@ import { createSelector } from "reselect";
 import { AppState } from "store";
 
 import {
+  ListToPlaySnippets,
   NormPlaylistsEntities,
   NormVideosEntities,
   PlaylistItemSnippet,
+  VideoItemSnippet,
 } from "./types";
 import { getSnippetFromItemId } from "./utils";
 
@@ -166,6 +168,39 @@ export const selectAllNormListToPlayItemIds = createSelector(
   (results) => results.map((result) => result.id)
 );
 
+export const selectNormListToPlayResultSnippets = createSelector(
+  [
+    selectNormListToPlayResult,
+    selectNormPlaylistsEntities,
+    selectNormVideosEntities,
+  ],
+  (result, playlistEntities, videoEntities) => {
+    // object to store and detect duplicate key (snippetId)
+    const snippetIds: PlainObject = {};
+    const snippets: (PlaylistItemSnippet | VideoItemSnippet)[] = [];
+    result.forEach((item) => {
+      const { id: itemId, schema } = item;
+      const snippet = getSnippetFromItemId(
+        schema === "playlistItems"
+          ? (playlistEntities as NormPlaylistsEntities)
+          : (videoEntities as NormVideosEntities),
+        itemId
+      );
+
+      // push snippet to snippets if there is
+      // no previous snippet with same id exists
+      // also prevent next duplicated snippet to be pushed
+      if (!snippetIds[snippet.id]) {
+        snippetIds[snippet.id] = true;
+        snippets.push(snippet);
+      }
+    });
+
+    // return as immutable snippets array
+    return snippets as ListToPlaySnippets;
+  }
+);
+
 // =====================================
 // =====================================
 // General
@@ -181,6 +216,11 @@ export const selectAllNormListToPlayItemIds = createSelector(
 export const selectNormSnippetByItemId = createCachedSelector(
   selectNormPlaylistSnippetByItemId,
   selectNormVideoSnippetByItemId,
-  (playlistSnippet, videoSnippet) =>
-    playlistSnippet ? playlistSnippet : videoSnippet
+  (playlistSnippet, videoSnippet) => {
+    // if playlist or video snippet absent, it will be an object containing
+    // undefined id property
+    const playlistSnippetExists = playlistSnippet.id;
+
+    return playlistSnippetExists ? playlistSnippet : videoSnippet;
+  }
 )((_: never, itemId) => `ltp-snippet-itemId-${itemId}`);

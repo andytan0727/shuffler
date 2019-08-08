@@ -197,6 +197,9 @@ export interface YTPlaylistNormedState {
 }
 
 export type ListToPlayItems = DeepReadonly<(PlaylistItem | VideoItem)[]>;
+export type ListToPlaySnippets = DeepReadonly<
+  (PlaylistItemSnippet | VideoItemSnippet)[]
+>;
 
 // ==================================================
 // Actions
