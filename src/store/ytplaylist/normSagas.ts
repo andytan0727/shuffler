@@ -4,7 +4,7 @@ import * as ActionTypes from "utils/constants/actionConstants";
 
 import {
   addAllInPlayingLabelByIdAction,
-  addNormListToPlayItemAction,
+  addNormListToPlayItemsAction,
   addNormPlaylistToNormListToPlayAction,
   deleteNormListToPlayItemByIdAction,
   deleteNormListToPlayItemsAction,
@@ -70,20 +70,17 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
     // add allInPlaying label to this playlist
     yield put(addAllInPlayingLabelByIdAction(playlistId));
 
+    const playlistItems = itemIds.map((itemId) => ({
+      resultItem: {
+        id: itemId,
+        source: "playlists" as MediaSourceType,
+        schema: "playlistItems" as SchemaType,
+      },
+      foreignKey: playlistId,
+    }));
+
     // add all items in the playlist into normListToPlay
-    // TODO: move loop to reducers
-    for (const itemId of itemIds) {
-      yield put(
-        addNormListToPlayItemAction(
-          {
-            id: itemId,
-            source: "playlists",
-            schema: "playlistItems",
-          },
-          playlistId
-        )
-      );
-    }
+    yield put(addNormListToPlayItemsAction(playlistItems));
   });
 }
 

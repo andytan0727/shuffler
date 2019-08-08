@@ -111,8 +111,7 @@ export function* addPlaylistsToListToPlay(
   );
   const playlistItemsToAdd = playlists
     .filter((playlist) => playlistIds.includes(playlist.id))
-    .map((filteredPlaylist) => filteredPlaylist.items)
-    .reduce((acc, val) => acc.concat(val), []);
+    .flatMap((filteredPlaylist) => filteredPlaylist.items);
 
   // update playingPlaylists, listToPlay and checkedPlaylists respectively
   yield put(ytplaylistAction.addPlayingPlaylistsAction(playlistIds));
@@ -310,20 +309,17 @@ export function* addVideosToListToPlay(action: AddVideosToListToPlayAction) {
     const videoItemIds: string[] = yield select((state) =>
       selectNormVideoItemIdsByVideoId(state as never, videoId)
     );
+    const videoItems = videoItemIds.map((videoItemId) => ({
+      resultItem: {
+        id: videoItemId,
+        source: "videos" as MediaSourceType,
+        schema: "videoItems" as SchemaType,
+      },
+      foreignKey: videoId,
+    }));
 
     // add video to normalized listToPlay
-    for (const videoItemId of videoItemIds) {
-      yield put(
-        ytplaylistNormedAction.addNormListToPlayItemAction(
-          {
-            id: videoItemId,
-            source: "videos",
-            schema: "videoItems",
-          },
-          videoId
-        )
-      );
-    }
+    yield put(ytplaylistNormedAction.addNormListToPlayItemsAction(videoItems));
   }
   // =============================================
   // End porting

@@ -9,7 +9,6 @@ import {
   DeepRONormPlaylists,
   DeepRONormVideos,
   NormListToPlay,
-  NormListToPlayResultItem,
   NormPlaylists,
   NormVideos,
   YTPlaylistNormedAction,
@@ -185,13 +184,23 @@ export const listToPlayReducer: Reducer<
       const {
         resultItem: { id, source, schema },
         foreignKey,
-      }: {
-        resultItem: NormListToPlayResultItem;
-        foreignKey: string;
       } = action.payload;
 
       draft.entities[schema][id] = { id, foreignKey };
       draft.result.push({ id, source, schema });
+      return draft;
+    }
+
+    case ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS: {
+      const { items } = action.payload;
+
+      items.forEach(({ resultItem, foreignKey }) => {
+        const { id, source, schema } = resultItem;
+
+        draft.entities[schema][id] = { id, foreignKey };
+        draft.result.push({ id, source, schema });
+      });
+
       return draft;
     }
 

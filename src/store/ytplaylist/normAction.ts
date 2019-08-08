@@ -248,6 +248,29 @@ export const addNormListToPlayItemAction = createAction(
 );
 
 /**
+ * Add items as a batch to normalized listToPlay
+ *
+ * @param items Item array consists of normalized listToPlay's result item and
+ * foreign key
+ * @returns ADD_NORM_LIST_TO_PLAY_ITEMS action object
+ *
+ */
+export const addNormListToPlayItemsAction = createAction(
+  ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS,
+  (action) => {
+    return (
+      items: {
+        resultItem: NormListToPlayResultItem;
+        foreignKey: string;
+      }[]
+    ) =>
+      action({
+        items,
+      });
+  }
+);
+
+/**
  * Update entire normalized listToPlay with full replacement to previous state
  *
  * @param source Source type (playlists/videos)
