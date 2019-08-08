@@ -71,6 +71,7 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
     yield put(addAllInPlayingLabelByIdAction(playlistId));
 
     // add all items in the playlist into normListToPlay
+    // TODO: move loop to reducers
     for (const itemId of itemIds) {
       yield put(
         addNormListToPlayItemAction(

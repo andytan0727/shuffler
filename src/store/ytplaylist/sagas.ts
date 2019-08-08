@@ -1,13 +1,15 @@
 import shuffle from "lodash/shuffle";
 import { all, put, select, take, takeEvery } from "redux-saga/effects";
-import * as schemas from "schemas";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 import { notify } from "utils/helper/notifyHelper";
 
 import * as ytplaylistAction from "./action";
 import * as ytplaylistNormedAction from "./normAction";
-import { selectNormPlaylistItemIdsById } from "./normSelector";
+import {
+  selectNormPlaylistItemIdsById,
+  selectNormVideoItemIdsByVideoId,
+} from "./normSelector";
 import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
 
 type DeletePlaylistsAction = ActionType<
@@ -42,6 +44,8 @@ type TogglePlayingVideoAction = ActionType<
  * action to clear any possible leftover on playingPlaylists
  * and listToPlay
  *
+ * NOTE: added logic to update normalized states as well
+ *
  * @export
  * @param action
  */
@@ -51,10 +55,37 @@ export function* deletePlaylists(action: DeletePlaylistsAction) {
   if (Array.isArray && !Array.isArray(playlistIdsToRemove))
     throw new Error("deletePlaylists: Args supplied is not an array");
 
-  // call REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY action after deleting playlist(s) from redux
+  // remove playlist residuals from playingPlaylists, listToPlay and checkedPlaylists
+  yield put(ytplaylistAction.removePlayingPlaylistsAction(playlistIdsToRemove));
   yield put(
-    ytplaylistAction.removePlaylistsFromListToPlayAction(playlistIdsToRemove)
+    ytplaylistAction.removeFromListToPlayAction(
+      playlistIdsToRemove,
+      "playlists"
+    )
   );
+  yield put(ytplaylistAction.setCheckedPlaylistsAction([]));
+
+  // =============================================
+  // Porting to normalized states
+  // =============================================
+  for (const playlistIdToRemove of playlistIdsToRemove) {
+    const playlistItemIds: string[] = yield select((state) =>
+      selectNormPlaylistItemIdsById(state as never, playlistIdToRemove)
+    );
+
+    // remove playlists from normalized listToPlay
+    yield put(
+      ytplaylistNormedAction.deleteNormListToPlayItemsAction(playlistItemIds)
+    );
+
+    // delete playlists from normalized playlists
+    yield put(
+      ytplaylistNormedAction.deleteNormPlaylistByIdAction(playlistIdToRemove)
+    );
+  }
+  // =============================================
+  // End porting
+  // ============================================
 }
 
 /**
@@ -91,20 +122,23 @@ export function* addPlaylistsToListToPlay(
   // =============================================
   // Porting to normalized states
   // =============================================
-  const normalizedPlaylistItemsToAdd = schemas.normalizeListToPlay(
-    playlistItemsToAdd
-  );
+  // add each playlist and their respective items to normalized listToPlay
+  for (const playlistId of playlistIds) {
+    const playlistItemIds: string[] = yield select((state) =>
+      selectNormPlaylistItemIdsById(state as never, playlistId)
+    );
+
+    yield put(
+      ytplaylistNormedAction.addNormPlaylistToNormListToPlayAction(
+        playlistId,
+        playlistItemIds
+      )
+    );
+  }
+
   // =============================================
   // End porting
   // =============================================
-
-  // add playlist items to normalized listToPlay
-  yield put(
-    ytplaylistNormedAction.addNormListToPlayItemsAction(
-      normalizedPlaylistItemsToAdd.entities,
-      normalizedPlaylistItemsToAdd.result
-    )
-  );
 }
 
 /**
@@ -131,7 +165,8 @@ export function* removePlaylistsFromListToPlay(
     (state) => state.ytplaylist.playingPlaylists
   );
 
-  if (playlistIdsToRemove.length === 0) return;
+  if (playlistIdsToRemove.length === 0)
+    throw new Error("Playlist Ids array is empty. Nothing to remove");
 
   for (const playlistIdToRemove of playlistIdsToRemove) {
     const playlistToRemove = playlists.filter(
@@ -163,9 +198,15 @@ export function* removePlaylistsFromListToPlay(
     const playlistItemIds = yield select((state) =>
       selectNormPlaylistItemIdsById(state as never, playlistIdToRemove)
     );
+
+    // remove playlist in normalized listToPlay and remove allInPlaying label
     yield put(
-      ytplaylistNormedAction.deleteNormListToPlayItemsAction(playlistItemIds)
+      ytplaylistNormedAction.removeNormPlaylistFromNormListToPlayAction(
+        playlistIdToRemove,
+        playlistItemIds
+      )
     );
+    // );
     // =============================================
     // End porting
     // =============================================
@@ -173,7 +214,7 @@ export function* removePlaylistsFromListToPlay(
     // notify user if playlist(s) are removed from listToPlay and normalized listToPlay
     notify(
       "success",
-      `Successfully removed playlist: ${playlistIdentifier} from playing 😎`
+      `Successfully removed selected playlist(s) from playing 😎`
     );
   }
 
@@ -193,6 +234,8 @@ export function* removePlaylistsFromListToPlay(
  * Saga which listening to DELETE_VIDEOS action, then dispatch
  * REMOVE_VIDEOS_FROM_LIST_TO_PLAY action to clear the residue
  *
+ * NOTE: added logic to update normalized states as well
+ *
  * @export
  * @param action
  */
@@ -202,10 +245,34 @@ export function* deleteVideos(action: DeleteVideosAction) {
   if (Array.isArray && !Array.isArray(videoIdsToRemove))
     throw new Error("deleteVideos: Args supplied is not an array");
 
-  // call REMOVE_VIDEOS_FROM_LIST_TO_PLAY action after deleting video(s) from redux
+  // clear video residuals in playingVideos, listToPlay and checkedVideos
+  yield put(ytplaylistAction.removePlayingVideosAction(videoIdsToRemove));
   yield put(
-    ytplaylistAction.removeVideosFromListToPlayAction(videoIdsToRemove)
+    ytplaylistAction.removeFromListToPlayAction(videoIdsToRemove, "videos")
   );
+  yield put(ytplaylistAction.setCheckedVideosAction([]));
+
+  // =============================================
+  // Porting to normalized states
+  // =============================================
+  for (const videoIdToRemove of videoIdsToRemove) {
+    const videoItemIds: string[] = yield select((state) =>
+      selectNormVideoItemIdsByVideoId(state as never, videoIdToRemove)
+    );
+
+    // remove videos from normalized listToPlay
+    yield put(
+      ytplaylistNormedAction.deleteNormListToPlayItemsAction(videoItemIds)
+    );
+
+    // delete videos from normalized videos
+    yield put(
+      ytplaylistNormedAction.deleteNormVideoByIdAction(videoIdToRemove)
+    );
+  }
+  // =============================================
+  // End porting
+  // ============================================
 }
 
 /**
@@ -214,13 +281,16 @@ export function* deleteVideos(action: DeleteVideosAction) {
  * APPEND_LIST_TO_PLAY action,
  * and SET_CHECKED_VIDEOS action
  *
+ * NOTE: added logic to update normalized states as well
+ *
  * @export
  * @param action
  */
 export function* addVideosToListToPlay(action: AddVideosToListToPlayAction) {
   const videoIds = action.payload.videoIds;
 
-  if (videoIds.length === 0) return;
+  if (videoIds.length === 0)
+    throw new Error("Video Ids array is empty. Nothing to remove");
 
   const videos: Video[] = yield select((state) => state.ytplaylist.videos);
   const videoItemsToAdd = videos
@@ -232,6 +302,32 @@ export function* addVideosToListToPlay(action: AddVideosToListToPlayAction) {
   yield put(ytplaylistAction.addPlayingVideosAction(videoIds));
   yield put(ytplaylistAction.appendListToPlayAction(videoItemsToAdd));
   yield put(ytplaylistAction.setCheckedVideosAction([]));
+
+  // =============================================
+  // Porting to normalized states
+  // =============================================
+  for (const videoId of videoIds) {
+    const videoItemIds: string[] = yield select((state) =>
+      selectNormVideoItemIdsByVideoId(state as never, videoId)
+    );
+
+    // add video to normalized listToPlay
+    for (const videoItemId of videoItemIds) {
+      yield put(
+        ytplaylistNormedAction.addNormListToPlayItemAction(
+          {
+            id: videoItemId,
+            source: "videos",
+            schema: "videoItems",
+          },
+          videoId
+        )
+      );
+    }
+  }
+  // =============================================
+  // End porting
+  // ============================================
 }
 
 /**
@@ -239,6 +335,8 @@ export function* addVideosToListToPlay(action: AddVideosToListToPlayAction) {
  * then it dispatches REMOVE_PLAYING_VIDEOS action,
  * REMOVE_FROM_LIST_TO_PLAY action and SET_CHECKED_VIDEOS action
  * subsequently
+ *
+ * NOTE: added logic to update normalized states as well
  *
  * @export
  * @param action
@@ -258,33 +356,40 @@ export function* removeVideosFromListToPlay(
     const videoToRemove = videos.filter(
       (video) => video.id === videoIdToRemove
     )[0];
+
+    if (!videoIdToRemove) return;
+
     const videoIdentifier =
-      (videoToRemove &&
-        videoToRemove.items[0] &&
-        videoToRemove.items[0].snippet.title) ||
+      (videoToRemove.items[0] && videoToRemove.items[0].snippet.title) ||
       videoIdToRemove;
 
     if (!playingVideos.includes(videoIdToRemove)) {
-      if (videoToRemove) {
-        notify(
-          "warning",
-          `video: ${videoIdentifier} is not included in playing`
-        );
-      }
+      notify("warning", `video: ${videoIdentifier} is not included in playing`);
 
       continue;
     }
 
     yield put(ytplaylistAction.removePlayingVideosAction([videoIdToRemove]));
 
+    // =============================================
+    // Porting to normalized states
+    // =============================================
+    const videoItemIds: string[] = yield select((state) =>
+      selectNormVideoItemIdsByVideoId(state as never, videoIdToRemove)
+    );
+
+    // remove video from normalized listToPlay
+    yield put(
+      ytplaylistNormedAction.deleteNormListToPlayItemsAction(videoItemIds)
+    );
+
+    // =============================================
+    // End porting
+    // ============================================
+
     // only notify user if the user is removing video from listToPlay
     // instead of deleting it
-    if (videoToRemove) {
-      notify(
-        "success",
-        `Successfully removed video: ${videoIdentifier} from playing 😎`
-      );
-    }
+    notify("success", `Successfully removed video(s) from playing 😎`);
   }
 
   yield put(
@@ -295,6 +400,8 @@ export function* removeVideosFromListToPlay(
 
 /**
  * Toggle add or remove video from listToPlay
+ *
+ * TODO: Pending to remove
  *
  * @exports
  * @param action
