@@ -1,5 +1,6 @@
 import produce, { Draft, original } from "immer";
 import shuffle from "lodash/shuffle";
+import uniq from "lodash/uniq";
 import { combineReducers } from "redux";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
@@ -38,7 +39,21 @@ export const playlistsReducer: Reducer<
 > = produce((draft: Draft<NormPlaylists>, action: YTPlaylistNormedAction) => {
   switch (action.type) {
     case ActionTypes.ADD_NORM_PLAYLIST: {
-      return mergeNormalizedEntities<NormPlaylists>(draft, action);
+      const prevResult = original(draft.result);
+
+      if (prevResult) {
+        const { result } = action.payload;
+
+        return mergeNormalizedEntities(draft, {
+          ...action,
+          payload: {
+            ...action.payload,
+            result: uniq([...prevResult, ...result]),
+          },
+        });
+      }
+
+      return draft;
     }
 
     case ActionTypes.DELETE_NORM_PLAYLIST_BY_ID: {
@@ -133,7 +148,21 @@ export const videosReducer: Reducer<
 > = produce((draft: Draft<NormVideos>, action: YTPlaylistNormedAction) => {
   switch (action.type) {
     case ActionTypes.ADD_NORM_VIDEO: {
-      return mergeNormalizedEntities(draft, action);
+      const prevResult = original(draft.result);
+
+      if (prevResult) {
+        const { result } = action.payload;
+
+        return mergeNormalizedEntities(draft, {
+          ...action,
+          payload: {
+            ...action.payload,
+            result: uniq([...prevResult, ...result]),
+          },
+        });
+      }
+
+      return draft;
     }
 
     case ActionTypes.UPDATE_NORM_VIDEO_NAME_BY_ID: {
@@ -176,35 +205,15 @@ export const listToPlayReducer: Reducer<
   switch (action.type) {
     // for batch addition of items directly through normalized listToPlay
     // entities and result
-    case ActionTypes.ADD_NORM_LIST_TO_PLAY: {
+    case ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY: {
       return mergeNormalizedEntities(draft, action);
     }
 
-    case ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEM: {
-      const {
-        resultItem: { id, source, schema },
-        foreignKey,
-      } = action.payload;
-
-      draft.entities[schema][id] = { id, foreignKey };
-      draft.result.push({ id, source, schema });
-      return draft;
-    }
-
-    case ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS: {
-      const { items } = action.payload;
-
-      items.forEach(({ resultItem, foreignKey }) => {
-        const { id, source, schema } = resultItem;
-
-        draft.entities[schema][id] = { id, foreignKey };
-        draft.result.push({ id, source, schema });
-      });
-
-      return draft;
-    }
-
     // Update entire normalized listToPlay without preserving previous details
+    // mainly used for play (ONE) and only one playlist
+    // without mixing other videos/playlists
+    // assume all snippets in (ONE) playlist taken from API are all unique
+    // No need to check for uniqueness of snippets in (ONE) playlist
     case ActionTypes.UPDATE_NORM_LIST_TO_PLAY: {
       const { source, sourceId: foreignKey, itemIds } = action.payload;
 

@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import map from "lodash/map";
 import pick from "lodash/pick";
 import createCachedSelector from "re-reselect";
@@ -5,11 +6,9 @@ import { createSelector } from "reselect";
 import { AppState } from "store";
 
 import {
-  ListToPlaySnippets,
   NormPlaylistsEntities,
   NormVideosEntities,
   PlaylistItemSnippet,
-  VideoItemSnippet,
 } from "./types";
 import { getSnippetFromItemId } from "./utils";
 
@@ -100,6 +99,11 @@ export const selectAllNormVideoSnippetsAsArray = createSelector(
   (snippets) => map(snippets, (val, key) => ({ id: key, ...val }))
 );
 
+export const selectAllNormVideoItems = createSelector(
+  selectNormVideosEntities,
+  (entities) => entities.videoItems
+);
+
 export const selectAllNormVideoItemIds = createSelector(
   selectNormVideosEntities,
   (entities) => Object.keys(entities.videoItems)
@@ -168,6 +172,22 @@ export const selectAllNormListToPlayItemIds = createSelector(
   (results) => results.map((result) => result.id)
 );
 
+/**
+ * Select snippetIds from item id of normalized listToPlay result items
+ */
+export const selectNormListToPlaySnippetIds = createSelector(
+  selectNormListToPlayResult,
+  selectAllNormPlaylistItems,
+  selectAllNormVideoItems,
+  (result, playlistItems, videoItems) => {
+    return result.map(({ id: itemId, schema }) =>
+      schema === "playlistItems"
+        ? playlistItems[itemId].snippet
+        : videoItems[itemId].snippet
+    );
+  }
+);
+
 export const selectNormListToPlayResultSnippets = createSelector(
   [
     selectNormListToPlayResult,
@@ -175,29 +195,14 @@ export const selectNormListToPlayResultSnippets = createSelector(
     selectNormVideosEntities,
   ],
   (result, playlistEntities, videoEntities) => {
-    // object to store and detect duplicate key (snippetId)
-    const snippetIds: PlainObject = {};
-    const snippets: (PlaylistItemSnippet | VideoItemSnippet)[] = [];
-    result.forEach((item) => {
-      const { id: itemId, schema } = item;
-      const snippet = getSnippetFromItemId(
+    return result.map(({ id: itemId, schema }) =>
+      getSnippetFromItemId(
         schema === "playlistItems"
           ? (playlistEntities as NormPlaylistsEntities)
           : (videoEntities as NormVideosEntities),
         itemId
-      );
-
-      // push snippet to snippets if there is
-      // no previous snippet with same id exists
-      // also prevent next duplicated snippet to be pushed
-      if (!snippetIds[snippet.id]) {
-        snippetIds[snippet.id] = true;
-        snippets.push(snippet);
-      }
-    });
-
-    // return as immutable snippets array
-    return snippets as ListToPlaySnippets;
+      )
+    );
   }
 );
 
@@ -224,3 +229,19 @@ export const selectNormSnippetByItemId = createCachedSelector(
     return playlistSnippetExists ? playlistSnippet : videoSnippet;
   }
 )((_: never, itemId) => `ltp-snippet-itemId-${itemId}`);
+
+export const selectNormSnippetIdByItemId = createCachedSelector(
+  selectAllNormPlaylistItems,
+  selectAllNormVideoItems,
+  (_: never, itemId: string) => itemId,
+  (playlistItems, videoItems, itemId) => {
+    const playlistItem = playlistItems[itemId];
+    const videoItem = videoItems[itemId];
+
+    // return playlistItem's snippet id if the itemId belongs to playlist,
+    // else return videoItem's snippet id
+    return playlistItem
+      ? get(playlistItem, "snippet")
+      : get(videoItem, "snippet");
+  }
+)((_: never, itemId) => `snippetId-itemId-${itemId}`);

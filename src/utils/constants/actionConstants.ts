@@ -74,6 +74,7 @@ export const CLEAR_LIST_TO_PLAY = "CLEAR_LIST_TO_PLAY" as const;
 export const SHUFFLE_LIST_TO_PLAY = "SHUFFLE_LIST_TO_PLAY" as const;
 
 export const ADD_NORM_LIST_TO_PLAY = "ADD_NORM_LIST_TO_PLAY" as const;
+export const ADD_UNIQUE_NORM_LIST_TO_PLAY = "ADD_UNIQUE_NORM_LIST_TO_PLAY" as const;
 export const ADD_NORM_LIST_TO_PLAY_ITEM = "ADD_NORM_LIST_TO_PLAY_ITEM" as const;
 export const ADD_NORM_LIST_TO_PLAY_ITEMS = "ADD_NORM_LIST_TO_PLAY_ITEMS" as const;
 export const UPDATE_NORM_LIST_TO_PLAY = "UPDATE_NORM_LIST_TO_PLAY" as const;

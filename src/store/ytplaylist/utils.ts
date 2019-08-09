@@ -67,8 +67,7 @@ export const mergeNormalizedEntities = <
 
   merge(draft.entities, entities);
 
-  // merge array for both union types
-  (draft.result as []).push(...(result as []));
+  draft.result = result;
 
   return draft;
 };

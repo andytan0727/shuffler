@@ -211,6 +211,8 @@ export const deleteNormVideoByIdAction = createAction(
 /**
  * Add normalized listToPlay entities to store
  *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
  * @param entities Normalized entities of listToPlay
  * @param result Normalized result of listToPlay
  * @returns ADD_NORM_LIST_TO_PLAY action object
@@ -230,7 +232,32 @@ export const addNormListToPlayAction = createAction(
 );
 
 /**
+ * Add listToPlay entities and result unique
+ * with snippetId associating with itemId of result
+ * item to normalized listToPlay
+ *
+ * @param entities Normalized entities of listToPlay
+ * @param result Normalized result of listToPlay
+ * @returns ADD_UNIQUE_NORM_LIST_TO_PLAY action object
+ */
+export const addUniqueNormListToPlay = createAction(
+  ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY,
+  (action) => {
+    return (
+      entities: NormListToPlayEntities,
+      result: NormListToPlayResultItem[]
+    ) =>
+      action({
+        entities,
+        result,
+      });
+  }
+);
+
+/**
  * Add per item to listToPlay
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
  *
  * @param resultItem List item with item's id and its schema
  * @param foreignKey Id of playlist/video that owns this item
@@ -249,6 +276,8 @@ export const addNormListToPlayItemAction = createAction(
 
 /**
  * Add items as a batch to normalized listToPlay
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
  *
  * @param items Item array consists of normalized listToPlay's result item and
  * foreign key
