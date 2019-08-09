@@ -3,8 +3,9 @@ import "./App.scss";
 import classNames from "classnames";
 import throttle from "lodash/throttle";
 import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { selectPreferDarkTheme } from "store/userPreferences/selector";
 
 import purple from "@material-ui/core/colors/purple";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -28,13 +29,9 @@ const AboutPage = lazy(() => retryLazy(() => import("./pages/AboutPage")));
 // use a variable to assign fixed value that won't change after every re-render
 let initialTheme: boolean;
 
-interface AppProps {
-  preferDarkTheme: boolean;
-  setPreferDarkTheme: (isPreferDarkTheme: boolean) => void;
-}
-
-const App = (props: AppProps) => {
-  const { preferDarkTheme, setPreferDarkTheme } = props;
+const App = () => {
+  const preferDarkTheme = useSelector(selectPreferDarkTheme);
+  const dispatch = useDispatch();
   const [scrolling, setScrolling] = useState(false);
   initialTheme = preferDarkTheme;
 
@@ -71,7 +68,7 @@ const App = (props: AppProps) => {
 
   const setPreferDarkThemeShortcut = (e: React.KeyboardEvent) => {
     if (e.ctrlKey && e.altKey && e.key === "d") {
-      setPreferDarkTheme(!preferDarkTheme);
+      dispatch(setPreferDarkTheme(!preferDarkTheme));
     }
   };
 
@@ -110,8 +107,8 @@ const App = (props: AppProps) => {
 
   useEffect(() => {
     // load saved theme on startup
-    setPreferDarkTheme(initialTheme);
-  }, [setPreferDarkTheme]);
+    dispatch(setPreferDarkTheme(initialTheme));
+  }, [dispatch]);
 
   useEffect(() => {
     import("./utils/helper/migrateStatesHelper").then((migrateStates) => {
@@ -143,13 +140,7 @@ const App = (props: AppProps) => {
             </div>
             <div className="App-main">
               <Switch>
-                <Route
-                  path="/"
-                  exact
-                  render={(props) => (
-                    <MainPage preferDarkTheme={preferDarkTheme} {...props} />
-                  )}
-                />
+                <Route path="/" exact component={MainPage} />
                 <Route path="/what-is-new" component={WhatIsNewPage} />
                 <Route path="/playlistInput" component={PlaylistInputPage} />
                 <Route path="/player" component={PlayerPage} />
@@ -164,17 +155,4 @@ const App = (props: AppProps) => {
   );
 };
 
-const mapStatesToProps = ({
-  userPreferences: { preferDarkTheme },
-}: {
-  userPreferences: { preferDarkTheme: boolean };
-}) => ({
-  preferDarkTheme,
-});
-
-export default connect(
-  mapStatesToProps,
-  {
-    setPreferDarkTheme,
-  }
-)(App);
+export default App;

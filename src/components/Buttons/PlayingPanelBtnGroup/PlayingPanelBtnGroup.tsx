@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useCallback } from "react";
 import { connect, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { AppState } from "store";
+import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import {
   clearListToPlayAction,
@@ -18,10 +18,6 @@ import {
 
 import styles from "./styles.module.scss";
 
-interface PlayingPanelBtnGroupConnectedState {
-  preferDarkTheme: boolean;
-}
-
 interface PlayingPanelBtnGroupConnectedDispatch {
   clearListToPlayAction: typeof clearListToPlayAction;
   shuffleListToPlayAction: typeof shuffleListToPlayAction;
@@ -30,17 +26,12 @@ interface PlayingPanelBtnGroupConnectedDispatch {
 type PlayingPanelBtnGroupOwnProps = RouteComponentProps;
 
 type PlayingPanelBtnGroupProps = PlayingPanelBtnGroupOwnProps &
-  PlayingPanelBtnGroupConnectedState &
   PlayingPanelBtnGroupConnectedDispatch;
 
 const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
-  const {
-    preferDarkTheme,
-    history,
-    clearListToPlayAction,
-    shuffleListToPlayAction,
-  } = props;
+  const { history, clearListToPlayAction, shuffleListToPlayAction } = props;
   const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const preferDarkTheme = useSelector(selectPreferDarkTheme);
 
   const handleRedirectToPlayer = useCallback(() => {
     if (listToPlaySnippets.length === 0) {
@@ -95,14 +86,8 @@ const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
   );
 };
 
-const mapStatesToProps = ({
-  userPreferences: { preferDarkTheme },
-}: AppState) => ({
-  preferDarkTheme,
-});
-
 export default connect(
-  mapStatesToProps,
+  null,
   {
     clearListToPlayAction,
     shuffleListToPlayAction,

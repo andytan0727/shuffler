@@ -1,5 +1,7 @@
 import classNames from "classnames";
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectPreferDarkTheme } from "store/userPreferences/selector";
 
 import {
   MusicNote as MusicNoteIcon,
@@ -10,13 +12,13 @@ import {
 import styles from "./styles.module.scss";
 
 interface SwitchPanelRadioBtnProps {
-  preferDarkTheme: boolean;
   checkedButton: string;
   handleChangePanel: (e: InputChangeEvent) => void;
 }
 
 const SwitchPanelRadioBtn = (props: SwitchPanelRadioBtnProps) => {
-  const { checkedButton, handleChangePanel, preferDarkTheme } = props;
+  const { checkedButton, handleChangePanel } = props;
+  const preferDarkTheme = useSelector(selectPreferDarkTheme);
 
   return (
     <div className={styles.switchPanelRadio}>

@@ -2,17 +2,9 @@ import classNames from "classnames";
 import { SwitchPanelRadioBtn } from "components/Buttons";
 import * as PanelComponent from "components/Panels";
 import React, { useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { AppState } from "store";
 import { move } from "utils/helper/arrayHelper";
 
 import styles from "./styles.module.scss";
-
-interface ConnectedState {
-  preferDarkTheme: boolean;
-}
-
-type InputTabsProps = ConnectedState;
 
 const _radios = ["radio-videolist", "radio-video", "radio-playing"];
 
@@ -44,8 +36,7 @@ const _tabPanels = [
  * of videos, playlists and playing
  *
  */
-const InputTabs = (props: InputTabsProps) => {
-  const { preferDarkTheme } = props;
+const InputTabs = () => {
   const [checkedButton, setCheckedButton] = useState("radio-playing");
 
   const handleChangePanel = useCallback((e: InputChangeEvent) => {
@@ -62,7 +53,6 @@ const InputTabs = (props: InputTabsProps) => {
       <SwitchPanelRadioBtn
         checkedButton={checkedButton}
         handleChangePanel={handleChangePanel}
-        preferDarkTheme={preferDarkTheme}
       />
 
       <div className={styles.playlistPanelsDiv}>
@@ -86,11 +76,4 @@ const InputTabs = (props: InputTabsProps) => {
   );
 };
 
-const mapStatesToProps = (state: AppState) => ({
-  preferDarkTheme: state.userPreferences.preferDarkTheme,
-});
-
-export default connect(
-  mapStatesToProps,
-  {}
-)(InputTabs);
+export default InputTabs;

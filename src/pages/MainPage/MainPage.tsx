@@ -1,17 +1,13 @@
 import { ReactComponent as ShufflerLogo } from "assets/shuffler-logo.svg";
 import React, { forwardRef } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectPreferDarkTheme } from "store/userPreferences/selector";
 
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import styles from "./styles.module.scss";
-
-interface MainPageConnectedState {
-  preferDarkTheme: boolean;
-}
-
-type MainPageProps = MainPageConnectedState;
 
 const useStyles = makeStyles({
   lightVariant: {
@@ -40,8 +36,9 @@ const GetStartedLink = forwardRef((props, ref: React.Ref<Link>) => (
 
 GetStartedLink.displayName = "GetStartedLink";
 
-const MainPage = ({ preferDarkTheme }: MainPageProps) => {
+const MainPage = () => {
   const classes = useStyles();
+  const preferDarkTheme = useSelector(selectPreferDarkTheme);
 
   return (
     <React.Fragment>

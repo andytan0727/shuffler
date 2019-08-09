@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { AppState } from "store";
+import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
   addPlaylistsToListToPlayAction,
   deletePlaylistsAction,
@@ -19,7 +20,6 @@ import {
 import styles from "./styles.module.scss";
 
 interface VideoListPanelBtnGroupConnectedState {
-  preferDarkTheme: boolean;
   checkedPlaylists: Readonly<string[]>;
 }
 
@@ -48,13 +48,13 @@ const noPlaylistSelectedAlert = async () => {
 
 const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
   const {
-    preferDarkTheme,
     checkedPlaylists,
     addPlaylistsToListToPlayAction,
     deletePlaylistsAction,
     removePlaylistsFromListToPlayAction,
     setViewPlaylist,
   } = props;
+  const preferDarkTheme = useSelector(selectPreferDarkTheme);
 
   const handleAddPlaylistToPlaying = useCallback(async () => {
     if (!checkedPlaylists.length) {
@@ -148,11 +148,7 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
   );
 };
 
-const mapStatesToProps = ({
-  userPreferences: { preferDarkTheme },
-  ytplaylist: { checkedPlaylists },
-}: AppState) => ({
-  preferDarkTheme,
+const mapStatesToProps = ({ ytplaylist: { checkedPlaylists } }: AppState) => ({
   checkedPlaylists,
 });
 

@@ -3,6 +3,7 @@ import { VideoList } from "components/Lists";
 import React, { useEffect, useRef } from "react";
 import { connect, useSelector } from "react-redux";
 import { AppState } from "store";
+import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
@@ -91,12 +92,9 @@ class CurrentPlaylistItem extends React.PureComponent<
 }
 
 const ConnectedPlaylistItem = connect(
-  ({
-    userPreferences: { preferDarkTheme },
-    ytplayer: { curSongIdx },
-  }: AppState) => ({
-    preferDarkTheme,
-    curSongIdx,
+  (state: AppState) => ({
+    preferDarkTheme: selectPreferDarkTheme(state),
+    curSongIdx: state.ytplayer.curSongIdx,
   }),
   {
     setCurSongIdx,

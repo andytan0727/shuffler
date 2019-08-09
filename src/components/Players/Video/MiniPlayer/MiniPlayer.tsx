@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { animated, useTransition } from "react-spring";
 import { AppState } from "store";
+import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
@@ -21,7 +22,6 @@ import {
 import styles from "./styles.module.scss";
 
 interface MiniPlayerConnectedState {
-  preferDarkTheme: boolean;
   playing: boolean;
   curSongIdx: number;
 }
@@ -33,10 +33,11 @@ interface MiniPlayerConnectedDispatch {
 type MiniPlayerProps = MiniPlayerConnectedState & MiniPlayerConnectedDispatch;
 
 const MiniPlayer = (props: MiniPlayerProps) => {
-  const { preferDarkTheme, playing, curSongIdx, setCurSongIdx } = props;
+  const { playing, curSongIdx, setCurSongIdx } = props;
   const ytPlayerRef = useRef<any>(null);
   const [curDisplayIdx, setCurDisplayIdx] = useState(curSongIdx);
   const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const preferDarkTheme = useSelector(selectPreferDarkTheme);
 
   const currentSnippet = listToPlaySnippets[curSongIdx];
 
@@ -234,7 +235,6 @@ const MiniPlayer = (props: MiniPlayerProps) => {
 };
 
 const mapStatesToProps = (state: AppState) => ({
-  preferDarkTheme: state.userPreferences.preferDarkTheme,
   playing: state.ytplayer.playing,
   curSongIdx: state.ytplayer.curSongIdx,
 });
