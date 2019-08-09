@@ -1,8 +1,12 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
-import { connect, useSelector } from "react-redux";
-import { AppState } from "store";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurSongIdx, toggleRepeat } from "store/ytplayer/action";
+import {
+  selectCurSongIdx,
+  selectPlaying,
+  selectRepeat,
+} from "store/ytplayer/selector";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
 import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
@@ -20,48 +24,26 @@ import {
 
 import styles from "./styles.module.scss";
 
-interface PlayerBasicCtrlBtnGroupConnectedState {
-  playing: boolean;
-  repeat: boolean;
-  curSongIdx: number;
-}
-
-interface PlayerBasicCtrlBtnGroupConnectedDispatch {
-  setCurSongIdx: typeof setCurSongIdx;
-  shuffleListToPlayAction: typeof shuffleListToPlayAction;
-  toggleRepeat: typeof toggleRepeat;
-}
-
-interface PlayerBasicCtrlBtnGroupOwnProps {
+interface PlayerBasicCtrlBtnGroupProps {
   ytPlayerRef: any;
 }
 
-type PlayerBasicCtrlBtnGroupProps = PlayerBasicCtrlBtnGroupOwnProps &
-  PlayerBasicCtrlBtnGroupConnectedState &
-  PlayerBasicCtrlBtnGroupConnectedDispatch;
-
 const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
-  const {
-    playing,
-    repeat,
-    curSongIdx,
-    setCurSongIdx,
-    shuffleListToPlayAction,
-    toggleRepeat,
-
-    // own props
-    ytPlayerRef,
-  } = props;
+  const { ytPlayerRef } = props;
+  const curSongIdx = useSelector(selectCurSongIdx);
+  const playing = useSelector(selectPlaying);
+  const repeat = useSelector(selectRepeat);
+  const dispatch = useDispatch();
 
   const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
 
   const handlePrevious = useCallback(() => {
     if (curSongIdx > 0) {
-      setCurSongIdx(curSongIdx - 1);
+      dispatch(setCurSongIdx(curSongIdx - 1));
       return;
     }
     notify("warning", "💢 This is the first video in your playlist!");
-  }, [curSongIdx, setCurSongIdx]);
+  }, [curSongIdx, dispatch]);
 
   const handlePlay = useCallback(() => {
     if (ytPlayerRef) {
@@ -81,13 +63,17 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
       return;
     }
 
-    setCurSongIdx(curSongIdx + 1);
-  }, [curSongIdx, listToPlaySnippets.length, setCurSongIdx]);
+    dispatch(setCurSongIdx(curSongIdx + 1));
+  }, [curSongIdx, dispatch, listToPlaySnippets.length]);
 
   const handleShufflePlaylist = useCallback(() => {
-    shuffleListToPlayAction();
-    setCurSongIdx(0);
-  }, [setCurSongIdx, shuffleListToPlayAction]);
+    dispatch(shuffleListToPlayAction());
+    dispatch(setCurSongIdx(0));
+  }, [dispatch]);
+
+  const handleToggle = useCallback(() => {
+    dispatch(toggleRepeat());
+  }, [dispatch]);
 
   // fix play/pause problem when Spacebar is pressed after clicking buttons
   const handleBlur = useCallback((e) => {
@@ -186,7 +172,7 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
 
   return (
     <div className={styles.ctrlBtnGroup}>
-      <IconButton onClick={toggleRepeat} aria-label="Loop">
+      <IconButton onClick={handleToggle} aria-label="Loop">
         <LoopIcon
           className={classNames({
             [styles.toggledRepeat]: repeat,
@@ -231,23 +217,4 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  const {
-    ytplayer: { playing, repeat, curSongIdx },
-  } = state;
-
-  return {
-    playing,
-    repeat,
-    curSongIdx,
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  {
-    setCurSongIdx,
-    shuffleListToPlayAction,
-    toggleRepeat,
-  }
-)(PlayerBasicCtrlBtnGroup);
+export default PlayerBasicCtrlBtnGroup;

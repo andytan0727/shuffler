@@ -1,8 +1,12 @@
 import React, { forwardRef, useCallback, useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import YouTube, { PlayerVars } from "react-youtube";
-import { AppState } from "store";
+import { useDispatch, useSelector } from "react-redux";
+import YouTube from "react-youtube";
 import { setCurSongIdx, setVideoPlaying } from "store/ytplayer/action";
+import {
+  selectCurSongIdx,
+  selectPlayerVars,
+  selectRepeat,
+} from "store/ytplayer/selector";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
@@ -11,25 +15,9 @@ import { notify } from "utils/helper/notifyHelper";
 
 import { useMediaQuery } from "@material-ui/core";
 
-interface YouTubeIFrameConnectedState {
-  repeat: boolean;
-  curSongIdx: number;
-  playerVars: PlayerVars;
-}
-
-interface YouTubeIFrameConnectedDispatch {
-  setCurSongIdx: typeof setCurSongIdx;
-  setVideoPlaying: typeof setVideoPlaying;
-  shuffleListToPlayAction: typeof shuffleListToPlayAction;
-}
-
-interface YouTubeIFrameOwnProps {
+interface YouTubeIFrameProps {
   forwardRef: React.Ref<any>;
 }
-
-type YouTubeIFrameProps = YouTubeIFrameOwnProps &
-  YouTubeIFrameConnectedState &
-  YouTubeIFrameConnectedDispatch;
 
 // focus window to listen for keyboard shortcuts
 // fix the problem of unable to trigger keydown event
@@ -37,22 +25,12 @@ type YouTubeIFrameProps = YouTubeIFrameOwnProps &
 const _setFocusWindow = () => window.focus();
 
 const YouTubeIFrame = (props: YouTubeIFrameProps) => {
-  const {
-    // ref from caller
-    forwardRef,
-
-    // redux
-    repeat,
-    curSongIdx,
-    playerVars,
-
-    // actions
-    setCurSongIdx,
-    setVideoPlaying,
-    shuffleListToPlayAction,
-  } = props;
-  // const listToPlayItemIds = useSelector(selectAllNormListToPlayItemIds);
+  const { forwardRef } = props;
+  const curSongIdx = useSelector(selectCurSongIdx);
+  const playerVars = useSelector(selectPlayerVars);
+  const repeat = useSelector(selectRepeat);
   const listToPLaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const dispatch = useDispatch();
   const currentSnippet = listToPLaySnippets[curSongIdx];
 
   const matchesMobile = useMediaQuery("(max-width: 420px)");
@@ -64,11 +42,13 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
   }, []);
 
   const setPlaying = useCallback(() => {
-    setVideoPlaying(true);
+    dispatch(setVideoPlaying(true));
     document.title = currentSnippet.title;
-  }, [currentSnippet, setVideoPlaying]);
+  }, [currentSnippet, dispatch]);
 
-  const setPause = useCallback(() => setVideoPlaying(false), [setVideoPlaying]);
+  const setPause = useCallback(() => {
+    dispatch(setVideoPlaying(false));
+  }, [dispatch]);
 
   const setNext = useCallback(
     (e) => {
@@ -89,22 +69,15 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
           // if repeat is turned on
           // re-index to the first item in playing list
           // and shuffle it
-          setCurSongIdx(0);
-          shuffleListToPlayAction();
+          dispatch(setCurSongIdx(0));
+          dispatch(shuffleListToPlayAction());
         }
         return;
       }
 
-      setCurSongIdx(curSongIdx + 1);
+      dispatch(setCurSongIdx(curSongIdx + 1));
     },
-    [
-      curSongIdx,
-      listToPLaySnippets.length,
-      repeat,
-      setCurSongIdx,
-      setPause,
-      shuffleListToPlayAction,
-    ]
+    [curSongIdx, dispatch, listToPLaySnippets.length, repeat, setPause]
   );
 
   const handleVideoError = useCallback(
@@ -160,31 +133,10 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  const {
-    ytplayer: { playing, repeat, curSongIdx, playerVars },
-  } = state;
-  return {
-    playing,
-    repeat,
-    curSongIdx,
-    playerVars,
-  };
-};
-
-const ConnectedYouTubeIFrame = connect(
-  mapStateToProps,
-  {
-    setCurSongIdx,
-    setVideoPlaying,
-    shuffleListToPlayAction,
-  }
-)(YouTubeIFrame);
-
-const ConnectedYouTubeIFrameWithRef = forwardRef((props, ref) => {
-  return <ConnectedYouTubeIFrame forwardRef={ref} {...props} />;
+const YouTubeIFrameWithRef = forwardRef((props, ref) => {
+  return <YouTubeIFrame forwardRef={ref} {...props} />;
 });
 
-ConnectedYouTubeIFrameWithRef.displayName = "ConnectedYouTubeIFrame";
+YouTubeIFrameWithRef.displayName = "ConnectedYouTubeIFrame";
 
-export default ConnectedYouTubeIFrameWithRef;
+export default YouTubeIFrameWithRef;

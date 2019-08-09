@@ -5,6 +5,7 @@ import { connect, useSelector } from "react-redux";
 import { AppState } from "store";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
+import { selectCurSongIdx } from "store/ytplayer/selector";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
 
@@ -31,12 +32,6 @@ interface CurrentPlaylistItemConnectedDispatch {
 type CurrentPlaylistItemProps = CurrentPlaylistItemOwnProps &
   CurrentPlaylistItemConnectedState &
   CurrentPlaylistItemConnectedDispatch;
-
-interface PlayerPageListConnectedState {
-  curSongIdx: number;
-}
-
-type PlayerPageListProps = PlayerPageListConnectedState;
 
 let matchesMobile: boolean;
 
@@ -94,15 +89,15 @@ class CurrentPlaylistItem extends React.PureComponent<
 const ConnectedPlaylistItem = connect(
   (state: AppState) => ({
     preferDarkTheme: selectPreferDarkTheme(state),
-    curSongIdx: state.ytplayer.curSongIdx,
+    curSongIdx: selectCurSongIdx(state),
   }),
   {
     setCurSongIdx,
   }
 )(CurrentPlaylistItem);
 
-const PlayerPageList = (props: PlayerPageListProps) => {
-  const { curSongIdx } = props;
+const PlayerPageList = () => {
+  const curSongIdx = useSelector(selectCurSongIdx);
   const listRef = useRef<any>(null);
   matchesMobile = useMediaQuery("(max-width: 450px)");
   const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
@@ -153,8 +148,4 @@ const PlayerPageList = (props: PlayerPageListProps) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  curSongIdx: state.ytplayer.curSongIdx,
-});
-
-export default connect(mapStateToProps)(PlayerPageList);
+export default PlayerPageList;

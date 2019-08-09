@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import React, { useCallback, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurSongIdx } from "store/ytplayer/action";
-import { ListToPlaySnippets } from "store/ytplaylist/types";
+import { selectCurSongIdx } from "store/ytplayer/selector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
 import {
@@ -12,30 +14,24 @@ import {
 import styles from "./styles.module.scss";
 
 interface LargePlaylistProps {
-  curSongIdx: number;
-  listToPlaySnippets: ListToPlaySnippets;
-  playing: boolean;
-  setCurSongIdx: typeof setCurSongIdx;
   handleHideLargePlaylist: (e?: React.KeyboardEvent) => void;
 }
 
 const LargePlaylist = (props: LargePlaylistProps) => {
-  const {
-    handleHideLargePlaylist,
-    curSongIdx,
-    listToPlaySnippets,
-    setCurSongIdx,
-  } = props;
+  const { handleHideLargePlaylist } = props;
   const listRef = useRef<any>(null);
+  const curSongIdx = useSelector(selectCurSongIdx);
+  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const dispatch = useDispatch();
   const listLen = listToPlaySnippets.length;
   const displayList = listToPlaySnippets.slice(curSongIdx + 1, listLen);
 
   const handleClickSong = useCallback(
     (e) => {
       const songToPlay = e.currentTarget.getAttribute("data-index");
-      setCurSongIdx(parseInt(songToPlay));
+      dispatch(setCurSongIdx(parseInt(songToPlay)));
     },
-    [setCurSongIdx]
+    [dispatch]
   );
 
   const handleScrollToListTop = useCallback(() => {

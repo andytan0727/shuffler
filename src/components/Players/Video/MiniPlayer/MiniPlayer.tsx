@@ -3,11 +3,11 @@ import { PlayerBasicCtrlBtnGroup } from "components/Buttons";
 import { LargePlaylist } from "components/Lists";
 import YouTubeIFrame from "components/Players/YouTubeIFrame";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { animated, useTransition } from "react-spring";
-import { AppState } from "store";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
+import { selectCurSongIdx, selectPlaying } from "store/ytplayer/selector";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
@@ -21,29 +21,15 @@ import {
 
 import styles from "./styles.module.scss";
 
-interface MiniPlayerConnectedState {
-  playing: boolean;
-  curSongIdx: number;
-}
-
-interface MiniPlayerConnectedDispatch {
-  setCurSongIdx: typeof setCurSongIdx;
-}
-
-type MiniPlayerProps = MiniPlayerConnectedState & MiniPlayerConnectedDispatch;
-
-const MiniPlayer = (props: MiniPlayerProps) => {
-  const { playing, curSongIdx, setCurSongIdx } = props;
+const MiniPlayer = () => {
   const ytPlayerRef = useRef<any>(null);
-  const [curDisplayIdx, setCurDisplayIdx] = useState(curSongIdx);
+  const curSongIdx = useSelector(selectCurSongIdx);
   const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const playing = useSelector(selectPlaying);
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
-
-  const currentSnippet = listToPlaySnippets[curSongIdx];
-
-  const songListLen = listToPlaySnippets.length;
+  const dispatch = useDispatch();
+  const [curDisplayIdx, setCurDisplayIdx] = useState(curSongIdx);
   const [blurBg, setBlurBg] = useState(false);
-
   const [showYT, setShowYT] = useState(false);
   const [showLargePlaylist, setShowLargePlaylist] = useState(false);
   const transitions = useTransition(showLargePlaylist, null, {
@@ -51,6 +37,9 @@ const MiniPlayer = (props: MiniPlayerProps) => {
     enter: { opacity: 1 },
     leave: { opacity: 0 },
   });
+
+  const currentSnippet = listToPlaySnippets[curSongIdx];
+  const songListLen = listToPlaySnippets.length;
 
   const handleWheel = useCallback(
     (e) => {
@@ -68,8 +57,8 @@ const MiniPlayer = (props: MiniPlayerProps) => {
   );
 
   const handlePlayClicked = useCallback(() => {
-    setCurSongIdx(curDisplayIdx);
-  }, [curDisplayIdx, setCurSongIdx]);
+    dispatch(setCurSongIdx(curDisplayIdx));
+  }, [curDisplayIdx, dispatch]);
 
   const handleSetCurDisplayIdx = useCallback(
     (e) => {
@@ -112,9 +101,9 @@ const MiniPlayer = (props: MiniPlayerProps) => {
 
   useEffect(() => {
     return () => {
-      setCurSongIdx(0);
+      dispatch(setCurSongIdx(0));
     };
-  }, [setCurSongIdx]);
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -222,10 +211,6 @@ const MiniPlayer = (props: MiniPlayerProps) => {
             >
               <LargePlaylist
                 handleHideLargePlaylist={handleHideLargePlaylist}
-                curSongIdx={curSongIdx}
-                listToPlaySnippets={listToPlaySnippets}
-                playing={playing}
-                setCurSongIdx={setCurSongIdx}
               />
             </animated.div>
           )
@@ -234,14 +219,4 @@ const MiniPlayer = (props: MiniPlayerProps) => {
   );
 };
 
-const mapStatesToProps = (state: AppState) => ({
-  playing: state.ytplayer.playing,
-  curSongIdx: state.ytplayer.curSongIdx,
-});
-
-export default connect(
-  mapStatesToProps,
-  {
-    setCurSongIdx,
-  }
-)(MiniPlayer);
+export default MiniPlayer;
