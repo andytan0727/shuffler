@@ -3,12 +3,11 @@ import { PlayerBasicCtrlBtnGroup } from "components/Buttons";
 import { LargePlaylist } from "components/Lists";
 import YouTubeIFrame from "components/Players/YouTubeIFrame";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { animated, useTransition } from "react-spring";
 import { AppState } from "store";
 import { setCurSongIdx } from "store/ytplayer/action";
-import { selectListToPlay } from "store/ytplaylist/selector";
-import { ListToPlayItems } from "store/ytplaylist/types";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
 import {
@@ -25,7 +24,6 @@ interface MiniPlayerConnectedState {
   preferDarkTheme: boolean;
   playing: boolean;
   curSongIdx: number;
-  listToPlay: ListToPlayItems;
 }
 
 interface MiniPlayerConnectedDispatch {
@@ -35,18 +33,16 @@ interface MiniPlayerConnectedDispatch {
 type MiniPlayerProps = MiniPlayerConnectedState & MiniPlayerConnectedDispatch;
 
 const MiniPlayer = (props: MiniPlayerProps) => {
-  const {
-    preferDarkTheme,
-    playing,
-    curSongIdx,
-    listToPlay,
-    setCurSongIdx,
-  } = props;
+  const { preferDarkTheme, playing, curSongIdx, setCurSongIdx } = props;
   const ytPlayerRef = useRef<any>(null);
-  const curSong = listToPlay[curSongIdx];
-  const songListLen = listToPlay.length;
-  const [blurBg, setBlurBg] = useState(false);
   const [curDisplayIdx, setCurDisplayIdx] = useState(curSongIdx);
+  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+
+  const currentSnippet = listToPlaySnippets[curSongIdx];
+
+  const songListLen = listToPlaySnippets.length;
+  const [blurBg, setBlurBg] = useState(false);
+
   const [showYT, setShowYT] = useState(false);
   const [showLargePlaylist, setShowLargePlaylist] = useState(false);
   const transitions = useTransition(showLargePlaylist, null, {
@@ -59,7 +55,7 @@ const MiniPlayer = (props: MiniPlayerProps) => {
     (e) => {
       const deltaY = e.deltaY;
 
-      if (deltaY > 0 && curDisplayIdx < listToPlay.length - 1) {
+      if (deltaY > 0 && curDisplayIdx < songListLen - 1) {
         setCurDisplayIdx(curDisplayIdx + 1);
       }
 
@@ -67,7 +63,7 @@ const MiniPlayer = (props: MiniPlayerProps) => {
         setCurDisplayIdx(curDisplayIdx - 1);
       }
     },
-    [curDisplayIdx, listToPlay.length]
+    [curDisplayIdx, songListLen]
   );
 
   const handlePlayClicked = useCallback(() => {
@@ -129,7 +125,7 @@ const MiniPlayer = (props: MiniPlayerProps) => {
         <div
           className={preferDarkTheme ? styles.playerDark : styles.playerLight}
         >
-          <h3>{curSong.snippet.title}</h3>
+          <h3>{currentSnippet.title}</h3>
           <div
             className={classNames(styles.thumbnailDiv, styles.thumbnailRotate, {
               [styles.thumbnailPlaying]: playing,
@@ -144,8 +140,8 @@ const MiniPlayer = (props: MiniPlayerProps) => {
               backgroundColor: "white",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              backgroundImage: `url(${curSong.snippet.thumbnails &&
-                curSong.snippet.thumbnails.high.url})`,
+              backgroundImage: `url(${currentSnippet.thumbnails &&
+                currentSnippet.thumbnails.high.url})`,
               transition: "box-shadow 750ms linear",
             }}
           />
@@ -173,12 +169,12 @@ const MiniPlayer = (props: MiniPlayerProps) => {
           </div>
           <ul>
             <li>
-              {listToPlay[curDisplayIdx - 2] &&
-                listToPlay[curDisplayIdx - 2].snippet.title}
+              {listToPlaySnippets[curDisplayIdx - 2] &&
+                listToPlaySnippets[curDisplayIdx - 2]!.title}
             </li>
             <li>
-              {listToPlay[curDisplayIdx - 1] &&
-                listToPlay[curDisplayIdx - 1].snippet.title}
+              {listToPlaySnippets[curDisplayIdx - 1] &&
+                listToPlaySnippets[curDisplayIdx - 1]!.title}
             </li>
             <li
               className={classNames({
@@ -188,16 +184,16 @@ const MiniPlayer = (props: MiniPlayerProps) => {
               onClick={handlePlayClicked}
             >
               {curSongIdx === curDisplayIdx && playing && <PlayArrowIcon />}
-              {listToPlay[curDisplayIdx] &&
-                listToPlay[curDisplayIdx].snippet.title}
+              {listToPlaySnippets[curDisplayIdx] &&
+                listToPlaySnippets[curDisplayIdx]!.title}
             </li>
             <li>
-              {listToPlay[curDisplayIdx + 1] &&
-                listToPlay[curDisplayIdx + 1].snippet.title}
+              {listToPlaySnippets[curDisplayIdx + 1] &&
+                listToPlaySnippets[curDisplayIdx + 1]!.title}
             </li>
             <li>
-              {listToPlay[curDisplayIdx + 2] &&
-                listToPlay[curDisplayIdx + 2].snippet.title}
+              {listToPlaySnippets[curDisplayIdx + 2] &&
+                listToPlaySnippets[curDisplayIdx + 2]!.title}
             </li>
           </ul>
         </div>
@@ -226,7 +222,7 @@ const MiniPlayer = (props: MiniPlayerProps) => {
               <LargePlaylist
                 handleHideLargePlaylist={handleHideLargePlaylist}
                 curSongIdx={curSongIdx}
-                listToPlay={listToPlay}
+                listToPlaySnippets={listToPlaySnippets}
                 playing={playing}
                 setCurSongIdx={setCurSongIdx}
               />
@@ -241,7 +237,6 @@ const mapStatesToProps = (state: AppState) => ({
   preferDarkTheme: state.userPreferences.preferDarkTheme,
   playing: state.ytplayer.playing,
   curSongIdx: state.ytplayer.curSongIdx,
-  listToPlay: selectListToPlay(state),
 });
 
 export default connect(

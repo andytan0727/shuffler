@@ -1,32 +1,24 @@
 import React, { lazy, Suspense } from "react";
-import { connect } from "react-redux";
-import { AppState } from "store";
-import { selectListToPlay } from "store/ytplaylist/selector";
-import { ListToPlayItems } from "store/ytplaylist/types";
+import { useSelector } from "react-redux";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { retryLazy } from "utils/helper/lazyImportHelper";
 
 import { useMediaQuery } from "@material-ui/core";
 
-interface CombinedPlaylistConnectedState {
-  listToPlay: ListToPlayItems;
-}
-
-type CombinedPlaylistProps = CombinedPlaylistConnectedState;
-
 const LazyVideoList = lazy(() => retryLazy(() => import("../VideoList")));
 
-const CombinedPlaylist = (props: CombinedPlaylistProps) => {
-  const { listToPlay } = props;
+const CombinedPlaylist = () => {
   const matchesMobile = useMediaQuery("(max-width: 420px)");
+  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
 
   return (
     <React.Fragment>
-      {listToPlay.length ? (
+      {listToPlaySnippets.length ? (
         <Suspense fallback={<div>loading playlist...</div>}>
           {matchesMobile ? (
-            <LazyVideoList items={listToPlay} width={250} isMobile />
+            <LazyVideoList items={listToPlaySnippets} width={250} isMobile />
           ) : (
-            <LazyVideoList items={listToPlay} width={400} />
+            <LazyVideoList items={listToPlaySnippets} width={400} />
           )}
         </Suspense>
       ) : (
@@ -38,11 +30,4 @@ const CombinedPlaylist = (props: CombinedPlaylistProps) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  listToPlay: selectListToPlay(state),
-});
-
-export default connect(
-  mapStateToProps,
-  {}
-)(CombinedPlaylist);
+export default CombinedPlaylist;

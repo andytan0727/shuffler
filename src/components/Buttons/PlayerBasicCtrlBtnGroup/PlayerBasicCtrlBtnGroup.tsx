@@ -1,11 +1,10 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { AppState } from "store";
 import { setCurSongIdx, toggleRepeat } from "store/ytplayer/action";
-import { selectListToPlay } from "store/ytplaylist/selector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
-import { ListToPlayItems } from "store/ytplaylist/types";
 import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
 import { notify } from "utils/helper/notifyHelper";
 
@@ -25,7 +24,6 @@ interface PlayerBasicCtrlBtnGroupConnectedState {
   playing: boolean;
   repeat: boolean;
   curSongIdx: number;
-  listToPlay: ListToPlayItems;
 }
 
 interface PlayerBasicCtrlBtnGroupConnectedDispatch {
@@ -47,7 +45,6 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
     playing,
     repeat,
     curSongIdx,
-    listToPlay,
     setCurSongIdx,
     shuffleListToPlayAction,
     toggleRepeat,
@@ -55,6 +52,8 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
     // own props
     ytPlayerRef,
   } = props;
+
+  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
 
   const handlePrevious = useCallback(() => {
     if (curSongIdx > 0) {
@@ -77,13 +76,13 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
   }, [ytPlayerRef]);
 
   const handleNext = useCallback(() => {
-    if (curSongIdx === listToPlay.length - 1) {
+    if (curSongIdx === listToPlaySnippets.length - 1) {
       notify("info", "🚀 You have reached last video in your playlist");
       return;
     }
 
     setCurSongIdx(curSongIdx + 1);
-  }, [curSongIdx, listToPlay.length, setCurSongIdx]);
+  }, [curSongIdx, listToPlaySnippets.length, setCurSongIdx]);
 
   const handleShufflePlaylist = useCallback(() => {
     shuffleListToPlayAction();
@@ -219,7 +218,7 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
         </IconButton>
       )}
       <IconButton
-        disabled={curSongIdx === listToPlay.length - 1}
+        disabled={curSongIdx === listToPlaySnippets.length - 1}
         aria-label="Next"
         onClick={handleNext}
       >
@@ -241,7 +240,6 @@ const mapStateToProps = (state: AppState) => {
     playing,
     repeat,
     curSongIdx,
-    listToPlay: selectListToPlay(state),
   };
 };
 

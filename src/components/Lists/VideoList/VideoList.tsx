@@ -5,18 +5,18 @@ import {
   ListChildComponentProps,
   VariableSizeList,
 } from "react-window";
-import { ListToPlayItems } from "store/ytplaylist/types";
+import { ListToPlayItems, ListToPlaySnippets } from "store/ytplaylist/types";
 
 import styles from "./styles.module.scss";
 
 interface VideoListItemProps {
   index: number;
   style: any;
-  data: ListToPlayItems;
+  data: ListToPlaySnippets;
 }
 
 interface VideoListProps {
-  items: ListToPlayItems;
+  items: ListToPlaySnippets;
   width?: number | string;
   height?: number | string;
   isMobile?: boolean;
@@ -30,7 +30,7 @@ const VideoListItem = memo((props: VideoListItemProps) => {
 
   return (
     <div className={styles.listItem} style={style}>
-      {data[index].snippet.title}
+      {data[index].title}
     </div>
   );
 }, areEqual);
@@ -44,7 +44,7 @@ const VideoList = forwardRef(
     const { items, width, height, isMobile, children } = props;
 
     const getMobileListItemSize = (index: number) =>
-      ((items[index].snippet.title.length * 16) / (width as number)) * 20;
+      ((items[index].title.length * 16) / (width as number)) * 20;
 
     return isMobile ? (
       <VariableSizeList

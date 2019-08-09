@@ -6,7 +6,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { AppState } from "store";
 import { setCheckedPlaylistsAction } from "store/ytplaylist/action";
-import { DeepROYtPlaylistState, PlaylistItem } from "store/ytplaylist/types";
+import {
+  DeepROYtPlaylistState,
+  PlaylistItemSnippet,
+} from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
 import { addOrRemove } from "utils/helper/arrayHelper";
 
@@ -40,7 +43,7 @@ const VideoListPanel = (props: VideoListPanelProps) => {
   } = props;
   const [viewPlaylist, setViewPlaylist] = useState(false);
   const [playlistToView, setPlaylistToView] = useState([] as DeepReadonly<
-    PlaylistItem[]
+    PlaylistItemSnippet[]
   >);
 
   const handleCheckPlaylists = useCallback(
@@ -61,8 +64,9 @@ const VideoListPanel = (props: VideoListPanelProps) => {
   useEffect(() => {
     if (viewPlaylist && playlists.length) {
       setPlaylistToView(
-        playlists.filter((playlist) => playlist.id === checkedPlaylists[0])[0]
-          .items
+        playlists
+          .filter((playlist) => playlist.id === checkedPlaylists[0])[0]
+          .items.flatMap((item) => item.snippet)
       );
     }
   }, [checkedPlaylists, playlists, viewPlaylist]);

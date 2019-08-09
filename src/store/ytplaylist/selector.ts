@@ -64,11 +64,3 @@ export const selectVideoItems = createSelector(
       // @ts-ignore
       .reduce((acc, val) => [...acc, ...val], [])
 );
-
-// ===================================================
-// List To Play
-// ===================================================
-export const selectListToPlay = createSelector(
-  selectYtplaylist,
-  (ytplaylist) => ytplaylist.listToPlay
-);

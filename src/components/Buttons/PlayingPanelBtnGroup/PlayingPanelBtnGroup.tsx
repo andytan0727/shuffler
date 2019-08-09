@@ -1,13 +1,13 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import {
   clearListToPlayAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/sharedAction";
-import { ListToPlayItems } from "store/ytplaylist/types";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {
@@ -20,7 +20,6 @@ import styles from "./styles.module.scss";
 
 interface PlayingPanelBtnGroupConnectedState {
   preferDarkTheme: boolean;
-  listToPlay: ListToPlayItems;
 }
 
 interface PlayingPanelBtnGroupConnectedDispatch {
@@ -37,23 +36,23 @@ type PlayingPanelBtnGroupProps = PlayingPanelBtnGroupOwnProps &
 const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
   const {
     preferDarkTheme,
-    listToPlay,
     history,
     clearListToPlayAction,
     shuffleListToPlayAction,
   } = props;
+  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
 
   const handleRedirectToPlayer = useCallback(() => {
-    if (!listToPlay.length) {
+    if (listToPlaySnippets.length === 0) {
       notify(
         "warning",
-        "💢 Please don't proceed to player with no playing list!"
+        "💢 Please don't proceed to player with an empty playing list!"
       );
       return;
     }
 
     history.push("/player/ytplayer");
-  }, [history, listToPlay.length]);
+  }, [history, listToPlaySnippets.length]);
 
   const handleClearListToPlay = useCallback(async () => {
     const customSwal = await generateCustomSwal();
@@ -98,10 +97,8 @@ const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
 
 const mapStatesToProps = ({
   userPreferences: { preferDarkTheme },
-  ytplaylist: { listToPlay },
 }: AppState) => ({
   preferDarkTheme,
-  listToPlay,
 });
 
 export default connect(

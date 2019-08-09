@@ -1,17 +1,18 @@
 import React, { forwardRef, useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import YouTube, { PlayerVars } from "react-youtube";
 import { AppState } from "store";
 import { setCurSongIdx, setVideoPlaying } from "store/ytplayer/action";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
-import { ListToPlayItems, PlaylistItem } from "store/ytplaylist/types";
+import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
+import { isPlaylistItemSnippet } from "store/ytplaylist/utils";
 import { notify } from "utils/helper/notifyHelper";
 
 import { useMediaQuery } from "@material-ui/core";
 
 interface YouTubeIFrameConnectedState {
   repeat: boolean;
-  listToPlay: ListToPlayItems;
   curSongIdx: number;
   playerVars: PlayerVars;
 }
@@ -42,7 +43,6 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
 
     // redux
     repeat,
-    listToPlay,
     curSongIdx,
     playerVars,
 
@@ -51,6 +51,10 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
     setVideoPlaying,
     shuffleListToPlayAction,
   } = props;
+  // const listToPlayItemIds = useSelector(selectAllNormListToPlayItemIds);
+  const listToPLaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const currentSnippet = listToPLaySnippets[curSongIdx];
+
   const matchesMobile = useMediaQuery("(max-width: 420px)");
   const [vidWidth, setVidWidth] = useState(0);
 
@@ -61,14 +65,14 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
 
   const setPlaying = useCallback(() => {
     setVideoPlaying(true);
-    document.title = listToPlay[curSongIdx].snippet.title;
-  }, [curSongIdx, listToPlay, setVideoPlaying]);
+    document.title = currentSnippet.title;
+  }, [currentSnippet, setVideoPlaying]);
 
   const setPause = useCallback(() => setVideoPlaying(false), [setVideoPlaying]);
 
   const setNext = useCallback(
     (e) => {
-      const listLength = listToPlay.length;
+      const listLength = listToPLaySnippets.length;
 
       // special condition: loop one song
       // seek to 0 second using YouTube Iframe API
@@ -95,7 +99,7 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
     },
     [
       curSongIdx,
-      listToPlay.length,
+      listToPLaySnippets.length,
       repeat,
       setCurSongIdx,
       setPause,
@@ -133,10 +137,11 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
         videoId={
           // playlist: if resourceId present
           // video: else
-          (listToPlay[curSongIdx] as PlaylistItem).snippet.resourceId
-            ? (listToPlay[curSongIdx] as PlaylistItem).snippet.resourceId
-                .videoId
-            : listToPlay[curSongIdx].id
+          isPlaylistItemSnippet(currentSnippet as (
+            | PlaylistItemSnippet
+            | VideoItemSnippet))
+            ? (currentSnippet as PlaylistItemSnippet).resourceId.videoId
+            : currentSnippet.id
         }
         opts={{
           width: matchesMobile ? vidWidth.toString() : "640",
@@ -158,14 +163,12 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
 const mapStateToProps = (state: AppState) => {
   const {
     ytplayer: { playing, repeat, curSongIdx, playerVars },
-    ytplaylist: { listToPlay },
   } = state;
   return {
     playing,
     repeat,
     curSongIdx,
     playerVars,
-    listToPlay,
   };
 };
 

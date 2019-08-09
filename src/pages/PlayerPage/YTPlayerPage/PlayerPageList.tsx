@@ -1,12 +1,11 @@
 import classNames from "classnames";
 import { VideoList } from "components/Lists";
 import React, { useEffect, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { AppState } from "store";
 import { setCurSongIdx } from "store/ytplayer/action";
-import { selectListToPlay } from "store/ytplaylist/selector";
-import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
-import { DeepReadonly } from "utility-types";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { ListToPlaySnippets } from "store/ytplaylist/types";
 
 import { useMediaQuery } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -16,7 +15,7 @@ import styles from "./styles.module.scss";
 interface CurrentPlaylistItemOwnProps {
   index: number;
   style: any;
-  data: any;
+  data: ListToPlaySnippets;
 }
 
 interface CurrentPlaylistItemConnectedState {
@@ -33,7 +32,6 @@ type CurrentPlaylistItemProps = CurrentPlaylistItemOwnProps &
   CurrentPlaylistItemConnectedDispatch;
 
 interface PlayerPageListConnectedState {
-  listToPlay: DeepReadonly<(PlaylistItem | VideoItem)[]>;
   curSongIdx: number;
 }
 
@@ -50,7 +48,7 @@ class CurrentPlaylistItem extends React.PureComponent<
       // VideoList's props
       index,
       style,
-      data,
+      data: snippets,
 
       // Redux
       preferDarkTheme,
@@ -73,10 +71,10 @@ class CurrentPlaylistItem extends React.PureComponent<
         {!matchesMobile && (
           <React.Fragment>
             {index === curSongIdx && <PlayArrowIcon />}
-            {data[index].snippet.thumbnails ? (
+            {snippets[index].thumbnails ? (
               <img
                 className={styles.thumbnail}
-                src={data[index].snippet.thumbnails.default.url}
+                src={snippets[index].thumbnails!.default.url}
                 alt="thumbnail"
               />
             ) : (
@@ -85,7 +83,7 @@ class CurrentPlaylistItem extends React.PureComponent<
           </React.Fragment>
         )}
         <span className={styles.playlistItemVideoTitle}>
-          {data[index].snippet.title}
+          {snippets[index].title}
         </span>
       </div>
     );
@@ -106,9 +104,10 @@ const ConnectedPlaylistItem = connect(
 )(CurrentPlaylistItem);
 
 const PlayerPageList = (props: PlayerPageListProps) => {
-  const { listToPlay, curSongIdx } = props;
+  const { curSongIdx } = props;
   const listRef = useRef<any>(null);
   matchesMobile = useMediaQuery("(max-width: 450px)");
+  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
 
   useEffect(() => {
     const currentListRef = listRef.current;
@@ -124,16 +123,15 @@ const PlayerPageList = (props: PlayerPageListProps) => {
         <span role="img" aria-label="currently-playing">
           📻
         </span>
-        &nbsp;Currently playing: {`${curSongIdx + 1}/${listToPlay.length}`}
+        &nbsp;Currently playing:{" "}
+        {`${curSongIdx + 1}/${listToPlaySnippets.length}`}
       </h3>
 
       {matchesMobile ? (
         <React.Fragment>
-          {/* 
-           // @ts-ignore */}
           <VideoList
             ref={listRef}
-            items={listToPlay}
+            items={listToPlaySnippets}
             width={250}
             height={window.innerHeight * 0.65}
             isMobile
@@ -143,11 +141,9 @@ const PlayerPageList = (props: PlayerPageListProps) => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          {/* 
-           // @ts-ignore */}
           <VideoList
             ref={listRef}
-            items={listToPlay}
+            items={listToPlaySnippets}
             width={400}
             height={window.innerHeight * 0.65}
           >
@@ -160,7 +156,6 @@ const PlayerPageList = (props: PlayerPageListProps) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  listToPlay: selectListToPlay(state),
   curSongIdx: state.ytplayer.curSongIdx,
 });
 

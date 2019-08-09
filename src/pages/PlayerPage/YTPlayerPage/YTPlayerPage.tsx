@@ -1,11 +1,9 @@
 import VideoPlayer from "components/Players/Video/VideoPlayer";
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { AppState } from "store";
 import { setCurSongIdx } from "store/ytplayer/action";
-import { selectListToPlay } from "store/ytplaylist/selector";
-import { PlaylistItem, VideoItem } from "store/ytplaylist/types";
-import { DeepReadonly } from "utility-types";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 
 import NoVideoFound from "../NoVideoFound";
 import PlayerPageList from "./PlayerPageList";
@@ -13,7 +11,6 @@ import styles from "./styles.module.scss";
 
 interface YTPlayerPageConnectedState {
   curSongIdx: number;
-  listToPlay: DeepReadonly<(PlaylistItem | VideoItem)[]>;
 }
 
 interface YTPlayerPageConnectedDispatch {
@@ -24,25 +21,28 @@ type YTPlayerPageProps = YTPlayerPageConnectedState &
   YTPlayerPageConnectedDispatch;
 
 const YTPlayerPage = (props: YTPlayerPageProps) => {
-  const { curSongIdx, listToPlay, setCurSongIdx } = props;
+  const { curSongIdx, setCurSongIdx } = props;
+  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const currentSnippet = listToPlaySnippets[curSongIdx];
 
   useEffect(() => {
     // reset curSongIdx to prevent bugs when routing pages
     setCurSongIdx(0);
 
     return () => {
-      // also reset curSongIdx when un-mounting
+      // also reset curSongIdx and document title when un-mounting
       setCurSongIdx(0);
+      document.title = "Shuffler";
     };
   }, [setCurSongIdx]);
 
   return (
     <React.Fragment>
-      {listToPlay.length !== 0 ? (
+      {listToPlaySnippets.length !== 0 ? (
         <div className={styles.ytPlayerDiv}>
           <div id="vid-wrapper" className={styles.player}>
             <h3 className={styles.videoTitle}>
-              {listToPlay[curSongIdx].snippet.title}
+              {currentSnippet && currentSnippet.title}
             </h3>
             <VideoPlayer />
           </div>
@@ -59,7 +59,6 @@ const YTPlayerPage = (props: YTPlayerPageProps) => {
 
 const mapStateToProps = (state: AppState) => ({
   curSongIdx: state.ytplayer.curSongIdx,
-  listToPlay: selectListToPlay(state),
 });
 
 export default connect(
