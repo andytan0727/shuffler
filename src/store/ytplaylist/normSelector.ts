@@ -48,36 +48,36 @@ export const selectNormPlaylistNameById = createCachedSelector(
   selectNormPlaylistsEntities,
   (_: never, playlistId: string) => playlistId,
   (entities, id) => entities.playlists[id].name
-)((_, id) => `playlist-name-${id}`);
+)((_, id) => `playlistName-playlistId-${id}`);
 
-export const selectNormPlaylistItemIdsById = createCachedSelector(
+export const selectNormPlaylistItemIdsByPlaylistId = createCachedSelector(
   selectNormPlaylistsEntities,
   (_: never, playlistId: string) => playlistId,
   (entities, id) => entities.playlists[id].items
-)((_, playlistId) => `playlists-${playlistId}`);
+)((_, playlistId) => `playlistItemIds-playlistId-${playlistId}`);
 
-export const selectNormPlaylistSnippetIdsByItemIds = createCachedSelector(
-  selectNormPlaylistItemIdsById,
+export const selectNormPlaylistSnippetIdsByPlaylistId = createCachedSelector(
+  selectNormPlaylistItemIdsByPlaylistId,
   selectAllNormPlaylistItems,
   (itemIds, playlistItems) =>
     itemIds.map((id: string) => playlistItems[id].snippet)
-)((_, id) => `SIDS-IID-${id}`);
+)((_, playlistId) => `playlistSnippetIds-playlistId-${playlistId}`);
 
 export const selectNormPlaylistSnippetByItemId = createCachedSelector(
   selectNormPlaylistsEntities,
   (_: never, playlistItemId: string) => playlistItemId,
   (entities, itemId) =>
     getSnippetFromItemId(entities as NormPlaylistsEntities, itemId)
-)((_, itemId) => `playlistItem-${itemId}`);
+)((_, itemId) => `playlistSnippet-itemId-${itemId}`);
 
-export const selectNormPlaylistSnippetsBySnippetIds = createCachedSelector(
-  [selectNormPlaylistSnippetIdsByItemIds, selectAllNormPlaylistSnippets],
+export const selectNormPlaylistSnippetsByPlaylistId = createCachedSelector(
+  [selectNormPlaylistSnippetIdsByPlaylistId, selectAllNormPlaylistSnippets],
   (snippetIds, snippets) =>
     map(pick(snippets, snippetIds), (val, key) => ({
       id: key,
       ...val,
     }))
-)((_, id) => `PS-SID-${id}`);
+)((_, playlistId) => `playlistSnippets-playlistId-${playlistId}`);
 
 export const selectNormPlaylistIdByItemId = createCachedSelector(
   selectNormPlaylistSnippetByItemId,

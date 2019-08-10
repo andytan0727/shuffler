@@ -7,7 +7,7 @@ import { notify } from "utils/helper/notifyHelper";
 import * as ytplaylistAction from "./action";
 import * as ytplaylistNormedAction from "./normAction";
 import {
-  selectNormPlaylistItemIdsById,
+  selectNormPlaylistItemIdsByPlaylistId,
   selectNormVideoItemIdsByVideoId,
 } from "./normSelector";
 import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
@@ -67,7 +67,7 @@ export function* deletePlaylists(action: DeletePlaylistsAction) {
   // =============================================
   for (const playlistIdToRemove of playlistIdsToRemove) {
     const playlistItemIds: string[] = yield select((state) =>
-      selectNormPlaylistItemIdsById(state as never, playlistIdToRemove)
+      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistIdToRemove)
     );
 
     // remove playlists from normalized listToPlay
@@ -121,7 +121,7 @@ export function* addPlaylistsToListToPlay(
   // add each playlist and their respective items to normalized listToPlay
   for (const playlistId of playlistIds) {
     const playlistItemIds: string[] = yield select((state) =>
-      selectNormPlaylistItemIdsById(state as never, playlistId)
+      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
     );
 
     yield put(
@@ -192,7 +192,7 @@ export function* removePlaylistsFromListToPlay(
     // Porting to normalized states
     // =============================================
     const playlistItemIds = yield select((state) =>
-      selectNormPlaylistItemIdsById(state as never, playlistIdToRemove)
+      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistIdToRemove)
     );
 
     // remove playlist in normalized listToPlay and remove allInPlaying label

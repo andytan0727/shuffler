@@ -15,7 +15,7 @@ import {
   updateNormListToPlayAction,
 } from "store/ytplaylist/normAction";
 import {
-  selectNormPlaylistItemIdsById,
+  selectNormPlaylistItemIdsByPlaylistId,
   selectNormPlaylistNameById,
 } from "store/ytplaylist/normSelector";
 
@@ -41,7 +41,7 @@ const ManagementPlaylistPanel = ({
     selectNormPlaylistNameById(state, playlistId)
   );
   const playlistItemIds = useSelector((state: never) =>
-    selectNormPlaylistItemIdsById(state, playlistId)
+    selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
   ) as string[];
   const { checked, handleSetChecked } = useCheckbox();
 
