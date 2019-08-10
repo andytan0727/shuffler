@@ -7,6 +7,7 @@
 
 .viewPlaylistDiv {
   position: fixed;
+  z-index: 100;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -25,7 +26,6 @@
     border: none;
     background-color: transparent;
     color: var(--text-color);
-    z-index: 3;
 
     svg {
       transform: scale(1.5);
@@ -48,9 +48,9 @@
 
   .videoListItems {
     @extend %panelListItemsDiv;
-
-    .videoListItem {
-      @extend %panelListItem;
-    }
   }
+}
+
+.videoListItem {
+  @extend %panelListItem;
 }

@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectPlaylists } from "store/ytplaylist/selector";
+import { selectAllNormPlaylists } from "store/ytplaylist/normSelector";
 
 import {
   Divider,
@@ -113,8 +113,8 @@ const DrawerNavListItem = (props: DrawerNavListItemProps) => {
 const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
   const { playlistUrl } = props;
   const classes = useStyles({});
-
-  const playlists = useSelector(selectPlaylists);
+  const playlists = useSelector(selectAllNormPlaylists);
+  const playlistIds = Object.keys(playlists);
 
   return (
     <List className={classes.drawerPlaylistsNavContainer} component="nav">
@@ -134,12 +134,12 @@ const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
       <Divider />
 
       <div className={classes.drawerPlaylistsNavLinks}>
-        {playlists.map((playlist) => (
+        {playlistIds.map((playlistId) => (
           <DrawerNavListItem
-            key={playlist.id}
-            pathUrl={`${playlistUrl}/${playlist.id}`}
+            key={playlistId}
+            pathUrl={`${playlistUrl}/${playlistId}`}
             icon={<PlaylistPlayIcon />}
-            primaryText={playlist.name || `Playlist-${playlist.id}`}
+            primaryText={playlists[playlistId].name || `Playlist-${playlistId}`}
           />
         ))}
       </div>

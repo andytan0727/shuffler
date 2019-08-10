@@ -6,10 +6,7 @@ import { notify } from "utils/helper/notifyHelper";
 
 import * as ytplaylistAction from "./action";
 import * as ytplaylistNormedAction from "./normAction";
-import {
-  selectNormPlaylistItemIdsByPlaylistId,
-  selectNormVideoItemIdsByVideoId,
-} from "./normSelector";
+import { selectNormVideoItemIdsByVideoId } from "./normSelector";
 import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
 
 type DeletePlaylistsAction = ActionType<
@@ -41,9 +38,7 @@ type RemoveVideosFromListToPlayAction = ActionType<
  * action to clear any possible leftover on playingPlaylists
  * and listToPlay
  *
- * NOTE: added logic to update normalized states as well
- *
- * @export
+ * @deprecated Remove as of next stable version (v4.0)
  * @param action
  */
 export function* deletePlaylists(action: DeletePlaylistsAction) {
@@ -61,28 +56,6 @@ export function* deletePlaylists(action: DeletePlaylistsAction) {
     )
   );
   yield put(ytplaylistAction.setCheckedPlaylistsAction([]));
-
-  // =============================================
-  // Porting to normalized states
-  // =============================================
-  for (const playlistIdToRemove of playlistIdsToRemove) {
-    const playlistItemIds: string[] = yield select((state) =>
-      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistIdToRemove)
-    );
-
-    // remove playlists from normalized listToPlay
-    yield put(
-      ytplaylistNormedAction.deleteNormListToPlayItemsAction(playlistItemIds)
-    );
-
-    // delete playlists from normalized playlists
-    yield put(
-      ytplaylistNormedAction.deleteNormPlaylistByIdAction(playlistIdToRemove)
-    );
-  }
-  // =============================================
-  // End porting
-  // ============================================
 }
 
 /**
@@ -91,7 +64,7 @@ export function* deletePlaylists(action: DeletePlaylistsAction) {
  * APPEND_LIST_TO_PLAY action,
  * and SET_CHECKED_PLAYLISTS action
  *
- * NOTE: added logic to update normalized states as well
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @export
  * @param action
@@ -114,27 +87,6 @@ export function* addPlaylistsToListToPlay(
   yield put(ytplaylistAction.addPlayingPlaylistsAction(playlistIds));
   yield put(ytplaylistAction.appendListToPlayAction(playlistItemsToAdd));
   yield put(ytplaylistAction.setCheckedPlaylistsAction([]));
-
-  // =============================================
-  // Porting to normalized states
-  // =============================================
-  // add each playlist and their respective items to normalized listToPlay
-  for (const playlistId of playlistIds) {
-    const playlistItemIds: string[] = yield select((state) =>
-      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
-    );
-
-    yield put(
-      ytplaylistNormedAction.addNormPlaylistToNormListToPlayAction(
-        playlistId,
-        playlistItemIds
-      )
-    );
-  }
-
-  // =============================================
-  // End porting
-  // =============================================
 }
 
 /**
@@ -145,7 +97,7 @@ export function* addPlaylistsToListToPlay(
  * playlist items on listToPlay, and finally clear the checked
  * playlists on view
  *
- * NOTE: added logic to update normalized states as well
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @export
  * @param action
@@ -187,25 +139,6 @@ export function* removePlaylistsFromListToPlay(
     yield put(
       ytplaylistAction.removePlayingPlaylistsAction([playlistIdToRemove])
     );
-
-    // =============================================
-    // Porting to normalized states
-    // =============================================
-    const playlistItemIds = yield select((state) =>
-      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistIdToRemove)
-    );
-
-    // remove playlist in normalized listToPlay and remove allInPlaying label
-    yield put(
-      ytplaylistNormedAction.removeNormPlaylistFromNormListToPlayAction(
-        playlistIdToRemove,
-        playlistItemIds
-      )
-    );
-    // );
-    // =============================================
-    // End porting
-    // =============================================
 
     // notify user if playlist(s) are removed from listToPlay and normalized listToPlay
     notify(
@@ -394,10 +327,16 @@ export function* removeVideosFromListToPlay(
 // =============================================
 // Saga Watchers
 // =============================================
+/**
+ * @deprecated Remove as of next stable version (v4.0)
+ */
 function* deletePlaylistsWatcher() {
   yield takeEvery(ActionTypes.DELETE_PLAYLISTS, deletePlaylists);
 }
 
+/**
+ * @deprecated Remove as of next stable version (v4.0)
+ */
 function* addPlaylistsToListToPlayWatcher() {
   yield takeEvery(
     ActionTypes.ADD_PLAYLISTS_TO_LIST_TO_PLAY,
@@ -405,6 +344,9 @@ function* addPlaylistsToListToPlayWatcher() {
   );
 }
 
+/**
+ * @deprecated Remove as of next stable version (v4.0)
+ */
 function* removePlaylistsFromListToPlayWatcher() {
   yield takeEvery(
     ActionTypes.REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,

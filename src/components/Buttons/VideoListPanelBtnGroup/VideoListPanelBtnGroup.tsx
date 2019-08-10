@@ -1,13 +1,18 @@
 import classNames from "classnames";
+import { ClearChecked } from "components/Checkbox/hooks";
 import React, { useCallback } from "react";
-import { connect, useSelector } from "react-redux";
-import { AppState } from "store";
+import { useDispatch, useSelector } from "react-redux";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
   addPlaylistsToListToPlayAction,
   deletePlaylistsAction,
   removePlaylistsFromListToPlayAction,
 } from "store/ytplaylist/action";
+import {
+  addNormPlaylistToNormListToPlayAction,
+  deleteNormPlaylistsAndListToPlayItemsAction,
+  removeNormPlaylistsFromNormListToPlayAction,
+} from "store/ytplaylist/normAction";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {
@@ -19,23 +24,13 @@ import {
 
 import styles from "./styles.module.scss";
 
-interface VideoListPanelBtnGroupConnectedState {
-  checkedPlaylists: Readonly<string[]>;
-}
-
-interface VideoListPanelBtnGroupConnectedDispatch {
-  addPlaylistsToListToPlayAction: typeof addPlaylistsToListToPlayAction;
-  deletePlaylistsAction: typeof deletePlaylistsAction;
-  removePlaylistsFromListToPlayAction: typeof removePlaylistsFromListToPlayAction;
-}
-
 interface VideoListPanelBtnGroupOwnProps {
+  checked: string[];
+  clearChecked: ClearChecked;
   setViewPlaylist: (arg0: boolean) => void;
 }
 
-type VideoListPanelBtnGroupProps = VideoListPanelBtnGroupOwnProps &
-  VideoListPanelBtnGroupConnectedState &
-  VideoListPanelBtnGroupConnectedDispatch;
+type VideoListPanelBtnGroupProps = VideoListPanelBtnGroupOwnProps;
 
 const noPlaylistSelectedAlert = async () => {
   const customSwal = await generateCustomSwal();
@@ -47,39 +42,48 @@ const noPlaylistSelectedAlert = async () => {
 };
 
 const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
-  const {
-    checkedPlaylists,
-    addPlaylistsToListToPlayAction,
-    deletePlaylistsAction,
-    removePlaylistsFromListToPlayAction,
-    setViewPlaylist,
-  } = props;
+  const { checked: playlistIds, clearChecked, setViewPlaylist } = props;
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
+  const dispatch = useDispatch();
 
   const handleAddPlaylistToPlaying = useCallback(async () => {
-    if (!checkedPlaylists.length) {
+    if (!playlistIds.length) {
       await noPlaylistSelectedAlert();
       return;
     }
 
-    addPlaylistsToListToPlayAction(checkedPlaylists as string[]);
+    for (const playlistId of playlistIds) {
+      dispatch(addNormPlaylistToNormListToPlayAction(playlistId));
+    }
+
+    // backward-compatible
+    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
+    dispatch(addPlaylistsToListToPlayAction(playlistIds));
 
     notify("success", "Successfully added selected playlist(s) to playing 😎");
-  }, [addPlaylistsToListToPlayAction, checkedPlaylists]);
+
+    clearChecked();
+  }, [clearChecked, dispatch, playlistIds]);
 
   const handleRemovePlaylistFromPlaying = useCallback(async () => {
-    if (!checkedPlaylists.length) {
+    if (!playlistIds.length) {
       await noPlaylistSelectedAlert();
       return;
     }
 
-    removePlaylistsFromListToPlayAction(checkedPlaylists as string[]);
-  }, [checkedPlaylists, removePlaylistsFromListToPlayAction]);
+    dispatch(removeNormPlaylistsFromNormListToPlayAction(playlistIds));
 
-  const handleRemovePlaylist = useCallback(async () => {
+    // backward-compatible
+    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
+    dispatch(removePlaylistsFromListToPlayAction(playlistIds));
+
+    clearChecked();
+  }, [clearChecked, dispatch, playlistIds]);
+
+  const handleDeletePlaylist = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
-    if (!checkedPlaylists.length) {
+    if (!playlistIds.length) {
       await noPlaylistSelectedAlert();
       return;
     }
@@ -94,30 +98,37 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
     });
 
     if (result.value) {
-      deletePlaylistsAction(checkedPlaylists as string[]);
+      dispatch(deleteNormPlaylistsAndListToPlayItemsAction(playlistIds));
+
+      // backward-compatible
+      // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
+      dispatch(deletePlaylistsAction(playlistIds));
+
       notify("success", "Successfully deleted playlist(s) 😎");
+      clearChecked();
     }
-  }, [checkedPlaylists, deletePlaylistsAction]);
+  }, [clearChecked, dispatch, playlistIds]);
 
   const handleViewPlaylist = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
-    if (!checkedPlaylists.length) {
+    if (!playlistIds.length) {
       await noPlaylistSelectedAlert();
       return;
     }
 
-    if (checkedPlaylists.length > 1) {
+    if (playlistIds.length > 1) {
       await customSwal!.fire({
         title: "You can only view one playlist at once",
         text: "Please select only one playlist!",
         type: "warning",
       });
+      clearChecked();
       return;
     }
 
     setViewPlaylist(true);
-  }, [checkedPlaylists.length, setViewPlaylist]);
+  }, [playlistIds.length, clearChecked, setViewPlaylist]);
 
   return (
     <div
@@ -138,7 +149,7 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
       >
         <RemoveIcon />
       </button>
-      <button onClick={handleRemovePlaylist} data-tooltip={"Remove playlist"}>
+      <button onClick={handleDeletePlaylist} data-tooltip={"Remove playlist"}>
         <DeleteIcon />
       </button>
       <button onClick={handleViewPlaylist} data-tooltip={"View playlist"}>
@@ -148,15 +159,4 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
   );
 };
 
-const mapStatesToProps = ({ ytplaylist: { checkedPlaylists } }: AppState) => ({
-  checkedPlaylists,
-});
-
-export default connect(
-  mapStatesToProps,
-  {
-    addPlaylistsToListToPlayAction,
-    deletePlaylistsAction,
-    removePlaylistsFromListToPlayAction,
-  }
-)(VideoListPanelBtnGroup);
+export default VideoListPanelBtnGroup;

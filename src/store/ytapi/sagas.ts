@@ -41,7 +41,7 @@ export function* addFetchItemsToNormListToPlay(
 /**
  * Helper function to add playlist to playlists, listToPlay and finally add playlistId to playingPlaylists
  *
- * @export
+ * @deprecated Remove as of next stable version (v4.0)
  * @param playlist Playlist data
  */
 export function* addFetchedPlaylist(playlist: YTPlaylistTypes.Playlist) {

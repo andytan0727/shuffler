@@ -33,6 +33,11 @@ export const selectAllNormPlaylistItems = createSelector(
   (entities) => entities.playlistItems
 );
 
+export const selectAllNormPlaylists = createSelector(
+  selectNormPlaylistsEntities,
+  (entities) => entities.playlists
+);
+
 export const selectAllNormPlaylistSnippets = createSelector(
   selectNormPlaylistsEntities,
   (entities) => entities.snippets

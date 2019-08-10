@@ -8,6 +8,9 @@ import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
 // ===============================================
 /**
  * Add playlist to Redux store
+ *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param playlist A playlist object structured according to YouTube Data Api
  * @returns ADD_PLAYLIST action object
  */
@@ -21,6 +24,8 @@ export const addPlaylistAction = createAction(
 /**
  * Delete playlist(s) from playlists
  *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param playlistIds Playlist id(s) to remove
  * @returns DELETE_PLAYLISTS action object
  */
@@ -33,6 +38,8 @@ export const deletePlaylistsAction = createAction(
 
 /**
  * Rename selected playlist (one at once)
+ *
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @param newName New name of selected playlist
  * @param playlistIdToRename Selected playlist's id
@@ -48,6 +55,9 @@ export const renamePlaylistAction = createAction(
 
 /**
  * Set checked playlist in Redux store
+ *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param checkedPlaylists selected playlists
  * @returns SET_CHECKED_PLAYLISTS action object for redux store
  */
@@ -60,6 +70,8 @@ export const setCheckedPlaylistsAction = createAction(
 
 /**
  * Add playlist id(s) in playlistIds to playingPlaylists
+ *
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @param playlistIds Playlists' id to add
  * @returns ADD_PLAYING_PLAYLISTS action object
@@ -77,6 +89,8 @@ export const addPlayingPlaylistsAction = createAction(
 /**
  * Remove playlist id(s) in playlistIds from playingPlaylists
  *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param playlistIds Playlists' id to remove
  * @returns REMOVE_PLAYING_PLAYLISTS action object
  */
@@ -93,6 +107,8 @@ export const removePlayingPlaylistsAction = createAction(
 /**
  * Add playlists to listToPlay
  *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param playlistIds Id array of playlists to add to listToPlay
  * @returns ADD_PLAYLISTS_TO_LIST_TO_PLAY action object
  */
@@ -108,6 +124,8 @@ export const addPlaylistsToListToPlayAction = createAction(
 
 /**
  * Remove playlist(s) from current playing list (listToPlay)
+ *
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @param playlistIds An array of playlist Ids to remove
  * @returns REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY action object

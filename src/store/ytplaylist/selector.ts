@@ -5,7 +5,10 @@ import { AppState } from "store";
 const selectYtplaylist = (state: AppState) => state.ytplaylist;
 
 // ===================================================
+// ===================================================
 // Playlists
+// DEPRECATED: will be removed on next stable (v4.0)
+// ===================================================
 // ===================================================
 export const selectPlaylists = createSelector(
   selectYtplaylist,
@@ -34,6 +37,9 @@ export const selectPlaylistName = createCachedSelector(
   (playlists, playlistId) =>
     playlists.filter((playlist) => playlist.id === playlistId)[0].name
 )((_, id) => `playlist-name-${id}`);
+// ===================================================
+// End Playlists
+// ===================================================
 
 // ===================================================
 // ===================================================
@@ -64,3 +70,8 @@ export const selectVideoItems = createSelector(
       // @ts-ignore
       .reduce((acc, val) => [...acc, ...val], [])
 );
+// ===================================================
+// ===================================================
+// End Videos
+// ===================================================
+// ===================================================

@@ -22,9 +22,11 @@ export const useCheckbox = () => {
    *
    */
   const handleSetChecked = useCallback(
-    (id: string) => (e: OnClickEvent | InputChangeEvent) => {
+    (id: string) => (e?: OnClickEvent | InputChangeEvent) => {
       // stop event bubbling to parent div and checks checkbox twice
-      e.stopPropagation();
+      if (e) {
+        e.stopPropagation();
+      }
 
       setChecked(addOrRemove(checked, id));
     },
