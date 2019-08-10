@@ -71,7 +71,7 @@ const ManagementPlaylistPanel = ({
 
   return (
     <div className={styles.managementPlaylistPanelDiv}>
-      <Typography variant="h4">
+      <Typography variant="h4" className={styles.title}>
         Playlist {playlistName || playlistId}
       </Typography>
       <ManagementPanelCtrlBtnGroup

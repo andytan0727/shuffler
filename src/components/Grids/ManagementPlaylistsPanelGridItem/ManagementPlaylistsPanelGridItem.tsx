@@ -2,7 +2,9 @@ import { ManagementPlaylistsPanelGridItemBtn } from "components/Buttons";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import {
+  selectNormPlaylistAllInPlayingById,
   selectNormPlaylistById,
+  selectNormPlaylistNameById,
   selectNormPlaylistSnippetByItemId,
 } from "store/ytplaylist/normSelector";
 
@@ -24,6 +26,12 @@ const ManagementPlaylistsPanelGridItem = (
   );
   const firstSnippet = useSelector((state: never) =>
     selectNormPlaylistSnippetByItemId(state, playlist.items[0])
+  );
+  const playlistName = useSelector((state) =>
+    selectNormPlaylistNameById(state as never, playlistId)
+  );
+  const allInPlaying = useSelector((state) =>
+    selectNormPlaylistAllInPlayingById(state as never, playlistId)
   );
 
   const thumbnails = firstSnippet && firstSnippet.thumbnails;
@@ -69,11 +77,11 @@ const ManagementPlaylistsPanelGridItem = (
       </li>
       <div className={styles.gridItemTitleDiv}>
         <h2 className={styles.gridItemTitle}>
-          {playlist.name || `Playlist-${playlistId}`}
+          {playlistName || `Playlist-${playlistId}`}
         </h2>
 
         <div className={styles.gridItemTitleIcon}>
-          {playlist.allInPlaying && <PlaylistAddCheckIcon />}
+          {allInPlaying && <PlaylistAddCheckIcon />}
         </div>
       </div>
     </div>
