@@ -35,16 +35,50 @@ export const addNormPlaylistAction = createAction(
  * **_Note: This action is handled through saga. No reducer logic involved_**
  *
  * @param playlistId Playlist id
- * @param itemIds Playlist's itemIds to add
  * @returns ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY action object
  */
 export const addNormPlaylistToNormListToPlayAction = createAction(
   ActionTypes.ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY,
   (action) => {
-    return (playlistId: string, itemIds: string[]) =>
+    return (playlistId: string) =>
       action({
         playlistId,
-        itemIds,
+      });
+  }
+);
+
+/**
+ * Delete **ONE** normalized playlist and its respective items from normalized listToPlay (if found)
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
+ * @param playlistId Playlist id to delete
+ * @returns DELETE_NORM_PLAYLIST_AND_LIST_TO_PLAY_ITEM action object
+ */
+export const deleteNormPlaylistAndListToPlayItemsAction = createAction(
+  ActionTypes.DELETE_NORM_PLAYLIST_AND_LIST_TO_PLAY_ITEMS,
+  (action) => {
+    return (playlistId: string) =>
+      action({
+        playlistId,
+      });
+  }
+);
+
+/**
+ * Delete **MANY** normalized playlist and its respective items from normalized listToPlay (if found)
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
+ * @param playlistId An array of playlist id to delete
+ * @returns DELETE_NORM_PLAYLISTS_AND_LIST_TO_PLAY_ITEM action object
+ */
+export const deleteNormPlaylistsAndListToPlayItemsAction = createAction(
+  ActionTypes.DELETE_NORM_PLAYLISTS_AND_LIST_TO_PLAY_ITEMS,
+  (action) => {
+    return (playlistIds: string[]) =>
+      action({
+        playlistIds,
       });
   }
 );
@@ -65,6 +99,25 @@ export const removeNormPlaylistFromNormListToPlayAction = createAction(
       action({
         playlistId,
         itemIds,
+      });
+  }
+);
+
+/**
+ * Remove all items associating with each playlistId in playlistIds array from normalized listToPlay
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
+ * @param playlistIds An array consisting more than 1 playlistId
+ * @returns REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY action object
+ *
+ */
+export const removeNormPlaylistsFromNormListToPlayAction = createAction(
+  ActionTypes.REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY,
+  (action) => {
+    return (playlistIds: string[]) =>
+      action({
+        playlistIds,
       });
   }
 );

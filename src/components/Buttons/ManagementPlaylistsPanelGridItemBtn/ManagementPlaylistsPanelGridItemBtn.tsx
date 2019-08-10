@@ -57,10 +57,8 @@ const ManagementPlaylistsPanelGridItemBtn = (
   }, [dispatch, playlistId]);
 
   const handleAddPlaylistAsPlaying = useCallback(() => {
-    dispatch(
-      addNormPlaylistToNormListToPlayAction(playlistId, itemIds as string[])
-    );
-  }, [dispatch, playlistId, itemIds]);
+    dispatch(addNormPlaylistToNormListToPlayAction(playlistId));
+  }, [dispatch, playlistId]);
 
   const handleRemovePlaylistAsPlaying = useCallback(() => {
     dispatch(

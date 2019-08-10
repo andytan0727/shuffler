@@ -1,5 +1,5 @@
 import cloneDeep from "lodash/cloneDeep";
-import { all, call, put, select, takeEvery } from "redux-saga/effects";
+import { all, call, put, select, take, takeEvery } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
@@ -12,15 +12,20 @@ import {
   addUniqueNormListToPlay,
   deleteNormListToPlayItemByIdAction,
   deleteNormListToPlayItemsAction,
+  deleteNormPlaylistAndListToPlayItemsAction,
+  deleteNormPlaylistByIdAction,
   deleteNormPlaylistItemByIdAction,
+  deleteNormPlaylistsAndListToPlayItemsAction,
   deleteNormVideoByIdAction,
   removeAllInPlayingLabelByIdAction,
   removeNormPlaylistFromNormListToPlayAction,
+  removeNormPlaylistsFromNormListToPlayAction,
 } from "./normAction";
 import {
   selectNormListToPlayEntities,
   selectNormListToPlayResult,
   selectNormListToPlaySnippetIds,
+  selectNormPlaylistItemIdsByPlaylistId,
   selectNormSnippetIdByItemId,
 } from "./normSelector";
 import { NormListToPlayEntities, NormListToPlayResultItem } from "./types";
@@ -97,6 +102,56 @@ export function* deleteNormVideoByIdWatcher() {
 }
 
 /**
+ * Saga which watching for DELETE_NORM_PLAYLIST_AND_LIST_TO_PLAY_ITEMS action.
+ * If triggered, it removes **ONE** playlist from normalized playlist,
+ * and also its corresponding items in normalized listToPlay as well if found
+ *
+ */
+export function* deleteNormPlaylistAndListToPlayItemsWatcher() {
+  yield takeEvery(
+    ActionTypes.DELETE_NORM_PLAYLIST_AND_LIST_TO_PLAY_ITEMS,
+    function*(
+      action: ActionType<typeof deleteNormPlaylistAndListToPlayItemsAction>
+    ) {
+      const {
+        payload: { playlistId },
+      } = action;
+
+      const itemIds = yield select((state) =>
+        selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
+      );
+
+      // delete normalized playlist items from normalized listToPlay
+      // then delete the playlist from normalized playlists
+      yield put(deleteNormListToPlayItemsAction(itemIds));
+      yield put(deleteNormPlaylistByIdAction(playlistId));
+    }
+  );
+}
+
+/**
+ * Saga which watching for DELETE_NORM_PLAYLISTS_AND_LIST_TO_PLAY_ITEMS action.
+ *
+ * It does the same exact same thing as deleteNormPlaylistsAndListToPlayItemsWatcher,
+ * but to **multiple playlists**, by dispatching multiple
+ * DELETE_NORM_PLAYLISTS_AND_LIST_TO_PLAY_ITEMS actions
+ *
+ */
+export function* deleteNormPlaylistsAndListToPlayItemsWatcher() {
+  while (true) {
+    const {
+      payload: { playlistIds },
+    }: ActionType<
+      typeof deleteNormPlaylistsAndListToPlayItemsAction
+    > = yield take(ActionTypes.DELETE_NORM_PLAYLISTS_AND_LIST_TO_PLAY_ITEMS);
+
+    for (const playlistId of playlistIds) {
+      yield put(deleteNormPlaylistAndListToPlayItemsAction(playlistId));
+    }
+  }
+}
+
+/**
  * Saga which watching for DELETE_NORM_PLAYLIST_ITEM_BY_ID action.
  * If triggered, it dispatch an action to delete the respective playlist item from
  * normListToPlay (if exists) as well
@@ -110,7 +165,7 @@ export function* deleteNormPlaylistItemByIdWatcher() {
       payload: { itemId },
     } = action;
 
-    // remove item from normalized listToPlay playlistItems
+    // remove item from normalized listToPlay as well after the playlist item was deleted
     yield put(deleteNormListToPlayItemByIdAction(itemId));
   });
 }
@@ -127,8 +182,12 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
     action: ActionType<typeof addNormPlaylistToNormListToPlayAction>
   ) {
     const {
-      payload: { playlistId, itemIds },
+      payload: { playlistId },
     } = action;
+
+    const itemIds: string[] = yield select((state) =>
+      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
+    );
 
     // add allInPlaying label to this playlist
     yield put(addAllInPlayingLabelByIdAction(playlistId));
@@ -173,6 +232,33 @@ export function* removeNormPlaylistFromNormListToPlayWatcher() {
   );
 }
 
+/**
+ * Saga which watching for REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY action.
+ *
+ * If triggered, it dispatches multiple REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY actions
+ * according to how many playlistIds.
+ *
+ */
+export function* removeNormPlaylistsFromNormListToPlayWatcher() {
+  while (true) {
+    const {
+      payload: { playlistIds },
+    }: ActionType<
+      typeof removeNormPlaylistsFromNormListToPlayAction
+    > = yield take(ActionTypes.REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY);
+
+    for (const playlistId of playlistIds) {
+      const itemIds: string[] = yield select((state) =>
+        selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
+      );
+
+      yield put(
+        removeNormPlaylistFromNormListToPlayAction(playlistId, itemIds)
+      );
+    }
+  }
+}
+
 export function* addNormListToPlayWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY, function*(
     action: ActionType<typeof addNormListToPlayAction>
@@ -211,9 +297,12 @@ export function* addNormListToPlayItemsWatcher() {
 export default function* ytplaylistNormedSaga() {
   yield all([
     deleteNormVideoByIdWatcher(),
+    deleteNormPlaylistAndListToPlayItemsWatcher(),
+    deleteNormPlaylistsAndListToPlayItemsWatcher(),
     deleteNormPlaylistItemByIdWatcher(),
     addNormPlaylistToNormListToPlayWatcher(),
     removeNormPlaylistFromNormListToPlayWatcher(),
+    removeNormPlaylistsFromNormListToPlayWatcher(),
     addNormListToPlayWatcher(),
     addNormListToPlayItemWatcher(),
     addNormListToPlayItemsWatcher(),

@@ -84,6 +84,11 @@ export const selectNormPlaylistIdByItemId = createCachedSelector(
   (snippet) => (snippet as PlaylistItemSnippet).playlistId
 )((_, itemId) => `playlistId-playlistItemId-${itemId}`);
 
+export const selectNormPlaylistAllInPlayingById = createCachedSelector(
+  selectNormPlaylistById,
+  (playlist) => !!(playlist && playlist.allInPlaying)
+)((_, playlistId) => `allInPlaying-playlistId-${playlistId}`);
+
 // =====================================
 // =====================================
 // Videos
