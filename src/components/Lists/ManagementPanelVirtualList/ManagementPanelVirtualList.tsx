@@ -1,3 +1,4 @@
+import { HandleSetChecked } from "components/Checkbox/hooks";
 import memoizeOne from "memoize-one";
 import React, { MemoExoticComponent } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -10,7 +11,7 @@ interface ManagementPanelVirtualListProps {
 
 export interface ItemData {
   checked: string[];
-  handleSetChecked: (id: string) => (e: OnClickEvent) => void;
+  handleSetChecked: HandleSetChecked;
   items: string[];
 }
 
@@ -31,7 +32,7 @@ const _getItemKey = (index: number, data: ItemData): string | number =>
 export const createItemData = memoizeOne(
   (
     checked: string[],
-    handleSetChecked: (id: string) => (e: OnClickEvent) => void,
+    handleSetChecked: HandleSetChecked,
     items: string[]
   ): ItemData => ({
     checked,
