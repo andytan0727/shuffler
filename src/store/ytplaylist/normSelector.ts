@@ -45,19 +45,19 @@ export const selectAllNormPlaylistSnippets = createSelector(
 
 export const selectNormPlaylistById = createCachedSelector(
   selectNormPlaylistsEntities,
-  (_: never, playlistId: string) => playlistId,
+  (_: AppState, playlistId: string) => playlistId,
   (entities, playlistId) => entities.playlists[playlistId]
 )((_, playlistId) => `playlist-playlistId-${playlistId}`);
 
 export const selectNormPlaylistNameById = createCachedSelector(
   selectNormPlaylistsEntities,
-  (_: never, playlistId: string) => playlistId,
+  (_: AppState, playlistId: string) => playlistId,
   (entities, id) => entities.playlists[id].name
 )((_, id) => `playlistName-playlistId-${id}`);
 
 export const selectNormPlaylistItemIdsByPlaylistId = createCachedSelector(
   selectNormPlaylistsEntities,
-  (_: never, playlistId: string) => playlistId,
+  (_: AppState, playlistId: string) => playlistId,
   (entities, id) => entities.playlists[id].items
 )((_, playlistId) => `playlistItemIds-playlistId-${playlistId}`);
 
@@ -70,7 +70,7 @@ export const selectNormPlaylistSnippetIdsByPlaylistId = createCachedSelector(
 
 export const selectNormPlaylistSnippetByItemId = createCachedSelector(
   selectNormPlaylistsEntities,
-  (_: never, playlistItemId: string) => playlistItemId,
+  (_: AppState, playlistItemId: string) => playlistItemId,
   (entities, itemId) =>
     getSnippetFromItemId(entities as NormPlaylistsEntities, itemId)
 )((_, itemId) => `playlistSnippet-itemId-${itemId}`);
@@ -121,20 +121,20 @@ export const selectAllNormVideoItemIds = createSelector(
 
 export const selectNormVideoItemIdsByVideoId = createCachedSelector(
   selectNormVideosEntities,
-  (_: never, videoId: string) => videoId,
+  (_: AppState, videoId: string) => videoId,
   (entities, videoId) => entities.videos[videoId].items
 )((_, id) => `itemIds-videoId-${id}`);
 
 export const selectNormVideoSnippetByItemId = createCachedSelector(
   selectNormVideosEntities,
-  (_: never, itemId: string) => itemId,
+  (_: AppState, itemId: string) => itemId,
   (entities, itemId) =>
     getSnippetFromItemId(entities as NormVideosEntities, itemId)
 )((_, itemId) => `snippet-itemId-${itemId}`);
 
 export const selectNormVideoSnippetsByItemIds = createCachedSelector(
   selectNormVideosEntities,
-  (_: never, itemIds: string[]) => itemIds,
+  (_: AppState, itemIds: string[]) => itemIds,
   (entities, itemIds) => {
     const snippetIds = itemIds.map(
       (itemId) => entities.videoItems[itemId].snippet
@@ -146,7 +146,7 @@ export const selectNormVideoSnippetsByItemIds = createCachedSelector(
 
 export const selectNormVideoIdByItemId = createCachedSelector(
   selectNormVideosEntities,
-  (_: never, itemId: string) => itemId,
+  (_: AppState, itemId: string) => itemId,
   (entities, itemId) => entities.videoItems[itemId].id
 )((_, itemId) => `videoId-itemId-${itemId}`);
 
@@ -162,7 +162,7 @@ export const selectNormListToPlayPlaylistItems = createSelector(
 
 export const selectNormListToPlayPlaylistItemByItemId = createCachedSelector(
   selectNormListToPlayPlaylistItems,
-  (_: never, itemId: string) => itemId,
+  (_: AppState, itemId: string) => itemId,
   (playlistItems, itemId) => playlistItems[itemId]
 )((_, id) => `LTP-PI-${id}`);
 
@@ -173,7 +173,7 @@ export const selectNormListToPlayVideoItems = createSelector(
 
 export const selectNormListToPlayVideoItemByItemId = createCachedSelector(
   selectNormListToPlayVideoItems,
-  (_: never, itemId: string) => itemId,
+  (_: AppState, itemId: string) => itemId,
   (videoItems, itemId) => videoItems[itemId]
 )((_, id) => `LTP-VI-${id}`);
 
@@ -238,12 +238,12 @@ export const selectNormSnippetByItemId = createCachedSelector(
 
     return playlistSnippetExists ? playlistSnippet : videoSnippet;
   }
-)((_: never, itemId) => `ltp-snippet-itemId-${itemId}`);
+)((_, itemId) => `ltp-snippet-itemId-${itemId}`);
 
 export const selectNormSnippetIdByItemId = createCachedSelector(
   selectAllNormPlaylistItems,
   selectAllNormVideoItems,
-  (_: never, itemId: string) => itemId,
+  (_: AppState, itemId: string) => itemId,
   (playlistItems, videoItems, itemId) => {
     const playlistItem = playlistItems[itemId];
     const videoItem = videoItems[itemId];
@@ -254,4 +254,4 @@ export const selectNormSnippetIdByItemId = createCachedSelector(
       ? get(playlistItem, "snippet")
       : get(videoItem, "snippet");
   }
-)((_: never, itemId) => `snippetId-itemId-${itemId}`);
+)((_, itemId) => `snippetId-itemId-${itemId}`);

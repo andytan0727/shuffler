@@ -1,5 +1,6 @@
 import cloneDeep from "lodash/cloneDeep";
 import { all, call, put, select, take, takeEvery } from "redux-saga/effects";
+import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
@@ -63,8 +64,8 @@ function* uniquelyAddListToPlayItems(
       resultItem: { id: itemId, source, schema },
       foreignKey,
     } = item;
-    const currentSnippetId = yield select((state) =>
-      selectNormSnippetIdByItemId(state as never, itemId)
+    const currentSnippetId = yield select((state: AppState) =>
+      selectNormSnippetIdByItemId(state, itemId)
     );
 
     // check if snippetId of current item existed previously
@@ -117,8 +118,8 @@ export function* deleteNormPlaylistAndListToPlayItemsWatcher() {
         payload: { playlistId },
       } = action;
 
-      const itemIds = yield select((state) =>
-        selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
+      const itemIds = yield select((state: AppState) =>
+        selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
       );
 
       // delete normalized playlist items from normalized listToPlay
@@ -185,8 +186,8 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
       payload: { playlistId },
     } = action;
 
-    const itemIds: string[] = yield select((state) =>
-      selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
+    const itemIds: string[] = yield select((state: AppState) =>
+      selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
     );
 
     // add allInPlaying label to this playlist
@@ -248,8 +249,8 @@ export function* removeNormPlaylistsFromNormListToPlayWatcher() {
     > = yield take(ActionTypes.REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY);
 
     for (const playlistId of playlistIds) {
-      const itemIds: string[] = yield select((state) =>
-        selectNormPlaylistItemIdsByPlaylistId(state as never, playlistId)
+      const itemIds: string[] = yield select((state: AppState) =>
+        selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
       );
 
       yield put(

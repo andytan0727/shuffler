@@ -27,13 +27,13 @@ export const selectPlayingPlaylists = createSelector(
 
 export const selectPlaylistItems = createCachedSelector(
   selectPlaylists,
-  (_: never, playlistId: number) => playlistId,
+  (_: AppState, playlistId: number) => playlistId,
   (playlists, id) => playlists[id].items
 )((_, id) => `playlists:${id}`);
 
 export const selectPlaylistName = createCachedSelector(
   selectPlaylists,
-  (_: never, playlistId: string) => playlistId,
+  (_: AppState, playlistId: string) => playlistId,
   (playlists, playlistId) =>
     playlists.filter((playlist) => playlist.id === playlistId)[0].name
 )((_, id) => `playlist-name-${id}`);
@@ -65,9 +65,7 @@ export const selectVideoItems = createSelector(
   selectVideos,
   (videos) =>
     videos
-      // @ts-ignore
       .map((video) => video.items)
-      // @ts-ignore
       .reduce((acc, val) => [...acc, ...val], [])
 );
 // ===================================================
@@ -75,3 +73,11 @@ export const selectVideoItems = createSelector(
 // End Videos
 // ===================================================
 // ===================================================
+
+/**
+ * @deprecated will be removed on next stable (v4.0)
+ */
+export const selectListToPlay = createSelector(
+  selectYtplaylist,
+  (ytplaylist) => ytplaylist.listToPlay
+);

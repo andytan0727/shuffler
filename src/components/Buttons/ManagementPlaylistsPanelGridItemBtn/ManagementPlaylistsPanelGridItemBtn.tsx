@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { AppState } from "store";
 import {
   addNormPlaylistToNormListToPlayAction,
   deleteNormPlaylistByIdAction,
@@ -35,7 +36,7 @@ const ManagementPlaylistsPanelGridItemBtn = (
 ) => {
   const { playlistId, history } = props;
   const dispatch = useDispatch();
-  const playlist = useSelector((state: never) =>
+  const playlist = useSelector((state: AppState) =>
     selectNormPlaylistById(state, playlistId)
   );
   const playlistInPlaying = !!(playlist && playlist.allInPlaying);

@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { areEqual } from "react-window";
+import { AppState } from "store";
 import { selectNormSnippetByItemId } from "store/ytplaylist/normSelector";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 
@@ -57,7 +58,7 @@ export const withListItemSecondaryAction = (
     } = props;
     const classes = useStyles({});
     const currentItemId = items[index];
-    const currentSnippet = useSelector((state: never) =>
+    const currentSnippet = useSelector((state: AppState) =>
       selectNormSnippetByItemId(state, currentItemId)
     );
 

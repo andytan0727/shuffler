@@ -1,6 +1,7 @@
 import { ManagementPlaylistsPanelGridItemBtn } from "components/Buttons";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
+import { AppState } from "store";
 import {
   selectNormPlaylistAllInPlayingById,
   selectNormPlaylistById,
@@ -21,17 +22,17 @@ const ManagementPlaylistsPanelGridItem = (
 ) => {
   const { playlistId } = props;
   const [enterPlaylist, setEnterPlaylist] = useState({});
-  const playlist = useSelector((state: never) =>
+  const playlist = useSelector((state: AppState) =>
     selectNormPlaylistById(state, playlistId)
   );
-  const firstSnippet = useSelector((state: never) =>
+  const firstSnippet = useSelector((state: AppState) =>
     selectNormPlaylistSnippetByItemId(state, playlist.items[0])
   );
-  const playlistName = useSelector((state) =>
-    selectNormPlaylistNameById(state as never, playlistId)
+  const playlistName = useSelector((state: AppState) =>
+    selectNormPlaylistNameById(state, playlistId)
   );
-  const allInPlaying = useSelector((state) =>
-    selectNormPlaylistAllInPlayingById(state as never, playlistId)
+  const allInPlaying = useSelector((state: AppState) =>
+    selectNormPlaylistAllInPlayingById(state, playlistId)
   );
 
   const thumbnails = firstSnippet && firstSnippet.thumbnails;

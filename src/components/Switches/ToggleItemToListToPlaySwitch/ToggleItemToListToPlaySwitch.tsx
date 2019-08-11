@@ -71,7 +71,7 @@ export const makeToggleItemToListToPlaySwitch = (source: MediaSourceType) =>
     const listToPlayEntities = useSelector((state: AppState) =>
       selectNormListToPlayEntities(state)
     );
-    const sourceId = useSelector((state: never) =>
+    const sourceId = useSelector((state: AppState) =>
       source === "playlists"
         ? selectNormPlaylistIdByItemId(state, itemId)
         : selectNormVideoIdByItemId(state, itemId)

@@ -3,6 +3,7 @@ import { HandleSetChecked } from "components/Checkbox/hooks";
 import { RenameInput } from "components/Inputs";
 import React from "react";
 import { useSelector } from "react-redux";
+import { AppState } from "store";
 import { selectNormPlaylistAllInPlayingById } from "store/ytplaylist/normSelector";
 
 import { Checkbox } from "@material-ui/core";
@@ -22,8 +23,8 @@ interface VideoListPanelItemProps {
 
 const VideoListPanelItem = (props: VideoListPanelItemProps) => {
   const { playlistId, checked, handleSetChecked } = props;
-  const allInPlaying = useSelector((state) =>
-    selectNormPlaylistAllInPlayingById(state as never, playlistId)
+  const allInPlaying = useSelector((state: AppState) =>
+    selectNormPlaylistAllInPlayingById(state, playlistId)
   );
 
   return (

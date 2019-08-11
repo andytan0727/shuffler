@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { HandleSetChecked } from "components/Checkbox/hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "store";
 import { renamePlaylistAction } from "store/ytplaylist/action";
 import { updateNormPlaylistNameByIdAction } from "store/ytplaylist/normAction";
 import { selectNormPlaylistNameById } from "store/ytplaylist/normSelector";
@@ -16,8 +17,8 @@ interface RenameInputProps {
 const RenameInput = (props: RenameInputProps) => {
   const { id: playlistId, handleSetChecked } = props;
   const [editName, setEditName] = useState({});
-  const playlistName = useSelector((state) =>
-    selectNormPlaylistNameById(state as never, playlistId)
+  const playlistName = useSelector((state: AppState) =>
+    selectNormPlaylistNameById(state, playlistId)
   );
   const dispatch = useDispatch();
 

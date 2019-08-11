@@ -9,6 +9,7 @@ import {
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { AppState } from "store";
 import {
   deleteNormPlaylistItemByIdAction,
   shuffleNormPlaylistItems,
@@ -37,10 +38,10 @@ const ManagementPlaylistPanel = ({
 }: ManagementPlaylistPanelProps) => {
   const playlistId: string = match.params.id;
   const dispatch = useDispatch();
-  const playlistName = useSelector((state: never) =>
+  const playlistName = useSelector((state: AppState) =>
     selectNormPlaylistNameById(state, playlistId)
   );
-  const playlistItemIds = useSelector((state: never) =>
+  const playlistItemIds = useSelector((state: AppState) =>
     selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
   ) as string[];
   const { checked, handleSetChecked } = useCheckbox();

@@ -1,5 +1,6 @@
 import shuffle from "lodash/shuffle";
 import { all, put, select, take, takeEvery } from "redux-saga/effects";
+import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 import { notify } from "utils/helper/notifyHelper";
@@ -7,6 +8,13 @@ import { notify } from "utils/helper/notifyHelper";
 import * as ytplaylistAction from "./action";
 import * as ytplaylistNormedAction from "./normAction";
 import { selectNormVideoItemIdsByVideoId } from "./normSelector";
+import {
+  selectListToPlay,
+  selectPlayingPlaylists,
+  selectPlayingVideos,
+  selectPlaylists,
+  selectVideos,
+} from "./selector";
 import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
 
 type DeletePlaylistsAction = ActionType<
@@ -76,9 +84,7 @@ export function* addPlaylistsToListToPlay(
 
   if (playlistIds.length === 0) return;
 
-  const playlists: Playlist[] = yield select(
-    (state) => state.ytplaylist.playlists
-  );
+  const playlists: Playlist[] = yield select(selectPlaylists);
   const playlistItemsToAdd = playlists
     .filter((playlist) => playlistIds.includes(playlist.id))
     .flatMap((filteredPlaylist) => filteredPlaylist.items);
@@ -106,12 +112,8 @@ export function* removePlaylistsFromListToPlay(
   action: RemovePlaylistsFromListToPlayAction
 ) {
   const playlistIdsToRemove = action.payload.playlistIds;
-  const playlists: Playlist[] = yield select(
-    (state) => state.ytplaylist.playlists
-  );
-  const playingPlaylists: string[] = yield select(
-    (state) => state.ytplaylist.playingPlaylists
-  );
+  const playlists: Playlist[] = yield select(selectPlaylists);
+  const playingPlaylists: string[] = yield select(selectPlayingPlaylists);
 
   if (playlistIdsToRemove.length === 0)
     throw new Error("Playlist Ids array is empty. Nothing to remove");
@@ -185,8 +187,8 @@ export function* deleteVideos(action: DeleteVideosAction) {
   // Porting to normalized states
   // =============================================
   for (const videoIdToRemove of videoIdsToRemove) {
-    const videoItemIds: string[] = yield select((state) =>
-      selectNormVideoItemIdsByVideoId(state as never, videoIdToRemove)
+    const videoItemIds: string[] = yield select((state: AppState) =>
+      selectNormVideoItemIdsByVideoId(state, videoIdToRemove)
     );
 
     // remove videos from normalized listToPlay
@@ -236,8 +238,8 @@ export function* addVideosToListToPlay(action: AddVideosToListToPlayAction) {
   // Porting to normalized states
   // =============================================
   for (const videoId of videoIds) {
-    const videoItemIds: string[] = yield select((state) =>
-      selectNormVideoItemIdsByVideoId(state as never, videoId)
+    const videoItemIds: string[] = yield select((state: AppState) =>
+      selectNormVideoItemIdsByVideoId(state, videoId)
     );
     const videoItems = videoItemIds.map((videoItemId) => ({
       resultItem: {
@@ -271,10 +273,8 @@ export function* removeVideosFromListToPlay(
   action: RemoveVideosFromListToPlayAction
 ) {
   const videoIdsToRemove = action.payload.videoIds;
-  const videos: Video[] = yield select((state) => state.ytplaylist.videos);
-  const playingVideos: string[] = yield select(
-    (state) => state.ytplaylist.playingVideos
-  );
+  const videos: Video[] = yield select(selectVideos);
+  const playingVideos: string[] = yield select(selectPlayingVideos);
 
   if (videoIdsToRemove.length === 0) return;
 
@@ -300,8 +300,8 @@ export function* removeVideosFromListToPlay(
     // =============================================
     // Porting to normalized states
     // =============================================
-    const videoItemIds: string[] = yield select((state) =>
-      selectNormVideoItemIdsByVideoId(state as never, videoIdToRemove)
+    const videoItemIds: string[] = yield select((state: AppState) =>
+      selectNormVideoItemIdsByVideoId(state, videoIdToRemove)
     );
 
     // remove video from normalized listToPlay
@@ -376,7 +376,7 @@ function* shuffleListToPlayWatcher() {
   while (true) {
     yield take(ActionTypes.SHUFFLE_LIST_TO_PLAY);
     const listToPlay: (PlaylistItem | VideoItem)[] = yield select(
-      (state) => state.ytplaylist.listToPlay
+      selectListToPlay
     );
 
     if (listToPlay.length === 0) return;
