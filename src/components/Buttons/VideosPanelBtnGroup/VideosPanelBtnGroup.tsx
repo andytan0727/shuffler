@@ -1,13 +1,18 @@
 import classNames from "classnames";
+import { ClearChecked } from "components/Checkbox/hooks";
 import React, { useCallback } from "react";
-import { connect, useSelector } from "react-redux";
-import { AppState } from "store";
+import { useDispatch, useSelector } from "react-redux";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
   addVideosToListToPlayAction,
   deleteVideosAction,
   removeVideosFromListToPlayAction,
 } from "store/ytplaylist/action";
+import {
+  addNormVideosToNormListToPlayAction,
+  deleteNormVideoByIdAction,
+  removeNormVideosFromNormListToPlayAction,
+} from "store/ytplaylist/normAction";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {
@@ -18,18 +23,10 @@ import {
 
 import styles from "./styles.module.scss";
 
-interface VideosPanelBtnGroupConnectedState {
-  checkedVideos: Readonly<string[]>;
+interface VideosPanelBtnGroupProps {
+  checked: string[];
+  clearChecked: ClearChecked;
 }
-
-interface VideosPanelBtnGroupConnectedDispatch {
-  addVideosToListToPlayAction: typeof addVideosToListToPlayAction;
-  deleteVideosAction: typeof deleteVideosAction;
-  removeVideosFromListToPlayAction: typeof removeVideosFromListToPlayAction;
-}
-
-type VideosPanelBtnGroupProps = VideosPanelBtnGroupConnectedState &
-  VideosPanelBtnGroupConnectedDispatch;
 
 const noVideoSelectedAlert = async () => {
   const customSwal = await generateCustomSwal();
@@ -41,30 +38,30 @@ const noVideoSelectedAlert = async () => {
 };
 
 const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
-  const {
-    checkedVideos,
-    addVideosToListToPlayAction,
-
-    deleteVideosAction,
-    removeVideosFromListToPlayAction,
-  } = props;
+  const { checked: itemIds, clearChecked } = props;
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
+  const dispatch = useDispatch();
 
   const handleAddVideosToPlaying = useCallback(async () => {
-    if (!checkedVideos.length) {
+    if (!itemIds.length) {
       await noVideoSelectedAlert();
       return;
     }
 
-    addVideosToListToPlayAction(checkedVideos as string[]);
+    dispatch(addNormVideosToNormListToPlayAction(itemIds));
+
+    // backward-compatible
+    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
+    dispatch(addVideosToListToPlayAction(itemIds));
 
     notify("success", "Successfully added selected video(s) to playing 😎");
-  }, [addVideosToListToPlayAction, checkedVideos]);
+    clearChecked();
+  }, [itemIds, clearChecked, dispatch]);
 
   const handleRemoveVideo = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
-    if (!checkedVideos.length) {
+    if (!itemIds.length) {
       await noVideoSelectedAlert();
       return;
     }
@@ -79,19 +76,32 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
     });
 
     if (result.value) {
-      deleteVideosAction(checkedVideos as string[]);
+      for (const itemId of itemIds) {
+        dispatch(deleteNormVideoByIdAction(itemId));
+      }
+
+      // backward-compatible
+      // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
+      dispatch(deleteVideosAction(itemIds));
+
       await customSwal!.fire("Deleted!", "Video(s) deleted 😎", "success");
+      clearChecked();
     }
-  }, [checkedVideos, deleteVideosAction]);
+  }, [itemIds, clearChecked, dispatch]);
 
   const handleRemoveVideoFromPlaying = useCallback(async () => {
-    if (!checkedVideos.length) {
+    if (!itemIds.length) {
       await noVideoSelectedAlert();
       return;
     }
 
-    removeVideosFromListToPlayAction(checkedVideos as string[]);
-  }, [checkedVideos, removeVideosFromListToPlayAction]);
+    dispatch(removeNormVideosFromNormListToPlayAction(itemIds));
+
+    // backward-compatible
+    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
+    dispatch(removeVideosFromListToPlayAction(itemIds));
+    clearChecked();
+  }, [itemIds, clearChecked, dispatch]);
 
   return (
     <div
@@ -119,15 +129,4 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
   );
 };
 
-const mapStatesToProps = ({ ytplaylist: { checkedVideos } }: AppState) => ({
-  checkedVideos,
-});
-
-export default connect(
-  mapStatesToProps,
-  {
-    addVideosToListToPlayAction,
-    deleteVideosAction,
-    removeVideosFromListToPlayAction,
-  }
-)(VideosPanelBtnGroup);
+export default VideosPanelBtnGroup;

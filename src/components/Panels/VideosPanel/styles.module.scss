@@ -10,18 +10,18 @@
 
   .videos {
     @extend %panelListItemsDiv;
+  }
+}
 
-    .videosItem {
-      @extend %panelListItem;
+.videosItem {
+  @extend %panelListItem;
 
-      div {
-        span {
-          display: inline-block;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-      }
+  div {
+    span {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 }

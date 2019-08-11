@@ -51,7 +51,7 @@ export function* addFetchedPlaylist(playlist: YTPlaylistTypes.Playlist) {
 }
 
 /**
- *
+ * Helper function to add fetched playlists to normalized playlists state
  *
  * @export
  * @param playlist Playlist data
@@ -82,6 +82,8 @@ export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
  * Add fetched video data to videos state in ytplaylist
  * and append its items to listToPlay,
  * and finally add its videoId to playingVideos
+ *
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @export
  * @param video Video data

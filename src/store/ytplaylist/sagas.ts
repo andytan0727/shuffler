@@ -1,13 +1,10 @@
 import shuffle from "lodash/shuffle";
 import { all, put, select, take, takeEvery } from "redux-saga/effects";
-import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 import { notify } from "utils/helper/notifyHelper";
 
 import * as ytplaylistAction from "./action";
-import * as ytplaylistNormedAction from "./normAction";
-import { selectNormVideoItemIdsByVideoId } from "./normSelector";
 import {
   selectListToPlay,
   selectPlayingPlaylists,
@@ -165,7 +162,7 @@ export function* removePlaylistsFromListToPlay(
  * Saga which listening to DELETE_VIDEOS action, then dispatch
  * REMOVE_VIDEOS_FROM_LIST_TO_PLAY action to clear the residue
  *
- * NOTE: added logic to update normalized states as well
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @export
  * @param action
@@ -182,28 +179,6 @@ export function* deleteVideos(action: DeleteVideosAction) {
     ytplaylistAction.removeFromListToPlayAction(videoIdsToRemove, "videos")
   );
   yield put(ytplaylistAction.setCheckedVideosAction([]));
-
-  // =============================================
-  // Porting to normalized states
-  // =============================================
-  for (const videoIdToRemove of videoIdsToRemove) {
-    const videoItemIds: string[] = yield select((state: AppState) =>
-      selectNormVideoItemIdsByVideoId(state, videoIdToRemove)
-    );
-
-    // remove videos from normalized listToPlay
-    yield put(
-      ytplaylistNormedAction.deleteNormListToPlayItemsAction(videoItemIds)
-    );
-
-    // delete videos from normalized videos
-    yield put(
-      ytplaylistNormedAction.deleteNormVideoByIdAction(videoIdToRemove)
-    );
-  }
-  // =============================================
-  // End porting
-  // ============================================
 }
 
 /**
@@ -212,7 +187,7 @@ export function* deleteVideos(action: DeleteVideosAction) {
  * APPEND_LIST_TO_PLAY action,
  * and SET_CHECKED_VIDEOS action
  *
- * NOTE: added logic to update normalized states as well
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @export
  * @param action
@@ -233,29 +208,6 @@ export function* addVideosToListToPlay(action: AddVideosToListToPlayAction) {
   yield put(ytplaylistAction.addPlayingVideosAction(videoIds));
   yield put(ytplaylistAction.appendListToPlayAction(videoItemsToAdd));
   yield put(ytplaylistAction.setCheckedVideosAction([]));
-
-  // =============================================
-  // Porting to normalized states
-  // =============================================
-  for (const videoId of videoIds) {
-    const videoItemIds: string[] = yield select((state: AppState) =>
-      selectNormVideoItemIdsByVideoId(state, videoId)
-    );
-    const videoItems = videoItemIds.map((videoItemId) => ({
-      resultItem: {
-        id: videoItemId,
-        source: "videos" as MediaSourceType,
-        schema: "videoItems" as SchemaType,
-      },
-      foreignKey: videoId,
-    }));
-
-    // add video to normalized listToPlay
-    yield put(ytplaylistNormedAction.addNormListToPlayItemsAction(videoItems));
-  }
-  // =============================================
-  // End porting
-  // ============================================
 }
 
 /**
@@ -264,7 +216,7 @@ export function* addVideosToListToPlay(action: AddVideosToListToPlayAction) {
  * REMOVE_FROM_LIST_TO_PLAY action and SET_CHECKED_VIDEOS action
  * subsequently
  *
- * NOTE: added logic to update normalized states as well
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @export
  * @param action
@@ -296,22 +248,6 @@ export function* removeVideosFromListToPlay(
     }
 
     yield put(ytplaylistAction.removePlayingVideosAction([videoIdToRemove]));
-
-    // =============================================
-    // Porting to normalized states
-    // =============================================
-    const videoItemIds: string[] = yield select((state: AppState) =>
-      selectNormVideoItemIdsByVideoId(state, videoIdToRemove)
-    );
-
-    // remove video from normalized listToPlay
-    yield put(
-      ytplaylistNormedAction.deleteNormListToPlayItemsAction(videoItemIds)
-    );
-
-    // =============================================
-    // End porting
-    // ============================================
 
     // only notify user if the user is removing video from listToPlay
     // instead of deleting it
@@ -354,10 +290,16 @@ function* removePlaylistsFromListToPlayWatcher() {
   );
 }
 
+/**
+ * @deprecated Remove as of next stable version (v4.0)
+ */
 function* deleteVideosWatcher() {
   yield takeEvery(ActionTypes.DELETE_VIDEOS, deleteVideos);
 }
 
+/**
+ * @deprecated Remove as of next stable version (v4.0)
+ */
 function* addVideosToListToPlayWatcher() {
   yield takeEvery(
     ActionTypes.ADD_VIDEOS_TO_LIST_TO_PLAY,
@@ -365,6 +307,9 @@ function* addVideosToListToPlayWatcher() {
   );
 }
 
+/**
+ * @deprecated Remove as of next stable version (v4.0)
+ */
 function* removeVideosFromListToPlayWatcher() {
   yield takeEvery(
     ActionTypes.REMOVE_VIDEOS_FROM_LIST_TO_PLAY,

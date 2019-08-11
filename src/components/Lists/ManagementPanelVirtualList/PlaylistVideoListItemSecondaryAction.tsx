@@ -36,6 +36,7 @@ const PlaylistVideoListItemSecondaryAction = (
     dispatch(deleteNormVideoByIdAction(snippetId));
 
     // backward-compatible support
+    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
     dispatch(deleteVideosAction([snippetId]));
   }, [dispatch, snippetId]);
 

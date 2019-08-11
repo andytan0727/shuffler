@@ -145,6 +145,9 @@ export const removePlaylistsFromListToPlayAction = createAction(
 // ===============================================
 /**
  * Add fetched video to Redux store
+ *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param videoToAdd An object of video id and items from YouTube Data API
  * @returns ADD_VIDEO action object
  */
@@ -157,6 +160,8 @@ export const addVideoAction = createAction(ActionTypes.ADD_VIDEO, (action) => {
 
 /**
  * Delete selected videos from redux store
+ *
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @param videoIds An array of video ids to delete
  * @returns DELETE_VIDEOS action object
@@ -173,6 +178,9 @@ export const deleteVideosAction = createAction(
 
 /**
  * Set checked videos in Redux store
+ *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param checkedVideos An array of checked video id to store
  * @returns SET_CHECKED_VIDEOS action object for redux store
  */
@@ -188,6 +196,8 @@ export const setCheckedVideosAction = createAction(
 
 /**
  * Add videos' id specified by videoIds array to playingVideos
+ *
+ * @deprecated Remove as of next stable version (v4.0)
  *
  * @param videoIds Videos id array
  * @returns ADD_PLAYING_VIDEOS action object
@@ -205,6 +215,8 @@ export const addPlayingVideosAction = createAction(
 /**
  * Remove videos specified by videoIds array from playingVideos
  *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param videoIds An array of video ids to remove from playingVideos
  * @returns REMOVE_PLAYING_VIDEOS action object
  */
@@ -221,6 +233,8 @@ export const removePlayingVideosAction = createAction(
 /**
  * Add video items to listToPlay
  *
+ * @deprecated Remove as of next stable version (v4.0)
+ *
  * @param videoIds Video ids array to add
  * @returns ADD_VIDEOS_TO_LIST_TO_PLAY action object
  */
@@ -236,6 +250,8 @@ export const addVideosToListToPlayAction = createAction(
 
 /**
  * Remove video(s) from current playing list (listToPlay)
+ *
+ * @deprecated Remove as of next stable version (v4.0)*
  *
  * @param videoIds An array of video Ids to remove
  * @returns REMOVE_VIDEOS_FROM_LIST_TO_PLAY action object

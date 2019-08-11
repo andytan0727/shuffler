@@ -44,6 +44,7 @@ export const selectPlaylistName = createCachedSelector(
 // ===================================================
 // ===================================================
 // Videos
+// DEPRECATED: will be removed on next stable (v4.0)
 // ===================================================
 // ===================================================
 export const selectVideos = createSelector(
