@@ -10,6 +10,8 @@ import {
   addNormListToPlayItemAction,
   addNormListToPlayItemsAction,
   addNormPlaylistToNormListToPlayAction,
+  addNormVideosToNormListToPlayAction,
+  addNormVideoToNormListToPlayAction,
   addUniqueNormListToPlay,
   deleteNormListToPlayItemByIdAction,
   deleteNormListToPlayItemsAction,
@@ -21,6 +23,8 @@ import {
   removeAllInPlayingLabelByIdAction,
   removeNormPlaylistFromNormListToPlayAction,
   removeNormPlaylistsFromNormListToPlayAction,
+  removeNormVideoFromNormListToPlayAction,
+  removeNormVideosFromNormListToPlayAction,
 } from "./normAction";
 import {
   selectNormListToPlayEntities,
@@ -208,7 +212,7 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
 }
 
 /**
- * Saga that watching for REMOVE_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY action.
+ * Saga that watching for REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY action.
  * If triggered, it dispatch an action to remove allInPlaying label from playlist,
  * and dispatch an action to remove playlist items
  * from normalized listToPlay
@@ -260,6 +264,99 @@ export function* removeNormPlaylistsFromNormListToPlayWatcher() {
   }
 }
 
+/**
+ * Saga that watching for ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY action.
+ * If triggered, it dispatches an action to add video item
+ * to normalized listToPlay
+ *
+ */
+export function* addNormVideoToNormListToPlayWatcher() {
+  yield takeEvery(ActionTypes.ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof addNormVideoToNormListToPlayAction>
+  ) {
+    const {
+      payload: { videoId },
+    } = action;
+
+    const listToPlayVideoItem = {
+      resultItem: {
+        id: videoId,
+        source: "videos" as MediaSourceType,
+        schema: "videoItems" as SchemaType,
+      },
+      foreignKey: videoId,
+    };
+
+    yield put(
+      addNormListToPlayItemAction(
+        listToPlayVideoItem.resultItem,
+        listToPlayVideoItem.foreignKey
+      )
+    );
+  });
+}
+
+/**
+ * Saga that watching for ADD_NORM_VIDEOS_TO_NORM_LIST_TO_PLAY action.
+ * If triggered, it dispatches multiple ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY actions
+ * to add all item with the videoId as specified in videoIds array
+ *
+ */
+export function* addNormVideosToNormListToPlayWatcher() {
+  yield takeEvery(ActionTypes.ADD_NORM_VIDEOS_TO_NORM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof addNormVideosToNormListToPlayAction>
+  ) {
+    const {
+      payload: { videoIds },
+    } = action;
+
+    for (const videoId of videoIds) {
+      yield put(addNormVideoToNormListToPlayAction(videoId));
+    }
+  });
+}
+
+/**
+ * Saga that watching for REMOVE_NORM_VIDEO_FROM_NORM_LIST_TO_PLAY action.
+ * If triggered, it dispatches an action to remove playlist item from normalized listToPlay
+ *
+ */
+export function* removeNormVideoFromNormListToPlayWatcher() {
+  yield takeEvery(
+    ActionTypes.REMOVE_NORM_VIDEO_FROM_NORM_LIST_TO_PLAY,
+    function*(
+      action: ActionType<typeof removeNormVideoFromNormListToPlayAction>
+    ) {
+      const {
+        payload: { videoId: itemId },
+      } = action;
+
+      yield put(deleteNormListToPlayItemByIdAction(itemId));
+    }
+  );
+}
+
+/**
+ * Saga that watching for REMOVE_NORM_VIDEOS_FROM_NORM_LIST_TO_PLAY action.
+ * If triggered, it dispatches DELETE_NORM_LIST_TO_PLAY_ITEMS action
+ * to remove video items from normalized listToPlay
+ *
+ */
+export function* removeNormVideosFromNormListToPlayWatcher() {
+  yield takeEvery(
+    ActionTypes.REMOVE_NORM_VIDEOS_FROM_NORM_LIST_TO_PLAY,
+    function*(
+      action: ActionType<typeof removeNormVideosFromNormListToPlayAction>
+    ) {
+      const {
+        payload: { videoIds: itemIds },
+      } = action;
+
+      yield put(deleteNormListToPlayItemsAction(itemIds));
+    }
+  );
+}
+
 export function* addNormListToPlayWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY, function*(
     action: ActionType<typeof addNormListToPlayAction>
@@ -304,6 +401,10 @@ export default function* ytplaylistNormedSaga() {
     addNormPlaylistToNormListToPlayWatcher(),
     removeNormPlaylistFromNormListToPlayWatcher(),
     removeNormPlaylistsFromNormListToPlayWatcher(),
+    addNormVideoToNormListToPlayWatcher(),
+    addNormVideosToNormListToPlayWatcher(),
+    removeNormVideoFromNormListToPlayWatcher(),
+    removeNormVideosFromNormListToPlayWatcher(),
     addNormListToPlayWatcher(),
     addNormListToPlayItemWatcher(),
     addNormListToPlayItemsWatcher(),
