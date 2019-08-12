@@ -1,5 +1,13 @@
 import cloneDeep from "lodash/cloneDeep";
-import { all, call, put, select, take, takeEvery } from "redux-saga/effects";
+import {
+  all,
+  call,
+  put,
+  select,
+  take,
+  takeEvery,
+  takeLatest,
+} from "redux-saga/effects";
 import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
@@ -31,6 +39,7 @@ import {
   selectNormListToPlayResult,
   selectNormListToPlaySnippetIds,
   selectNormPlaylistItemIdsByPlaylistId,
+  selectNormPlaylistsResult,
   selectNormSnippetIdByItemId,
 } from "./normSelector";
 import { NormListToPlayEntities, NormListToPlayResultItem } from "./types";
@@ -392,6 +401,23 @@ export function* addNormListToPlayItemsWatcher() {
   });
 }
 
+/**
+ * Saga which watching for CLEAR_LIST_TO_PLAY for normalized listToPlay.
+ * If triggered, it dispatches action to remove allInPlaying for playlists which
+ * include all its items in normalized listToPlay
+ *
+ */
+export function* clearListToPlayWatcher() {
+  yield takeLatest(ActionTypes.CLEAR_LIST_TO_PLAY, function*() {
+    const playlistIds: string[] = yield select(selectNormPlaylistsResult);
+
+    // remove allInPlaying label if found
+    for (const playlistId of playlistIds) {
+      yield put(removeAllInPlayingLabelByIdAction(playlistId));
+    }
+  });
+}
+
 export default function* ytplaylistNormedSaga() {
   yield all([
     deleteNormVideoByIdWatcher(),
@@ -408,5 +434,6 @@ export default function* ytplaylistNormedSaga() {
     addNormListToPlayWatcher(),
     addNormListToPlayItemWatcher(),
     addNormListToPlayItemsWatcher(),
+    clearListToPlayWatcher(),
   ]);
 }
