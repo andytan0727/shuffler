@@ -189,24 +189,6 @@ export const ytplaylist: Reducer<
       return draft;
     }
 
-    // NOTE: TESTED
-    case ActionTypes.UPDATE_LIST_TO_PLAY: {
-      draft.listToPlay = action.payload.listToPlay;
-      return draft;
-    }
-
-    // NOTE: TESTED
-    case ActionTypes.CLEAR_LIST_TO_PLAY: {
-      // clear listToPlay
-      draft.listToPlay = [];
-
-      // clear playingPlaylists and playingVideos as well
-      draft.playingPlaylists = [];
-      draft.playingVideos = [];
-
-      return draft;
-    }
-
     default: {
       return draft;
     }

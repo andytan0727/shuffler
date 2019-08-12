@@ -3,7 +3,6 @@ import { DeepReadonly } from "utility-types";
 
 import * as ytplaylistAction from "./action";
 import * as ytplaylistNormedAction from "./normAction";
-import * as sharedAction from "./sharedAction";
 
 export interface MediaItem {
   id: string;
@@ -204,10 +203,5 @@ export type ListToPlaySnippets = DeepReadonly<
 // ==================================================
 // Actions
 // ==================================================
-type SharedAction = ActionType<typeof sharedAction>;
-export type YTPlaylistAction =
-  | ActionType<typeof ytplaylistAction>
-  | SharedAction;
-export type YTPlaylistNormedAction =
-  | ActionType<typeof ytplaylistNormedAction>
-  | SharedAction;
+export type YTPlaylistAction = ActionType<typeof ytplaylistAction>;
+export type YTPlaylistNormedAction = ActionType<typeof ytplaylistNormedAction>;

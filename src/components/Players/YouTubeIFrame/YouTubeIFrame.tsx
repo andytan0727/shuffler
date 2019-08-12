@@ -7,8 +7,8 @@ import {
   selectPlayerVars,
   selectRepeat,
 } from "store/ytplayer/selector";
+import { shuffleListToPlayAction } from "store/ytplaylist/normAction";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
-import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 import { isPlaylistItemSnippet } from "store/ytplaylist/utils";
 import { notify } from "utils/helper/notifyHelper";

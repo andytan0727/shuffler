@@ -8,10 +8,8 @@ import {
   removeFromListToPlayAction,
   renamePlaylistAction,
   setCheckedPlaylistsAction,
-  updateListToPlayAction,
 } from "./action";
 import { ytplaylist as ytplaylistReducer } from "./reducer";
-import { clearListToPlayAction } from "./sharedAction";
 import { Playlist, Video, YTPlaylistState } from "./types";
 
 describe("ytplaylist reducer", () => {
@@ -368,52 +366,5 @@ describe("ytplaylist reducer", () => {
         removeFromListToPlayAction([], "playlists")
       )
     ).toEqual(stateWithExistingLTP);
-  });
-
-  test("should handle UPDATE_LIST_TO_PLAY", () => {
-    expect(
-      ytplaylistReducer(
-        initialState,
-
-        // @ts-ignore
-        updateListToPlayAction(playlist.items)
-      )
-    ).toEqual({
-      ...initialState,
-      listToPlay: playlist.items,
-    });
-
-    expect(
-      ytplaylistReducer(
-        initialState,
-
-        // @ts-ignore
-        updateListToPlayAction(video.items)
-      )
-    ).toEqual({
-      ...initialState,
-      listToPlay: video.items,
-    });
-  });
-
-  test("should handle CLEAR_LIST_TO_PLAY", () => {
-    expect(
-      ytplaylistReducer(
-        {
-          ...initialState,
-          playingPlaylists: ["anyPlaylistId"],
-          playingVideos: ["anyVideoId"],
-          listToPlay: [...playlist.items],
-        },
-
-        // @ts-ignore
-        clearListToPlayAction()
-      )
-    ).toEqual({
-      ...initialState,
-      playingPlaylists: [],
-      playingVideos: [],
-      listToPlay: [],
-    });
   });
 });

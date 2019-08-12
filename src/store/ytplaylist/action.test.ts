@@ -18,7 +18,6 @@ import {
   SET_CHECKED_PLAYLISTS,
   SET_CHECKED_VIDEOS,
   SHUFFLE_LIST_TO_PLAY,
-  UPDATE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
 
 import {
@@ -39,9 +38,8 @@ import {
   renamePlaylistAction,
   setCheckedPlaylistsAction,
   setCheckedVideosAction,
-  updateListToPlayAction,
 } from "./action";
-import { clearListToPlayAction, shuffleListToPlayAction } from "./sharedAction";
+import { clearListToPlayAction, shuffleListToPlayAction } from "./normAction";
 import { Playlist, Video } from "./types";
 
 describe("ytplaylist actions", () => {
@@ -257,15 +255,6 @@ describe("ytplaylist actions", () => {
       payload: {
         itemIds: itemIds.video,
         itemType: "videos",
-      },
-    });
-  });
-
-  test("should create UPDATE_LIST_TO_PLAY action object", () => {
-    expect(updateListToPlayAction(playlist.items)).toEqual({
-      type: UPDATE_LIST_TO_PLAY,
-      payload: {
-        listToPlay: playlist.items,
       },
     });
   });

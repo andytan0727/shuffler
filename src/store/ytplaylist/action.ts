@@ -270,6 +270,7 @@ export const removeVideosFromListToPlayAction = createAction(
 // listToPlay
 // ===============================================
 /**
+ * @deprecated Remove as of next stable version (v4.0)*
  *
  * @param items Items obtained from API (items key in json returned)
  * @returns APPEND_LIST_TO_PLAY action object
@@ -287,6 +288,8 @@ export const appendListToPlayAction = createAction(
 /**
  * Remove item(s) containing itemIds from listToPlay
  *
+ * @deprecated Remove as of next stable version (v4.0)*
+ *
  * @param itemIds Playlist/Video' ids
  * @param itemType  Type of item to remove (playlist/video)
  * @returns REMOVE_FROM_LIST_TO_PLAY action object
@@ -298,22 +301,6 @@ export const removeFromListToPlayAction = createAction(
       action({
         itemIds,
         itemType,
-      });
-  }
-);
-
-/**
- * Update listToPlay with updatedList supplied
- *
- * @param updatedList Updated array of listToPlay
- * @returns UPDATE_LIST_TO_PLAY action object
- */
-export const updateListToPlayAction = createAction(
-  ActionTypes.UPDATE_LIST_TO_PLAY,
-  (action) => {
-    return (updatedList: (PlaylistItem | VideoItem)[]) =>
-      action({
-        listToPlay: updatedList,
       });
   }
 );

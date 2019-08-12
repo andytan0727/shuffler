@@ -1,18 +1,16 @@
-import shuffle from "lodash/shuffle";
-import { all, put, select, take, takeEvery } from "redux-saga/effects";
+import { all, put, select, takeEvery } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 import { notify } from "utils/helper/notifyHelper";
 
 import * as ytplaylistAction from "./action";
 import {
-  selectListToPlay,
   selectPlayingPlaylists,
   selectPlayingVideos,
   selectPlaylists,
   selectVideos,
 } from "./selector";
-import { Playlist, PlaylistItem, Video, VideoItem } from "./types";
+import { Playlist, Video } from "./types";
 
 type DeletePlaylistsAction = ActionType<
   typeof ytplaylistAction.deletePlaylistsAction
@@ -317,20 +315,6 @@ function* removeVideosFromListToPlayWatcher() {
   );
 }
 
-function* shuffleListToPlayWatcher() {
-  while (true) {
-    yield take(ActionTypes.SHUFFLE_LIST_TO_PLAY);
-    const listToPlay: (PlaylistItem | VideoItem)[] = yield select(
-      selectListToPlay
-    );
-
-    if (listToPlay.length === 0) return;
-
-    const shuffledListToPlay = shuffle(listToPlay);
-    yield put(ytplaylistAction.updateListToPlayAction(shuffledListToPlay));
-  }
-}
-
 export default function* ytplaylistSaga() {
   yield all([
     deletePlaylistsWatcher(),
@@ -339,6 +323,5 @@ export default function* ytplaylistSaga() {
     deleteVideosWatcher(),
     addVideosToListToPlayWatcher(),
     removeVideosFromListToPlayWatcher(),
-    shuffleListToPlayWatcher(),
   ]);
 }

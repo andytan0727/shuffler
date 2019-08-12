@@ -1,13 +1,13 @@
 import classNames from "classnames";
 import React, { useCallback } from "react";
-import { connect, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import {
   clearListToPlayAction,
   shuffleListToPlayAction,
-} from "store/ytplaylist/sharedAction";
+} from "store/ytplaylist/normAction";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {
@@ -18,20 +18,11 @@ import {
 
 import styles from "./styles.module.scss";
 
-interface PlayingPanelBtnGroupConnectedDispatch {
-  clearListToPlayAction: typeof clearListToPlayAction;
-  shuffleListToPlayAction: typeof shuffleListToPlayAction;
-}
-
-type PlayingPanelBtnGroupOwnProps = RouteComponentProps;
-
-type PlayingPanelBtnGroupProps = PlayingPanelBtnGroupOwnProps &
-  PlayingPanelBtnGroupConnectedDispatch;
-
-const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
-  const { history, clearListToPlayAction, shuffleListToPlayAction } = props;
+const PlayingPanelBtnGroup = (props: RouteComponentProps) => {
+  const { history } = props;
   const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
+  const dispatch = useDispatch();
 
   const handleRedirectToPlayer = useCallback(() => {
     if (listToPlaySnippets.length === 0) {
@@ -44,6 +35,10 @@ const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
 
     history.push("/player/ytplayer");
   }, [history, listToPlaySnippets.length]);
+
+  const handleShuffleListToPlay = useCallback(() => {
+    dispatch(shuffleListToPlayAction());
+  }, [dispatch]);
 
   const handleClearListToPlay = useCallback(async () => {
     const customSwal = await generateCustomSwal();
@@ -58,10 +53,10 @@ const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
     });
 
     if (result.value) {
-      clearListToPlayAction();
+      dispatch(clearListToPlayAction());
       notify("success", "Successfully cleared playing playlist! 😎");
     }
-  }, [clearListToPlayAction]);
+  }, [dispatch]);
 
   return (
     <div
@@ -74,7 +69,7 @@ const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
         <PlayArrowIcon />
       </button>
       <button
-        onClick={shuffleListToPlayAction}
+        onClick={handleShuffleListToPlay}
         data-tooltip="Shuffle playing list"
       >
         <ShuffleIcon />
@@ -86,10 +81,4 @@ const PlayingPanelBtnGroup = (props: PlayingPanelBtnGroupProps) => {
   );
 };
 
-export default connect(
-  null,
-  {
-    clearListToPlayAction,
-    shuffleListToPlayAction,
-  }
-)(withRouter(PlayingPanelBtnGroup));
+export default withRouter(PlayingPanelBtnGroup);

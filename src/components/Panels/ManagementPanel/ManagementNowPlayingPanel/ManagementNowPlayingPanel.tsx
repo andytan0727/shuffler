@@ -9,9 +9,11 @@ import {
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
-import { deleteNormListToPlayItemsAction } from "store/ytplaylist/normAction";
+import {
+  deleteNormListToPlayItemsAction,
+  shuffleListToPlayAction,
+} from "store/ytplaylist/normAction";
 import { selectAllNormListToPlayItemIds } from "store/ytplaylist/normSelector";
-import { shuffleListToPlayAction } from "store/ytplaylist/sharedAction";
 
 import { Divider, Typography } from "@material-ui/core";
 

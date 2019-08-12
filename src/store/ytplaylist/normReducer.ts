@@ -247,7 +247,6 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
-    // NOTE: also dispatched on: ytplaylist
     case ActionTypes.CLEAR_LIST_TO_PLAY: {
       draft.entities.playlistItems = {};
       draft.entities.videoItems = {};
@@ -256,7 +255,6 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
-    // NOTE: also dispatched on: ytplaylist
     case ActionTypes.SHUFFLE_LIST_TO_PLAY: {
       draft.result = shuffle(draft.result);
       return draft;
