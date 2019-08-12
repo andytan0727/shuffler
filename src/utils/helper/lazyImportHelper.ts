@@ -30,12 +30,12 @@ export const retryLazy = <T>(
  * to prevent flash screen if the component is loaded too fast (approx <100ms)
  *
  * @param lazyFun Lazy import function
- * @param [timeout=1000] Timeout to resolve promise and return lazy imported module
+ * @param [timeout=500] Timeout to resolve promise and return lazy imported module
  * @returns
  */
 export const delayLazy = <T>(
   lazyFun: () => Promise<T>,
-  timeout = 1000
+  timeout = 500
 ): Promise<T> =>
   Promise.all([
     lazyFun(),
