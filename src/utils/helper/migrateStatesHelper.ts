@@ -8,6 +8,7 @@
  *
  */
 
+import uniqBy from "lodash/uniqBy";
 import * as schemas from "schemas";
 import store from "store";
 import {
@@ -18,28 +19,42 @@ import {
 } from "store/ytplaylist/normAction";
 
 export default () => {
-  const appState = store.getState();
-  const ytplaylist = appState.ytplaylist;
-  const playlistsFromRedux = ytplaylist.playlists;
-  const videosFromRedux = ytplaylist.videos;
-  const listToPlayFromRedux = ytplaylist.listToPlay;
-  const playingPlaylists = ytplaylist.playingPlaylists;
+  if (!localStorage.getItem("migrated")) {
+    const appState = store.getState();
+    const ytplaylist = appState.ytplaylist;
+    const playlistsFromRedux = ytplaylist.playlists;
+    const videosFromRedux = ytplaylist.videos;
+    const listToPlayFromRedux = ytplaylist.listToPlay;
+    const playingPlaylists = ytplaylist.playingPlaylists;
 
-  const normPlaylists = schemas.normalizePlaylists(playlistsFromRedux);
-  const normVideos = schemas.normalizeVideos(videosFromRedux);
-  const normListToPlay = schemas.normalizeListToPlay(listToPlayFromRedux);
+    // makes listToPlayFromRedux all unique by snippetId before normalize
+    const uniqueListToPlayFromRedux = uniqBy(
+      listToPlayFromRedux,
+      "snippet.resourceId.videoId"
+    );
 
-  store.dispatch(
-    addNormPlaylistAction(normPlaylists.entities, normPlaylists.result)
-  );
+    const normPlaylists = schemas.normalizePlaylists(playlistsFromRedux);
+    const normVideos = schemas.normalizeVideos(videosFromRedux);
+    const normListToPlay = schemas.normalizeListToPlay(
+      uniqueListToPlayFromRedux
+    );
 
-  store.dispatch(addNormVideoAction(normVideos.entities, normVideos.result));
+    // migrate playlists and label it as allInPlaying if it exists in playingPlaylists
+    store.dispatch(
+      addNormPlaylistAction(normPlaylists.entities, normPlaylists.result)
+    );
+    playingPlaylists.forEach((id) => {
+      store.dispatch(addAllInPlayingLabelByIdAction(id));
+    });
 
-  store.dispatch(
-    addNormListToPlayAction(normListToPlay.entities, normListToPlay.result)
-  );
+    // migrate videos
+    store.dispatch(addNormVideoAction(normVideos.entities, normVideos.result));
 
-  playingPlaylists.forEach((id) => {
-    store.dispatch(addAllInPlayingLabelByIdAction(id));
-  });
+    // migrate listToPlay
+    store.dispatch(
+      addNormListToPlayAction(normListToPlay.entities, normListToPlay.result)
+    );
+
+    localStorage.setItem("migrated", "1");
+  }
 };

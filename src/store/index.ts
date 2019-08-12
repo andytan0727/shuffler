@@ -55,6 +55,11 @@ const ytplaylistPersistConfig = {
   blacklist: ["checkedPlaylists", "checkedVideos"],
 };
 
+const ytplaylistNormedPersistConfig = {
+  key: "ytplaylistNormed",
+  storage,
+};
+
 const sagaMiddleware = createSagaMiddleware();
 
 const logger = createLogger();
@@ -65,7 +70,10 @@ const rootReducer = combineReducers({
   ytapi: ytapiReducer,
   ytplayer: persistReducer(ytplayerPersistConfig, ytplayerReducer),
   ytplaylist: persistReducer(ytplaylistPersistConfig, ytplaylistReducer),
-  ytplaylistNormed: ytplaylistNormedReducer,
+  ytplaylistNormed: persistReducer(
+    ytplaylistNormedPersistConfig,
+    ytplaylistNormedReducer
+  ),
 });
 
 export const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
