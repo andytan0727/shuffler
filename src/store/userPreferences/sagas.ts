@@ -61,6 +61,9 @@ export function* setPreferDarkThemeWatcher() {
     // Set hover bg color
     _setCSSWithPreferredMode("--hover-bg");
 
+    // Set theme color
+    _setCSSWithPreferredMode("--theme-color");
+
     // ===============================
     // /playlistInput route
     // ===============================

@@ -39,7 +39,7 @@
   --light-switch-icon: "🌚";
   --light-switch-text: "dark mode";
   --light-yt-player-list-bg: #{$white};
-  --light-theme: #d34a97;
+  --light-theme-color: #e593c2;
 
   /* Dark mode */
   --dark-text-color: #{$white};
@@ -57,7 +57,7 @@
   --dark-switch-icon: "🌝";
   --dark-switch-text: "light mode";
   --dark-yt-player-list-bg: #{lighten(black, 20%)};
-  --dark-theme: #bd93f9;
+  --dark-theme-color: #7962d5;
 
   /* Default mode (dark) */
   --text-color: var(--dark-text-color);
@@ -75,7 +75,7 @@
   --switch-icon: var(--dark-switch-icon);
   --switch-text: var(--dark-switch-text);
   --yt-player-list-bg: var(--dark-yt-player-list-bg);
-  --theme-color: var(--dark-theme);
+  --theme-color: var(--dark-theme-color);
 }
 
 html {
