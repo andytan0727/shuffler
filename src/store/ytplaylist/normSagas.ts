@@ -1,7 +1,10 @@
 import cloneDeep from "lodash/cloneDeep";
+import map from "lodash/map";
+import uniq from "lodash/uniq";
 import {
   all,
   call,
+  fork,
   put,
   select,
   take,
@@ -35,14 +38,23 @@ import {
   removeNormVideosFromNormListToPlayAction,
 } from "./normAction";
 import {
+  selectAllNormPlaylists,
   selectNormListToPlayEntities,
+  selectNormListToPlayPlaylistItems,
   selectNormListToPlayResult,
   selectNormListToPlaySnippetIds,
+  selectNormPlaylistById,
+  selectNormPlaylistIdByItemId,
   selectNormPlaylistItemIdsByPlaylistId,
   selectNormPlaylistsResult,
   selectNormSnippetIdByItemId,
 } from "./normSelector";
-import { NormListToPlayEntities, NormListToPlayResultItem } from "./types";
+import {
+  NormListToPlayEntities,
+  NormListToPlayPlaylistItemsEntity,
+  NormListToPlayResultItem,
+  NormPlaylistsSourceEntity,
+} from "./types";
 
 // ===============================================
 // Helpers
@@ -91,6 +103,32 @@ function* uniquelyAddListToPlayItems(
 
   // merge new entities and result to normalized listToPlay
   yield put(addUniqueNormListToPlay(newEntities, newResult));
+}
+
+/**
+ * A helper function to add or remove allInPlaying label from certain playlist
+ * based on the condition of latest normalized listToPlay items
+ *
+ * @param playlistId Playlist id to check
+ *
+ */
+export function* addOrRemoveAllInPlaying(playlistId: string) {
+  const playlist: ReturnType<typeof selectNormPlaylistById> = yield select(
+    (state: AppState) => selectNormPlaylistById(state, playlistId)
+  );
+  const listToPlayPlaylistItems: NormListToPlayPlaylistItemsEntity = yield select(
+    selectNormListToPlayPlaylistItems
+  );
+
+  for (const itemId of playlist.items) {
+    if (!listToPlayPlaylistItems[itemId]) {
+      yield put(removeAllInPlayingLabelByIdAction(playlistId));
+      return;
+    }
+  }
+
+  yield put(addAllInPlayingLabelByIdAction(playlistId));
+  return;
 }
 // ===============================================
 // End helpers
@@ -418,6 +456,90 @@ export function* clearListToPlayWatcher() {
   });
 }
 
+/**
+ * A special saga that watches for multiple actions that involving
+ * add/delete normalized listToPlay items.
+ * If the item(s) deleted is/are from playlist,
+ * then the allInPlaying label will be added or removed
+ * based on situation
+ *
+ */
+export function* checkIfAllPlaylistItemsInPlaying() {
+  while (true) {
+    const action: ActionType<
+      | typeof addUniqueNormListToPlay
+      | typeof deleteNormListToPlayItemByIdAction
+      | typeof deleteNormListToPlayItemsAction
+    > = yield take([
+      ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY,
+      ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
+      ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEMS,
+    ]);
+    let playlistId: string | undefined;
+    let playlistIds: string[] | undefined;
+
+    switch (action.type) {
+      case "ADD_UNIQUE_NORM_LIST_TO_PLAY": {
+        const {
+          entities: { playlistItems },
+        } = action.payload;
+
+        playlistIds = uniq(map(playlistItems, (item) => item.foreignKey));
+
+        break;
+      }
+
+      case "DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID": {
+        const { id: itemId } = action.payload;
+
+        // playlistId is undefined if the itemId is belonged to video
+        playlistId = yield select((state) =>
+          selectNormPlaylistIdByItemId(state, itemId)
+        );
+
+        break;
+      }
+
+      // check if deleted itemIds are part of playlist's items
+      // if so then add it to playlistIds array waiting to be removed
+      case "DELETE_NORM_LIST_TO_PLAY_ITEMS": {
+        const { ids: itemIds } = action.payload;
+        const playlists: NormPlaylistsSourceEntity = yield select(
+          selectAllNormPlaylists
+        );
+        playlistIds = [];
+
+        for (const [playlistId, playlist] of Object.entries(playlists)) {
+          const playlistContainsDeletedItem = playlist.items.some(
+            (playlistItemId) => itemIds.includes(playlistItemId)
+          );
+
+          if (playlistContainsDeletedItem) {
+            playlistIds.push(playlistId);
+          }
+        }
+
+        break;
+      }
+
+      default: {
+        playlistId = undefined;
+        playlistIds = undefined;
+      }
+    }
+
+    if (playlistId) {
+      yield fork(addOrRemoveAllInPlaying, playlistId);
+    }
+
+    if (playlistIds && playlistIds.length !== 0) {
+      for (const playlistId of playlistIds) {
+        yield fork(addOrRemoveAllInPlaying, playlistId);
+      }
+    }
+  }
+}
+
 export default function* ytplaylistNormedSaga() {
   yield all([
     deleteNormVideoByIdWatcher(),
@@ -435,5 +557,6 @@ export default function* ytplaylistNormedSaga() {
     addNormListToPlayItemWatcher(),
     addNormListToPlayItemsWatcher(),
     clearListToPlayWatcher(),
+    checkIfAllPlaylistItemsInPlaying(),
   ]);
 }
