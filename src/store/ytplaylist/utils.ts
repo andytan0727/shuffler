@@ -10,6 +10,7 @@ import {
   MediaItem,
   NormListToPlay,
   NormListToPlayEntities,
+  NormPlaylistItemsEntity,
   NormPlaylistsEntities,
   NormPlaylistsOrVideos,
   NormPlaylistsOrVideosEntities,
@@ -202,6 +203,19 @@ export const isListToPlayItemExists = (
   itemId: string
 ) => !!entities[schema][itemId];
 
+/**
+ * Check if playlist item with the provided itemId exists.
+ * If no then the itemId is belonged to videos
+ *
+ * @param playlistItems Normalized playlist/video items entity
+ * @param itemId Item id to check
+ * @returns boolean result of true if playlist item exists
+ */
+export const isPlaylistItemExists = (
+  playlistItems: NormPlaylistItemsEntity,
+  itemId: string
+) => !!playlistItems[itemId];
+
 // =====================================================
 // Utils for selectors
 // =====================================================
@@ -211,8 +225,8 @@ export const isListToPlayItemExists = (
  * id property
  *
  * @param entities Playlists or videos entities used to get snippetId
- * @param itemId Id of item to be search for
- * @returns snippet
+ * @param itemId Id of item to search for
+ * @returns snippet obtained
  *
  */
 export const getSnippetFromItemId = (
@@ -228,5 +242,27 @@ export const getSnippetFromItemId = (
   return {
     ...entities.snippets[snippetId],
     id: snippetId,
+    itemId,
+  };
+};
+
+/**
+ * Use getSnippetFromItemId to get snippet, but append itemId to the resulting snippet obtained
+ * For the usage in filtering list items
+ *
+ * @param entities Normalized playlist/video entities
+ * @param itemId Id of item to search for
+ * @returns snippet with itemId appended
+ *
+ */
+export const getSnippetWithCombinedItemId = (
+  entities: NormPlaylistsOrVideosEntities,
+  itemId: string
+) => {
+  const snippet = getSnippetFromItemId(entities, itemId);
+
+  return {
+    ...snippet,
+    itemId,
   };
 };

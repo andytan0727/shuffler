@@ -10,7 +10,11 @@ import {
   NormVideosEntities,
   PlaylistItemSnippet,
 } from "./types";
-import { getSnippetFromItemId } from "./utils";
+import {
+  getSnippetFromItemId,
+  getSnippetWithCombinedItemId,
+  isPlaylistItemExists,
+} from "./utils";
 
 export const selectNormPlaylistsEntities = (state: AppState) =>
   state.ytplaylistNormed.playlists.entities;
@@ -22,6 +26,8 @@ export const selectNormListToPlayEntities = (state: AppState) =>
   state.ytplaylistNormed.listToPlay.entities;
 export const selectNormListToPlayResult = (state: AppState) =>
   state.ytplaylistNormed.listToPlay.result;
+export const selectFilteredState = (state: AppState) =>
+  state.ytplaylistNormed.filtered;
 
 // =====================================
 // =====================================
@@ -218,10 +224,19 @@ export const selectNormListToPlayResultSnippets = createSelector(
 
 // =====================================
 // =====================================
+// Filtered
+// =====================================
+// =====================================
+export const selectFilteredSnippets = createSelector(
+  selectFilteredState,
+  (filtered) => filtered.snippets
+);
+
+// =====================================
+// =====================================
 // General
 // =====================================
 // =====================================
-
 /**
  * Select snippet from either playlist/video side based on the present of
  * playlistId property in snippet.
@@ -239,6 +254,28 @@ export const selectNormSnippetByItemId = createCachedSelector(
     return playlistSnippetExists ? playlistSnippet : videoSnippet;
   }
 )((_, itemId) => `ltp-snippet-itemId-${itemId}`);
+
+/**
+ * Select snippets from an array of itemIds.
+ * Used to get filteredSnippets of filtered states
+ */
+export const selectNormSnippetsByItemIds = createCachedSelector(
+  selectNormPlaylistsEntities,
+  selectNormVideosEntities,
+  (_: AppState, itemIds: string[]) => itemIds,
+  (playlistEntities, videoEntities, itemIds) =>
+    itemIds.map((itemId) =>
+      isPlaylistItemExists(playlistEntities.playlistItems, itemId)
+        ? getSnippetWithCombinedItemId(
+            playlistEntities as NormPlaylistsEntities,
+            itemId
+          )
+        : getSnippetWithCombinedItemId(
+            videoEntities as NormVideosEntities,
+            itemId
+          )
+    )
+)((_, itemIds) => `snippets-itemIds-${itemIds.toString()}`);
 
 export const selectNormSnippetIdByItemId = createCachedSelector(
   selectAllNormPlaylistItems,

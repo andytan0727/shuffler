@@ -1,3 +1,4 @@
+import { FuseOptions } from "fuse.js";
 import { ActionType } from "typesafe-actions";
 import { DeepReadonly } from "utility-types";
 
@@ -61,6 +62,9 @@ export interface PlaylistItemSnippet {
   title: string;
   resourceId: { kind: string; videoId: string };
   thumbnails?: VideoThumbnails;
+
+  // for the usage in filtered snippets in filtered redux states
+  itemId?: string;
 }
 
 export interface NormPlaylistItemsEntity {
@@ -117,6 +121,9 @@ export interface VideoItemSnippet {
   thumbnails?: VideoThumbnails;
   title: string;
   localized: { title: string; description: string };
+
+  // for the usage in filtered snippets in filtered redux states
+  itemId?: string;
 }
 
 export interface NormVideoItemsEntity {
@@ -189,10 +196,25 @@ export interface NormListToPlay {
 
 export type DeepRONormListToPlay = DeepReadonly<NormListToPlay>;
 
+// ====================================================
+// Filtered
+// ====================================================
+export interface Filtered {
+  fuse: Fuse<PlaylistItemSnippet | VideoItemSnippet> | undefined;
+  options: FuseOptions<PlaylistItemSnippet | VideoItemSnippet>;
+  snippets: (PlaylistItemSnippet | VideoItemSnippet)[] | undefined;
+}
+
+export type DeepROFiltered = DeepReadonly<Filtered>;
+// ====================================================
+// End Filtered
+// ====================================================
+
 export interface YTPlaylistNormedState {
   playlists: DeepRONormPlaylists;
   videos: DeepRONormVideos;
   listToPlay: DeepRONormListToPlay;
+  filtered: Filtered;
 }
 
 export type ListToPlayItems = DeepReadonly<(PlaylistItem | VideoItem)[]>;

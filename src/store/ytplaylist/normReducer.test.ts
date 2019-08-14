@@ -104,6 +104,7 @@ function makeVideosEntitiesState(
         title: `test-${videoId}-${itemId}`,
         description: `test-${videoId}-${itemId}`,
       },
+      itemId: itemId.toString(),
     };
   });
 }
@@ -171,6 +172,7 @@ function makePlaylistsEntitiesStates(
         videoId: `videoId-${playlistId}-${itemId}`,
       },
       title: `title-${playlistId}-${itemId}`,
+      itemId: itemId.toString(),
     };
   });
 }

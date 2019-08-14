@@ -87,3 +87,11 @@ export const ADD_NORM_LIST_TO_PLAY_ITEMS = "ADD_NORM_LIST_TO_PLAY_ITEMS" as cons
 export const UPDATE_NORM_LIST_TO_PLAY = "UPDATE_NORM_LIST_TO_PLAY" as const;
 export const DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID = "DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID" as const;
 export const DELETE_NORM_LIST_TO_PLAY_ITEMS = "DELETE_NORM_LIST_TO_PLAY_ITEMS" as const;
+
+// =========================
+// ytplaylist filtered
+// =========================
+export const CREATE_FUSE = "CREATE_FUSE" as const;
+export const FUZZY_SEARCH_SNIPPETS_BY_TITLE = "FUZZY_SEARCH_SNIPPETS_BY_TITLE" as const;
+export const CLEAR_FILTERED_SNIPPETS = "CLEAR_FILTERED_SNIPPETS" as const;
+export const REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS = "REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS" as const;
