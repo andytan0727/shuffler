@@ -54,15 +54,15 @@ export const withListItemSecondaryAction = (
     const {
       index,
       style,
-      data: { checked, handleSetChecked, items },
+      data: { checked, handleSetChecked, items: itemIds, filteredSnippets },
     } = props;
     const classes = useStyles({});
-    const currentItemId = items[index];
+    const currentItemId = filteredSnippets
+      ? filteredSnippets[index].itemId! // assume itemId is provided
+      : itemIds[index];
     const currentSnippet = useSelector((state: AppState) =>
       selectNormSnippetByItemId(state, currentItemId)
     );
-
-    if (!currentSnippet) throw new Error("VirtualListItem: Snippet not found");
 
     const snippetId = currentSnippet.id;
     const listItemText = currentSnippet.title;

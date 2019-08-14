@@ -3,6 +3,7 @@ import memoizeOne from "memoize-one";
 import React, { MemoExoticComponent } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
+import { ListToPlaySnippets } from "store/ytplaylist/types";
 
 interface ManagementPanelVirtualListProps {
   itemData: ItemData;
@@ -13,6 +14,10 @@ export interface ItemData {
   checked: string[];
   handleSetChecked: HandleSetChecked;
   items: string[];
+
+  // filtered list of snippets to be displayed
+  // if not supplied/undefined then items will be displayed instead
+  filteredSnippets?: ListToPlaySnippets;
 }
 
 /**
@@ -20,10 +25,10 @@ export interface ItemData {
  *
  * @param index Array index
  * @param data Item data supplied to FixedSizeList
- * @returns Snippet id as FixedSizeList item's key
+ * @returns Id as FixedSizeList item's key
  */
 const _getItemKey = (index: number, data: ItemData): string | number =>
-  data.items[index];
+  data.filteredSnippets ? data.filteredSnippets[index].id! : data.items[index];
 
 /**
  * Memoized function to create itemData for react-window list
@@ -33,11 +38,13 @@ export const createItemData = memoizeOne(
   (
     checked: string[],
     handleSetChecked: HandleSetChecked,
-    items: string[]
+    items: string[],
+    filteredSnippets?: ListToPlaySnippets
   ): ItemData => ({
     checked,
     handleSetChecked,
     items,
+    filteredSnippets,
   })
 );
 
@@ -50,8 +57,13 @@ export const createItemData = memoizeOne(
  */
 const ManagementPanelVirtualList = (props: ManagementPanelVirtualListProps) => {
   const { itemData, children } = props;
+  const { items, filteredSnippets } = itemData;
+  const itemCount = filteredSnippets ? filteredSnippets.length : items.length;
 
-  return (
+  // prevent property undefined error if no items/filteredSnippets
+  return itemCount === 0 ? (
+    <div>No video found</div>
+  ) : (
     <AutoSizer>
       {({ height, width }) => (
         <FixedSizeList
@@ -59,7 +71,7 @@ const ManagementPanelVirtualList = (props: ManagementPanelVirtualListProps) => {
           width={width}
           itemKey={_getItemKey}
           itemData={itemData}
-          itemCount={itemData.items.length}
+          itemCount={itemCount}
           itemSize={80}
         >
           {children}
