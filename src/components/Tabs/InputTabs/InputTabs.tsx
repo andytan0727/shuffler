@@ -114,7 +114,12 @@ const InputTabs = () => {
             }, 0.3)`,
           }}
         >
-          <span>Try out our new panel 🚀 </span>
+          <span>
+            Try out our new panel{" "}
+            <span role="img" aria-labelledby="rocket">
+              🚀
+            </span>
+          </span>
         </div>
       )}
     </div>

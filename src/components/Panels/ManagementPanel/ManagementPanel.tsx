@@ -1,5 +1,5 @@
 import FullPageSpinner from "components/Loadings/FullPageSpinner";
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { delayLazy, retryLazy } from "utils/helper/lazyImportHelper";
 
@@ -34,6 +34,12 @@ const ManagementPlaylistsPanel = lazy(() =>
  */
 const ManagementPanel = ({ match }: ManagementPanelProps) => {
   const managementPanelPath = match.path;
+
+  useEffect(() => {
+    if (!localStorage.getItem("visited-panel")) {
+      localStorage.setItem("visited-panel", "1");
+    }
+  }, []);
 
   return (
     <div className={styles.managementPanelDiv}>
