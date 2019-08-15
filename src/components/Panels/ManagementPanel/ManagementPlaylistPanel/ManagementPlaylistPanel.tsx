@@ -54,7 +54,9 @@ const ManagementPlaylistPanel = ({
 
   const handlePlayPlaylist = useCallback(() => {
     if (checked.length !== 0) {
-      dispatch(updateNormListToPlayAction("playlists", playlistId, checked));
+      dispatch(
+        updateNormListToPlayAction("playlistItems", playlistId, checked)
+      );
     }
 
     history.push("/player/ytplayer");

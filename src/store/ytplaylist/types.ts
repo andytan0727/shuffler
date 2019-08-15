@@ -185,7 +185,6 @@ export interface NormListToPlayEntities {
 
 export interface NormListToPlayResultItem {
   id: string;
-  source: MediaSourceType;
   schema: SchemaType;
 }
 

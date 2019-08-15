@@ -84,7 +84,6 @@ export const makeToggleItemToListToPlaySwitch = (source: MediaSourceType) =>
           ? addNormListToPlayItemAction(
               {
                 id: itemId,
-                source,
                 schema,
               },
               sourceId

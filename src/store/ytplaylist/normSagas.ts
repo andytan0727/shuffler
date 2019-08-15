@@ -86,7 +86,7 @@ function* uniquelyAddListToPlayItems(
 
   for (const item of items) {
     const {
-      resultItem: { id: itemId, source, schema },
+      resultItem: { id: itemId, schema },
       foreignKey,
     } = item;
     const currentSnippetId = yield select((state: AppState) =>
@@ -97,7 +97,10 @@ function* uniquelyAddListToPlayItems(
     // if no, add it to newEntities and newResult
     if (!snippetIds.includes(currentSnippetId)) {
       newEntities[schema][itemId] = { id: itemId, foreignKey };
-      newResult.push({ id: itemId, source, schema });
+      newResult.push({
+        id: itemId,
+        schema,
+      });
     }
   }
 
@@ -247,7 +250,6 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
     const playlistItems = itemIds.map((itemId) => ({
       resultItem: {
         id: itemId,
-        source: "playlists" as MediaSourceType,
         schema: "playlistItems" as SchemaType,
       },
       foreignKey: playlistId,
@@ -328,7 +330,6 @@ export function* addNormVideoToNormListToPlayWatcher() {
     const listToPlayVideoItem = {
       resultItem: {
         id: videoId,
-        source: "videos" as MediaSourceType,
         schema: "videoItems" as SchemaType,
       },
       foreignKey: videoId,
@@ -412,8 +413,8 @@ export function* addNormListToPlayWatcher() {
       payload: { entities, result },
     } = action;
 
-    const items = result.map(({ id, source, schema }) => ({
-      resultItem: { id, source, schema },
+    const items = result.map(({ id, schema }) => ({
+      resultItem: { id, schema },
       foreignKey: entities[schema][id].foreignKey,
     }));
 

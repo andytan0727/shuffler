@@ -434,16 +434,20 @@ export const addNormListToPlayItemsAction = createAction(
 /**
  * Update entire normalized listToPlay with full replacement to previous state
  *
- * @param source Source type (playlists/videos)
- * @param sourceId Id of the playlist/video source
- * @param itemIds An array of source item ids
+ * @param schema Schema type (playlistItems/videoItems)
+ * @param foreignKey Id referring to the source (playlistId/videoId)
+ * @param itemIds An array of itemIds
  * @returns UPDATE_NORM_LIST_TO_PLAY action object
  */
 export const updateNormListToPlayAction = createAction(
   ActionTypes.UPDATE_NORM_LIST_TO_PLAY,
   (action) => {
-    return (source: MediaSourceType, sourceId: string, itemIds: string[]) =>
-      action({ source, sourceId, itemIds });
+    return (schema: SchemaType, foreignKey: string, itemIds: string[]) =>
+      action({
+        schema,
+        foreignKey,
+        itemIds,
+      });
   }
 );
 

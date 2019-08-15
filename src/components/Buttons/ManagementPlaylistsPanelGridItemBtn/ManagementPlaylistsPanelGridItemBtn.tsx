@@ -45,7 +45,11 @@ const ManagementPlaylistsPanelGridItemBtn = (
   const handlePlayPlaylist = useCallback(() => {
     // play whole playlist
     dispatch(
-      updateNormListToPlayAction("playlists", playlistId, itemIds as string[])
+      updateNormListToPlayAction(
+        "playlistItems",
+        playlistId,
+        itemIds as string[]
+      )
     );
 
     history.push("/player/ytplayer");

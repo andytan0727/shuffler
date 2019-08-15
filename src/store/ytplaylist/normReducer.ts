@@ -220,9 +220,7 @@ export const listToPlayReducer: Reducer<
     // assume all snippets in (ONE) playlist taken from API are all unique
     // No need to check for uniqueness of snippets in (ONE) playlist
     case ActionTypes.UPDATE_NORM_LIST_TO_PLAY: {
-      const { source, sourceId: foreignKey, itemIds } = action.payload;
-
-      const schema = source === "playlists" ? "playlistItems" : "videoItems";
+      const { schema, foreignKey, itemIds } = action.payload;
 
       // clear previous state
       draft.entities.playlistItems = {};
@@ -232,7 +230,10 @@ export const listToPlayReducer: Reducer<
       // update cleared states with new states
       itemIds.forEach((itemId) => {
         draft.entities[schema][itemId] = { id: itemId, foreignKey };
-        draft.result.push({ id: itemId, source, schema });
+        draft.result.push({
+          id: itemId,
+          schema,
+        });
       });
 
       return draft;
