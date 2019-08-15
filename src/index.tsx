@@ -1,5 +1,6 @@
 import "./index.scss";
 
+import { ErrorBoundary } from "components/ErrorBoundary";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -16,7 +17,9 @@ ReactDOM.render(
   <Provider store={store}>
     <CssBaseline />
     <PersistGate loading={null} persistor={persistor}>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </PersistGate>
   </Provider>,
   document.getElementById("root")
