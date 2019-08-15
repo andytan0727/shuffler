@@ -113,6 +113,10 @@ const initialStates = {
         "Several bugs fix",
       ],
     },
+    {
+      version: "3.1.1",
+      changes: ["Fix blank page problem when unexpected error occurs"],
+    },
   ],
 };
 
