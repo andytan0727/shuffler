@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectFilteredSnippets } from "store/ytplaylist/normSelector";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import {
@@ -7,7 +9,7 @@ import {
   Shuffle as ShuffleIcon,
 } from "@material-ui/icons";
 
-interface ManagementPanelCtrlBtnGroupProps {
+export interface ManagementPanelCtrlBtnGroupProps {
   handlePlay: (e: OnClickEvent) => void;
   handleShuffle: (e: OnClickEvent) => void;
   handleDelete: (e: OnClickEvent) => void;
@@ -18,6 +20,10 @@ const ManagementPanelCtrlBtnGroup = (
 ) => {
   const { handlePlay, handleShuffle, handleDelete } = props;
 
+  // disable shuffle button if user is filtering snippets
+  // i.e when the filteredSnippets array is not undefined
+  const filteredSnippets = useSelector(selectFilteredSnippets);
+
   return (
     <div>
       <Tooltip title="Play">
@@ -26,7 +32,11 @@ const ManagementPanelCtrlBtnGroup = (
         </IconButton>
       </Tooltip>
       <Tooltip title="Shuffle">
-        <IconButton color="secondary" onClick={handleShuffle}>
+        <IconButton
+          color="secondary"
+          onClick={handleShuffle}
+          disabled={!!filteredSnippets}
+        >
           <ShuffleIcon />
         </IconButton>
       </Tooltip>

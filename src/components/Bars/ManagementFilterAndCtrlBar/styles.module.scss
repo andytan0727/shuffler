@@ -1,0 +1,9 @@
+.controlDiv {
+  display: flex;
+  align-items: center;
+
+  // filter input
+  > div:nth-child(1) {
+    flex-grow: 2;
+  }
+}

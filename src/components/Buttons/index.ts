@@ -1,5 +1,5 @@
 import { DeleteItemButton } from "./DeleteButtons";
-import ManagementPanelCtrlBtnGroup from "./ManagementPanelCtrlBtnGroup";
+import ManagementPanelCtrlBtnGroup from "./ManagementPanelCtrlBtnGroup/ManagementPanelCtrlBtnGroup";
 import ManagementPlaylistsPanelGridItemBtn from "./ManagementPlaylistsPanelGridItemBtn";
 import PlayerBasicCtrlBtnGroup from "./PlayerBasicCtrlBtnGroup";
 import PlayingPanelBtnGroup from "./PlayingPanelBtnGroup";

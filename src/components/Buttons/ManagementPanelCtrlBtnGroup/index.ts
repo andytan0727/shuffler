@@ -1,1 +1,1 @@
-export { default } from "./ManagementPanelCtrlBtnGroup";
+export * from "./ManagementPanelCtrlBtnGroup";
