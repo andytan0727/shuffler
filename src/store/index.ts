@@ -6,7 +6,6 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
-import thunk from "redux-thunk";
 import { StateType } from "typesafe-actions";
 
 // Reducers
@@ -58,6 +57,7 @@ const ytplaylistPersistConfig = {
 const ytplaylistNormedPersistConfig = {
   key: "ytplaylistNormed",
   storage,
+  blacklist: ["filtered"],
 };
 
 const sagaMiddleware = createSagaMiddleware();
@@ -82,12 +82,9 @@ const store =
   process.env.NODE_ENV === "development"
     ? createStore(
         persistedReducer,
-        composeWithDevTools(applyMiddleware(thunk, sagaMiddleware, logger))
+        composeWithDevTools(applyMiddleware(sagaMiddleware, logger))
       )
-    : createStore(
-        persistedReducer,
-        compose(applyMiddleware(sagaMiddleware, thunk))
-      );
+    : createStore(persistedReducer, compose(applyMiddleware(sagaMiddleware)));
 
 sagaMiddleware.run(rootSaga);
 
