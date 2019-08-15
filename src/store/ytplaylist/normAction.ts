@@ -49,42 +49,6 @@ export const addNormPlaylistToNormListToPlayAction = createAction(
 );
 
 /**
- * Delete **ONE** normalized playlist and its respective items from normalized listToPlay (if found)
- *
- * **_Note: This action is handled through saga. No reducer logic involved_**
- *
- * @param playlistId Playlist id to delete
- * @returns DELETE_NORM_PLAYLIST_AND_LIST_TO_PLAY_ITEM action object
- */
-export const deleteNormPlaylistAndListToPlayItemsAction = createAction(
-  ActionTypes.DELETE_NORM_PLAYLIST_AND_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (playlistId: string) =>
-      action({
-        playlistId,
-      });
-  }
-);
-
-/**
- * Delete **MANY** normalized playlist and its respective items from normalized listToPlay (if found)
- *
- * **_Note: This action is handled through saga. No reducer logic involved_**
- *
- * @param playlistId An array of playlist id to delete
- * @returns DELETE_NORM_PLAYLISTS_AND_LIST_TO_PLAY_ITEM action object
- */
-export const deleteNormPlaylistsAndListToPlayItemsAction = createAction(
-  ActionTypes.DELETE_NORM_PLAYLISTS_AND_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (playlistIds: string[]) =>
-      action({
-        playlistIds,
-      });
-  }
-);
-
-/**
  * Remove all items in the specified normalized playlist from normalized listToPlay
  *
  * **_Note: This action is handled through saga. No reducer logic involved_**

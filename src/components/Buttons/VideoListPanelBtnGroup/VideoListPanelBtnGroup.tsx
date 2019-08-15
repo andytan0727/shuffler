@@ -10,7 +10,7 @@ import {
 } from "store/ytplaylist/action";
 import {
   addNormPlaylistToNormListToPlayAction,
-  deleteNormPlaylistsAndListToPlayItemsAction,
+  deleteNormPlaylistByIdAction,
   removeNormPlaylistsFromNormListToPlayAction,
 } from "store/ytplaylist/normAction";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
@@ -98,7 +98,9 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
     });
 
     if (result.value) {
-      dispatch(deleteNormPlaylistsAndListToPlayItemsAction(playlistIds));
+      playlistIds.forEach((playlistId) => {
+        dispatch(deleteNormPlaylistByIdAction(playlistId));
+      });
 
       // backward-compatible
       // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
