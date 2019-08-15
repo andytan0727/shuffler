@@ -105,6 +105,14 @@ const initialStates = {
         "Update notification style",
       ],
     },
+    {
+      version: "3.1.0",
+      changes: [
+        "New panel introduced! Visit it on https://shuffler.surge.sh/playlistInput/panel/videos.",
+        "Filter feature is added on the new Now Playing panel.",
+        "Several bugs fix",
+      ],
+    },
   ],
 };
 
