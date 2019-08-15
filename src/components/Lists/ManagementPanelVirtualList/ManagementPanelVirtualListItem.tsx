@@ -13,6 +13,7 @@ import {
   ListItemText,
   makeStyles,
 } from "@material-ui/core";
+import { Close as CloseIcon } from "@material-ui/icons";
 
 import { ItemData } from "./ManagementPanelVirtualList";
 
@@ -64,10 +65,31 @@ export const withListItemSecondaryAction = (
       selectNormSnippetByItemId(state, currentItemId)
     );
 
-    const snippetId = currentSnippet.id;
-    const listItemText = currentSnippet.title;
+    return !currentSnippet ? (
+      <ListItem
+        divider
+        className={classes.listItem}
+        ContainerProps={{
+          style: {
+            ...style,
+            listStyleType: "none",
+            border: "2px solid red",
+          },
+        }}
+      >
+        <ListItemIcon>
+          <CloseIcon color="error" />
+        </ListItemIcon>
 
-    return (
+        <ListItemText
+          className={classes.listItemText}
+          primary={"Invalid item"}
+        />
+
+        {/* ListItemSecondaryAction is here to prevent broken ListItem UI */}
+        <ListItemSecondaryAction></ListItemSecondaryAction>
+      </ListItem>
+    ) : (
       <ListItem
         button
         divider
@@ -85,13 +107,13 @@ export const withListItemSecondaryAction = (
             edge="start"
             checked={checked.includes(currentItemId)}
             disableRipple
-            inputProps={{ "aria-labelledby": snippetId }}
+            inputProps={{ "aria-labelledby": currentSnippet.id }}
           />
         </ListItemIcon>
 
         <ListItemText
           className={classes.listItemText}
-          primary={listItemText || "No title"}
+          primary={currentSnippet.title || "No title"}
         />
 
         {/* ListItemSecondaryAction should be last child */}

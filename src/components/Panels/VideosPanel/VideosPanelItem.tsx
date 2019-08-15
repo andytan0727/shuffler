@@ -46,7 +46,7 @@ const VideosPanelItem = (props: VideosPanelItemProps) => {
           checkedIcon={<CheckBoxIcon fontSize="small" />}
           onChange={handleSetChecked(itemId)}
         />
-        <span>{snippet.title}</span>
+        <span>{(snippet && snippet.title) || "Invalid item"}</span>
         {isListToPlayItemExists(listToPlayEntities, "videoItems", itemId) && (
           <MusicVideoIcon />
         )}

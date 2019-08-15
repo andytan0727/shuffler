@@ -9,6 +9,7 @@ import {
   NormPlaylistsEntities,
   NormVideosEntities,
   PlaylistItemSnippet,
+  VideoItemSnippet,
 } from "./types";
 import {
   getSnippetFromItemId,
@@ -90,9 +91,14 @@ export const selectNormPlaylistSnippetsByPlaylistId = createCachedSelector(
     }))
 )((_, playlistId) => `playlistSnippets-playlistId-${playlistId}`);
 
+/**
+ * Select playlistId by itemId.
+ *
+ * **Note: returned result might be undefined.**
+ */
 export const selectNormPlaylistIdByItemId = createCachedSelector(
   selectNormPlaylistSnippetByItemId,
-  (snippet) => (snippet as PlaylistItemSnippet).playlistId
+  (snippet) => snippet && (snippet as PlaylistItemSnippet).playlistId
 )((_, itemId) => `playlistId-playlistItemId-${itemId}`);
 
 export const selectNormPlaylistAllInPlayingById = createCachedSelector(
@@ -204,6 +210,9 @@ export const selectNormListToPlaySnippetIds = createSelector(
   }
 );
 
+/**
+ * Select listToPlay result snippets. If the snippet is undefined, it is skipped
+ */
 export const selectNormListToPlayResultSnippets = createSelector(
   [
     selectNormListToPlayResult,
@@ -211,14 +220,21 @@ export const selectNormListToPlayResultSnippets = createSelector(
     selectNormVideosEntities,
   ],
   (result, playlistEntities, videoEntities) => {
-    return result.map(({ id: itemId, schema }) =>
-      getSnippetFromItemId(
+    const snippets = [];
+
+    for (const { id: itemId, schema } of result) {
+      const listToPlaySnippet = getSnippetFromItemId(
         schema === "playlistItems"
           ? (playlistEntities as NormPlaylistsEntities)
           : (videoEntities as NormVideosEntities),
         itemId
-      )
-    );
+      );
+
+      // does not include undefined (invalid) snippet
+      if (listToPlaySnippet) snippets.push(listToPlaySnippet);
+    }
+
+    return snippets;
   }
 );
 
@@ -238,34 +254,33 @@ export const selectFilteredSnippets = createSelector(
 // =====================================
 // =====================================
 /**
- * Select snippet from either playlist/video side based on the present of
- * playlistId property in snippet.
- * If playlistId exists then the snippet is belong to playlist, and vice versa.
- *
+ * Select snippet from either playlist/video based on itemId
+ * Return snippet that is defined, or undefined if
+ * snippet could not be found on both playlist/video
+ * states
  */
 export const selectNormSnippetByItemId = createCachedSelector(
   selectNormPlaylistSnippetByItemId,
   selectNormVideoSnippetByItemId,
-  (playlistSnippet, videoSnippet) => {
-    // if playlist or video snippet absent, it will be an object containing
-    // undefined id property
-    const playlistSnippetExists = playlistSnippet.id;
-
-    return playlistSnippetExists ? playlistSnippet : videoSnippet;
-  }
-)((_, itemId) => `ltp-snippet-itemId-${itemId}`);
+  (playlistSnippet, videoSnippet) => playlistSnippet || videoSnippet
+)((_, itemId) => `snippet-itemId-${itemId}`);
 
 /**
  * Select snippets from an array of itemIds.
- * Used to get filteredSnippets of filtered states
+ * Used to get filteredSnippets of filtered states.
+ * Undefined snippets are skipped
  */
 export const selectNormSnippetsByItemIds = createCachedSelector(
   selectNormPlaylistsEntities,
   selectNormVideosEntities,
   (_: AppState, itemIds: string[]) => itemIds,
-  (playlistEntities, videoEntities, itemIds) =>
-    itemIds.map((itemId) =>
-      isPlaylistItemExists(playlistEntities.playlistItems, itemId)
+  (playlistEntities, videoEntities, itemIds) => {
+    const snippets: (PlaylistItemSnippet | VideoItemSnippet)[] = [];
+
+    for (const itemId of itemIds) {
+      const { playlistItems } = playlistEntities;
+
+      const snippet = isPlaylistItemExists(playlistItems, itemId)
         ? getSnippetWithCombinedItemId(
             playlistEntities as NormPlaylistsEntities,
             itemId
@@ -273,8 +288,13 @@ export const selectNormSnippetsByItemIds = createCachedSelector(
         : getSnippetWithCombinedItemId(
             videoEntities as NormVideosEntities,
             itemId
-          )
-    )
+          );
+
+      if (snippet) snippets.push(snippet);
+    }
+
+    return snippets;
+  }
 )((_, itemIds) => `snippets-itemIds-${itemIds.toString()}`);
 
 export const selectNormSnippetIdByItemId = createCachedSelector(

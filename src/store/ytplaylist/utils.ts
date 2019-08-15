@@ -221,12 +221,11 @@ export const isPlaylistItemExists = (
 // =====================================================
 /**
  * Get snippet of playlist/video item from itemId provided. Returns snippet if
- * snippet could be found using itemId, else return an object containing undefined
- * id property
+ * snippet could be found using itemId, else return undefined
  *
  * @param entities Playlists or videos entities used to get snippetId
  * @param itemId Id of item to search for
- * @returns snippet obtained
+ * @returns snippet obtained or undefined
  *
  */
 export const getSnippetFromItemId = (
@@ -237,13 +236,16 @@ export const getSnippetFromItemId = (
     ? get(entities.playlistItems[itemId], "snippet")
     : get(entities.videoItems[itemId], "snippet");
 
+  const snippet = entities.snippets[snippetId];
+
   // assign snippet's key as the id of the returning object
   // for the usage in views
-  return {
-    ...entities.snippets[snippetId],
-    id: snippetId,
-    itemId,
-  };
+  return (
+    snippet && {
+      ...snippet,
+      id: snippetId,
+    }
+  );
 };
 
 /**
@@ -252,7 +254,7 @@ export const getSnippetFromItemId = (
  *
  * @param entities Normalized playlist/video entities
  * @param itemId Id of item to search for
- * @returns snippet with itemId appended
+ * @returns snippet with itemId appended, else undefined if no snippet found
  *
  */
 export const getSnippetWithCombinedItemId = (
@@ -261,8 +263,10 @@ export const getSnippetWithCombinedItemId = (
 ) => {
   const snippet = getSnippetFromItemId(entities, itemId);
 
-  return {
-    ...snippet,
-    itemId,
-  };
+  return (
+    snippet && {
+      ...snippet,
+      itemId,
+    }
+  );
 };
