@@ -25,7 +25,7 @@
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.5",
     "react-youtube": "^7.9.0",
-    "redux": "^4.0.1",
+    "redux": "^4.0.4",
     "redux-persist": "^5.10.0",
     "redux-saga": "^1.0.5",
     "reselect": "^4.0.0",

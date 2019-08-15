@@ -13,7 +13,6 @@ import * as serviceWorker from "./serviceWorker";
 import store, { persistor } from "./store";
 
 ReactDOM.render(
-  // @ts-ignore temporary
   <Provider store={store}>
     <CssBaseline />
     <PersistGate loading={null} persistor={persistor}>
