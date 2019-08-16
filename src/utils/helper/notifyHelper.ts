@@ -54,7 +54,7 @@ export const notify = async (
     switch (type) {
       case "warning":
       case "error": {
-        customSwal!.fire({
+        await customSwal!.fire({
           ...swalDefaultConfig,
           position: "top-end",
           timer: 2500,
@@ -64,12 +64,12 @@ export const notify = async (
 
       case "info":
       case "success": {
-        customSwal!.fire(swalDefaultConfig);
+        await customSwal!.fire(swalDefaultConfig);
         break;
       }
 
       default: {
-        customSwal!.fire({
+        await customSwal!.fire({
           ...swalDefaultConfig,
           title:
             "Default toast is called. You may misconfigure notify function",
@@ -77,8 +77,11 @@ export const notify = async (
       }
     }
   } catch (err) {
+    console.log("Swal error: ", err.message);
+  } finally {
+    // hacks on removeEventListener error on swal
+    // when changing theme on fast rate (edge case)
     const swalContainerLeftOver = document.querySelector(".swal2-container");
     if (swalContainerLeftOver) swalContainerLeftOver.remove();
-    console.error("Swal: ", err.message);
   }
 };
