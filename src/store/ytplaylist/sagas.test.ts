@@ -1,9 +1,9 @@
-import * as ytplaylistSaga from "./sagas";
+import * as ytplaylistNormedSagas from "./normSagas";
 
 describe("ytplaylist sagas", () => {
-  const addPlaylistsToListToPlaySaga = ytplaylistSaga.addPlaylistsToListToPlay;
+  const addNormListToPlayItemWatcher = ytplaylistNormedSagas.addNormListToPlayItemWatcher();
 
-  console.log(addPlaylistsToListToPlaySaga);
+  console.log(addNormListToPlayItemWatcher);
 
   test("should success", () => {
     expect(1).toBe(1);

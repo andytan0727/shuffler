@@ -39,18 +39,6 @@ export function* addFetchItemsToNormListToPlay(
 }
 
 /**
- * Helper function to add playlist to playlists, listToPlay and finally add playlistId to playingPlaylists
- *
- * @deprecated Remove as of next stable version (v4.0)
- * @param playlist Playlist data
- */
-export function* addFetchedPlaylist(playlist: YTPlaylistTypes.Playlist) {
-  yield put(ytplaylist.addPlaylistAction(playlist));
-  yield put(ytplaylist.appendListToPlayAction(playlist.items));
-  yield put(ytplaylist.addPlayingPlaylistsAction([playlist.id]));
-}
-
-/**
  * Helper function to add fetched playlists to normalized playlists state
  *
  * @export
@@ -127,9 +115,6 @@ export function* fetchPlaylistDataSuccess(
   };
 
   yield put(ytapi.fetchPlaylistDataSuccessAction(fetchedPlaylist));
-
-  // add playlist to normal playlists array
-  yield call(addFetchedPlaylist, fetchedPlaylist);
 
   // add playlist to normalized playlists
   yield call(addFetchedNormPlaylist, fetchedPlaylist);

@@ -1,159 +1,36 @@
 import {
-  ADD_PLAYING_PLAYLISTS,
   ADD_PLAYING_VIDEOS,
-  ADD_PLAYLIST,
-  ADD_PLAYLISTS_TO_LIST_TO_PLAY,
   ADD_VIDEO,
   ADD_VIDEOS_TO_LIST_TO_PLAY,
   APPEND_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
-  DELETE_PLAYLISTS,
   DELETE_VIDEOS,
   REMOVE_FROM_LIST_TO_PLAY,
-  REMOVE_PLAYING_PLAYLISTS,
   REMOVE_PLAYING_VIDEOS,
-  REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
   REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
-  RENAME_PLAYLIST,
-  SET_CHECKED_PLAYLISTS,
   SET_CHECKED_VIDEOS,
   SHUFFLE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
 
 import {
-  addPlayingPlaylistsAction,
   addPlayingVideosAction,
-  addPlaylistAction,
-  addPlaylistsToListToPlayAction,
   addVideoAction,
   addVideosToListToPlayAction,
   appendListToPlayAction,
-  deletePlaylistsAction,
   deleteVideosAction,
   removeFromListToPlayAction,
-  removePlayingPlaylistsAction,
   removePlayingVideosAction,
-  removePlaylistsFromListToPlayAction,
   removeVideosFromListToPlayAction,
-  renamePlaylistAction,
-  setCheckedPlaylistsAction,
   setCheckedVideosAction,
 } from "./action";
 import { clearListToPlayAction, shuffleListToPlayAction } from "./normAction";
-import { Playlist, Video } from "./types";
+import { Video } from "./types";
 
 describe("ytplaylist actions", () => {
   const customGlobal: unknown = global;
 
   // @ts-ignore
-  const playlist: Playlist = customGlobal.playlist;
-
-  // @ts-ignore
   const video: Video = customGlobal.video;
-
-  // =================================
-  // Playlist
-  // =================================
-  test("should create ADD_PLAYLIST action object", () => {
-    expect(addPlaylistAction(playlist)).toEqual({
-      type: ADD_PLAYLIST,
-      payload: {
-        playlist,
-      },
-    });
-  });
-
-  test("should create DELETE_PLAYLISTS action object", () => {
-    const playlistIds = [playlist.id];
-
-    expect(deletePlaylistsAction(playlistIds)).toEqual({
-      type: DELETE_PLAYLISTS,
-      payload: {
-        playlistIds,
-      },
-    });
-  });
-
-  test("should DELETE_PLAYLISTS payload contains playlistIds [Array]", () => {
-    const playlistIds = [playlist.id];
-    const removePlaylistsActionObject = deletePlaylistsAction(playlistIds);
-
-    // ensure the playlistIds supplied is an array
-    expect(Array.isArray(removePlaylistsActionObject.payload.playlistIds)).toBe(
-      true
-    );
-  });
-
-  test("should create RENAME_PLAYLIST action object", () => {
-    const newName = "newName";
-    const playlistIdToRename = "id-1";
-    expect(renamePlaylistAction(newName, playlistIdToRename)).toEqual({
-      type: RENAME_PLAYLIST,
-      payload: {
-        newName,
-        playlistIdToRename,
-      },
-    });
-  });
-
-  test("should create SET_CHECKED_PLAYLISTS action object", () => {
-    expect(setCheckedPlaylistsAction(["id"])).toEqual({
-      type: SET_CHECKED_PLAYLISTS,
-      payload: {
-        checkedPlaylists: ["id"],
-      },
-    });
-  });
-
-  test("should create ADD_PLAYING_PLAYLISTS action object", () => {
-    const playlistIds = [playlist.id];
-
-    expect(addPlayingPlaylistsAction(playlistIds)).toEqual({
-      type: ADD_PLAYING_PLAYLISTS,
-      payload: {
-        playlistIds: [playlist.id],
-      },
-    });
-  });
-
-  test("should ADD_PLAYING_PLAYLISTS payload contains playlistIds [Array]", () => {
-    const playlistIds = [playlist.id];
-    const addPlayingPlaylistsActionObject = addPlayingPlaylistsAction(
-      playlistIds
-    );
-
-    // ensure playlistIds is an array and not playlist object
-    expect(
-      Array.isArray(addPlayingPlaylistsActionObject.payload.playlistIds)
-    ).toBe(true);
-  });
-
-  test("should create REMOVE_PLAYING_PLAYLISTS action object", () => {
-    expect(removePlayingPlaylistsAction([playlist.id])).toEqual({
-      type: REMOVE_PLAYING_PLAYLISTS,
-      payload: {
-        playlistIds: [playlist.id],
-      },
-    });
-  });
-
-  test("should create ADD_PLAYLISTS_TO_LIST_TO_PLAY action object", () => {
-    expect(addPlaylistsToListToPlayAction(["id"])).toEqual({
-      type: ADD_PLAYLISTS_TO_LIST_TO_PLAY,
-      payload: {
-        playlistIds: ["id"],
-      },
-    });
-  });
-
-  test("should create REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY action object", () => {
-    expect(removePlaylistsFromListToPlayAction(["id"])).toEqual({
-      type: REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
-      payload: {
-        playlistIds: ["id"],
-      },
-    });
-  });
 
   // =================================
   // Videos
@@ -237,17 +114,7 @@ describe("ytplaylist actions", () => {
   test("should create REMOVE_FROM_LIST_TO_PLAY action object", () => {
     const itemIds = {
       video: [video.id],
-      playlist: [playlist.id],
     };
-
-    // for playlist
-    expect(removeFromListToPlayAction(itemIds.playlist, "playlists")).toEqual({
-      type: REMOVE_FROM_LIST_TO_PLAY,
-      payload: {
-        itemIds: itemIds.playlist,
-        itemType: "playlists",
-      },
-    });
 
     // for video
     expect(removeFromListToPlayAction(itemIds.video, "videos")).toEqual({

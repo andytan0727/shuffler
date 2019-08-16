@@ -26,13 +26,10 @@ export interface VideoThumbnailsProperties {
 }
 
 export interface YTPlaylistState {
-  checkedPlaylists: string[];
   checkedVideos: string[];
-  playlists: Playlist[];
   videos: Video[];
-  listToPlay: (PlaylistItem | VideoItem)[];
-  playingPlaylists: string[];
   playingVideos: string[];
+  listToPlay: (PlaylistItem | VideoItem)[];
 }
 
 export type DeepROYtPlaylistState = DeepReadonly<YTPlaylistState>;

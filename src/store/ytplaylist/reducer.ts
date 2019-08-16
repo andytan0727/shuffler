@@ -11,13 +11,10 @@ import {
 } from "./types";
 
 const initialState: DeepROYtPlaylistState = {
-  checkedPlaylists: [],
   checkedVideos: [],
-  playlists: [],
   videos: [],
-  listToPlay: [],
-  playingPlaylists: [],
   playingVideos: [],
+  listToPlay: [],
 };
 
 export const ytplaylist: Reducer<
@@ -25,80 +22,6 @@ export const ytplaylist: Reducer<
   YTPlaylistAction
 > = produce((draft: Draft<YTPlaylistState>, action: YTPlaylistAction) => {
   switch (action.type) {
-    // NOTE: TESTED
-    case ActionTypes.ADD_PLAYLIST: {
-      const playlistToAdd = action.payload.playlist;
-      const isPlaylistExists = draft.playlists.some(
-        (playlist) => playlist.id === playlistToAdd.id
-      );
-
-      // return if playlist already existed
-      if (isPlaylistExists) return draft;
-
-      // proceeds to add playlist if it does not exist yet
-      draft.playlists.push(playlistToAdd);
-      return draft;
-    }
-
-    // NOTE: TESTED
-    case ActionTypes.DELETE_PLAYLISTS: {
-      const playlistIdsToRemove = action.payload.playlistIds;
-      draft.playlists = draft.playlists.filter(
-        (playlist) => !playlistIdsToRemove.includes(playlist.id)
-      );
-      return draft;
-    }
-
-    // NOTE: TESTED
-    case ActionTypes.RENAME_PLAYLIST: {
-      const { newName, playlistIdToRename } = action.payload;
-      const prevPlaylists = original(draft.playlists);
-
-      if (prevPlaylists)
-        draft.playlists = prevPlaylists.map((playlist) => {
-          if (playlist.id === playlistIdToRename) {
-            playlist.name = newName;
-          }
-          return playlist;
-        });
-
-      return draft;
-    }
-
-    // NOTE: TESTED
-    case ActionTypes.SET_CHECKED_PLAYLISTS: {
-      // clear checked videos before operating checked videos
-      // prevent error caused by simultaneously checked videos and playlists
-      if (draft.checkedVideos.length !== 0) {
-        draft.checkedVideos = [];
-      }
-
-      draft.checkedPlaylists = action.payload.checkedPlaylists;
-      return draft;
-    }
-
-    // NOTE: TESTED
-    case ActionTypes.ADD_PLAYING_PLAYLISTS: {
-      const playlistIds = action.payload.playlistIds;
-      const prevPlayingPlaylists = original(draft.playingPlaylists);
-
-      if (prevPlayingPlaylists)
-        draft.playingPlaylists = union(prevPlayingPlaylists, playlistIds);
-
-      return draft;
-    }
-
-    case ActionTypes.REMOVE_PLAYING_PLAYLISTS: {
-      const playlistIdsToRemove = action.payload.playlistIds;
-      draft.playingPlaylists = draft.playingPlaylists.filter(
-        (playlistId) => !playlistIdsToRemove.includes(playlistId)
-      );
-      return draft;
-    }
-
-    // ------------------------------------------
-    // videos
-    // ------------------------------------------
     case ActionTypes.ADD_VIDEO: {
       const { videoToAdd } = action.payload;
 
@@ -128,12 +51,6 @@ export const ytplaylist: Reducer<
     }
 
     case ActionTypes.SET_CHECKED_VIDEOS: {
-      // clear checked playlists before operating checked videos
-      // prevent error caused by simultaneously checked videos and playlists
-      if (draft.checkedPlaylists.length !== 0) {
-        draft.checkedPlaylists = [];
-      }
-
       draft.checkedVideos = action.payload.checkedVideos;
       return draft;
     }

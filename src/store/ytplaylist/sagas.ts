@@ -4,23 +4,9 @@ import * as ActionTypes from "utils/constants/actionConstants";
 import { notify } from "utils/helper/notifyHelper";
 
 import * as ytplaylistAction from "./action";
-import {
-  selectPlayingPlaylists,
-  selectPlayingVideos,
-  selectPlaylists,
-  selectVideos,
-} from "./selector";
-import { Playlist, Video } from "./types";
+import { selectPlayingVideos, selectVideos } from "./selector";
+import { Video } from "./types";
 
-type DeletePlaylistsAction = ActionType<
-  typeof ytplaylistAction.deletePlaylistsAction
->;
-type AddPlaylistsToListToPlayAction = ActionType<
-  typeof ytplaylistAction.addPlaylistsToListToPlayAction
->;
-type RemovePlaylistsFromListToPlayAction = ActionType<
-  typeof ytplaylistAction.removePlaylistsFromListToPlayAction
->;
 type DeleteVideosAction = ActionType<
   typeof ytplaylistAction.deleteVideosAction
 >;
@@ -30,128 +16,6 @@ type AddVideosToListToPlayAction = ActionType<
 type RemoveVideosFromListToPlayAction = ActionType<
   typeof ytplaylistAction.removeVideosFromListToPlayAction
 >;
-
-// =============================================
-// Playlist
-// =============================================
-
-/**
- * Saga which listening for lDELETE_PLAYLISTS action,
- * which in turn dispatch REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY
- * action to clear any possible leftover on playingPlaylists
- * and listToPlay
- *
- * @deprecated Remove as of next stable version (v4.0)
- * @param action
- */
-export function* deletePlaylists(action: DeletePlaylistsAction) {
-  const playlistIdsToRemove = action.payload.playlistIds;
-
-  if (Array.isArray && !Array.isArray(playlistIdsToRemove))
-    throw new Error("deletePlaylists: Args supplied is not an array");
-
-  // remove playlist residuals from playingPlaylists, listToPlay and checkedPlaylists
-  yield put(ytplaylistAction.removePlayingPlaylistsAction(playlistIdsToRemove));
-  yield put(
-    ytplaylistAction.removeFromListToPlayAction(
-      playlistIdsToRemove,
-      "playlists"
-    )
-  );
-  yield put(ytplaylistAction.setCheckedPlaylistsAction([]));
-}
-
-/**
- * Saga that listens to ADD_PLAYLISTS_TO_LIST_TO_PLAY action,
- * which then dispatch ADD_PLAYING_PLAYLISTS action,
- * APPEND_LIST_TO_PLAY action,
- * and SET_CHECKED_PLAYLISTS action
- *
- * @deprecated Remove as of next stable version (v4.0)
- *
- * @export
- * @param action
- */
-export function* addPlaylistsToListToPlay(
-  action: AddPlaylistsToListToPlayAction
-) {
-  const playlistIds = action.payload.playlistIds;
-
-  if (playlistIds.length === 0) return;
-
-  const playlists: Playlist[] = yield select(selectPlaylists);
-  const playlistItemsToAdd = playlists
-    .filter((playlist) => playlistIds.includes(playlist.id))
-    .flatMap((filteredPlaylist) => filteredPlaylist.items);
-
-  // update playingPlaylists, listToPlay and checkedPlaylists respectively
-  yield put(ytplaylistAction.addPlayingPlaylistsAction(playlistIds));
-  yield put(ytplaylistAction.appendListToPlayAction(playlistItemsToAdd));
-  yield put(ytplaylistAction.setCheckedPlaylistsAction([]));
-}
-
-/**
- * Saga which listening for REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY action,
- * which in turn dispatch REMOVE_PLAYING_PLAYLISTS action to
- * clear playingPlaylists with notification for user,
- * then dispatch REMOVE_FROM_LIST_TO_PLAY action to remove
- * playlist items on listToPlay, and finally clear the checked
- * playlists on view
- *
- * @deprecated Remove as of next stable version (v4.0)
- *
- * @export
- * @param action
- */
-export function* removePlaylistsFromListToPlay(
-  action: RemovePlaylistsFromListToPlayAction
-) {
-  const playlistIdsToRemove = action.payload.playlistIds;
-  const playlists: Playlist[] = yield select(selectPlaylists);
-  const playingPlaylists: string[] = yield select(selectPlayingPlaylists);
-
-  if (playlistIdsToRemove.length === 0)
-    throw new Error("Playlist Ids array is empty. Nothing to remove");
-
-  for (const playlistIdToRemove of playlistIdsToRemove) {
-    const playlistToRemove = playlists.filter(
-      (playlist) => playlist.id === playlistIdToRemove
-    )[0];
-
-    if (!playlistToRemove) {
-      continue;
-    }
-
-    const playlistIdentifier = playlistToRemove.name || playlistIdToRemove;
-
-    if (!playingPlaylists.includes(playlistIdToRemove)) {
-      notify(
-        "warning",
-        `playlist: ${playlistIdentifier} is not included in playing`
-      );
-
-      continue;
-    }
-
-    yield put(
-      ytplaylistAction.removePlayingPlaylistsAction([playlistIdToRemove])
-    );
-
-    // notify user if playlist(s) are removed from listToPlay and normalized listToPlay
-    notify(
-      "success",
-      `Successfully removed selected playlist(s) from playing 😎`
-    );
-  }
-
-  yield put(
-    ytplaylistAction.removeFromListToPlayAction(
-      playlistIdsToRemove,
-      "playlists"
-    )
-  );
-  yield put(ytplaylistAction.setCheckedPlaylistsAction([])); // clear checkedPlaylists
-}
 
 // =============================================
 // Videos
@@ -264,33 +128,6 @@ export function* removeVideosFromListToPlay(
 /**
  * @deprecated Remove as of next stable version (v4.0)
  */
-function* deletePlaylistsWatcher() {
-  yield takeEvery(ActionTypes.DELETE_PLAYLISTS, deletePlaylists);
-}
-
-/**
- * @deprecated Remove as of next stable version (v4.0)
- */
-function* addPlaylistsToListToPlayWatcher() {
-  yield takeEvery(
-    ActionTypes.ADD_PLAYLISTS_TO_LIST_TO_PLAY,
-    addPlaylistsToListToPlay
-  );
-}
-
-/**
- * @deprecated Remove as of next stable version (v4.0)
- */
-function* removePlaylistsFromListToPlayWatcher() {
-  yield takeEvery(
-    ActionTypes.REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
-    removePlaylistsFromListToPlay
-  );
-}
-
-/**
- * @deprecated Remove as of next stable version (v4.0)
- */
 function* deleteVideosWatcher() {
   yield takeEvery(ActionTypes.DELETE_VIDEOS, deleteVideos);
 }
@@ -317,9 +154,6 @@ function* removeVideosFromListToPlayWatcher() {
 
 export default function* ytplaylistSaga() {
   yield all([
-    deletePlaylistsWatcher(),
-    addPlaylistsToListToPlayWatcher(),
-    removePlaylistsFromListToPlayWatcher(),
     deleteVideosWatcher(),
     addVideosToListToPlayWatcher(),
     removeVideosFromListToPlayWatcher(),

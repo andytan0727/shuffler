@@ -4,11 +4,6 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
-  addPlaylistsToListToPlayAction,
-  deletePlaylistsAction,
-  removePlaylistsFromListToPlayAction,
-} from "store/ytplaylist/action";
-import {
   addNormPlaylistToNormListToPlayAction,
   deleteNormPlaylistByIdAction,
   removeNormPlaylistsFromNormListToPlayAction,
@@ -56,10 +51,7 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
       dispatch(addNormPlaylistToNormListToPlayAction(playlistId));
     }
 
-    // backward-compatible
-    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-    dispatch(addPlaylistsToListToPlayAction(playlistIds));
-
+    // TODO: move notify to saga
     notify("success", "Successfully added selected playlist(s) to playing 😎");
 
     clearChecked();
@@ -73,9 +65,11 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
 
     dispatch(removeNormPlaylistsFromNormListToPlayAction(playlistIds));
 
-    // backward-compatible
-    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-    dispatch(removePlaylistsFromListToPlayAction(playlistIds));
+    // TODO: move notify to saga
+    notify(
+      "success",
+      `Successfully removed selected playlist(s) from playing 😎`
+    );
 
     clearChecked();
   }, [clearChecked, dispatch, playlistIds]);
@@ -101,10 +95,6 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
       playlistIds.forEach((playlistId) => {
         dispatch(deleteNormPlaylistByIdAction(playlistId));
       });
-
-      // backward-compatible
-      // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-      dispatch(deletePlaylistsAction(playlistIds));
 
       notify("success", "Successfully deleted playlist(s) 😎");
       clearChecked();

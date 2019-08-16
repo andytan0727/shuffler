@@ -27,15 +27,7 @@ export const TOGGLE_REPEAT = "TOGGLE_REPEAT" as const;
 // =========================
 // ytplaylist playlists
 // =========================
-export const ADD_PLAYLIST = "ADD_PLAYLIST" as const;
-export const DELETE_PLAYLISTS = "DELETE_PLAYLISTS" as const;
-export const RENAME_PLAYLIST = "RENAME_PLAYLIST" as const;
-export const SET_CHECKED_PLAYLISTS = "SET_CHECKED_PLAYLISTS" as const;
-export const ADD_PLAYING_PLAYLISTS = "ADD_PLAYING_PLAYLISTS" as const;
-export const REMOVE_PLAYING_PLAYLISTS = "REMOVE_PLAYING_PLAYLISTS" as const;
 export const REMOVE_PLAYLIST_FROM_PLAYING = "REMOVE_PLAYLIST_FROM_PLAYING" as const; // deprecated
-export const ADD_PLAYLISTS_TO_LIST_TO_PLAY = "ADD_PLAYLISTS_TO_LIST_TO_PLAY" as const;
-export const REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY = "REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY" as const;
 
 export const ADD_NORM_PLAYLIST = "ADD_NORM_PLAYLIST" as const;
 export const ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY = "ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY" as const;

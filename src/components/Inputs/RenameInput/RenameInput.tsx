@@ -3,7 +3,6 @@ import { HandleSetChecked } from "components/Checkbox/hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "store";
-import { renamePlaylistAction } from "store/ytplaylist/action";
 import { updateNormPlaylistNameByIdAction } from "store/ytplaylist/normAction";
 import { selectNormPlaylistNameById } from "store/ytplaylist/normSelector";
 
@@ -43,10 +42,6 @@ const RenameInput = (props: RenameInputProps) => {
   const handleEditNameInputChange = useCallback(
     (playlistId: string) => (e: InputChangeEvent) => {
       dispatch(updateNormPlaylistNameByIdAction(playlistId, e.target.value));
-
-      // backward-compatible
-      // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-      dispatch(renamePlaylistAction(e.target.value, playlistId));
     },
     [dispatch]
   );
