@@ -110,12 +110,6 @@ const App = () => {
     dispatch(setPreferDarkTheme(initialTheme));
   }, [dispatch]);
 
-  useEffect(() => {
-    import("./utils/helper/migrateStatesHelper").then((migrateStates) => {
-      migrateStates.default();
-    });
-  }, []);
-
   return (
     <BrowserRouter>
       <MuiThemeProvider theme={theme}>
