@@ -48,12 +48,6 @@ const ytplayerPersistConfig = {
   whitelist: ["repeat"],
 };
 
-const ytplaylistPersistConfig = {
-  key: "ytplaylist",
-  storage,
-  blacklist: ["checkedPlaylists", "checkedVideos"],
-};
-
 const ytplaylistNormedPersistConfig = {
   key: "ytplaylistNormed",
   storage,
@@ -69,7 +63,7 @@ const rootReducer = combineReducers({
   userPreferences: userPreferencesReducer,
   ytapi: ytapiReducer,
   ytplayer: persistReducer(ytplayerPersistConfig, ytplayerReducer),
-  ytplaylist: persistReducer(ytplaylistPersistConfig, ytplaylistReducer),
+  ytplaylist: ytplaylistReducer,
   ytplaylistNormed: persistReducer(
     ytplaylistNormedPersistConfig,
     ytplaylistNormedReducer
