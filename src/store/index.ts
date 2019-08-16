@@ -18,7 +18,7 @@ import ytapiSaga from "./ytapi/sagas";
 import { ytplayer as ytplayerReducer } from "./ytplayer/reducer";
 import {
   ytplaylistNormed as ytplaylistNormedReducer,
-  ytplaylistNormedSaga,
+  ytplaylistNormedSagas,
 } from "./ytplaylist";
 
 // Disable immer auto freezing
@@ -26,7 +26,7 @@ import {
 setAutoFreeze(false);
 
 function* rootSaga() {
-  yield all([ytapiSaga(), userPreferencesSaga(), ytplaylistNormedSaga()]);
+  yield all([ytapiSaga(), userPreferencesSaga(), ytplaylistNormedSagas()]);
 }
 
 const rootPersistConfig = {
