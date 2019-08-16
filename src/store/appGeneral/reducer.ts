@@ -117,6 +117,13 @@ const initialStates = {
       version: "3.1.1",
       changes: ["Fix blank page problem when unexpected error occurs"],
     },
+    {
+      version: "3.2.0",
+      changes: [
+        "Video count is shown on now playing button on drawer",
+        "User now can add/remove playlist to now playing by clicking +/- button on drawer",
+      ],
+    },
   ],
 };
 
