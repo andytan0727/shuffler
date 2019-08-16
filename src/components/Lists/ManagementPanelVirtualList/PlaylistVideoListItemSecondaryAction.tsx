@@ -3,7 +3,6 @@ import { makeToggleItemToListToPlaySwitch } from "components/Switches";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 // backward-compat
-import { deleteVideosAction } from "store/ytplaylist/action";
 import {
   deleteNormPlaylistItemByIdAction,
   deleteNormVideoByIdAction,
@@ -34,10 +33,6 @@ const PlaylistVideoListItemSecondaryAction = (
 
   const handleDeleteVideo = useCallback(() => {
     dispatch(deleteNormVideoByIdAction(snippetId));
-
-    // backward-compatible support
-    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-    dispatch(deleteVideosAction([snippetId]));
   }, [dispatch, snippetId]);
 
   const handleDeletePlaylistItem = useCallback(() => {

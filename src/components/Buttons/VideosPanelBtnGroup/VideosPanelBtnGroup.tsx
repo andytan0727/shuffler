@@ -4,11 +4,6 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
-  addVideosToListToPlayAction,
-  deleteVideosAction,
-  removeVideosFromListToPlayAction,
-} from "store/ytplaylist/action";
-import {
   addNormVideosToNormListToPlayAction,
   deleteNormVideoByIdAction,
   removeNormVideosFromNormListToPlayAction,
@@ -50,10 +45,6 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
 
     dispatch(addNormVideosToNormListToPlayAction(itemIds));
 
-    // backward-compatible
-    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-    dispatch(addVideosToListToPlayAction(itemIds));
-
     notify("success", "Successfully added selected video(s) to playing 😎");
     clearChecked();
   }, [itemIds, clearChecked, dispatch]);
@@ -80,10 +71,6 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
         dispatch(deleteNormVideoByIdAction(itemId));
       }
 
-      // backward-compatible
-      // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-      dispatch(deleteVideosAction(itemIds));
-
       await customSwal!.fire("Deleted!", "Video(s) deleted 😎", "success");
       clearChecked();
     }
@@ -97,9 +84,6 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
 
     dispatch(removeNormVideosFromNormListToPlayAction(itemIds));
 
-    // backward-compatible
-    // DEPRECATED: remove after normalized states and actions are all stable (v4.0)
-    dispatch(removeVideosFromListToPlayAction(itemIds));
     clearChecked();
   }, [itemIds, clearChecked, dispatch]);
 

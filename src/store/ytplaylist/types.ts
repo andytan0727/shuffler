@@ -26,9 +26,6 @@ export interface VideoThumbnailsProperties {
 }
 
 export interface YTPlaylistState {
-  checkedVideos: string[];
-  videos: Video[];
-  playingVideos: string[];
   listToPlay: (PlaylistItem | VideoItem)[];
 }
 

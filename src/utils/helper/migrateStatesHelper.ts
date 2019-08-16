@@ -11,16 +11,12 @@
 import uniqBy from "lodash/uniqBy";
 import * as schemas from "schemas";
 import store from "store";
-import {
-  addNormListToPlayAction,
-  addNormVideoAction,
-} from "store/ytplaylist/normAction";
+import { addNormListToPlayAction } from "store/ytplaylist/normAction";
 
 export default () => {
   if (!localStorage.getItem("migrated")) {
     const appState = store.getState();
     const ytplaylist = appState.ytplaylist;
-    const videosFromRedux = ytplaylist.videos;
     const listToPlayFromRedux = ytplaylist.listToPlay;
 
     // makes listToPlayFromRedux all unique by snippetId before normalize
@@ -29,13 +25,9 @@ export default () => {
       "snippet.resourceId.videoId"
     );
 
-    const normVideos = schemas.normalizeVideos(videosFromRedux);
     const normListToPlay = schemas.normalizeListToPlay(
       uniqueListToPlayFromRedux
     );
-
-    // migrate videos
-    store.dispatch(addNormVideoAction(normVideos.entities, normVideos.result));
 
     // migrate listToPlay
     store.dispatch(

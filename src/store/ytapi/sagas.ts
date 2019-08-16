@@ -77,9 +77,7 @@ export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
  * @param video Video data
  */
 export function* addFetchedVideo(video: YTPlaylistTypes.Video) {
-  yield put(ytplaylist.addVideoAction(video));
   yield put(ytplaylist.appendListToPlayAction(video.items));
-  yield put(ytplaylist.addPlayingVideosAction([video.id]));
 }
 
 /**

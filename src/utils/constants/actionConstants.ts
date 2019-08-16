@@ -44,14 +44,6 @@ export const REMOVE_ALL_IN_PLAYING_LABEL_BY_ID =
 // =========================
 // ytplaylist videos
 // =========================
-export const ADD_VIDEO = "ADD_VIDEO" as const;
-export const DELETE_VIDEOS = "DELETE_VIDEOS" as const;
-export const SET_CHECKED_VIDEOS = "SET_CHECKED_VIDEOS" as const;
-export const ADD_PLAYING_VIDEOS = "ADD_PLAYING_VIDEOS" as const;
-export const REMOVE_PLAYING_VIDEOS = "REMOVE_PLAYING_VIDEOS" as const;
-export const ADD_VIDEOS_TO_LIST_TO_PLAY = "ADD_VIDEOS_TO_LIST_TO_PLAY" as const;
-export const REMOVE_VIDEOS_FROM_LIST_TO_PLAY = "REMOVE_VIDEOS_FROM_LIST_TO_PLAY" as const;
-
 export const ADD_NORM_VIDEO = "ADD_NORM_VIDEO" as const;
 export const ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY = "ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY" as const;
 export const ADD_NORM_VIDEOS_TO_NORM_LIST_TO_PLAY = "ADD_NORM_VIDEOS_TO_NORM_LIST_TO_PLAY" as const;

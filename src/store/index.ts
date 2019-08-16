@@ -20,7 +20,6 @@ import {
   ytplaylist as ytplaylistReducer,
   ytplaylistNormed as ytplaylistNormedReducer,
   ytplaylistNormedSaga,
-  ytplaylistSaga,
 } from "./ytplaylist";
 
 // Disable immer auto freezing
@@ -28,12 +27,7 @@ import {
 setAutoFreeze(false);
 
 function* rootSaga() {
-  yield all([
-    ytapiSaga(),
-    userPreferencesSaga(),
-    ytplaylistSaga(),
-    ytplaylistNormedSaga(),
-  ]);
+  yield all([ytapiSaga(), userPreferencesSaga(), ytplaylistNormedSaga()]);
 }
 
 const rootPersistConfig = {
