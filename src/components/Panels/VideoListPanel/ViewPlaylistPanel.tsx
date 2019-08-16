@@ -2,7 +2,7 @@ import { VideoList } from "components/Lists";
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
-import { selectNormPlaylistSnippetsByPlaylistId } from "store/ytplaylist/normSelector";
+import { selectNormPlaylistSnippetsByPlaylistId } from "store/ytplaylist/playlistSelectors";
 
 import { Close as CloseIcon } from "@material-ui/icons";
 

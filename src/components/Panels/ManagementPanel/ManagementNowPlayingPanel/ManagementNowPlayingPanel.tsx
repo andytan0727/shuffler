@@ -10,14 +10,12 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { clearFilteredSnippets } from "store/ytplaylist/filteredActions";
+import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
   deleteNormListToPlayItemsAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/listToPlayActions";
-import {
-  selectAllNormListToPlayItemIds,
-  selectFilteredSnippets,
-} from "store/ytplaylist/normSelector";
+import { selectAllNormListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
 
 import { Divider, Typography } from "@material-ui/core";
 

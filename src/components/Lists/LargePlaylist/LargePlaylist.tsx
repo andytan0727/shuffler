@@ -3,7 +3,7 @@ import React, { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx } from "store/ytplayer/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
 import {

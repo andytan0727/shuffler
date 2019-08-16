@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectFilteredSnippets } from "store/ytplaylist/normSelector";
+import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import {

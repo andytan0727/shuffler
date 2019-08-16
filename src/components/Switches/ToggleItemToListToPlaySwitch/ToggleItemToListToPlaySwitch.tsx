@@ -5,12 +5,10 @@ import {
   addNormListToPlayItemAction,
   deleteNormListToPlayItemByIdAction,
 } from "store/ytplaylist/listToPlayActions";
-import {
-  selectNormListToPlayEntities,
-  selectNormPlaylistIdByItemId,
-  selectNormVideoIdByItemId,
-} from "store/ytplaylist/normSelector";
+import { selectNormListToPlayEntities } from "store/ytplaylist/listToPlaySelectors";
+import { selectNormPlaylistIdByItemId } from "store/ytplaylist/playlistSelectors";
 import { isListToPlayItemExists } from "store/ytplaylist/utils";
+import { selectNormVideoIdByItemId } from "store/ytplaylist/videoSelectors";
 
 import { makeStyles, Switch } from "@material-ui/core";
 

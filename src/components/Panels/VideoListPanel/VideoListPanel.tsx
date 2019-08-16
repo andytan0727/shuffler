@@ -3,7 +3,7 @@ import { useCheckbox } from "components/Checkbox/hooks";
 import { makeSearchInput } from "components/Inputs";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectNormPlaylistsResult } from "store/ytplaylist/normSelector";
+import { selectNormPlaylistsResult } from "store/ytplaylist/playlistSelectors";
 
 import styles from "./styles.module.scss";
 import VideoListPanelItem from "./VideoListPanelItem";

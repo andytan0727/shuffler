@@ -7,7 +7,7 @@ import {
   selectNormPlaylistById,
   selectNormPlaylistNameById,
   selectNormPlaylistSnippetByItemId,
-} from "store/ytplaylist/normSelector";
+} from "store/ytplaylist/playlistSelectors";
 
 import { PlaylistAddCheck as PlaylistAddCheckIcon } from "@material-ui/icons";
 

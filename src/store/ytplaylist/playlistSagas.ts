@@ -7,9 +7,9 @@ import * as listToPlayActions from "./listToPlayActions";
 import {
   selectNormListToPlayPlaylistItems,
   selectNormListToPlayResult,
-  selectNormPlaylistItemIdsByPlaylistId,
-} from "./normSelector";
+} from "./listToPlaySelectors";
 import * as playlistActions from "./playlistActions";
+import { selectNormPlaylistItemIdsByPlaylistId } from "./playlistSelectors";
 import {
   NormListToPlayPlaylistItemsEntity,
   NormListToPlayResultItem,

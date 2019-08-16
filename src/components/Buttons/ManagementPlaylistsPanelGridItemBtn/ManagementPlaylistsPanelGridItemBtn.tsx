@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
 import { updateNormListToPlayAction } from "store/ytplaylist/listToPlayActions";
-import { selectNormPlaylistById } from "store/ytplaylist/normSelector";
 import {
   deleteNormPlaylistByIdAction,
   shuffleNormPlaylistItems,
 } from "store/ytplaylist/playlistActions";
+import { selectNormPlaylistById } from "store/ytplaylist/playlistSelectors";
 import { notify } from "utils/helper/notifyHelper";
 
 import { IconButton, Tooltip } from "@material-ui/core";

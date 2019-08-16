@@ -3,11 +3,9 @@ import { HandleSetChecked } from "components/Checkbox/hooks";
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
-import {
-  selectNormListToPlayEntities,
-  selectNormVideoSnippetByItemId,
-} from "store/ytplaylist/normSelector";
+import { selectNormListToPlayEntities } from "store/ytplaylist/listToPlaySelectors";
 import { isListToPlayItemExists } from "store/ytplaylist/utils";
+import { selectNormVideoSnippetByItemId } from "store/ytplaylist/videoSelectors";
 
 import { Checkbox } from "@material-ui/core";
 import {

@@ -8,7 +8,7 @@ import { animated, useTransition } from "react-spring";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx, selectPlaying } from "store/ytplayer/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
 import {

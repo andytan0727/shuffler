@@ -7,7 +7,7 @@ import {
   clearListToPlayAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/listToPlayActions";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {

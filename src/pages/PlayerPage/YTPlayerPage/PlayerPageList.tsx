@@ -6,7 +6,7 @@ import { AppState } from "store";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx } from "store/ytplayer/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
 
 import { useMediaQuery } from "@material-ui/core";

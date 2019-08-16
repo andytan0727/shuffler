@@ -1,7 +1,7 @@
 import { MiniPlayer } from "components/Players";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 
 import NoVideoFound from "../NoVideoFound";
 

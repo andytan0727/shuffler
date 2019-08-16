@@ -4,7 +4,7 @@ import { RenameInput } from "components/Inputs";
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
-import { selectNormPlaylistAllInPlayingById } from "store/ytplaylist/normSelector";
+import { selectNormPlaylistAllInPlayingById } from "store/ytplaylist/playlistSelectors";
 
 import { Checkbox } from "@material-ui/core";
 import {

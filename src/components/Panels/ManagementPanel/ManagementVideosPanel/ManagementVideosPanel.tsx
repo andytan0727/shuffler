@@ -8,7 +8,7 @@ import {
 } from "components/Lists/ManagementPanelVirtualList";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectAllNormVideoItemIds } from "store/ytplaylist/normSelector";
+import { selectAllNormVideoItemIds } from "store/ytplaylist/videoSelectors";
 
 import { Divider, Typography } from "@material-ui/core";
 

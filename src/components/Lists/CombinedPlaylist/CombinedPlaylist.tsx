@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { useSelector } from "react-redux";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { retryLazy } from "utils/helper/lazyImportHelper";
 
 import { useMediaQuery } from "@material-ui/core";

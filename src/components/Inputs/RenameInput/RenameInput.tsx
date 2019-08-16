@@ -3,8 +3,8 @@ import { HandleSetChecked } from "components/Checkbox/hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "store";
-import { selectNormPlaylistNameById } from "store/ytplaylist/normSelector";
 import { updateNormPlaylistNameByIdAction } from "store/ytplaylist/playlistActions";
+import { selectNormPlaylistNameById } from "store/ytplaylist/playlistSelectors";
 
 import styles from "./styles.module.scss";
 

@@ -15,19 +15,21 @@ import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
+import { selectNormSnippetIdByItemId } from "./generalSelectors";
 import * as listToPlayActions from "./listToPlayActions";
 import {
-  selectAllNormPlaylists,
   selectNormListToPlayEntities,
   selectNormListToPlayPlaylistItems,
   selectNormListToPlayResult,
   selectNormListToPlaySnippetIds,
+} from "./listToPlaySelectors";
+import * as playlistActions from "./playlistActions";
+import {
+  selectAllNormPlaylists,
   selectNormPlaylistById,
   selectNormPlaylistIdByItemId,
   selectNormPlaylistsResult,
-  selectNormSnippetIdByItemId,
-} from "./normSelector";
-import * as playlistActions from "./playlistActions";
+} from "./playlistSelectors";
 import {
   NormListToPlayEntities,
   NormListToPlayPlaylistItemsEntity,

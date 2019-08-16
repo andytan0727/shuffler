@@ -5,10 +5,8 @@ import {
 import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  selectAllNormPlaylists,
-  selectNormListToPlayTotalItems,
-} from "store/ytplaylist/normSelector";
+import { selectNormListToPlayTotalItems } from "store/ytplaylist/listToPlaySelectors";
+import { selectAllNormPlaylists } from "store/ytplaylist/playlistSelectors";
 
 import {
   Divider,

@@ -3,11 +3,11 @@ import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
 import { removeFilteredSnippetsByItemIds } from "./filteredActions";
+import { selectFilteredSnippets } from "./filteredSelectors";
 import {
   deleteNormListToPlayItemByIdAction,
   deleteNormListToPlayItemsAction,
 } from "./listToPlayActions";
-import { selectFilteredSnippets } from "./normSelector";
 
 /**
  * Saga which determines whether or not remove filteredSnippets items

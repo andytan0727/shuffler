@@ -2,7 +2,7 @@ import { PlayerBasicCtrlBtnGroup } from "components/Buttons";
 import YouTubeIFrame from "components/Players/YouTubeIFrame";
 import React, { useRef } from "react";
 import { useSelector } from "react-redux";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 
 import styles from "./styles.module.scss";
 

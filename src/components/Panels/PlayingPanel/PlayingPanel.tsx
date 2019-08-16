@@ -2,7 +2,7 @@ import { PlayingPanelBtnGroup } from "components/Buttons";
 import { CombinedPlaylist } from "components/Lists";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 
 import styles from "./styles.module.scss";
 

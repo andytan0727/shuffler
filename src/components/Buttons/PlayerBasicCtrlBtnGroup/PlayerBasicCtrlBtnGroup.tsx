@@ -8,7 +8,7 @@ import {
   selectRepeat,
 } from "store/ytplayer/selector";
 import { shuffleListToPlayAction } from "store/ytplaylist/listToPlayActions";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
+import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
 import { notify } from "utils/helper/notifyHelper";
 

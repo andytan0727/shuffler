@@ -12,13 +12,13 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
 import { updateNormListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
-  selectNormPlaylistItemIdsByPlaylistId,
-  selectNormPlaylistNameById,
-} from "store/ytplaylist/normSelector";
-import {
   deleteNormPlaylistItemByIdAction,
   shuffleNormPlaylistItems,
 } from "store/ytplaylist/playlistActions";
+import {
+  selectNormPlaylistItemIdsByPlaylistId,
+  selectNormPlaylistNameById,
+} from "store/ytplaylist/playlistSelectors";
 
 import { Divider, Typography } from "@material-ui/core";
 
