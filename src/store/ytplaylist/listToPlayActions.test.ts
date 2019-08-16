@@ -8,10 +8,7 @@ import {
   shuffleListToPlayAction,
 } from "./listToPlayActions";
 
-describe("ytplaylist actions", () => {
-  // =================================
-  // List To Play
-  // =================================
+describe("listToPlay actions", () => {
   test("should create CLEAR_LIST_TO_PLAY action object", () => {
     expect(clearListToPlayAction()).toEqual({
       type: CLEAR_LIST_TO_PLAY,
