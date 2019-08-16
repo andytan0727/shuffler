@@ -238,6 +238,11 @@ export const selectNormListToPlayResultSnippets = createSelector(
   }
 );
 
+export const selectNormListToPlayTotalItems = createSelector(
+  selectNormListToPlayResult,
+  (result) => result.length
+);
+
 // =====================================
 // =====================================
 // Filtered

@@ -5,7 +5,10 @@ import {
 import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectAllNormPlaylists } from "store/ytplaylist/normSelector";
+import {
+  selectAllNormPlaylists,
+  selectNormListToPlayTotalItems,
+} from "store/ytplaylist/normSelector";
 
 import {
   Divider,
@@ -30,6 +33,10 @@ interface DrawerNavListItemProps {
   secondaryActionItem?: React.ReactElement;
 }
 
+interface NowPlayingDrawerNavListItemProps {
+  panelUrl: string;
+}
+
 interface DrawerPlaylistsNavListProps {
   playlistUrl: string;
 }
@@ -51,7 +58,9 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     borderRight: `2px solid ${theme.palette.divider}`,
   },
-
+  drawerNowPlayingSecondaryAction: {
+    userSelect: "none",
+  },
   drawerPlaylistsNavContainer: {
     // 48px = height of one MUI list item
     height: "calc(100% - 48px*3)",
@@ -103,6 +112,32 @@ const DrawerNavListItem = (props: DrawerNavListItemProps) => {
       <ListItemText primary={primaryText} />
       {secondaryActionItem}
     </ListItem>
+  );
+};
+
+const DrawerNowPlayingNavListItem = (
+  props: NowPlayingDrawerNavListItemProps
+) => {
+  const { panelUrl } = props;
+  const classes = useStyles();
+  const totalNowPlayingItems = useSelector(selectNormListToPlayTotalItems);
+
+  return (
+    <DrawerNavListItem
+      pathUrl={`${panelUrl}/playing`}
+      icon={<PlayArrowIcon />}
+      primaryText={`Now Playing`}
+      secondaryActionItem={
+        <ListItemSecondaryAction
+          className={classes.drawerNowPlayingSecondaryAction}
+        >
+          {totalNowPlayingItems}{" "}
+          <span role="img" aria-label="musical-emoji">
+            🎶
+          </span>
+        </ListItemSecondaryAction>
+      }
+    />
   );
 };
 
@@ -181,11 +216,7 @@ const ManagementPanelDrawer = ({ match }: ManagementPanelDrawerProps) => {
             icon={<PlayCircleOutlineIcon />}
             primaryText="Recently Played"
           />
-          <DrawerNavListItem
-            pathUrl={`${panelUrl}/playing`}
-            icon={<PlayArrowIcon />}
-            primaryText="Now Playing"
-          />
+          <DrawerNowPlayingNavListItem panelUrl={panelUrl} />
         </List>
         <Divider />
         <DrawerPlaylistsNavList playlistUrl={`${panelUrl}/playlists`} />
