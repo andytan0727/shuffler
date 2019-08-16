@@ -2,7 +2,6 @@ import { FuseOptions } from "fuse.js";
 import { ActionType } from "typesafe-actions";
 import { DeepReadonly } from "utility-types";
 
-import * as ytplaylistAction from "./action";
 import * as ytplaylistNormedAction from "./normAction";
 
 export interface MediaItem {
@@ -24,12 +23,6 @@ export interface VideoThumbnailsProperties {
   url: string;
   width: number;
 }
-
-export interface YTPlaylistState {
-  listToPlay: (PlaylistItem | VideoItem)[];
-}
-
-export type DeepROYtPlaylistState = DeepReadonly<YTPlaylistState>;
 
 // =====================================================
 // Playlists
@@ -218,5 +211,4 @@ export type ListToPlaySnippets = DeepReadonly<
 // ==================================================
 // Actions
 // ==================================================
-export type YTPlaylistAction = ActionType<typeof ytplaylistAction>;
 export type YTPlaylistNormedAction = ActionType<typeof ytplaylistNormedAction>;

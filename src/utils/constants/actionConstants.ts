@@ -27,8 +27,6 @@ export const TOGGLE_REPEAT = "TOGGLE_REPEAT" as const;
 // =========================
 // ytplaylist playlists
 // =========================
-export const REMOVE_PLAYLIST_FROM_PLAYING = "REMOVE_PLAYLIST_FROM_PLAYING" as const; // deprecated
-
 export const ADD_NORM_PLAYLIST = "ADD_NORM_PLAYLIST" as const;
 export const ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY = "ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY" as const;
 export const REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY = "REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY" as const;
@@ -56,9 +54,6 @@ export const SHUFFLE_NORM_PLAYLIST_ITEMS = "SHUFFLE_NORM_PLAYLIST_ITEMS" as cons
 // =========================
 // ytplaylist listToPlay
 // =========================
-export const APPEND_LIST_TO_PLAY = "APPEND_LIST_TO_PLAY" as const;
-export const REMOVE_FROM_LIST_TO_PLAY = "REMOVE_FROM_LIST_TO_PLAY" as const;
-export const UPDATE_LIST_TO_PLAY = "UPDATE_LIST_TO_PLAY" as const;
 export const CLEAR_LIST_TO_PLAY = "CLEAR_LIST_TO_PLAY" as const;
 export const SHUFFLE_LIST_TO_PLAY = "SHUFFLE_LIST_TO_PLAY" as const;
 

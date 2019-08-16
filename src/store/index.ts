@@ -17,7 +17,6 @@ import { ytapi as ytapiReducer } from "./ytapi/reducer";
 import ytapiSaga from "./ytapi/sagas";
 import { ytplayer as ytplayerReducer } from "./ytplayer/reducer";
 import {
-  ytplaylist as ytplaylistReducer,
   ytplaylistNormed as ytplaylistNormedReducer,
   ytplaylistNormedSaga,
 } from "./ytplaylist";
@@ -57,7 +56,6 @@ const rootReducer = combineReducers({
   userPreferences: userPreferencesReducer,
   ytapi: ytapiReducer,
   ytplayer: persistReducer(ytplayerPersistConfig, ytplayerReducer),
-  ytplaylist: ytplaylistReducer,
   ytplaylistNormed: persistReducer(
     ytplaylistNormedPersistConfig,
     ytplaylistNormedReducer

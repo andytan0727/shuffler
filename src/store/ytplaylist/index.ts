@@ -8,5 +8,4 @@ export function* ytplaylistNormedSaga() {
   yield all([normedSaga(), filteredSaga()]);
 }
 
-export { ytplaylist } from "./reducer";
 export { ytplaylistNormed } from "./normReducer";

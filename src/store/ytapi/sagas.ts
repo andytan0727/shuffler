@@ -1,6 +1,5 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as schemas from "schemas";
-import * as ytplaylist from "store/ytplaylist/action";
 import * as ytplaylistNormed from "store/ytplaylist/normAction";
 import * as YTPlaylistTypes from "store/ytplaylist/types";
 import { ActionType } from "typesafe-actions";
@@ -67,20 +66,6 @@ export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
 }
 
 /**
- * Add fetched video data to videos state in ytplaylist
- * and append its items to listToPlay,
- * and finally add its videoId to playingVideos
- *
- * @deprecated Remove as of next stable version (v4.0)
- *
- * @export
- * @param video Video data
- */
-export function* addFetchedVideo(video: YTPlaylistTypes.Video) {
-  yield put(ytplaylist.appendListToPlayAction(video.items));
-}
-
-/**
  * Add fetched video to normalized videos state
  *
  * @export
@@ -130,9 +115,6 @@ export function* fetchVideoDataSuccess(data: YTPlaylistTypes.Video) {
   };
 
   yield put(ytapi.fetchVideoDataSuccessAction(data));
-
-  // add fetched video to normal videos array
-  yield call(addFetchedVideo, fetchedVideo);
 
   // add fetched video to normalized videos
   yield call(addFetchedNormVideo, fetchedVideo);
