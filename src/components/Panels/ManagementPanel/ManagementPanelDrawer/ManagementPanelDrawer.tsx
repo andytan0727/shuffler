@@ -1,3 +1,7 @@
+import {
+  AddPlaylistToPlayingBtn,
+  RemovePlaylistFromPlayingBtn,
+} from "components/Buttons";
 import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -5,7 +9,6 @@ import { selectAllNormPlaylists } from "store/ytplaylist/normSelector";
 
 import {
   Divider,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -17,7 +20,6 @@ import {
   MusicNote as MusicNoteIcon,
   PlayArrow as PlayArrowIcon,
   PlayCircleOutline as PlayCircleOutlineIcon,
-  PlaylistAdd as PlaylistAddIcon,
   PlaylistPlay as PlaylistPlayIcon,
 } from "@material-ui/icons";
 
@@ -61,9 +63,9 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
 
     // prevent text overflow of long playlist id/name
-    "& span": {
+    "& .MuiListItemText-primary": {
       display: "inline-block",
-      width: "10rem",
+      width: "8rem",
       overflow: "hidden",
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
@@ -92,7 +94,7 @@ ListItemLink.displayName = "ListItemLink";
 
  */
 const DrawerNavListItem = (props: DrawerNavListItemProps) => {
-  const classes = useStyles({});
+  const classes = useStyles();
   const { pathUrl, icon, primaryText, secondaryActionItem } = props;
 
   return (
@@ -122,13 +124,6 @@ const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
         pathUrl={playlistUrl}
         icon={<PlayArrowIcon />}
         primaryText="Playlists"
-        secondaryActionItem={
-          <ListItemSecondaryAction>
-            <IconButton>
-              <PlaylistAddIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        }
       />
 
       <Divider />
@@ -140,6 +135,21 @@ const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
             pathUrl={`${playlistUrl}/${playlistId}`}
             icon={<PlaylistPlayIcon />}
             primaryText={playlists[playlistId].name || `Playlist-${playlistId}`}
+            secondaryActionItem={
+              <ListItemSecondaryAction>
+                {playlists[playlistId].allInPlaying ? (
+                  <RemovePlaylistFromPlayingBtn
+                    playlistId={playlistId}
+                    iconSize="default"
+                  />
+                ) : (
+                  <AddPlaylistToPlayingBtn
+                    playlistId={playlistId}
+                    iconSize="default"
+                  />
+                )}
+              </ListItemSecondaryAction>
+            }
           />
         ))}
       </div>

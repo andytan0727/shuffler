@@ -1,3 +1,7 @@
+import {
+  AddPlaylistToPlayingBtn,
+  RemovePlaylistFromPlayingBtn,
+} from "components/Buttons";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -5,19 +9,15 @@ import { AppState } from "store";
 import { updateNormListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import { selectNormPlaylistById } from "store/ytplaylist/normSelector";
 import {
-  addNormPlaylistToNormListToPlayAction,
   deleteNormPlaylistByIdAction,
-  removeNormPlaylistFromNormListToPlayAction,
   shuffleNormPlaylistItems,
 } from "store/ytplaylist/playlistActions";
 import { notify } from "utils/helper/notifyHelper";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import {
-  Add as AddIcon,
   Delete as DeleteIcon,
   PlayArrow as PlayArrowIcon,
-  Remove as RemoveIcon,
   Shuffle as ShuffleIcon,
 } from "@material-ui/icons";
 
@@ -61,19 +61,6 @@ const ManagementPlaylistsPanelGridItemBtn = (
     notify("info", `Shuffling ...`);
   }, [dispatch, playlistId]);
 
-  const handleAddPlaylistAsPlaying = useCallback(() => {
-    dispatch(addNormPlaylistToNormListToPlayAction(playlistId));
-  }, [dispatch, playlistId]);
-
-  const handleRemovePlaylistAsPlaying = useCallback(() => {
-    dispatch(
-      removeNormPlaylistFromNormListToPlayAction(
-        playlistId,
-        itemIds as string[]
-      )
-    );
-  }, [dispatch, playlistId, itemIds]);
-
   const handleDeletePlaylist = useCallback(() => {
     dispatch(deleteNormPlaylistByIdAction(playlistId));
   }, [dispatch, playlistId]);
@@ -93,17 +80,12 @@ const ManagementPlaylistsPanelGridItemBtn = (
       </Tooltip>
 
       {playlistInPlaying ? (
-        <Tooltip title="Remove Playlist from Now Playing">
-          <IconButton onClick={handleRemovePlaylistAsPlaying}>
-            <RemoveIcon fontSize="large" />
-          </IconButton>
-        </Tooltip>
+        <RemovePlaylistFromPlayingBtn
+          playlistId={playlistId}
+          iconSize="large"
+        />
       ) : (
-        <Tooltip title="Add Playlist to Now Playing">
-          <IconButton onClick={handleAddPlaylistAsPlaying}>
-            <AddIcon fontSize="large" />
-          </IconButton>
-        </Tooltip>
+        <AddPlaylistToPlayingBtn playlistId={playlistId} iconSize="large" />
       )}
 
       <Tooltip title="Delete">
