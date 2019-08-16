@@ -127,8 +127,12 @@ export function* removeNormPlaylistFromNormListToPlayWatcher() {
       >
     ) {
       const {
-        payload: { playlistId, itemIds },
+        payload: { playlistId },
       } = action;
+
+      const itemIds: string[] = yield select((state: AppState) =>
+        selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
+      );
 
       // remove allInPlaying label
       yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
@@ -155,15 +159,8 @@ export function* removeNormPlaylistsFromNormListToPlayWatcher() {
     > = yield take(ActionTypes.REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY);
 
     for (const playlistId of playlistIds) {
-      const itemIds: string[] = yield select((state: AppState) =>
-        selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
-      );
-
       yield put(
-        playlistActions.removeNormPlaylistFromNormListToPlayAction(
-          playlistId,
-          itemIds
-        )
+        playlistActions.removeNormPlaylistFromNormListToPlayAction(playlistId)
       );
     }
   }

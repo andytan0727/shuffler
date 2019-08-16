@@ -45,16 +45,14 @@ export const addNormPlaylistToNormListToPlayAction = createAction(
  * **_Note: This action is handled through saga. No reducer logic involved_**
  *
  * @param playlistId Playlist id
- * @param itemIds Playlist's itemIds to add
  *
  */
 export const removeNormPlaylistFromNormListToPlayAction = createAction(
   ActionTypes.REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY,
   (action) => {
-    return (playlistId: string, itemIds: string[]) =>
+    return (playlistId: string) =>
       action({
         playlistId,
-        itemIds,
       });
   }
 );
