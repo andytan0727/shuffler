@@ -2,11 +2,11 @@ import { all, put, select, take } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
+import { removeFilteredSnippetsByItemIds } from "./filteredActions";
 import {
   deleteNormListToPlayItemByIdAction,
   deleteNormListToPlayItemsAction,
-  removeFilteredSnippetsByItemIds,
-} from "./normAction";
+} from "./listToPlayActions";
 import { selectFilteredSnippets } from "./normSelector";
 
 /**

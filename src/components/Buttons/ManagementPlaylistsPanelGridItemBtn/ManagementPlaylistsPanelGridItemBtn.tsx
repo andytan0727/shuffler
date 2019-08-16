@@ -2,14 +2,14 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
+import { updateNormListToPlayAction } from "store/ytplaylist/listToPlayActions";
+import { selectNormPlaylistById } from "store/ytplaylist/normSelector";
 import {
   addNormPlaylistToNormListToPlayAction,
   deleteNormPlaylistByIdAction,
   removeNormPlaylistFromNormListToPlayAction,
   shuffleNormPlaylistItems,
-  updateNormListToPlayAction,
-} from "store/ytplaylist/normAction";
-import { selectNormPlaylistById } from "store/ytplaylist/normSelector";
+} from "store/ytplaylist/playlistActions";
 import { notify } from "utils/helper/notifyHelper";
 
 import { IconButton, Tooltip } from "@material-ui/core";

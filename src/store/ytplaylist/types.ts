@@ -2,7 +2,10 @@ import { FuseOptions } from "fuse.js";
 import { ActionType } from "typesafe-actions";
 import { DeepReadonly } from "utility-types";
 
-import * as ytplaylistNormedAction from "./normAction";
+import * as filteredActions from "./filteredActions";
+import * as listToPlayActions from "./listToPlayActions";
+import * as playlistActions from "./playlistActions";
+import * as videoActions from "./videoActions";
 
 export interface MediaItem {
   id: string;
@@ -211,4 +214,12 @@ export type ListToPlaySnippets = DeepReadonly<
 // ==================================================
 // Actions
 // ==================================================
-export type YTPlaylistNormedAction = ActionType<typeof ytplaylistNormedAction>;
+export type PlaylistActions = ActionType<typeof playlistActions>;
+export type VideoActions = ActionType<typeof videoActions>;
+export type ListToPlayActions = ActionType<typeof listToPlayActions>;
+export type FilteredActions = ActionType<typeof filteredActions>;
+export type YTPlaylistNormedAction =
+  | PlaylistActions
+  | VideoActions
+  | ListToPlayActions
+  | FilteredActions;

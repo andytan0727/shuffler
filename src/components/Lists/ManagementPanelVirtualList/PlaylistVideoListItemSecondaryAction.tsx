@@ -2,13 +2,10 @@ import { DeleteItemButton } from "components/Buttons";
 import { makeToggleItemToListToPlaySwitch } from "components/Switches";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
-// backward-compat
-import {
-  deleteNormPlaylistItemByIdAction,
-  deleteNormVideoByIdAction,
-} from "store/ytplaylist/normAction";
+import { deleteNormPlaylistItemByIdAction } from "store/ytplaylist/playlistActions";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 import { isPlaylistItemSnippet } from "store/ytplaylist/utils";
+import { deleteNormVideoByIdAction } from "store/ytplaylist/videoActions";
 
 export interface PlaylistVideoListItemSecondaryActionProps {
   itemId: string;

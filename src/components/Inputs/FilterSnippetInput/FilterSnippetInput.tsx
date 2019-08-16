@@ -6,7 +6,7 @@ import {
   clearFilteredSnippets,
   createFuse,
   fuzzySearchSnippetsByTitle,
-} from "store/ytplaylist/normAction";
+} from "store/ytplaylist/filteredActions";
 import { selectNormSnippetsByItemIds } from "store/ytplaylist/normSelector";
 
 import TextField from "@material-ui/core/TextField";

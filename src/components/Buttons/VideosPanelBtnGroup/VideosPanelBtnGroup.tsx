@@ -7,7 +7,7 @@ import {
   addNormVideosToNormListToPlayAction,
   deleteNormVideoByIdAction,
   removeNormVideosFromNormListToPlayAction,
-} from "store/ytplaylist/normAction";
+} from "store/ytplaylist/videoActions";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {

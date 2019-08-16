@@ -7,7 +7,7 @@ import {
   addNormPlaylistToNormListToPlayAction,
   deleteNormPlaylistByIdAction,
   removeNormPlaylistsFromNormListToPlayAction,
-} from "store/ytplaylist/normAction";
+} from "store/ytplaylist/playlistActions";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {

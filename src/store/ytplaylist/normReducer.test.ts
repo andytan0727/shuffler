@@ -3,8 +3,8 @@ import produce, { Draft } from "immer";
 import get from "lodash/get";
 import partial from "lodash/partial";
 
-import { deleteNormPlaylistItemByIdAction } from "./normAction";
 import { playlistsReducer } from "./normReducer";
+import { deleteNormPlaylistItemByIdAction } from "./playlistActions";
 import {
   NormPlaylists,
   NormPlaylistsEntities,

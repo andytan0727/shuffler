@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { deleteNormListToPlayItemByIdAction } from "store/ytplaylist/normAction";
+import { deleteNormListToPlayItemByIdAction } from "store/ytplaylist/listToPlayActions";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 
 import { IconButton } from "@material-ui/core";

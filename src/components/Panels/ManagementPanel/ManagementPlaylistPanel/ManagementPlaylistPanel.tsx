@@ -10,15 +10,15 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
-import {
-  deleteNormPlaylistItemByIdAction,
-  shuffleNormPlaylistItems,
-  updateNormListToPlayAction,
-} from "store/ytplaylist/normAction";
+import { updateNormListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
   selectNormPlaylistItemIdsByPlaylistId,
   selectNormPlaylistNameById,
 } from "store/ytplaylist/normSelector";
+import {
+  deleteNormPlaylistItemByIdAction,
+  shuffleNormPlaylistItems,
+} from "store/ytplaylist/playlistActions";
 
 import { Divider, Typography } from "@material-ui/core";
 

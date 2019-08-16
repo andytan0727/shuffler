@@ -1,7 +1,9 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import * as schemas from "schemas";
-import * as ytplaylistNormed from "store/ytplaylist/normAction";
+import * as listToPlayActions from "store/ytplaylist/listToPlayActions";
+import * as playlistActions from "store/ytplaylist/playlistActions";
 import * as YTPlaylistTypes from "store/ytplaylist/types";
+import * as videoActions from "store/ytplaylist/videoActions";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 import { fetchYoutubeAPIData } from "utils/helper/fetchHelper";
@@ -30,7 +32,7 @@ export function* addFetchItemsToNormListToPlay(
   } = schemas.normalizeListToPlay(items);
 
   yield put(
-    ytplaylistNormed.addNormListToPlayAction(
+    listToPlayActions.addNormListToPlayAction(
       listToPlayEntities,
       listToPlayResult
     )
@@ -55,14 +57,14 @@ export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
 
   // add playlist
   yield put(
-    ytplaylistNormed.addNormPlaylistAction(playlistEntities, playlistResult)
+    playlistActions.addNormPlaylistAction(playlistEntities, playlistResult)
   );
 
   // add all fetched playlist's items to listToPlay
   // and label the playlist as playing (all playlistItems in listToPlay)
   yield call(addFetchItemsToNormListToPlay, playlist.items);
 
-  yield put(ytplaylistNormed.addAllInPlayingLabelByIdAction(playlistId));
+  yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
 }
 
 /**
@@ -81,7 +83,7 @@ export function* addFetchedNormVideo(video: YTPlaylistTypes.Video) {
     throw new Error("Saga: No or more than one video is found");
 
   // add video
-  yield put(ytplaylistNormed.addNormVideoAction(videoEntities, videoResult));
+  yield put(videoActions.addNormVideoAction(videoEntities, videoResult));
 
   // add fetched video items to listToPlay
   yield call(addFetchItemsToNormListToPlay, video.items);

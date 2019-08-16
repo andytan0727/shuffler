@@ -15,26 +15,7 @@ import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
-import {
-  addAllInPlayingLabelByIdAction,
-  addNormListToPlayAction,
-  addNormListToPlayItemAction,
-  addNormListToPlayItemsAction,
-  addNormPlaylistToNormListToPlayAction,
-  addNormVideosToNormListToPlayAction,
-  addNormVideoToNormListToPlayAction,
-  addUniqueNormListToPlay,
-  deleteNormListToPlayItemByIdAction,
-  deleteNormListToPlayItemsAction,
-  deleteNormPlaylistByIdAction,
-  deleteNormPlaylistItemByIdAction,
-  deleteNormVideoByIdAction,
-  removeAllInPlayingLabelByIdAction,
-  removeNormPlaylistFromNormListToPlayAction,
-  removeNormPlaylistsFromNormListToPlayAction,
-  removeNormVideoFromNormListToPlayAction,
-  removeNormVideosFromNormListToPlayAction,
-} from "./normAction";
+import * as listToPlayActions from "./listToPlayActions";
 import {
   selectAllNormPlaylists,
   selectNormListToPlayEntities,
@@ -47,12 +28,14 @@ import {
   selectNormPlaylistsResult,
   selectNormSnippetIdByItemId,
 } from "./normSelector";
+import * as playlistActions from "./playlistActions";
 import {
   NormListToPlayEntities,
   NormListToPlayPlaylistItemsEntity,
   NormListToPlayResultItem,
   NormPlaylistsSourceEntity,
 } from "./types";
+import * as videoActions from "./videoActions";
 
 // ===============================================
 // Helpers
@@ -103,7 +86,7 @@ function* uniquelyAddListToPlayItems(
   }
 
   // merge new entities and result to normalized listToPlay
-  yield put(addUniqueNormListToPlay(newEntities, newResult));
+  yield put(listToPlayActions.addUniqueNormListToPlay(newEntities, newResult));
 }
 
 /**
@@ -123,12 +106,12 @@ export function* addOrRemoveAllInPlaying(playlistId: string) {
 
   for (const itemId of playlist.items) {
     if (!listToPlayPlaylistItems[itemId]) {
-      yield put(removeAllInPlayingLabelByIdAction(playlistId));
+      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
       return;
     }
   }
 
-  yield put(addAllInPlayingLabelByIdAction(playlistId));
+  yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
   return;
 }
 // ===============================================
@@ -143,14 +126,14 @@ export function* addOrRemoveAllInPlaying(playlistId: string) {
  */
 export function* deleteNormVideoByIdWatcher() {
   yield takeEvery(ActionTypes.DELETE_NORM_VIDEO_BY_ID, function*(
-    action: ActionType<typeof deleteNormVideoByIdAction>
+    action: ActionType<typeof videoActions.deleteNormVideoByIdAction>
   ) {
     const {
       payload: { id },
     } = action;
 
     // remove item from normalized listToPlay videoItems
-    yield put(deleteNormListToPlayItemByIdAction(id));
+    yield put(listToPlayActions.deleteNormListToPlayItemByIdAction(id));
   });
 }
 
@@ -164,7 +147,9 @@ export function* deleteNormPlaylistByIdWatcher() {
   yield takeEvery(
     ActionTypes.DELETE_NORM_PLAYLIST_BY_ID,
 
-    function*(action: ActionType<typeof deleteNormPlaylistByIdAction>) {
+    function*(
+      action: ActionType<typeof playlistActions.deleteNormPlaylistByIdAction>
+    ) {
       const { id: playlistId } = action.payload;
       const listToPlayResultItems: NormListToPlayResultItem[] = yield select(
         selectNormListToPlayResult
@@ -183,7 +168,11 @@ export function* deleteNormPlaylistByIdWatcher() {
       }
 
       if (itemIdsOfItemsToDelete.length !== 0)
-        yield put(deleteNormListToPlayItemsAction(itemIdsOfItemsToDelete));
+        yield put(
+          listToPlayActions.deleteNormListToPlayItemsAction(
+            itemIdsOfItemsToDelete
+          )
+        );
     }
   );
 }
@@ -196,14 +185,14 @@ export function* deleteNormPlaylistByIdWatcher() {
  */
 export function* deleteNormPlaylistItemByIdWatcher() {
   yield takeEvery(ActionTypes.DELETE_NORM_PLAYLIST_ITEM_BY_ID, function*(
-    action: ActionType<typeof deleteNormPlaylistItemByIdAction>
+    action: ActionType<typeof playlistActions.deleteNormPlaylistItemByIdAction>
   ) {
     const {
       payload: { itemId },
     } = action;
 
     // remove item from normalized listToPlay as well after the playlist item was deleted
-    yield put(deleteNormListToPlayItemByIdAction(itemId));
+    yield put(listToPlayActions.deleteNormListToPlayItemByIdAction(itemId));
   });
 }
 
@@ -216,7 +205,9 @@ export function* deleteNormPlaylistItemByIdWatcher() {
  */
 export function* addNormPlaylistToNormListToPlayWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof addNormPlaylistToNormListToPlayAction>
+    action: ActionType<
+      typeof playlistActions.addNormPlaylistToNormListToPlayAction
+    >
   ) {
     const {
       payload: { playlistId },
@@ -227,7 +218,7 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
     );
 
     // add allInPlaying label to this playlist
-    yield put(addAllInPlayingLabelByIdAction(playlistId));
+    yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
 
     const playlistItems = itemIds.map((itemId) => ({
       resultItem: {
@@ -238,7 +229,7 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
     }));
 
     // add all items in the playlist into normListToPlay
-    yield put(addNormListToPlayItemsAction(playlistItems));
+    yield put(listToPlayActions.addNormListToPlayItemsAction(playlistItems));
   });
 }
 
@@ -253,17 +244,19 @@ export function* removeNormPlaylistFromNormListToPlayWatcher() {
   yield takeEvery(
     ActionTypes.REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY,
     function*(
-      action: ActionType<typeof removeNormPlaylistFromNormListToPlayAction>
+      action: ActionType<
+        typeof playlistActions.removeNormPlaylistFromNormListToPlayAction
+      >
     ) {
       const {
         payload: { playlistId, itemIds },
       } = action;
 
       // remove allInPlaying label
-      yield put(removeAllInPlayingLabelByIdAction(playlistId));
+      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
 
       // remove all items from normListToPlay
-      yield put(deleteNormListToPlayItemsAction(itemIds));
+      yield put(listToPlayActions.deleteNormListToPlayItemsAction(itemIds));
     }
   );
 }
@@ -280,7 +273,7 @@ export function* removeNormPlaylistsFromNormListToPlayWatcher() {
     const {
       payload: { playlistIds },
     }: ActionType<
-      typeof removeNormPlaylistsFromNormListToPlayAction
+      typeof playlistActions.removeNormPlaylistsFromNormListToPlayAction
     > = yield take(ActionTypes.REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY);
 
     for (const playlistId of playlistIds) {
@@ -289,7 +282,10 @@ export function* removeNormPlaylistsFromNormListToPlayWatcher() {
       );
 
       yield put(
-        removeNormPlaylistFromNormListToPlayAction(playlistId, itemIds)
+        playlistActions.removeNormPlaylistFromNormListToPlayAction(
+          playlistId,
+          itemIds
+        )
       );
     }
   }
@@ -303,7 +299,7 @@ export function* removeNormPlaylistsFromNormListToPlayWatcher() {
  */
 export function* addNormVideoToNormListToPlayWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof addNormVideoToNormListToPlayAction>
+    action: ActionType<typeof videoActions.addNormVideoToNormListToPlayAction>
   ) {
     const {
       payload: { videoId },
@@ -318,7 +314,7 @@ export function* addNormVideoToNormListToPlayWatcher() {
     };
 
     yield put(
-      addNormListToPlayItemAction(
+      listToPlayActions.addNormListToPlayItemAction(
         listToPlayVideoItem.resultItem,
         listToPlayVideoItem.foreignKey
       )
@@ -334,14 +330,14 @@ export function* addNormVideoToNormListToPlayWatcher() {
  */
 export function* addNormVideosToNormListToPlayWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_VIDEOS_TO_NORM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof addNormVideosToNormListToPlayAction>
+    action: ActionType<typeof videoActions.addNormVideosToNormListToPlayAction>
   ) {
     const {
       payload: { videoIds },
     } = action;
 
     for (const videoId of videoIds) {
-      yield put(addNormVideoToNormListToPlayAction(videoId));
+      yield put(videoActions.addNormVideoToNormListToPlayAction(videoId));
     }
   });
 }
@@ -355,13 +351,15 @@ export function* removeNormVideoFromNormListToPlayWatcher() {
   yield takeEvery(
     ActionTypes.REMOVE_NORM_VIDEO_FROM_NORM_LIST_TO_PLAY,
     function*(
-      action: ActionType<typeof removeNormVideoFromNormListToPlayAction>
+      action: ActionType<
+        typeof videoActions.removeNormVideoFromNormListToPlayAction
+      >
     ) {
       const {
         payload: { videoId: itemId },
       } = action;
 
-      yield put(deleteNormListToPlayItemByIdAction(itemId));
+      yield put(listToPlayActions.deleteNormListToPlayItemByIdAction(itemId));
     }
   );
 }
@@ -376,20 +374,22 @@ export function* removeNormVideosFromNormListToPlayWatcher() {
   yield takeEvery(
     ActionTypes.REMOVE_NORM_VIDEOS_FROM_NORM_LIST_TO_PLAY,
     function*(
-      action: ActionType<typeof removeNormVideosFromNormListToPlayAction>
+      action: ActionType<
+        typeof videoActions.removeNormVideosFromNormListToPlayAction
+      >
     ) {
       const {
         payload: { videoIds: itemIds },
       } = action;
 
-      yield put(deleteNormListToPlayItemsAction(itemIds));
+      yield put(listToPlayActions.deleteNormListToPlayItemsAction(itemIds));
     }
   );
 }
 
 export function* addNormListToPlayWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof addNormListToPlayAction>
+    action: ActionType<typeof listToPlayActions.addNormListToPlayAction>
   ) {
     const {
       payload: { entities, result },
@@ -406,7 +406,7 @@ export function* addNormListToPlayWatcher() {
 
 export function* addNormListToPlayItemWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEM, function*(
-    action: ActionType<typeof addNormListToPlayItemAction>
+    action: ActionType<typeof listToPlayActions.addNormListToPlayItemAction>
   ) {
     const item = action.payload;
     yield call(uniquelyAddListToPlayItems, [item]);
@@ -415,7 +415,7 @@ export function* addNormListToPlayItemWatcher() {
 
 export function* addNormListToPlayItemsWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS, function*(
-    action: ActionType<typeof addNormListToPlayItemsAction>
+    action: ActionType<typeof listToPlayActions.addNormListToPlayItemsAction>
   ) {
     const { items } = action.payload;
     yield call(uniquelyAddListToPlayItems, items);
@@ -434,7 +434,7 @@ export function* clearListToPlayWatcher() {
 
     // remove allInPlaying label if found
     for (const playlistId of playlistIds) {
-      yield put(removeAllInPlayingLabelByIdAction(playlistId));
+      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
     }
   });
 }
@@ -450,9 +450,9 @@ export function* clearListToPlayWatcher() {
 export function* checkIfAllPlaylistItemsInPlaying() {
   while (true) {
     const action: ActionType<
-      | typeof addUniqueNormListToPlay
-      | typeof deleteNormListToPlayItemByIdAction
-      | typeof deleteNormListToPlayItemsAction
+      | typeof listToPlayActions.addUniqueNormListToPlay
+      | typeof listToPlayActions.deleteNormListToPlayItemByIdAction
+      | typeof listToPlayActions.deleteNormListToPlayItemsAction
     > = yield take([
       ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY,
       ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,

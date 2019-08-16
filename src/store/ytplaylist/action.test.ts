@@ -3,7 +3,10 @@ import {
   SHUFFLE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
 
-import { clearListToPlayAction, shuffleListToPlayAction } from "./normAction";
+import {
+  clearListToPlayAction,
+  shuffleListToPlayAction,
+} from "./listToPlayActions";
 
 describe("ytplaylist actions", () => {
   // =================================

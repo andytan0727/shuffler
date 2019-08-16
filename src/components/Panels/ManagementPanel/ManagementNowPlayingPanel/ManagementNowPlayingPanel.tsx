@@ -9,11 +9,11 @@ import {
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
+import { clearFilteredSnippets } from "store/ytplaylist/filteredActions";
 import {
-  clearFilteredSnippets,
   deleteNormListToPlayItemsAction,
   shuffleListToPlayAction,
-} from "store/ytplaylist/normAction";
+} from "store/ytplaylist/listToPlayActions";
 import {
   selectAllNormListToPlayItemIds,
   selectFilteredSnippets,

@@ -4,7 +4,7 @@ import { AppState } from "store";
 import {
   addNormListToPlayItemAction,
   deleteNormListToPlayItemByIdAction,
-} from "store/ytplaylist/normAction";
+} from "store/ytplaylist/listToPlayActions";
 import {
   selectNormListToPlayEntities,
   selectNormPlaylistIdByItemId,

@@ -6,7 +6,7 @@ import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
   clearListToPlayAction,
   shuffleListToPlayAction,
-} from "store/ytplaylist/normAction";
+} from "store/ytplaylist/listToPlayActions";
 import { selectNormListToPlayResultSnippets } from "store/ytplaylist/normSelector";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
