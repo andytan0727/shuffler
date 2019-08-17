@@ -124,6 +124,12 @@ const initialStates = {
         "User now can add/remove playlist to now playing by clicking +/- button on drawer",
       ],
     },
+    {
+      version: "3.3.0",
+      changes: [
+        "Different icons are now shown based on the number of songs added from playlist to Now Playing list",
+      ],
+    },
   ],
 };
 
