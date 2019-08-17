@@ -82,3 +82,8 @@ export const selectNormPlaylistAllInPlayingById = createCachedSelector(
   selectNormPlaylistById,
   (playlist) => !!(playlist && playlist.allInPlaying)
 )((_, playlistId) => `allInPlaying-playlistId-${playlistId}`);
+
+export const selectPartialInPlayingById = createCachedSelector(
+  selectNormPlaylistById,
+  (playlist) => !!(playlist && playlist.partialInPlaying)
+)((_, playlistId) => `partialInPlaying-playlistId-${playlistId}`);

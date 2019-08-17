@@ -1,15 +1,15 @@
 import { ManagementPlaylistsPanelGridItemBtn } from "components/Buttons";
+import {
+  AllPlaylistInPlayingIcon,
+  PartialPlaylistInPlayingIcon,
+} from "components/Icons";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
 import {
-  selectNormPlaylistAllInPlayingById,
   selectNormPlaylistById,
-  selectNormPlaylistNameById,
   selectNormPlaylistSnippetByItemId,
 } from "store/ytplaylist/playlistSelectors";
-
-import { PlaylistAddCheck as PlaylistAddCheckIcon } from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 
@@ -28,12 +28,7 @@ const ManagementPlaylistsPanelGridItem = (
   const firstSnippet = useSelector((state: AppState) =>
     selectNormPlaylistSnippetByItemId(state, playlist.items[0])
   );
-  const playlistName = useSelector((state: AppState) =>
-    selectNormPlaylistNameById(state, playlistId)
-  );
-  const allInPlaying = useSelector((state: AppState) =>
-    selectNormPlaylistAllInPlayingById(state, playlistId)
-  );
+  const { allInPlaying, partialInPlaying, name: playlistName } = playlist;
 
   const thumbnails = firstSnippet && firstSnippet.thumbnails;
 
@@ -82,7 +77,11 @@ const ManagementPlaylistsPanelGridItem = (
         </h2>
 
         <div className={styles.gridItemTitleIcon}>
-          {allInPlaying && <PlaylistAddCheckIcon />}
+          {allInPlaying ? (
+            <AllPlaylistInPlayingIcon />
+          ) : partialInPlaying ? (
+            <PartialPlaylistInPlayingIcon />
+          ) : null}
         </div>
       </div>
     </div>

@@ -2,6 +2,10 @@ import {
   AddPlaylistToPlayingBtn,
   RemovePlaylistFromPlayingBtn,
 } from "components/Buttons";
+import {
+  AllPlaylistInPlayingIcon,
+  PartialPlaylistInPlayingIcon,
+} from "components/Icons";
 import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -18,10 +22,11 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import {
-  MusicNote as MusicNoteIcon,
+  GridOn as GridOnIcon,
+  List as ListIcon,
   PlayArrow as PlayArrowIcon,
   PlayCircleOutline as PlayCircleOutlineIcon,
-  PlaylistPlay as PlaylistPlayIcon,
+  VideoLibrary as VideoLibraryIcon,
 } from "@material-ui/icons";
 
 interface DrawerNavListItemProps {
@@ -155,7 +160,7 @@ const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
     <List className={classes.drawerPlaylistsNavContainer} component="nav">
       <DrawerNavListItem
         pathUrl={playlistUrl}
-        icon={<PlayArrowIcon />}
+        icon={<GridOnIcon />}
         primaryText="Playlists"
       />
 
@@ -166,7 +171,15 @@ const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
           <DrawerNavListItem
             key={playlistId}
             pathUrl={`${playlistUrl}/${playlistId}`}
-            icon={<PlaylistPlayIcon />}
+            icon={
+              playlists[playlistId].allInPlaying ? (
+                <AllPlaylistInPlayingIcon />
+              ) : playlists[playlistId].partialInPlaying ? (
+                <PartialPlaylistInPlayingIcon />
+              ) : (
+                <ListIcon />
+              )
+            }
             primaryText={playlists[playlistId].name || `Playlist-${playlistId}`}
             secondaryActionItem={
               <ListItemSecondaryAction>
@@ -206,7 +219,7 @@ const ManagementPanelDrawer = ({ match }: ManagementPanelDrawerProps) => {
         <List component="nav">
           <DrawerNavListItem
             pathUrl={`${panelUrl}/videos`}
-            icon={<MusicNoteIcon />}
+            icon={<VideoLibraryIcon />}
             primaryText="My video"
           />
           <DrawerNavListItem
