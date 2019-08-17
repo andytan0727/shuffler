@@ -13,6 +13,7 @@ import { clearFilteredSnippets } from "store/ytplaylist/filteredActions";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
   deleteNormListToPlayItemsAction,
+  filterListToPlayItemsAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/listToPlayActions";
 import { selectAllNormListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
@@ -44,9 +45,15 @@ const ManagementNowPlayingPanel = (props: ManagementNowPlayingPanelProps) => {
     filteredSnippets
   );
 
+  // play only checked items if checked is not empty
+  // else play the entire original listToPlay
   const handlePlayListToPlay = useCallback(() => {
+    if (checked.length !== 0) {
+      dispatch(filterListToPlayItemsAction(checked));
+    }
+
     history.push("/player/ytplayer");
-  }, [history]);
+  }, [dispatch, checked, history]);
 
   const handleShuffleListToPlay = useCallback(() => {
     // clear checked videos before shuffling (if user checked any video before)

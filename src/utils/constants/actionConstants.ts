@@ -54,9 +54,6 @@ export const SHUFFLE_NORM_PLAYLIST_ITEMS = "SHUFFLE_NORM_PLAYLIST_ITEMS" as cons
 // =========================
 // ytplaylist listToPlay
 // =========================
-export const CLEAR_LIST_TO_PLAY = "CLEAR_LIST_TO_PLAY" as const;
-export const SHUFFLE_LIST_TO_PLAY = "SHUFFLE_LIST_TO_PLAY" as const;
-
 export const ADD_NORM_LIST_TO_PLAY = "ADD_NORM_LIST_TO_PLAY" as const;
 export const ADD_UNIQUE_NORM_LIST_TO_PLAY = "ADD_UNIQUE_NORM_LIST_TO_PLAY" as const;
 export const ADD_NORM_LIST_TO_PLAY_ITEM = "ADD_NORM_LIST_TO_PLAY_ITEM" as const;
@@ -64,6 +61,9 @@ export const ADD_NORM_LIST_TO_PLAY_ITEMS = "ADD_NORM_LIST_TO_PLAY_ITEMS" as cons
 export const UPDATE_NORM_LIST_TO_PLAY = "UPDATE_NORM_LIST_TO_PLAY" as const;
 export const DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID = "DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID" as const;
 export const DELETE_NORM_LIST_TO_PLAY_ITEMS = "DELETE_NORM_LIST_TO_PLAY_ITEMS" as const;
+export const CLEAR_LIST_TO_PLAY = "CLEAR_LIST_TO_PLAY" as const;
+export const SHUFFLE_LIST_TO_PLAY = "SHUFFLE_LIST_TO_PLAY" as const;
+export const FILTER_LIST_TO_PLAY_ITEMS = "FILTER_LIST_TO_PLAY_ITEMS" as const;
 
 // =========================
 // ytplaylist filtered

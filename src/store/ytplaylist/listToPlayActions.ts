@@ -163,3 +163,27 @@ export const clearListToPlayAction = createAction(
 export const shuffleListToPlayAction = createAction(
   ActionTypes.SHUFFLE_LIST_TO_PLAY
 );
+
+/**
+ * Filter out listToPlay items specified by itemId in itemIds array.
+ * Then all the other listToPlay items are removed,
+ * replaced with filtered items
+ *
+ * Unlike the almost identical **updateNormListToPlayAction**,
+ * this action filters only items that **existed previously**
+ * in listToPlay
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
+ * @param itemIds Item id array of items to be filtered
+ * @returns FILTER_LIST_TO_PLAY_ITEMS action object
+ */
+export const filterListToPlayItemsAction = createAction(
+  ActionTypes.FILTER_LIST_TO_PLAY_ITEMS,
+  (action) => {
+    return (itemIds: string[]) =>
+      action({
+        itemIds,
+      });
+  }
+);

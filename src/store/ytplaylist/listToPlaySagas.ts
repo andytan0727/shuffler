@@ -118,6 +118,9 @@ export function* addOrRemoveAllInPlaying(playlistId: string) {
 // End helpers
 // ===============================================
 
+// ===============================================
+// Watchers
+// ===============================================
 export function* addNormListToPlayWatcher() {
   yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY, function*(
     action: ActionType<typeof listToPlayActions.addNormListToPlayAction>
@@ -169,6 +172,53 @@ export function* clearListToPlayWatcher() {
     }
   });
 }
+
+/**
+ * Saga which watching for FILTER_LIST_TO_PLAY_ITEMS action.
+ * If triggered, it dispatches action to clear the old listToPlay states,
+ * then add new items that are filtered (obtained) from the previous states.
+ *
+ */
+export function* filterListToPlayItemsWatcher() {
+  yield takeEvery(ActionTypes.FILTER_LIST_TO_PLAY_ITEMS, function*(
+    action: ActionType<typeof listToPlayActions.filterListToPlayItemsAction>
+  ) {
+    const { itemIds } = action.payload;
+    const listToPlayResult: NormListToPlayResultItem[] = yield select(
+      selectNormListToPlayResult
+    );
+    const listToPlayEntities: NormListToPlayEntities = yield select(
+      selectNormListToPlayEntities
+    );
+    const filteredItems: {
+      resultItem: NormListToPlayResultItem;
+      foreignKey: string;
+    }[] = [];
+
+    for (const item of listToPlayResult) {
+      const { id, schema } = item;
+
+      if (itemIds.includes(id)) {
+        const itemEntity =
+          schema === "playlistItems"
+            ? listToPlayEntities.playlistItems[id]
+            : listToPlayEntities.videoItems[id];
+
+        filteredItems.push({
+          resultItem: item,
+          foreignKey: itemEntity.foreignKey,
+        });
+      }
+    }
+
+    // clear currentListToPlay before adding filteredItems
+    yield put(listToPlayActions.clearListToPlayAction());
+    yield put(listToPlayActions.addNormListToPlayItemsAction(filteredItems));
+  });
+}
+// ===============================================
+// End Watchers
+// ===============================================
 
 /**
  * A special saga that watches for multiple actions that involving
@@ -260,6 +310,7 @@ export default function* listToPlaySagas() {
     addNormListToPlayItemWatcher(),
     addNormListToPlayItemsWatcher(),
     clearListToPlayWatcher(),
+    filterListToPlayItemsWatcher(),
     checkIfAllPlaylistItemsInPlaying(),
   ]);
 }
