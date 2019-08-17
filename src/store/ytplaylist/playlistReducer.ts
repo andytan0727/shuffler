@@ -105,6 +105,26 @@ export const playlistsReducer: Reducer<
       return draft;
     }
 
+    case ActionTypes.ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID: {
+      const { id } = action.payload;
+      const playlists = draft.entities.playlists;
+
+      if (playlists[id]) playlists[id].partialInPlaying = true;
+
+      return draft;
+    }
+
+    case ActionTypes.REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID: {
+      const { id } = action.payload;
+      const playlists = draft.entities.playlists;
+
+      if (playlists[id] && playlists[id].partialInPlaying) {
+        playlists[id].partialInPlaying = false;
+      }
+
+      return draft;
+    }
+
     case ActionTypes.SHUFFLE_NORM_PLAYLIST_ITEMS: {
       const { id } = action.payload;
       const prevPlaylistItems = original(draft.entities.playlists[id].items);

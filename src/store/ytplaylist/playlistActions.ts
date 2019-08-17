@@ -149,6 +149,26 @@ export const removeAllInPlayingLabelByIdAction = createAction(
 );
 
 /**
+ * Add partialInPlaying label to particular playlist
+ * if some of its items are in normalized listToPlay
+ *
+ * @param id Playlist id to add partialInPlaying label
+ */
+export const addPartialInPlayingLabelByIdAction = createAction(
+  ActionTypes.ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID,
+  (action) => (id: string) => action({ id })
+);
+
+/**
+ * Remove partialInPlaying label of particular playlist
+ * @param id Playlist id to remove partialInPlaying label
+ */
+export const removePartialInPlayingLabelByIdAction = createAction(
+  ActionTypes.REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID,
+  (action) => (id: string) => action({ id })
+);
+
+/**
  * Shuffle norm playlist items by playlist id
  * @param id Playlist id to shuffle
  */

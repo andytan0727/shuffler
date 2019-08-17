@@ -67,6 +67,7 @@ export interface NormPlaylistsSourceEntity {
   [key: string]: {
     name?: string;
     allInPlaying?: boolean;
+    partialInPlaying?: boolean;
   } & BaseSourceEntity;
 }
 
