@@ -90,13 +90,18 @@ function* uniquelyAddListToPlayItems(
 }
 
 /**
- * A helper function to add or remove allInPlaying label from certain playlist
- * based on the condition of latest normalized listToPlay items
+ * A helper function to label
+ * allInPlaying/partialInPlaying label
+ * of certain playlist based on the following simple rules:
+ *
+ * - All items in listToPlay: allInPlaying [/] partialInPlaying [X]
+ * - No item in listToPlay: allInPlaying [X] partialInPlaying [X]
+ * - Some items in listToPlay: allInPlaying [X] partialInPlaying[/]
  *
  * @param playlistId Playlist id to check
  *
  */
-export function* addOrRemoveAllInPlaying(playlistId: string) {
+export function* labelAllOrPartialInPlaying(playlistId: string) {
   const playlist: ReturnType<typeof selectNormPlaylistById> = yield select(
     (state: AppState) => selectNormPlaylistById(state, playlistId)
   );
@@ -104,15 +109,69 @@ export function* addOrRemoveAllInPlaying(playlistId: string) {
     selectNormListToPlayPlaylistItems
   );
 
-  for (const itemId of playlist.items) {
-    if (!listToPlayPlaylistItems[itemId]) {
-      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
-      return;
+  const {
+    allInPlaying: prevAllInPlaying,
+    partialInPlaying: prevPartialInPlaying,
+    items: itemIds,
+  } = playlist;
+  const numOfPlaylistItems = itemIds.length;
+  let numOfPlaylistItemsInListToPlay = 0;
+
+  for (const itemId of itemIds) {
+    if (listToPlayPlaylistItems[itemId]) {
+      numOfPlaylistItemsInListToPlay += 1;
     }
   }
 
-  yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
-  return;
+  // conditions for checking existence of playlist items in listToPlay
+  // const allItemsExist =
+  //   numOfPlaylistItemsInListToPlay === numOfPlaylistItems && !prevAllInPlaying;
+  const allItemsExist = numOfPlaylistItemsInListToPlay === numOfPlaylistItems;
+  const noItemExists = numOfPlaylistItemsInListToPlay === 0;
+  const someItemsExist =
+    numOfPlaylistItemsInListToPlay < numOfPlaylistItems && !noItemExists;
+
+  // if all items exist in listToPlay
+  // add allInPlaying label
+  // and optionally remove partialInPlaying label (if exists)
+  if (allItemsExist) {
+    if (prevPartialInPlaying) {
+      yield put(
+        playlistActions.removePartialInPlayingLabelByIdAction(playlistId)
+      );
+    }
+
+    if (!prevAllInPlaying) {
+      yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
+    }
+  }
+
+  // if no items exist in listToPlay
+  // remove either allInPlaying/partialInPlaying label
+  if (noItemExists) {
+    if (prevAllInPlaying) {
+      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
+    }
+
+    if (prevPartialInPlaying) {
+      yield put(
+        playlistActions.removePartialInPlayingLabelByIdAction(playlistId)
+      );
+    }
+  }
+
+  // if some of the items exist in listToPlay
+  // add partialInPlaying label
+  // and optionally remove allInPlaying label (if exists)
+  if (someItemsExist) {
+    if (prevAllInPlaying) {
+      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
+    }
+
+    if (!prevPartialInPlaying) {
+      yield put(playlistActions.addPartialInPlayingLabelByIdAction(playlistId));
+    }
+  }
 }
 // ===============================================
 // End helpers
@@ -221,14 +280,14 @@ export function* filterListToPlayItemsWatcher() {
 // ===============================================
 
 /**
- * A special saga that watches for multiple actions that involving
- * add/delete normalized listToPlay items.
+ * A special saga that watches for multiple actions
+ * that involving add/delete normalized listToPlay items.
  * If the item(s) deleted is/are from playlist,
- * then the allInPlaying label will be added or removed
- * based on situation
+ * then the allInPlaying/partialInPlaying label
+ * will be added or removed based on situation
  *
  */
-export function* checkIfAllPlaylistItemsInPlaying() {
+export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
   while (true) {
     const action: ActionType<
       | typeof listToPlayActions.addUniqueNormListToPlay
@@ -293,12 +352,12 @@ export function* checkIfAllPlaylistItemsInPlaying() {
     }
 
     if (playlistId) {
-      yield fork(addOrRemoveAllInPlaying, playlistId);
+      yield fork(labelAllOrPartialInPlaying, playlistId);
     }
 
     if (playlistIds && playlistIds.length !== 0) {
       for (const playlistId of playlistIds) {
-        yield fork(addOrRemoveAllInPlaying, playlistId);
+        yield fork(labelAllOrPartialInPlaying, playlistId);
       }
     }
   }
@@ -311,6 +370,6 @@ export default function* listToPlaySagas() {
     addNormListToPlayItemsWatcher(),
     clearListToPlayWatcher(),
     filterListToPlayItemsWatcher(),
-    checkIfAllPlaylistItemsInPlaying(),
+    checkIfAllOrPartialPlaylistItemsInPlaying(),
   ]);
 }

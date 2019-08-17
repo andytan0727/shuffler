@@ -76,8 +76,7 @@ export function* deleteNormPlaylistItemByIdWatcher() {
 
 /**
  * Saga that watching for ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY action.
- * If triggered, it dispatch an action to add allInPlaying label to playlist,
- * and dispatch an action to add playlist items
+ * If triggered, it dispatch an action to add playlist items
  * to normalized listToPlay
  *
  */
@@ -94,9 +93,6 @@ export function* addNormPlaylistToNormListToPlayWatcher() {
     const itemIds: string[] = yield select((state: AppState) =>
       selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
     );
-
-    // add allInPlaying label to this playlist
-    yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
 
     const playlistItems = itemIds.map((itemId) => ({
       resultItem: {
