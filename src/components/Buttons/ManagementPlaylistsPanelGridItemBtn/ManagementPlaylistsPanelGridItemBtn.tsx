@@ -53,7 +53,7 @@ const ManagementPlaylistsPanelGridItemBtn = (
     );
 
     history.push("/player/ytplayer");
-  }, [dispatch, playlistId, itemIds, history]);
+  }, [dispatch, history, itemIds, playlistId]);
 
   const handleShufflePlaylist = useCallback(() => {
     dispatch(shuffleNormPlaylistItems(playlistId));

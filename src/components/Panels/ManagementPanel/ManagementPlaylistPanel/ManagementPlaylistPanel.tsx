@@ -53,14 +53,16 @@ const ManagementPlaylistPanel = ({
   );
 
   const handlePlayPlaylist = useCallback(() => {
-    if (checked.length !== 0) {
-      dispatch(
-        updateNormListToPlayAction("playlistItems", playlistId, checked)
-      );
-    }
+    dispatch(
+      updateNormListToPlayAction(
+        "playlistItems",
+        playlistId,
+        checked.length === 0 ? playlistItemIds : checked
+      )
+    );
 
     history.push("/player/ytplayer");
-  }, [history, dispatch, playlistId, checked]);
+  }, [checked, dispatch, history, playlistId, playlistItemIds]);
 
   const handleShufflePlaylist = useCallback(() => {
     dispatch(shuffleNormPlaylistItems(playlistId));
