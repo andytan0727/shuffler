@@ -130,6 +130,13 @@ const initialStates = {
         "Different icons are now shown based on the number of songs added from playlist to Now Playing list",
       ],
     },
+    {
+      version: "3.4.0",
+      changes: [
+        "Added select all and clear selected functions on panel list",
+        "Added function to click and play one song, then shuffle the rest",
+      ],
+    },
   ],
 };
 
