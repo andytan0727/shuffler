@@ -293,10 +293,12 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
       | typeof listToPlayActions.addUniqueNormListToPlay
       | typeof listToPlayActions.deleteNormListToPlayItemByIdAction
       | typeof listToPlayActions.deleteNormListToPlayItemsAction
+      | typeof listToPlayActions.updateNormListToPlayAction
     > = yield take([
       ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY,
       ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
       ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEMS,
+      ActionTypes.UPDATE_NORM_LIST_TO_PLAY,
     ]);
     let playlistId: string | undefined;
     let playlistIds: string[] | undefined;
@@ -345,9 +347,23 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
         break;
       }
 
+      case "UPDATE_NORM_LIST_TO_PLAY": {
+        const { schema } = action.payload;
+
+        // do nothing if the items updated are not from playlist
+        if (schema === "videoItems") break;
+
+        // check the availability of items in ALL playlists
+        // because UPDATE_NORM_LIST_TO_PLAY will delete
+        // most of the items regardless which playlist
+        // those items belong
+        playlistIds = yield select(selectNormPlaylistsResult);
+
+        break;
+      }
+
       default: {
-        playlistId = undefined;
-        playlistIds = undefined;
+        break;
       }
     }
 
