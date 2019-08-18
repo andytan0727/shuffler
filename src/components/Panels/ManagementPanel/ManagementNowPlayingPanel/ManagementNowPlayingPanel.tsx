@@ -55,12 +55,13 @@ const ManagementNowPlayingPanel = (props: ManagementNowPlayingPanelProps) => {
     history.push("/player/ytplayer");
   }, [dispatch, checked, history]);
 
+  // shuffle listToPlay with items' position in checked array remain constant
+  // if checked array is empty, normal old shuffle is executed instead
   const handleShuffleListToPlay = useCallback(() => {
-    // clear checked videos before shuffling (if user checked any video before)
-    clearChecked();
-
-    dispatch(shuffleListToPlayAction());
-  }, [clearChecked, dispatch]);
+    dispatch(
+      shuffleListToPlayAction(checked.length !== 0 ? checked : undefined)
+    );
+  }, [checked, dispatch]);
 
   // delete listToPlay items without deleting original items from playlists/videos
   const handleDeleteListToPlayItems = useCallback(() => {

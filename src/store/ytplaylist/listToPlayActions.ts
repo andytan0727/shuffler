@@ -158,10 +158,18 @@ export const clearListToPlayAction = createAction(
 /**
  * Shuffle listToPlay
  *
+ * @param itemIds Optional selected items to be fixed (position) when shuffling
+ *
  * @returns SHUFFLE_LIST_TO_PLAY action object
  */
 export const shuffleListToPlayAction = createAction(
-  ActionTypes.SHUFFLE_LIST_TO_PLAY
+  ActionTypes.SHUFFLE_LIST_TO_PLAY,
+  (action) => {
+    return (itemIds?: string[]) =>
+      action({
+        itemIds,
+      });
+  }
 );
 
 /**

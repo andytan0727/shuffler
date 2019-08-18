@@ -1,5 +1,7 @@
 import produce, { Draft } from "immer";
+import remove from "lodash/remove";
 import shuffle from "lodash/shuffle";
+import zip from "lodash/zip";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
@@ -76,8 +78,44 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
+    // if itemIds array is provided, this action will
+    // shuffle listToPlay with fixed position items,
+    // The fixed position items' id are specified by
+    // itemIds array
+    // If no itemIds array provided, this action will
+    // go through normal shuffling process
     case ActionTypes.SHUFFLE_LIST_TO_PLAY: {
+      const { itemIds } = action.payload;
+      const removedItemIndexes: number[] = [];
+
+      // proceed to normal shuffle if no itemIds provided
+      if (!itemIds) {
+        draft.result = shuffle(draft.result);
+        return draft;
+      }
+
+      // get all removed fixed items from result array
+      const removedItems = remove(draft.result, (item, idx) => {
+        const isItemToRemove = itemIds.includes(item.id);
+
+        // store removed items indexes for re-adding
+        if (isItemToRemove) {
+          removedItemIndexes.push(idx);
+        }
+
+        return isItemToRemove;
+      });
+
+      // shuffle listToPlay result array without fixed items
       draft.result = shuffle(draft.result);
+
+      // re-add fixed items after shuffling
+      for (const [itemIdx, item] of zip(removedItemIndexes, removedItems)) {
+        if (itemIdx !== undefined && item !== undefined) {
+          draft.result.splice(itemIdx, 0, item);
+        }
+      }
+
       return draft;
     }
 
