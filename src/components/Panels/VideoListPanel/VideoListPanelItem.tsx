@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { HandleSetChecked } from "components/Checkbox/hooks";
+import { HandleCheckOrUncheckId } from "components/Checkbox/hooks";
 import {
   AllPlaylistInPlayingIcon,
   PartialPlaylistInPlayingIcon,
@@ -24,11 +24,11 @@ import styles from "./styles.module.scss";
 interface VideoListPanelItemProps {
   playlistId: string;
   checked: string[];
-  handleSetChecked: HandleSetChecked;
+  handleCheckOrUncheckId: HandleCheckOrUncheckId;
 }
 
 const VideoListPanelItem = (props: VideoListPanelItemProps) => {
-  const { playlistId, checked, handleSetChecked } = props;
+  const { playlistId, checked, handleCheckOrUncheckId } = props;
   const allInPlaying = useSelector((state: AppState) =>
     selectNormPlaylistAllInPlayingById(state, playlistId)
   );
@@ -43,15 +43,18 @@ const VideoListPanelItem = (props: VideoListPanelItemProps) => {
         [styles.checkedPlaylists]: checked.includes(playlistId),
       })}
     >
-      <div onClick={handleSetChecked(playlistId)}>
+      <div onClick={handleCheckOrUncheckId(playlistId)}>
         <Checkbox
           className={styles.checkBox}
           checked={checked.includes(playlistId)}
           icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
           checkedIcon={<CheckBoxIcon fontSize="small" />}
-          onChange={handleSetChecked(playlistId)}
+          onChange={handleCheckOrUncheckId(playlistId)}
         />
-        <RenameInput id={playlistId} handleSetChecked={handleSetChecked} />
+        <RenameInput
+          id={playlistId}
+          handleCheckOrUncheckId={handleCheckOrUncheckId}
+        />
 
         {allInPlaying ? (
           <AllPlaylistInPlayingIcon />

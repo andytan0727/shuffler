@@ -12,7 +12,7 @@ const SearchVideoInput = makeSearchInput("videos");
 
 const VideosPanel = () => {
   const itemIds = useSelector(selectAllNormVideoItemIds);
-  const { checked, handleSetChecked, clearChecked } = useCheckbox();
+  const { checked, handleCheckOrUncheckId, clearChecked } = useCheckbox();
 
   return (
     <React.Fragment>
@@ -24,7 +24,7 @@ const VideosPanel = () => {
               <VideosPanelItem
                 key={itemId}
                 checked={checked}
-                handleSetChecked={handleSetChecked}
+                handleCheckOrUncheckId={handleCheckOrUncheckId}
                 itemId={itemId}
               />
             ))

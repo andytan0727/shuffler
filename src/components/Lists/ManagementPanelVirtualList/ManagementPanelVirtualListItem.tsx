@@ -55,7 +55,12 @@ export const withListItemSecondaryAction = (
     const {
       index,
       style,
-      data: { checked, handleSetChecked, items: itemIds, filteredSnippets },
+      data: {
+        checked,
+        handleCheckOrUncheckId,
+        items: itemIds,
+        filteredSnippets,
+      },
     } = props;
     const classes = useStyles({});
     const currentItemId = filteredSnippets
@@ -94,7 +99,7 @@ export const withListItemSecondaryAction = (
         button
         divider
         className={classes.listItem}
-        onClick={handleSetChecked(currentItemId)}
+        onClick={handleCheckOrUncheckId(currentItemId)}
         ContainerProps={{
           style: {
             ...style,

@@ -4,8 +4,9 @@ import { addOrRemove } from "utils/helper/arrayHelper";
 /**
  * useCheckbox hooks
  *
- * React hook that manages an array to store a set of checked ids. The id can be
- * from playlists/videos, depends on what client wants
+ * React hook that manages an array to store
+ * a set of checked ids. The id can be
+ * playlists/videos id
  *
  */
 export const useCheckbox = () => {
@@ -14,14 +15,15 @@ export const useCheckbox = () => {
   /**
    * Main function to handle add/remove id to/from checked array.
    *
-   * It is a higher-order function that accepts id and making it as the closure
-   * for the inner function returned
+   * It is a higher-order function that accepts
+   * an playlist/video id and making it as the
+   * closure for the inner function returned
    *
-   * @param {string} id Id to be added/removed
+   * @param id Id to be added/removed
    * @returns Curried event handler
    *
    */
-  const handleSetChecked = useCallback(
+  const handleCheckOrUncheckId = useCallback(
     (id: string) => (e?: OnClickEvent | InputChangeEvent) => {
       // stop event bubbling to parent div and checks checkbox twice
       if (e) {
@@ -34,18 +36,24 @@ export const useCheckbox = () => {
   );
 
   /**
-   * Clear all contents of checked
+   * Clear all contents of checked array
    *
    */
   const clearChecked = useCallback(() => setChecked([]), [setChecked]);
 
   return {
     checked,
-    handleSetChecked,
+    handleCheckOrUncheckId,
     clearChecked,
+
+    // low level function
+    // for fine grained operations that
+    // needs direct write access to checked
+    setChecked,
   };
 };
 
 type CheckboxHooksReturn = ReturnType<typeof useCheckbox>;
-export type HandleSetChecked = CheckboxHooksReturn["handleSetChecked"];
+export type HandleCheckOrUncheckId = CheckboxHooksReturn["handleCheckOrUncheckId"];
 export type ClearChecked = CheckboxHooksReturn["clearChecked"];
+export type SetChecked = CheckboxHooksReturn["setChecked"];

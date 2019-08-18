@@ -14,7 +14,7 @@ const SearchPlaylistInput = makeSearchInput("playlists");
 const VideoListPanel = () => {
   const [viewPlaylist, setViewPlaylist] = useState(false);
   const playlistIds = useSelector(selectNormPlaylistsResult);
-  const { checked, handleSetChecked, clearChecked } = useCheckbox();
+  const { checked, handleCheckOrUncheckId, clearChecked } = useCheckbox();
 
   const handleCloseViewPlaylist = useCallback(() => {
     setViewPlaylist(false);
@@ -32,7 +32,7 @@ const VideoListPanel = () => {
                 <VideoListPanelItem
                   playlistId={playlistId}
                   checked={checked}
-                  handleSetChecked={handleSetChecked}
+                  handleCheckOrUncheckId={handleCheckOrUncheckId}
                 />
                 {viewPlaylist && (
                   <ViewPlaylistPanel

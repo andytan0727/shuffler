@@ -1,4 +1,4 @@
-import { HandleSetChecked } from "components/Checkbox/hooks";
+import { HandleCheckOrUncheckId } from "components/Checkbox/hooks";
 import memoizeOne from "memoize-one";
 import React, { MemoExoticComponent } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -12,7 +12,7 @@ interface ManagementPanelVirtualListProps {
 
 export interface ItemData {
   checked: string[];
-  handleSetChecked: HandleSetChecked;
+  handleCheckOrUncheckId: HandleCheckOrUncheckId;
   items: string[];
 
   // filtered list of snippets to be displayed
@@ -37,12 +37,12 @@ const _getItemKey = (index: number, data: ItemData): string | number =>
 export const createItemData = memoizeOne(
   (
     checked: string[],
-    handleSetChecked: HandleSetChecked,
+    handleCheckOrUncheckId: HandleCheckOrUncheckId,
     items: string[],
     filteredSnippets?: ListToPlaySnippets
   ): ItemData => ({
     checked,
-    handleSetChecked,
+    handleCheckOrUncheckId,
     items,
     filteredSnippets,
   })

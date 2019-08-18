@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { HandleSetChecked } from "components/Checkbox/hooks";
+import { HandleCheckOrUncheckId } from "components/Checkbox/hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "store";
@@ -10,21 +10,21 @@ import styles from "./styles.module.scss";
 
 interface RenameInputProps {
   id: string;
-  handleSetChecked: HandleSetChecked;
+  handleCheckOrUncheckId: HandleCheckOrUncheckId;
 }
 
 const RenameInput = (props: RenameInputProps) => {
-  const { id: playlistId, handleSetChecked } = props;
+  const { id: playlistId, handleCheckOrUncheckId } = props;
   const [editName, setEditName] = useState({});
   const playlistName = useSelector((state: AppState) =>
     selectNormPlaylistNameById(state, playlistId)
   );
   const dispatch = useDispatch();
 
-  const setCheckedWithId = useCallback(() => handleSetChecked(playlistId)(), [
-    playlistId,
-    handleSetChecked,
-  ]);
+  const setCheckedWithId = useCallback(
+    () => handleCheckOrUncheckId(playlistId)(),
+    [playlistId, handleCheckOrUncheckId]
+  );
 
   // on videoItem span child
   const handleDoubleClick = useCallback(

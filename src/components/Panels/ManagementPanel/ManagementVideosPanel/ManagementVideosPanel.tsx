@@ -22,8 +22,12 @@ const ManagementPanelVirtualListVideoItem = withListItemSecondaryAction(
 
 const ManagementVideosPanel = () => {
   const videoItemIds = useSelector(selectAllNormVideoItemIds);
-  const { checked, handleSetChecked } = useCheckbox();
-  const videoItemData = createItemData(checked, handleSetChecked, videoItemIds);
+  const { checked, handleCheckOrUncheckId } = useCheckbox();
+  const videoItemData = createItemData(
+    checked,
+    handleCheckOrUncheckId,
+    videoItemIds
+  );
 
   return (
     <div className={styles.managementVideosPanelDiv}>

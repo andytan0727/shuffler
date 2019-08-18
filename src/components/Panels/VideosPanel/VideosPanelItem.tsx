@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { HandleSetChecked } from "components/Checkbox/hooks";
+import { HandleCheckOrUncheckId } from "components/Checkbox/hooks";
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
@@ -18,12 +18,12 @@ import styles from "./styles.module.scss";
 
 interface VideosPanelItemProps {
   checked: string[];
-  handleSetChecked: HandleSetChecked;
+  handleCheckOrUncheckId: HandleCheckOrUncheckId;
   itemId: string;
 }
 
 const VideosPanelItem = (props: VideosPanelItemProps) => {
-  const { checked, handleSetChecked, itemId } = props;
+  const { checked, handleCheckOrUncheckId, itemId } = props;
   const snippet = useSelector((state: AppState) =>
     selectNormVideoSnippetByItemId(state, itemId)
   );
@@ -34,7 +34,7 @@ const VideosPanelItem = (props: VideosPanelItemProps) => {
       className={classNames(styles.videosItem, {
         [styles.checkedVideos]: checked.includes(itemId),
       })}
-      onClick={handleSetChecked(itemId)}
+      onClick={handleCheckOrUncheckId(itemId)}
     >
       <div>
         <Checkbox
@@ -42,7 +42,7 @@ const VideosPanelItem = (props: VideosPanelItemProps) => {
           checked={checked.includes(itemId)}
           icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
           checkedIcon={<CheckBoxIcon fontSize="small" />}
-          onChange={handleSetChecked(itemId)}
+          onChange={handleCheckOrUncheckId(itemId)}
         />
         <span>{(snippet && snippet.title) || "Invalid item"}</span>
         {isListToPlayItemExists(listToPlayEntities, "videoItems", itemId) && (
