@@ -44,11 +44,11 @@ const ManagementPlaylistPanel = ({
   const playlistItemIds = useSelector((state: AppState) =>
     selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
   ) as string[];
-  const { checked, handleCheckOrUncheckId } = useCheckbox();
+  const checkboxHooks = useCheckbox();
+  const { checked } = checkboxHooks;
 
   const playlistItemData = createItemData({
-    checked,
-    handleCheckOrUncheckId,
+    ...checkboxHooks,
     items: playlistItemIds,
   });
 

@@ -3,10 +3,17 @@ import {
   HandleCheckOrUncheckId,
 } from "components/Checkbox/hooks";
 import memoizeOne from "memoize-one";
-import React, { MemoExoticComponent } from "react";
+import React, { MemoExoticComponent, useCallback } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
+
+import VirtualListSelectionHeader from "../VirtualListSelectionHeader";
+
+interface ManagementPanelVirtualListProps {
+  itemData: ItemData;
+  children: MemoExoticComponent<any>; // shut TS up with the usage of Memo on ListItem
+}
 
 export interface ItemData {
   checked: string[];
@@ -57,8 +64,32 @@ export const createItemData = memoizeOne((itemData: ItemData) => itemData);
  */
 const ManagementPanelVirtualList = (props: ManagementPanelVirtualListProps) => {
   const { itemData, children } = props;
-  const { items, filteredSnippets } = itemData;
+  const {
+    checked,
+    clearChecked,
+    setChecked,
+    filteredSnippets,
+    items,
+  } = itemData;
   const itemCount = filteredSnippets ? filteredSnippets.length : items.length;
+
+  // select (check) all filteredSnippets if they exist
+  // else select all original items
+  const handleSelectAll = useCallback(() => {
+    if (setChecked) {
+      setChecked(
+        filteredSnippets
+          ? filteredSnippets.map((snippet) => snippet.itemId!)
+          : items
+      );
+    }
+  }, [filteredSnippets, items, setChecked]);
+
+  const handleClearSelected = useCallback(() => {
+    if (clearChecked) {
+      clearChecked();
+    }
+  }, [clearChecked]);
 
   // prevent property undefined error if no items/filteredSnippets
   return itemCount === 0 ? (
@@ -66,16 +97,27 @@ const ManagementPanelVirtualList = (props: ManagementPanelVirtualListProps) => {
   ) : (
     <AutoSizer>
       {({ height, width }) => (
-        <FixedSizeList
-          height={height - 200}
-          width={width}
-          itemKey={_getItemKey}
-          itemData={itemData}
-          itemCount={itemCount}
-          itemSize={80}
-        >
-          {children}
-        </FixedSizeList>
+        <React.Fragment>
+          <VirtualListSelectionHeader
+            width={width}
+            isChecked={checked.length !== 0}
+            isAllChecked={checked.length === itemCount}
+            checkedItemsCount={checked.length}
+            handleSelectAll={handleSelectAll}
+            handleClearSelected={handleClearSelected}
+          />
+
+          <FixedSizeList
+            height={height - 230}
+            width={width}
+            itemKey={_getItemKey}
+            itemData={itemData}
+            itemCount={itemCount}
+            itemSize={80}
+          >
+            {children}
+          </FixedSizeList>
+        </React.Fragment>
       )}
     </AutoSizer>
   );

@@ -22,10 +22,9 @@ const ManagementPanelVirtualListVideoItem = withListItemSecondaryAction(
 
 const ManagementVideosPanel = () => {
   const videoItemIds = useSelector(selectAllNormVideoItemIds);
-  const { checked, handleCheckOrUncheckId } = useCheckbox();
+  const checkboxHooks = useCheckbox();
   const videoItemData = createItemData({
-    checked,
-    handleCheckOrUncheckId,
+    ...checkboxHooks,
     items: videoItemIds,
   });
 
