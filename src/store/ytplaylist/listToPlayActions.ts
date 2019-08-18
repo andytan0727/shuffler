@@ -173,6 +173,22 @@ export const shuffleListToPlayAction = createAction(
 );
 
 /**
+ * Choose and fix first item, then shuffle the rest of the listToPlay result items
+ *
+ * @param itemId ItemId of item to be fixed as first item
+ * @returns CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY action object
+ */
+export const chooseFirstItemAndShuffleListToPlayAction = createAction(
+  ActionTypes.CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
+  (action) => {
+    return (itemId: string) =>
+      action({
+        itemId,
+      });
+  }
+);
+
+/**
  * Filter out listToPlay items specified by itemId in itemIds array.
  * Then all the other listToPlay items are removed,
  * replaced with filtered items

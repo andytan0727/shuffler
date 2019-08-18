@@ -4,6 +4,7 @@ import {
   ADD_NORM_LIST_TO_PLAY_ITEM,
   ADD_NORM_LIST_TO_PLAY_ITEMS,
   ADD_UNIQUE_NORM_LIST_TO_PLAY,
+  CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
   DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
   DELETE_NORM_LIST_TO_PLAY_ITEMS,
@@ -17,6 +18,7 @@ import {
   addNormListToPlayItemAction,
   addNormListToPlayItemsAction,
   addUniqueNormListToPlay,
+  chooseFirstItemAndShuffleListToPlayAction,
   clearListToPlayAction,
   deleteNormListToPlayItemByIdAction,
   deleteNormListToPlayItemsAction,
@@ -140,6 +142,15 @@ describe("listToPlay actions", () => {
       type: SHUFFLE_LIST_TO_PLAY,
       payload: {
         itemIds: ["itemId-1"],
+      },
+    });
+  });
+
+  test("should create CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY action object", () => {
+    expect(chooseFirstItemAndShuffleListToPlayAction(itemIds[0])).toEqual({
+      type: CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
+      payload: {
+        itemId: itemIds[0],
       },
     });
   });

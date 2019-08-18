@@ -119,6 +119,21 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
+    case ActionTypes.CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY: {
+      const { itemId } = action.payload;
+
+      const [removedItem] = remove(draft.result, (item) => item.id === itemId);
+
+      if (!removedItem) throw new Error("Item not found in listToPlay");
+
+      // shuffle then insert removed item as first item
+      // this creates the effect of fixed first item then shuffle
+      draft.result = shuffle(draft.result);
+      draft.result.splice(0, 0, removedItem);
+
+      return draft;
+    }
+
     default:
       return draft;
   }
