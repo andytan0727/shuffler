@@ -33,17 +33,17 @@ const ManagementNowPlayingPanel = (props: ManagementNowPlayingPanelProps) => {
   const filteredSnippets = useSelector(selectFilteredSnippets);
   const dispatch = useDispatch();
   const listToPlayItemIds = useSelector(selectAllNormListToPlayItemIds);
-  const { checked, handleCheckOrUncheckId, clearChecked } = useCheckbox();
+  const checkboxHooks = useCheckbox();
+  const { checked, clearChecked } = checkboxHooks;
 
   // allow filtered snippets to be shown on list item
   // for details please refer to
   // ManagementPanelVirtualList/ ManagementPanelVirtualListItem
-  const listToPlayItemData = createItemData(
-    checked,
-    handleCheckOrUncheckId,
-    listToPlayItemIds,
-    filteredSnippets
-  );
+  const listToPlayItemData = createItemData({
+    ...checkboxHooks,
+    items: listToPlayItemIds,
+    filteredSnippets,
+  });
 
   // play only checked items if checked is not empty
   // else play the entire original listToPlay

@@ -53,7 +53,7 @@ export const useCheckbox = () => {
   };
 };
 
-type CheckboxHooksReturn = ReturnType<typeof useCheckbox>;
+export type CheckboxHooksReturn = ReturnType<typeof useCheckbox>;
 export type HandleCheckOrUncheckId = CheckboxHooksReturn["handleCheckOrUncheckId"];
 export type ClearChecked = CheckboxHooksReturn["clearChecked"];
 export type SetChecked = CheckboxHooksReturn["setChecked"];

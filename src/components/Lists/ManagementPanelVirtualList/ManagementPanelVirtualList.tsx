@@ -1,23 +1,35 @@
-import { HandleCheckOrUncheckId } from "components/Checkbox/hooks";
+import {
+  CheckboxHooksReturn,
+  HandleCheckOrUncheckId,
+} from "components/Checkbox/hooks";
 import memoizeOne from "memoize-one";
 import React, { MemoExoticComponent } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
 
-interface ManagementPanelVirtualListProps {
-  itemData: ItemData;
-  children: MemoExoticComponent<any>; // shut TS up with the usage of Memo on ListItem
-}
-
 export interface ItemData {
   checked: string[];
   handleCheckOrUncheckId: HandleCheckOrUncheckId;
+
+  // for select all / clear selected functionality
+  // if client components do not plan to implement
+  // those functionality, then both of the functions
+  // can be ignored
+  clearChecked?: CheckboxHooksReturn["clearChecked"];
+  setChecked?: CheckboxHooksReturn["setChecked"];
+
+  // main list items to render
   items: string[];
 
   // filtered list of snippets to be displayed
   // if not supplied/undefined then items will be displayed instead
   filteredSnippets?: ListToPlaySnippets;
+}
+
+interface ManagementPanelVirtualListProps {
+  itemData: ItemData;
+  children: MemoExoticComponent<any>; // shut TS up with the usage of Memo on ListItem
 }
 
 /**
@@ -34,19 +46,7 @@ const _getItemKey = (index: number, data: ItemData): string | number =>
  * Memoized function to create itemData for react-window list
  *
  */
-export const createItemData = memoizeOne(
-  (
-    checked: string[],
-    handleCheckOrUncheckId: HandleCheckOrUncheckId,
-    items: string[],
-    filteredSnippets?: ListToPlaySnippets
-  ): ItemData => ({
-    checked,
-    handleCheckOrUncheckId,
-    items,
-    filteredSnippets,
-  })
-);
+export const createItemData = memoizeOne((itemData: ItemData) => itemData);
 
 /**
  * ManagementPanelVirtualList component

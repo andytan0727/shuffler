@@ -46,11 +46,11 @@ const ManagementPlaylistPanel = ({
   ) as string[];
   const { checked, handleCheckOrUncheckId } = useCheckbox();
 
-  const playlistItemData = createItemData(
+  const playlistItemData = createItemData({
     checked,
     handleCheckOrUncheckId,
-    playlistItemIds
-  );
+    items: playlistItemIds,
+  });
 
   const handlePlayPlaylist = useCallback(() => {
     dispatch(
