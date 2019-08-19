@@ -8,7 +8,7 @@ import {
   selectRepeat,
 } from "store/ytplayer/selector";
 import { shuffleListToPlayAction } from "store/ytplaylist/listToPlayActions";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
 import { notify } from "utils/helper/notifyHelper";
 
@@ -35,7 +35,7 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
   const repeat = useSelector(selectRepeat);
   const dispatch = useDispatch();
 
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
 
   const handlePrevious = useCallback(() => {
     if (curSongIdx > 0) {

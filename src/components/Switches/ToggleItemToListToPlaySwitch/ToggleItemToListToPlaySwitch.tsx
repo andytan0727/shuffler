@@ -2,13 +2,13 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "store";
 import {
-  addNormListToPlayItemAction,
-  deleteNormListToPlayItemByIdAction,
+  addListToPlayItemAction,
+  deleteListToPlayItemByIdAction,
 } from "store/ytplaylist/listToPlayActions";
-import { selectNormListToPlayEntities } from "store/ytplaylist/listToPlaySelectors";
-import { selectNormPlaylistIdByItemId } from "store/ytplaylist/playlistSelectors";
+import { selectListToPlayEntities } from "store/ytplaylist/listToPlaySelectors";
+import { selectPlaylistIdByItemId } from "store/ytplaylist/playlistSelectors";
 import { isListToPlayItemExists } from "store/ytplaylist/utils";
-import { selectNormVideoIdByItemId } from "store/ytplaylist/videoSelectors";
+import { selectVideoIdByItemId } from "store/ytplaylist/videoSelectors";
 
 import { makeStyles, Switch } from "@material-ui/core";
 
@@ -67,26 +67,26 @@ export const makeToggleItemToListToPlaySwitch = (source: MediaSourceType) =>
     const classes = useStyles();
     const dispatch = useDispatch();
     const listToPlayEntities = useSelector((state: AppState) =>
-      selectNormListToPlayEntities(state)
+      selectListToPlayEntities(state)
     );
     const sourceId = useSelector((state: AppState) =>
       source === "playlists"
-        ? selectNormPlaylistIdByItemId(state, itemId)
-        : selectNormVideoIdByItemId(state, itemId)
+        ? selectPlaylistIdByItemId(state, itemId)
+        : selectVideoIdByItemId(state, itemId)
     );
     const schema = source === "playlists" ? "playlistItems" : "videoItems";
 
     const handleToggleListToPlayItem = useCallback(() => {
       dispatch(
         !isListToPlayItemExists(listToPlayEntities, schema, itemId)
-          ? addNormListToPlayItemAction(
+          ? addListToPlayItemAction(
               {
                 id: itemId,
                 schema,
               },
               sourceId
             )
-          : deleteNormListToPlayItemByIdAction(itemId)
+          : deleteListToPlayItemByIdAction(itemId)
       );
     }, [listToPlayEntities, dispatch, itemId, sourceId, schema]);
 

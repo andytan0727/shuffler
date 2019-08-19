@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Playlist, Video } from "store/ytplaylist/types";
+import { FetchedPlaylist, FetchedVideo } from "store/ytplaylist/types";
 
 /**
  *
@@ -13,7 +13,7 @@ export const fetchYoutubeAPIData = async (
   baseUrl: string,
   params: FetchParams,
   dataType: MediaSourceType
-): Promise<Playlist | Video> => {
+): Promise<FetchedPlaylist | FetchedVideo> => {
   const {
     maxResults,
     playlistId,

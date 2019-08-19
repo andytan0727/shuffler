@@ -6,33 +6,33 @@ import * as listToPlayActions from "./listToPlayActions";
 import * as videoActions from "./videoActions";
 
 /**
- * Saga which watching for DELETE_NORM_VIDEO_BY_ID action.
+ * Saga which watching for DELETE_VIDEO_BY_ID action.
  * If triggered, it dispatch an action to delete the respective video item from
- * normListToPlay (if exists) as well
+ * listToPlay (if exists) as well
  *
  */
-export function* deleteNormVideoByIdWatcher() {
-  yield takeEvery(ActionTypes.DELETE_NORM_VIDEO_BY_ID, function*(
-    action: ActionType<typeof videoActions.deleteNormVideoByIdAction>
+export function* deleteVideoByIdWatcher() {
+  yield takeEvery(ActionTypes.DELETE_VIDEO_BY_ID, function*(
+    action: ActionType<typeof videoActions.deleteVideoByIdAction>
   ) {
     const {
       payload: { id },
     } = action;
 
-    // remove item from normalized listToPlay videoItems
-    yield put(listToPlayActions.deleteNormListToPlayItemByIdAction(id));
+    // remove item from listToPlay videoItems
+    yield put(listToPlayActions.deleteListToPlayItemByIdAction(id));
   });
 }
 
 /**
- * Saga that watching for ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY action.
+ * Saga that watching for ADD_VIDEO_TO_LIST_TO_PLAY action.
  * If triggered, it dispatches an action to add video item
- * to normalized listToPlay
+ * to listToPlay
  *
  */
-export function* addNormVideoToNormListToPlayWatcher() {
-  yield takeEvery(ActionTypes.ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof videoActions.addNormVideoToNormListToPlayAction>
+export function* addVideoToListToPlayWatcher() {
+  yield takeEvery(ActionTypes.ADD_VIDEO_TO_LIST_TO_PLAY, function*(
+    action: ActionType<typeof videoActions.addVideoToListToPlayAction>
   ) {
     const {
       payload: { videoId },
@@ -47,7 +47,7 @@ export function* addNormVideoToNormListToPlayWatcher() {
     };
 
     yield put(
-      listToPlayActions.addNormListToPlayItemAction(
+      listToPlayActions.addListToPlayItemAction(
         listToPlayVideoItem.resultItem,
         listToPlayVideoItem.foreignKey
       )
@@ -56,76 +56,66 @@ export function* addNormVideoToNormListToPlayWatcher() {
 }
 
 /**
- * Saga that watching for ADD_NORM_VIDEOS_TO_NORM_LIST_TO_PLAY action.
- * If triggered, it dispatches multiple ADD_NORM_VIDEO_TO_NORM_LIST_TO_PLAY actions
+ * Saga that watching for ADD_VIDEOS_TO_LIST_TO_PLAY action.
+ * If triggered, it dispatches multiple ADD_VIDEO_TO_LIST_TO_PLAY actions
  * to add all item with the videoId as specified in videoIds array
  *
  */
-export function* addNormVideosToNormListToPlayWatcher() {
-  yield takeEvery(ActionTypes.ADD_NORM_VIDEOS_TO_NORM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof videoActions.addNormVideosToNormListToPlayAction>
+export function* addVideosToListToPlayWatcher() {
+  yield takeEvery(ActionTypes.ADD_VIDEOS_TO_LIST_TO_PLAY, function*(
+    action: ActionType<typeof videoActions.addVideosToListToPlayAction>
   ) {
     const {
       payload: { videoIds },
     } = action;
 
     for (const videoId of videoIds) {
-      yield put(videoActions.addNormVideoToNormListToPlayAction(videoId));
+      yield put(videoActions.addVideoToListToPlayAction(videoId));
     }
   });
 }
 
 /**
- * Saga that watching for REMOVE_NORM_VIDEO_FROM_NORM_LIST_TO_PLAY action.
- * If triggered, it dispatches an action to remove playlist item from normalized listToPlay
+ * Saga that watching for REMOVE_VIDEO_FROM_LIST_TO_PLAY action.
+ * If triggered, it dispatches an action to remove playlist item from listToPlay
  *
  */
-export function* removeNormVideoFromNormListToPlayWatcher() {
-  yield takeEvery(
-    ActionTypes.REMOVE_NORM_VIDEO_FROM_NORM_LIST_TO_PLAY,
-    function*(
-      action: ActionType<
-        typeof videoActions.removeNormVideoFromNormListToPlayAction
-      >
-    ) {
-      const {
-        payload: { videoId: itemId },
-      } = action;
+export function* removeVideoFromListToPlayWatcher() {
+  yield takeEvery(ActionTypes.REMOVE_VIDEO_FROM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof videoActions.removeVideoFromListToPlayAction>
+  ) {
+    const {
+      payload: { videoId: itemId },
+    } = action;
 
-      yield put(listToPlayActions.deleteNormListToPlayItemByIdAction(itemId));
-    }
-  );
+    yield put(listToPlayActions.deleteListToPlayItemByIdAction(itemId));
+  });
 }
 
 /**
- * Saga that watching for REMOVE_NORM_VIDEOS_FROM_NORM_LIST_TO_PLAY action.
- * If triggered, it dispatches DELETE_NORM_LIST_TO_PLAY_ITEMS action
- * to remove video items from normalized listToPlay
+ * Saga that watching for REMOVE_VIDEOS_FROM_LIST_TO_PLAY action.
+ * If triggered, it dispatches DELETE_LIST_TO_PLAY_ITEMS action
+ * to remove video items from listToPlay
  *
  */
-export function* removeNormVideosFromNormListToPlayWatcher() {
-  yield takeEvery(
-    ActionTypes.REMOVE_NORM_VIDEOS_FROM_NORM_LIST_TO_PLAY,
-    function*(
-      action: ActionType<
-        typeof videoActions.removeNormVideosFromNormListToPlayAction
-      >
-    ) {
-      const {
-        payload: { videoIds: itemIds },
-      } = action;
+export function* removeVideosFromListToPlayWatcher() {
+  yield takeEvery(ActionTypes.REMOVE_VIDEOS_FROM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof videoActions.removeVideosFromListToPlayAction>
+  ) {
+    const {
+      payload: { videoIds: itemIds },
+    } = action;
 
-      yield put(listToPlayActions.deleteNormListToPlayItemsAction(itemIds));
-    }
-  );
+    yield put(listToPlayActions.deleteListToPlayItemsAction(itemIds));
+  });
 }
 
 export default function* videoSagas() {
   yield all([
-    deleteNormVideoByIdWatcher(),
-    addNormVideoToNormListToPlayWatcher(),
-    addNormVideosToNormListToPlayWatcher(),
-    removeNormVideoFromNormListToPlayWatcher(),
-    removeNormVideosFromNormListToPlayWatcher(),
+    deleteVideoByIdWatcher(),
+    addVideoToListToPlayWatcher(),
+    addVideosToListToPlayWatcher(),
+    removeVideoFromListToPlayWatcher(),
+    removeVideosFromListToPlayWatcher(),
   ]);
 }

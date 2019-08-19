@@ -18,12 +18,12 @@ type FetchVideoDataAction = ActionType<typeof ytapi.fetchVideoDataAction>;
 // Helper sagas
 // ====================================================
 /**
- * Helper function to add items to normalized listToPlay
+ * Helper function to add items to listToPlay
  *
  * @export
  * @param items Playlist/video items before normalized
  */
-export function* addFetchItemsToNormListToPlay(
+export function* addFetchItemsToListToPlay(
   items: (YTPlaylistTypes.PlaylistItem | YTPlaylistTypes.VideoItem)[]
 ) {
   const {
@@ -32,20 +32,17 @@ export function* addFetchItemsToNormListToPlay(
   } = schemas.normalizeListToPlay(items);
 
   yield put(
-    listToPlayActions.addNormListToPlayAction(
-      listToPlayEntities,
-      listToPlayResult
-    )
+    listToPlayActions.addListToPlayAction(listToPlayEntities, listToPlayResult)
   );
 }
 
 /**
- * Helper function to add fetched playlists to normalized playlists state
+ * Helper function to add fetched playlists to playlists state
  *
  * @export
  * @param playlist Playlist data
  */
-export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
+export function* addFetchedPlaylist(playlist: YTPlaylistTypes.FetchedPlaylist) {
   const {
     entities: playlistEntities,
     result: playlistResult,
@@ -57,23 +54,23 @@ export function* addFetchedNormPlaylist(playlist: YTPlaylistTypes.Playlist) {
 
   // add playlist
   yield put(
-    playlistActions.addNormPlaylistAction(playlistEntities, playlistResult)
+    playlistActions.addPlaylistAction(playlistEntities, playlistResult)
   );
 
   // add all fetched playlist's items to listToPlay
   // and label the playlist as playing (all playlistItems in listToPlay)
-  yield call(addFetchItemsToNormListToPlay, playlist.items);
+  yield call(addFetchItemsToListToPlay, playlist.items);
 
   yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
 }
 
 /**
- * Add fetched video to normalized videos state
+ * Add fetched video to videos state
  *
  * @export
- * @param video Video data
+ * @param video FetchedVideo data
  */
-export function* addFetchedNormVideo(video: YTPlaylistTypes.Video) {
+export function* addFetchedVideo(video: YTPlaylistTypes.FetchedVideo) {
   const {
     entities: videoEntities,
     result: videoResult,
@@ -83,10 +80,10 @@ export function* addFetchedNormVideo(video: YTPlaylistTypes.Video) {
     throw new Error("Saga: No or more than one video is found");
 
   // add video
-  yield put(videoActions.addNormVideoAction(videoEntities, videoResult));
+  yield put(videoActions.addVideoAction(videoEntities, videoResult));
 
   // add fetched video items to listToPlay
-  yield call(addFetchItemsToNormListToPlay, video.items);
+  yield call(addFetchItemsToListToPlay, video.items);
 }
 
 export function* fetchPlaylistDataSuccess(
@@ -94,21 +91,20 @@ export function* fetchPlaylistDataSuccess(
 ) {
   const items = Array.from(dataItems);
   const id = items[0].snippet.playlistId;
-  const fetchedPlaylist: YTPlaylistTypes.Playlist = {
+  const fetchedPlaylist: YTPlaylistTypes.FetchedPlaylist = {
     id,
     items,
   };
 
   yield put(ytapi.fetchPlaylistDataSuccessAction(fetchedPlaylist));
 
-  // add playlist to normalized playlists
-  yield call(addFetchedNormPlaylist, fetchedPlaylist);
+  yield call(addFetchedPlaylist, fetchedPlaylist);
 
   // add fetched playlist's id to redux store
   yield put(ytapi.addFetchedPlaylistIdAction(id));
 }
 
-export function* fetchVideoDataSuccess(data: YTPlaylistTypes.Video) {
+export function* fetchVideoDataSuccess(data: YTPlaylistTypes.FetchedVideo) {
   const items = Array.from(data.items);
   const id = items[0].id;
   const fetchedVideo = {
@@ -118,8 +114,7 @@ export function* fetchVideoDataSuccess(data: YTPlaylistTypes.Video) {
 
   yield put(ytapi.fetchVideoDataSuccessAction(data));
 
-  // add fetched video to normalized videos
-  yield call(addFetchedNormVideo, fetchedVideo);
+  yield call(addFetchedVideo, fetchedVideo);
 
   // add fetched video's id to redux store
   yield put(ytapi.addFetchedVideoIdAction(id));
@@ -139,7 +134,7 @@ export function* fetchPlaylistData(action: FetchPlaylistDataAction) {
     let count = 2;
     const items = [];
 
-    let data: YTPlaylistTypes.Playlist = yield call(
+    let data: YTPlaylistTypes.FetchedPlaylist = yield call(
       fetchYoutubeAPIData,
       url,
       params,
@@ -192,7 +187,7 @@ export function* fetchPlaylistData(action: FetchPlaylistDataAction) {
 export function* fetchVideoData(action: FetchVideoDataAction) {
   const { url, params } = action.payload;
   try {
-    const data: YTPlaylistTypes.Video = yield call(
+    const data: YTPlaylistTypes.FetchedVideo = yield call(
       fetchYoutubeAPIData,
       url,
       params,

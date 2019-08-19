@@ -7,7 +7,7 @@ import {
   clearListToPlayAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/listToPlayActions";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import {
@@ -20,7 +20,7 @@ import styles from "./styles.module.scss";
 
 const PlayingPanelBtnGroup = (props: RouteComponentProps) => {
   const { history } = props;
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
   const dispatch = useDispatch();
 

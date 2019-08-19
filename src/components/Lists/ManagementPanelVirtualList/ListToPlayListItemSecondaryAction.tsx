@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import {
   chooseFirstItemAndShuffleListToPlayAction,
-  deleteNormListToPlayItemByIdAction,
+  deleteListToPlayItemByIdAction,
 } from "store/ytplaylist/listToPlayActions";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 
@@ -33,7 +33,7 @@ const ListToPlayListItemSecondaryAction = (
   }, [dispatch, history, itemId]);
 
   const handleDeleteItemFromListToPlay = useCallback(() => {
-    dispatch(deleteNormListToPlayItemByIdAction(itemId));
+    dispatch(deleteListToPlayItemByIdAction(itemId));
   }, [dispatch, itemId]);
 
   return (

@@ -2,9 +2,9 @@ import deepFreeze from "deep-freeze";
 import partial from "lodash/partial";
 
 import { stateMaker } from "./testUtils";
-import { NormVideos } from "./types";
+import { Videos } from "./types";
 
-const baseVideosState: NormVideos = {
+const baseVideosState: Videos = {
   entities: {
     videoItems: {},
     videos: {},

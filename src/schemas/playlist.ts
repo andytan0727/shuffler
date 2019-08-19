@@ -1,5 +1,5 @@
 import { denormalize, normalize, NormalizedSchema, schema } from "normalizr";
-import { NormPlaylistsEntities, Playlist } from "store/ytplaylist/types";
+import { FetchedPlaylist, PlaylistsEntities } from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
 
 export const playlistItemSnippetSchema = new schema.Entity(
@@ -21,12 +21,11 @@ export const playlistItemsSchema = new schema.Entity("playlists", {
 export const playlistSchema = new schema.Array(playlistItemsSchema);
 
 export const normalizePlaylists = (
-  originalPlaylists: DeepReadonly<Playlist[]>
-) =>
-  normalize<NormPlaylistsEntities, string[]>(originalPlaylists, playlistSchema);
+  originalPlaylists: DeepReadonly<FetchedPlaylist[]>
+) => normalize<PlaylistsEntities, string[]>(originalPlaylists, playlistSchema);
 
 export const denormalizePlaylists = (
-  normalizedPlaylists: NormalizedSchema<NormPlaylistsEntities, string[]>
+  normalizedPlaylists: NormalizedSchema<PlaylistsEntities, string[]>
 ) =>
   denormalize(
     normalizedPlaylists.result,

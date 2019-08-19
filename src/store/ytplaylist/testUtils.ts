@@ -2,11 +2,11 @@ import produce from "immer";
 import get from "lodash/get";
 
 import {
-  NormPlaylists,
-  NormPlaylistsEntities,
-  NormVideos,
-  NormVideosEntities,
   PlaylistItemSnippet,
+  Playlists,
+  PlaylistsEntities,
+  Videos,
+  VideosEntities,
 } from "./types";
 import { isPlaylistsEntities } from "./utils";
 
@@ -17,7 +17,7 @@ import { isPlaylistsEntities } from "./utils";
  * @param videoId Dummy id to assign
  */
 function makeVideosEntitiesState(
-  entities: NormVideosEntities,
+  entities: VideosEntities,
   videoId: number,
   itemsLength?: number
 ) {
@@ -95,7 +95,7 @@ function makeVideosEntitiesState(
 }
 
 function makePlaylistsEntitiesStates(
-  entities: NormPlaylistsEntities,
+  entities: PlaylistsEntities,
   playlistId: number,
   itemsLength?: number
 ) {
@@ -182,13 +182,13 @@ function makePlaylistsEntitiesStates(
  * @returns Mutated states
  */
 export function stateMaker(
-  states: NormPlaylists | NormVideos,
+  states: Playlists | Videos,
   customizer?: {
     sourceLength?: number;
     itemsLength?: number;
     excludeId?: number;
   }
-): NormPlaylists | NormVideos {
+): Playlists | Videos {
   const sourceLength = get(customizer, "sourceLength");
   const itemsLength = get(customizer, "itemsLength");
   const excludeId = get(customizer, "excludeId");

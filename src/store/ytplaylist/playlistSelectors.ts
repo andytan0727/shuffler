@@ -4,63 +4,63 @@ import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 import { AppState } from "store";
 
-import { NormPlaylistsEntities, PlaylistItemSnippet } from "./types";
+import { PlaylistItemSnippet, PlaylistsEntities } from "./types";
 import { getSnippetFromItemId } from "./utils";
 
-export const selectNormPlaylistsEntities = (state: AppState) =>
-  state.ytplaylistNormed.playlists.entities;
-export const selectNormPlaylistsResult = (state: AppState) =>
-  state.ytplaylistNormed.playlists.result;
+export const selectPlaylistsEntities = (state: AppState) =>
+  state.ytplaylist.playlists.entities;
+export const selectPlaylistsResult = (state: AppState) =>
+  state.ytplaylist.playlists.result;
 
-export const selectAllNormPlaylistItems = createSelector(
-  selectNormPlaylistsEntities,
+export const selectAllPlaylistItems = createSelector(
+  selectPlaylistsEntities,
   (entities) => entities.playlistItems
 );
 
-export const selectAllNormPlaylists = createSelector(
-  selectNormPlaylistsEntities,
+export const selectAllPlaylists = createSelector(
+  selectPlaylistsEntities,
   (entities) => entities.playlists
 );
 
-export const selectAllNormPlaylistSnippets = createSelector(
-  selectNormPlaylistsEntities,
+export const selectAllPlaylistSnippets = createSelector(
+  selectPlaylistsEntities,
   (entities) => entities.snippets
 );
 
-export const selectNormPlaylistById = createCachedSelector(
-  selectNormPlaylistsEntities,
+export const selectPlaylistById = createCachedSelector(
+  selectPlaylistsEntities,
   (_: AppState, playlistId: string) => playlistId,
   (entities, playlistId) => entities.playlists[playlistId]
 )((_, playlistId) => `playlist-playlistId-${playlistId}`);
 
-export const selectNormPlaylistNameById = createCachedSelector(
-  selectNormPlaylistsEntities,
+export const selectPlaylistNameById = createCachedSelector(
+  selectPlaylistsEntities,
   (_: AppState, playlistId: string) => playlistId,
   (entities, id) => entities.playlists[id].name
 )((_, id) => `playlistName-playlistId-${id}`);
 
-export const selectNormPlaylistItemIdsByPlaylistId = createCachedSelector(
-  selectNormPlaylistsEntities,
+export const selectPlaylistItemIdsByPlaylistId = createCachedSelector(
+  selectPlaylistsEntities,
   (_: AppState, playlistId: string) => playlistId,
   (entities, id) => entities.playlists[id].items
 )((_, playlistId) => `playlistItemIds-playlistId-${playlistId}`);
 
-export const selectNormPlaylistSnippetIdsByPlaylistId = createCachedSelector(
-  selectNormPlaylistItemIdsByPlaylistId,
-  selectAllNormPlaylistItems,
+export const selectPlaylistSnippetIdsByPlaylistId = createCachedSelector(
+  selectPlaylistItemIdsByPlaylistId,
+  selectAllPlaylistItems,
   (itemIds, playlistItems) =>
     itemIds.map((id: string) => playlistItems[id].snippet)
 )((_, playlistId) => `playlistSnippetIds-playlistId-${playlistId}`);
 
-export const selectNormPlaylistSnippetByItemId = createCachedSelector(
-  selectNormPlaylistsEntities,
+export const selectPlaylistSnippetByItemId = createCachedSelector(
+  selectPlaylistsEntities,
   (_: AppState, playlistItemId: string) => playlistItemId,
   (entities, itemId) =>
-    getSnippetFromItemId(entities as NormPlaylistsEntities, itemId)
+    getSnippetFromItemId(entities as PlaylistsEntities, itemId)
 )((_, itemId) => `playlistSnippet-itemId-${itemId}`);
 
-export const selectNormPlaylistSnippetsByPlaylistId = createCachedSelector(
-  [selectNormPlaylistSnippetIdsByPlaylistId, selectAllNormPlaylistSnippets],
+export const selectPlaylistSnippetsByPlaylistId = createCachedSelector(
+  [selectPlaylistSnippetIdsByPlaylistId, selectAllPlaylistSnippets],
   (snippetIds, snippets) =>
     map(pick(snippets, snippetIds), (val, key) => ({
       id: key,
@@ -73,17 +73,17 @@ export const selectNormPlaylistSnippetsByPlaylistId = createCachedSelector(
  *
  * **Note: returned result might be undefined.**
  */
-export const selectNormPlaylistIdByItemId = createCachedSelector(
-  selectNormPlaylistSnippetByItemId,
+export const selectPlaylistIdByItemId = createCachedSelector(
+  selectPlaylistSnippetByItemId,
   (snippet) => snippet && (snippet as PlaylistItemSnippet).playlistId
 )((_, itemId) => `playlistId-playlistItemId-${itemId}`);
 
-export const selectNormPlaylistAllInPlayingById = createCachedSelector(
-  selectNormPlaylistById,
+export const selectPlaylistAllInPlayingById = createCachedSelector(
+  selectPlaylistById,
   (playlist) => !!(playlist && playlist.allInPlaying)
 )((_, playlistId) => `allInPlaying-playlistId-${playlistId}`);
 
 export const selectPartialInPlayingById = createCachedSelector(
-  selectNormPlaylistById,
+  selectPlaylistById,
   (playlist) => !!(playlist && playlist.partialInPlaying)
 )((_, playlistId) => `partialInPlaying-playlistId-${playlistId}`);

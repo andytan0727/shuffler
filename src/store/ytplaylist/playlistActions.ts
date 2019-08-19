@@ -1,19 +1,19 @@
 import { createAction } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
-import { NormPlaylistsEntities } from "./types";
+import { PlaylistsEntities } from "./types";
 
 /**
- * Add normalized fetched playlist data to redux store
+ * Add fetched playlist data to redux store
  *
  * @param entities Normalized states entities of playlists
  * @param result Normalized states result of playlists
  * @returns ADD_FETCHED_PLAYLIST action object
  */
-export const addNormPlaylistAction = createAction(
-  ActionTypes.ADD_NORM_PLAYLIST,
+export const addPlaylistAction = createAction(
+  ActionTypes.ADD_PLAYLIST,
   (action) => {
-    return (entities: NormPlaylistsEntities, result: string[]) =>
+    return (entities: PlaylistsEntities, result: string[]) =>
       action({
         entities,
         result,
@@ -22,15 +22,15 @@ export const addNormPlaylistAction = createAction(
 );
 
 /**
- * Add all items in the specified normalized playlist into normalized listToPlay
+ * Add all items in the specified playlist into listToPlay
  *
  * **_Note: This action is handled through saga. No reducer logic involved_**
  *
  * @param playlistId Playlist id
- * @returns ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY action object
+ * @returns ADD_PLAYLIST_TO_LIST_TO_PLAY action object
  */
-export const addNormPlaylistToNormListToPlayAction = createAction(
-  ActionTypes.ADD_NORM_PLAYLIST_TO_NORM_LIST_TO_PLAY,
+export const addPlaylistToListToPlayAction = createAction(
+  ActionTypes.ADD_PLAYLIST_TO_LIST_TO_PLAY,
   (action) => {
     return (playlistId: string) =>
       action({
@@ -40,15 +40,15 @@ export const addNormPlaylistToNormListToPlayAction = createAction(
 );
 
 /**
- * Remove all items in the specified normalized playlist from normalized listToPlay
+ * Remove all items in the specified playlist from listToPlay
  *
  * **_Note: This action is handled through saga. No reducer logic involved_**
  *
  * @param playlistId Playlist id
  *
  */
-export const removeNormPlaylistFromNormListToPlayAction = createAction(
-  ActionTypes.REMOVE_NORM_PLAYLIST_FROM_NORM_LIST_TO_PLAY,
+export const removePlaylistFromListToPlayAction = createAction(
+  ActionTypes.REMOVE_PLAYLIST_FROM_LIST_TO_PLAY,
   (action) => {
     return (playlistId: string) =>
       action({
@@ -58,16 +58,16 @@ export const removeNormPlaylistFromNormListToPlayAction = createAction(
 );
 
 /**
- * Remove all items associating with each playlistId in playlistIds array from normalized listToPlay
+ * Remove all items associating with each playlistId in playlistIds array from listToPlay
  *
  * **_Note: This action is handled through saga. No reducer logic involved_**
  *
  * @param playlistIds An array consisting more than 1 playlistId
- * @returns REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY action object
+ * @returns REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY action object
  *
  */
-export const removeNormPlaylistsFromNormListToPlayAction = createAction(
-  ActionTypes.REMOVE_NORM_PLAYLISTS_FROM_NORM_LIST_TO_PLAY,
+export const removePlaylistsFromListToPlayAction = createAction(
+  ActionTypes.REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
   (action) => {
     return (playlistIds: string[]) =>
       action({
@@ -82,8 +82,8 @@ export const removeNormPlaylistsFromNormListToPlayAction = createAction(
  * @param id Playlist id to delete
  * @returns DELETE_PLAYLIST_BY_ID action object
  */
-export const deleteNormPlaylistByIdAction = createAction(
-  ActionTypes.DELETE_NORM_PLAYLIST_BY_ID,
+export const deletePlaylistByIdAction = createAction(
+  ActionTypes.DELETE_PLAYLIST_BY_ID,
   (action) => {
     return (id: string) =>
       action({
@@ -99,8 +99,8 @@ export const deleteNormPlaylistByIdAction = createAction(
  * @param {string} playlistId Playlist id in which the playlistItem is located
  * @param {string} itemId PlaylistItem id to delete
  */
-export const deleteNormPlaylistItemByIdAction = createAction(
-  ActionTypes.DELETE_NORM_PLAYLIST_ITEM_BY_ID,
+export const deletePlaylistItemByIdAction = createAction(
+  ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID,
   (action) => {
     return (playlistId: string, itemId: string) =>
       action({
@@ -117,8 +117,8 @@ export const deleteNormPlaylistItemByIdAction = createAction(
  * @param name New name for playlist
  * @returns UPDATE_PLAYLIST_NAME_BY_ID action object
  */
-export const updateNormPlaylistNameByIdAction = createAction(
-  ActionTypes.UPDATE_NORM_PLAYLIST_NAME_BY_ID,
+export const updatePlaylistNameByIdAction = createAction(
+  ActionTypes.UPDATE_PLAYLIST_NAME_BY_ID,
   (action) => {
     return (id: string, name: string) =>
       action({
@@ -129,8 +129,8 @@ export const updateNormPlaylistNameByIdAction = createAction(
 );
 
 /**
- * Add allInPlaying label to the playlist in normalized listToPlay (if all of
- * its items are in normalized listToPlay)
+ * Add allInPlaying label to the playlist in listToPlay (if all of
+ * its items are in listToPlay)
  *
  * @param id Playlist id to add allInPlaying label
  */
@@ -140,7 +140,7 @@ export const addAllInPlayingLabelByIdAction = createAction(
 );
 
 /**
- * Remove allInPlaying label of playlist, after removing it from normalized listToPlay
+ * Remove allInPlaying label of playlist, after removing it from listToPlay
  * @param id Playlist id to remove allInPlaying label
  */
 export const removeAllInPlayingLabelByIdAction = createAction(
@@ -150,7 +150,7 @@ export const removeAllInPlayingLabelByIdAction = createAction(
 
 /**
  * Add partialInPlaying label to particular playlist
- * if some of its items are in normalized listToPlay
+ * if some of its items are in listToPlay
  *
  * @param id Playlist id to add partialInPlaying label
  */
@@ -169,10 +169,10 @@ export const removePartialInPlayingLabelByIdAction = createAction(
 );
 
 /**
- * Shuffle norm playlist items by playlist id
+ * Shuffle playlist items by playlist id
  * @param id Playlist id to shuffle
  */
-export const shuffleNormPlaylistItems = createAction(
-  ActionTypes.SHUFFLE_NORM_PLAYLIST_ITEMS,
+export const shufflePlaylistItems = createAction(
+  ActionTypes.SHUFFLE_PLAYLIST_ITEMS,
   (action) => (id: string) => action({ id })
 );

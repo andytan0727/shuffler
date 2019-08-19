@@ -1,39 +1,39 @@
 import deepFreeze from "deep-freeze";
 import {
-  ADD_NORM_LIST_TO_PLAY,
-  ADD_NORM_LIST_TO_PLAY_ITEM,
-  ADD_NORM_LIST_TO_PLAY_ITEMS,
-  ADD_UNIQUE_NORM_LIST_TO_PLAY,
+  ADD_LIST_TO_PLAY,
+  ADD_LIST_TO_PLAY_ITEM,
+  ADD_LIST_TO_PLAY_ITEMS,
+  ADD_UNIQUE_LIST_TO_PLAY,
   CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
   CLEAR_LIST_TO_PLAY,
-  DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
-  DELETE_NORM_LIST_TO_PLAY_ITEMS,
+  DELETE_LIST_TO_PLAY_ITEM_BY_ID,
+  DELETE_LIST_TO_PLAY_ITEMS,
   FILTER_LIST_TO_PLAY_ITEMS,
   SHUFFLE_LIST_TO_PLAY,
-  UPDATE_NORM_LIST_TO_PLAY,
+  UPDATE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
 
 import {
-  addNormListToPlayAction,
-  addNormListToPlayItemAction,
-  addNormListToPlayItemsAction,
-  addUniqueNormListToPlay,
+  addListToPlayAction,
+  addListToPlayItemAction,
+  addListToPlayItemsAction,
+  addUniqueListToPlay,
   chooseFirstItemAndShuffleListToPlayAction,
   clearListToPlayAction,
-  deleteNormListToPlayItemByIdAction,
-  deleteNormListToPlayItemsAction,
+  deleteListToPlayItemByIdAction,
+  deleteListToPlayItemsAction,
   filterListToPlayItemsAction,
   shuffleListToPlayAction,
-  updateNormListToPlayAction,
+  updateListToPlayAction,
 } from "./listToPlayActions";
-import { NormListToPlayEntities, NormListToPlayResultItem } from "./types";
+import { ListToPlayEntities, ListToPlayResultItem } from "./types";
 
-const listToPlayEntities: NormListToPlayEntities = {
+const listToPlayEntities: ListToPlayEntities = {
   playlistItems: {},
   videoItems: {},
 };
 
-const listToPlayResultItem: NormListToPlayResultItem = {
+const listToPlayResultItem: ListToPlayResultItem = {
   id: "itemId-1",
   schema: "playlistItems",
 };
@@ -46,9 +46,9 @@ deepFreeze(listToPlayResultItem);
 deepFreeze(itemIds);
 
 describe("listToPlay actions", () => {
-  test("should create ADD_NORM_LIST_TO_PLAY action object", () => {
-    expect(addNormListToPlayAction(listToPlayEntities, [])).toEqual({
-      type: ADD_NORM_LIST_TO_PLAY,
+  test("should create ADD_LIST_TO_PLAY action object", () => {
+    expect(addListToPlayAction(listToPlayEntities, [])).toEqual({
+      type: ADD_LIST_TO_PLAY,
       payload: {
         entities: listToPlayEntities,
         result: [],
@@ -56,9 +56,9 @@ describe("listToPlay actions", () => {
     });
   });
 
-  test("should create ADD_UNIQUE_NORM_LIST_TO_PLAY action object", () => {
-    expect(addUniqueNormListToPlay(listToPlayEntities, [])).toEqual({
-      type: ADD_UNIQUE_NORM_LIST_TO_PLAY,
+  test("should create ADD_UNIQUE_LIST_TO_PLAY action object", () => {
+    expect(addUniqueListToPlay(listToPlayEntities, [])).toEqual({
+      type: ADD_UNIQUE_LIST_TO_PLAY,
       payload: {
         entities: listToPlayEntities,
         result: [],
@@ -66,11 +66,9 @@ describe("listToPlay actions", () => {
     });
   });
 
-  test("should create ADD_NORM_LIST_TO_PLAY_ITEM action object", () => {
-    expect(
-      addNormListToPlayItemAction(listToPlayResultItem, foreignKey)
-    ).toEqual({
-      type: ADD_NORM_LIST_TO_PLAY_ITEM,
+  test("should create ADD_LIST_TO_PLAY_ITEM action object", () => {
+    expect(addListToPlayItemAction(listToPlayResultItem, foreignKey)).toEqual({
+      type: ADD_LIST_TO_PLAY_ITEM,
       payload: {
         resultItem: listToPlayResultItem,
         foreignKey,
@@ -78,26 +76,26 @@ describe("listToPlay actions", () => {
     });
   });
 
-  test("should create ADD_NORM_LIST_TO_PLAY_ITEMS action object", () => {
+  test("should create ADD_LIST_TO_PLAY_ITEMS action object", () => {
     const items = [
       {
         resultItem: listToPlayResultItem,
         foreignKey,
       },
     ];
-    expect(addNormListToPlayItemsAction(items)).toEqual({
-      type: ADD_NORM_LIST_TO_PLAY_ITEMS,
+    expect(addListToPlayItemsAction(items)).toEqual({
+      type: ADD_LIST_TO_PLAY_ITEMS,
       payload: {
         items,
       },
     });
   });
 
-  test("should create UPDATE_NORM_LIST_TO_PLAY action object", () => {
+  test("should create UPDATE_LIST_TO_PLAY action object", () => {
     expect(
-      updateNormListToPlayAction("playlistItems", foreignKey, itemIds)
+      updateListToPlayAction("playlistItems", foreignKey, itemIds)
     ).toEqual({
-      type: UPDATE_NORM_LIST_TO_PLAY,
+      type: UPDATE_LIST_TO_PLAY,
       payload: {
         schema: "playlistItems",
         foreignKey,
@@ -106,18 +104,18 @@ describe("listToPlay actions", () => {
     });
   });
 
-  test("should create DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID action object", () => {
-    expect(deleteNormListToPlayItemByIdAction(itemIds[0])).toEqual({
-      type: DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
+  test("should create DELETE_LIST_TO_PLAY_ITEM_BY_ID action object", () => {
+    expect(deleteListToPlayItemByIdAction(itemIds[0])).toEqual({
+      type: DELETE_LIST_TO_PLAY_ITEM_BY_ID,
       payload: {
         id: itemIds[0],
       },
     });
   });
 
-  test("should DELETE_NORM_LIST_TO_PLAY_ITEMS action object", () => {
-    expect(deleteNormListToPlayItemsAction(itemIds)).toEqual({
-      type: DELETE_NORM_LIST_TO_PLAY_ITEMS,
+  test("should DELETE_LIST_TO_PLAY_ITEMS action object", () => {
+    expect(deleteListToPlayItemsAction(itemIds)).toEqual({
+      type: DELETE_LIST_TO_PLAY_ITEMS,
       payload: {
         ids: itemIds,
       },

@@ -8,7 +8,7 @@ import { animated, useTransition } from "react-spring";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx, selectPlaying } from "store/ytplayer/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
 import {
@@ -24,7 +24,7 @@ import styles from "./styles.module.scss";
 const MiniPlayer = () => {
   const ytPlayerRef = useRef<any>(null);
   const curSongIdx = useSelector(selectCurSongIdx);
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
   const playing = useSelector(selectPlaying);
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
   const dispatch = useDispatch();

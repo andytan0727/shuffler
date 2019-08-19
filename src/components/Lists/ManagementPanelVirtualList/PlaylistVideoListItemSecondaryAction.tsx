@@ -2,10 +2,10 @@ import { DeleteItemButton } from "components/Buttons";
 import { makeToggleItemToListToPlaySwitch } from "components/Switches";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { deleteNormPlaylistItemByIdAction } from "store/ytplaylist/playlistActions";
+import { deletePlaylistItemByIdAction } from "store/ytplaylist/playlistActions";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 import { isPlaylistItemSnippet } from "store/ytplaylist/utils";
-import { deleteNormVideoByIdAction } from "store/ytplaylist/videoActions";
+import { deleteVideoByIdAction } from "store/ytplaylist/videoActions";
 
 export interface PlaylistVideoListItemSecondaryActionProps {
   itemId: string;
@@ -29,12 +29,12 @@ const PlaylistVideoListItemSecondaryAction = (
   );
 
   const handleDeleteVideo = useCallback(() => {
-    dispatch(deleteNormVideoByIdAction(snippetId));
+    dispatch(deleteVideoByIdAction(snippetId));
   }, [dispatch, snippetId]);
 
   const handleDeletePlaylistItem = useCallback(() => {
     dispatch(
-      deleteNormPlaylistItemByIdAction(
+      deletePlaylistItemByIdAction(
         (snippet as PlaylistItemSnippet).playlistId,
         itemId
       )

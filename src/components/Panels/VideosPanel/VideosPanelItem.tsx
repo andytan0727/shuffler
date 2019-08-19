@@ -3,9 +3,9 @@ import { HandleCheckOrUncheckId } from "components/Checkbox/hooks";
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
-import { selectNormListToPlayEntities } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayEntities } from "store/ytplaylist/listToPlaySelectors";
 import { isListToPlayItemExists } from "store/ytplaylist/utils";
-import { selectNormVideoSnippetByItemId } from "store/ytplaylist/videoSelectors";
+import { selectVideoSnippetByItemId } from "store/ytplaylist/videoSelectors";
 
 import { Checkbox } from "@material-ui/core";
 import {
@@ -25,9 +25,9 @@ interface VideosPanelItemProps {
 const VideosPanelItem = (props: VideosPanelItemProps) => {
   const { checked, handleCheckOrUncheckId, itemId } = props;
   const snippet = useSelector((state: AppState) =>
-    selectNormVideoSnippetByItemId(state, itemId)
+    selectVideoSnippetByItemId(state, itemId)
   );
-  const listToPlayEntities = useSelector(selectNormListToPlayEntities);
+  const listToPlayEntities = useSelector(selectListToPlayEntities);
 
   return (
     <div

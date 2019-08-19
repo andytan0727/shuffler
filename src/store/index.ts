@@ -8,25 +8,20 @@ import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import { StateType } from "typesafe-actions";
 
-// Reducers
 import { appGeneral as appGeneralReducer } from "./appGeneral/reducer";
 import { userPreferences as userPreferencesReducer } from "./userPreferences/reducer";
 import userPreferencesSaga from "./userPreferences/sagas";
 import { ytapi as ytapiReducer } from "./ytapi/reducer";
-// sagas
 import ytapiSaga from "./ytapi/sagas";
 import { ytplayer as ytplayerReducer } from "./ytplayer/reducer";
-import {
-  ytplaylistNormed as ytplaylistNormedReducer,
-  ytplaylistNormedSagas,
-} from "./ytplaylist";
+import { ytplaylistReducer, ytplaylistSagas } from "./ytplaylist";
 
 // Disable immer auto freezing
 // To solve the problem of redux-persist _persist object is not extensible
 setAutoFreeze(false);
 
 function* rootSaga() {
-  yield all([ytapiSaga(), userPreferencesSaga(), ytplaylistNormedSagas()]);
+  yield all([ytapiSaga(), userPreferencesSaga(), ytplaylistSagas()]);
 }
 
 const rootPersistConfig = {
@@ -41,7 +36,7 @@ const ytplayerPersistConfig = {
   whitelist: ["repeat"],
 };
 
-const ytplaylistNormedPersistConfig = {
+const ytplaylistPersistConfig = {
   key: "ytplaylistNormed",
   storage,
   blacklist: ["filtered"],
@@ -56,10 +51,7 @@ const rootReducer = combineReducers({
   userPreferences: userPreferencesReducer,
   ytapi: ytapiReducer,
   ytplayer: persistReducer(ytplayerPersistConfig, ytplayerReducer),
-  ytplaylistNormed: persistReducer(
-    ytplaylistNormedPersistConfig,
-    ytplaylistNormedReducer
-  ),
+  ytplaylist: persistReducer(ytplaylistPersistConfig, ytplaylistReducer),
 });
 
 export const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

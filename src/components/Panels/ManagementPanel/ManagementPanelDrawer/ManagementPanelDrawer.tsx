@@ -9,8 +9,8 @@ import {
 import React, { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectNormListToPlayTotalItems } from "store/ytplaylist/listToPlaySelectors";
-import { selectAllNormPlaylists } from "store/ytplaylist/playlistSelectors";
+import { selectListToPlayTotalItems } from "store/ytplaylist/listToPlaySelectors";
+import { selectAllPlaylists } from "store/ytplaylist/playlistSelectors";
 
 import {
   Divider,
@@ -123,7 +123,7 @@ const DrawerNowPlayingNavListItem = (
 ) => {
   const { panelUrl } = props;
   const classes = useStyles();
-  const totalNowPlayingItems = useSelector(selectNormListToPlayTotalItems);
+  const totalNowPlayingItems = useSelector(selectListToPlayTotalItems);
 
   return (
     <DrawerNavListItem
@@ -153,7 +153,7 @@ const DrawerNowPlayingNavListItem = (
 const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
   const { playlistUrl } = props;
   const classes = useStyles({});
-  const playlists = useSelector(selectAllNormPlaylists);
+  const playlists = useSelector(selectAllPlaylists);
   const playlistIds = Object.keys(playlists);
 
   return (

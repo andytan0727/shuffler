@@ -3,10 +3,10 @@ import produce, { Draft } from "immer";
 import partial from "lodash/partial";
 
 import { stateMaker } from "./testUtils";
-import { NormPlaylists, NormVideos } from "./types";
+import { Playlists, Videos } from "./types";
 import { deletePlaylistOrVideoById } from "./utils";
 
-const basePlaylistsState: NormPlaylists = {
+const basePlaylistsState: Playlists = {
   entities: {
     playlistItems: {},
     playlists: {},
@@ -15,7 +15,7 @@ const basePlaylistsState: NormPlaylists = {
   result: [],
 };
 
-const baseVideosState: NormVideos = {
+const baseVideosState: Videos = {
   entities: {
     videoItems: {},
     videos: {},
@@ -41,7 +41,7 @@ describe("Test deletePlaylistOrVideoById util functions", () => {
   test("should delete playlist by id property using deletePlaylistOrVideoById function", () => {
     const nextPlaylistsState = produce(
       initialPlaylistsState,
-      (draft: Draft<NormPlaylists>) => {
+      (draft: Draft<Playlists>) => {
         deletePlaylistOrVideoById(draft, "playlistId-1");
       }
     );
@@ -57,7 +57,7 @@ describe("Test deletePlaylistOrVideoById util functions", () => {
   test("should delete video by id property using deletePlaylistOrVideoById function", () => {
     const nextVideosState = produce(
       initialVideosState,
-      (draft: Draft<NormVideos>) => {
+      (draft: Draft<Videos>) => {
         deletePlaylistOrVideoById(draft, "videoId-10");
       }
     );
@@ -73,7 +73,7 @@ describe("Test deletePlaylistOrVideoById util functions", () => {
   test("deletePlaylistOrVideoById function should handle delete non-existence playlist/video", () => {
     const nextPlaylistsState = produce(
       initialPlaylistsState,
-      (draft: Draft<NormPlaylists>) => {
+      (draft: Draft<Playlists>) => {
         deletePlaylistOrVideoById(draft, "playlistId-11");
       }
     );
@@ -87,7 +87,7 @@ describe("Test deletePlaylistOrVideoById util functions", () => {
     // videos
     const nextVideosState = produce(
       initialVideosState,
-      (draft: Draft<NormVideos>) => {
+      (draft: Draft<Videos>) => {
         deletePlaylistOrVideoById(draft, "videoId-11");
       }
     );

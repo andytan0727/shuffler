@@ -7,7 +7,7 @@ import {
   createFuse,
   fuzzySearchSnippetsByTitle,
 } from "store/ytplaylist/filteredActions";
-import { selectNormSnippetsByItemIds } from "store/ytplaylist/generalSelectors";
+import { selectSnippetsByItemIds } from "store/ytplaylist/generalSelectors";
 
 import TextField from "@material-ui/core/TextField";
 
@@ -18,7 +18,7 @@ export interface FilterSnippetInputProps {
 const FilterSnippetInput = (props: FilterSnippetInputProps) => {
   const { itemIds } = props;
   const snippets = useSelector((state: AppState) =>
-    selectNormSnippetsByItemIds(state, itemIds)
+    selectSnippetsByItemIds(state, itemIds)
   );
   const dispatch = useDispatch();
 

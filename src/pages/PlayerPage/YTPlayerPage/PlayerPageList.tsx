@@ -6,7 +6,7 @@ import { AppState } from "store";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx } from "store/ytplayer/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
 
 import { useMediaQuery } from "@material-ui/core";
@@ -100,7 +100,7 @@ const PlayerPageList = () => {
   const curSongIdx = useSelector(selectCurSongIdx);
   const listRef = useRef<any>(null);
   matchesMobile = useMediaQuery("(max-width: 450px)");
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
 
   useEffect(() => {
     const currentListRef = listRef.current;

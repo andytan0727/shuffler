@@ -12,11 +12,11 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { clearFilteredSnippets } from "store/ytplaylist/filteredActions";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
-  deleteNormListToPlayItemsAction,
+  deleteListToPlayItemsAction,
   filterListToPlayItemsAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/listToPlayActions";
-import { selectAllNormListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
+import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -32,7 +32,7 @@ const ManagementNowPlayingPanel = (props: ManagementNowPlayingPanelProps) => {
   const { history } = props;
   const filteredSnippets = useSelector(selectFilteredSnippets);
   const dispatch = useDispatch();
-  const listToPlayItemIds = useSelector(selectAllNormListToPlayItemIds);
+  const listToPlayItemIds = useSelector(selectAllListToPlayItemIds);
   const checkboxHooks = useCheckbox();
   const { checked, clearChecked } = checkboxHooks;
 
@@ -65,7 +65,7 @@ const ManagementNowPlayingPanel = (props: ManagementNowPlayingPanelProps) => {
 
   // delete listToPlay items without deleting original items from playlists/videos
   const handleDeleteListToPlayItems = useCallback(() => {
-    dispatch(deleteNormListToPlayItemsAction(checked));
+    dispatch(deleteListToPlayItemsAction(checked));
 
     // clear all checked videos after deletion
     clearChecked();

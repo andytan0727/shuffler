@@ -11,7 +11,7 @@ import { videosReducer } from "./videoReducer";
 import videoSagas from "./videoSagas";
 
 // composing sagas
-export function* ytplaylistNormedSagas() {
+export function* ytplaylistSagas() {
   yield all([
     filteredSagas(),
     listToPlaySagas(),
@@ -20,7 +20,7 @@ export function* ytplaylistNormedSagas() {
   ]);
 }
 
-export const ytplaylistNormed = combineReducers({
+export const ytplaylistReducer = combineReducers({
   playlists: playlistsReducer,
   videos: videosReducer,
   listToPlay: listToPlayReducer,

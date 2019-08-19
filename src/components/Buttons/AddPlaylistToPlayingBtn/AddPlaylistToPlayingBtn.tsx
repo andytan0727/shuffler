@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { addNormPlaylistToNormListToPlayAction } from "store/ytplaylist/playlistActions";
+import { addPlaylistToListToPlayAction } from "store/ytplaylist/playlistActions";
 import { notify } from "utils/helper/notifyHelper";
 
 import { IconButton, Tooltip } from "@material-ui/core";
@@ -16,7 +16,7 @@ const AddPlaylistToPlayingBtn = (props: AddPlaylistToPlayingBtnProps) => {
   const dispatch = useDispatch();
 
   const handleAddPlaylistAsPlaying = useCallback(() => {
-    dispatch(addNormPlaylistToNormListToPlayAction(playlistId));
+    dispatch(addPlaylistToListToPlayAction(playlistId));
 
     notify("success", "Added playlist to Now Playing");
   }, [dispatch, playlistId]);

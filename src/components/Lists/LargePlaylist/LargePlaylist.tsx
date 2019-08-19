@@ -3,7 +3,7 @@ import React, { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx } from "store/ytplayer/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
 import {
@@ -21,7 +21,7 @@ const LargePlaylist = (props: LargePlaylistProps) => {
   const { handleHideLargePlaylist } = props;
   const listRef = useRef<any>(null);
   const curSongIdx = useSelector(selectCurSongIdx);
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
   const dispatch = useDispatch();
   const listLen = listToPlaySnippets.length;
   const displayList = listToPlaySnippets.slice(curSongIdx + 1, listLen);

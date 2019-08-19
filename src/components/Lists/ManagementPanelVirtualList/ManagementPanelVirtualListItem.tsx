@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { areEqual } from "react-window";
 import { AppState } from "store";
-import { selectNormSnippetByItemId } from "store/ytplaylist/generalSelectors";
+import { selectSnippetByItemId } from "store/ytplaylist/generalSelectors";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 
 import {
@@ -67,7 +67,7 @@ export const withListItemSecondaryAction = (
       ? filteredSnippets[index].itemId! // assume itemId is provided
       : itemIds[index];
     const currentSnippet = useSelector((state: AppState) =>
-      selectNormSnippetByItemId(state, currentItemId)
+      selectSnippetByItemId(state, currentItemId)
     );
 
     return !currentSnippet ? (

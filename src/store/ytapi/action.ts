@@ -1,4 +1,4 @@
-import { Playlist, Video } from "store/ytplaylist/types";
+import { FetchedPlaylist, FetchedVideo } from "store/ytplaylist/types";
 import { createAction } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
@@ -28,7 +28,7 @@ export const fetchPlaylistDataAction = createAction(
 export const fetchPlaylistDataSuccessAction = createAction(
   ActionTypes.FETCH_PLAYLIST_DATA_SUCCESS,
   (action) => {
-    return (data: Playlist) =>
+    return (data: FetchedPlaylist) =>
       action({
         data,
       });
@@ -101,7 +101,7 @@ export const fetchVideoDataAction = createAction(
 export const fetchVideoDataSuccessAction = createAction(
   ActionTypes.FETCH_VIDEO_DATA_SUCCESS,
   (action) => {
-    return (data: Video) =>
+    return (data: FetchedVideo) =>
       action({
         data,
       });

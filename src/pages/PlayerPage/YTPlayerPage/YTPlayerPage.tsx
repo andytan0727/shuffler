@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx } from "store/ytplayer/selector";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 
 import NoVideoFound from "../NoVideoFound";
 import PlayerPageList from "./PlayerPageList";
@@ -11,7 +11,7 @@ import styles from "./styles.module.scss";
 
 const YTPlayerPage = () => {
   const curSongIdx = useSelector(selectCurSongIdx);
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
   const dispatch = useDispatch();
   const currentSnippet = listToPlaySnippets[curSongIdx];
 

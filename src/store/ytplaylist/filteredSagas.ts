@@ -5,36 +5,35 @@ import * as ActionTypes from "utils/constants/actionConstants";
 import { removeFilteredSnippetsByItemIds } from "./filteredActions";
 import { selectFilteredSnippets } from "./filteredSelectors";
 import {
-  deleteNormListToPlayItemByIdAction,
-  deleteNormListToPlayItemsAction,
+  deleteListToPlayItemByIdAction,
+  deleteListToPlayItemsAction,
 } from "./listToPlayActions";
 
 /**
  * Saga which determines whether or not remove filteredSnippets items
- * when there is a deletion on normalized listToPlay
+ * when there is a deletion on listToPlay
  *
  */
 export function* removeFilteredSnippetsOnItemsDeletion() {
   while (true) {
     const action: ActionType<
-      | typeof deleteNormListToPlayItemsAction
-      | typeof deleteNormListToPlayItemByIdAction
+      typeof deleteListToPlayItemsAction | typeof deleteListToPlayItemByIdAction
     > = yield take([
-      ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEMS,
-      ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
+      ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
+      ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
     ]);
     const filteredSnippets = yield select(selectFilteredSnippets);
     let itemIds: string[] | undefined = undefined;
 
     switch (action.type) {
-      case "DELETE_NORM_LIST_TO_PLAY_ITEMS": {
+      case "DELETE_LIST_TO_PLAY_ITEMS": {
         const { ids } = action.payload;
         itemIds = [...ids];
 
         break;
       }
 
-      case "DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID": {
+      case "DELETE_LIST_TO_PLAY_ITEM_BY_ID": {
         const { id: itemId } = action.payload;
         itemIds = [itemId];
 

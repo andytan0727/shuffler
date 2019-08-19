@@ -3,7 +3,7 @@ import { useCheckbox } from "components/Checkbox/hooks";
 import { makeSearchInput } from "components/Inputs";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectNormPlaylistsResult } from "store/ytplaylist/playlistSelectors";
+import { selectPlaylistsResult } from "store/ytplaylist/playlistSelectors";
 
 import styles from "./styles.module.scss";
 import VideoListPanelItem from "./VideoListPanelItem";
@@ -13,7 +13,7 @@ const SearchPlaylistInput = makeSearchInput("playlists");
 
 const VideoListPanel = () => {
   const [viewPlaylist, setViewPlaylist] = useState(false);
-  const playlistIds = useSelector(selectNormPlaylistsResult);
+  const playlistIds = useSelector(selectPlaylistsResult);
   const { checked, handleCheckOrUncheckId, clearChecked } = useCheckbox();
 
   const handleCloseViewPlaylist = useCallback(() => {

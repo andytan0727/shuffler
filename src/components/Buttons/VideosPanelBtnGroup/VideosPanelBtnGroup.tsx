@@ -4,9 +4,9 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
-  addNormVideosToNormListToPlayAction,
-  deleteNormVideoByIdAction,
-  removeNormVideosFromNormListToPlayAction,
+  addVideosToListToPlayAction,
+  deleteVideoByIdAction,
+  removeVideosFromListToPlayAction,
 } from "store/ytplaylist/videoActions";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
@@ -43,7 +43,7 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
       return;
     }
 
-    dispatch(addNormVideosToNormListToPlayAction(itemIds));
+    dispatch(addVideosToListToPlayAction(itemIds));
 
     notify("success", "Successfully added selected video(s) to playing 😎");
     clearChecked();
@@ -68,7 +68,7 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
 
     if (result.value) {
       for (const itemId of itemIds) {
-        dispatch(deleteNormVideoByIdAction(itemId));
+        dispatch(deleteVideoByIdAction(itemId));
       }
 
       await customSwal!.fire("Deleted!", "Video(s) deleted 😎", "success");
@@ -82,7 +82,7 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
       return;
     }
 
-    dispatch(removeNormVideosFromNormListToPlayAction(itemIds));
+    dispatch(removeVideosFromListToPlayAction(itemIds));
 
     clearChecked();
   }, [itemIds, clearChecked, dispatch]);

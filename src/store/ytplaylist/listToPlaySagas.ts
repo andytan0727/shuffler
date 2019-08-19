@@ -15,33 +15,33 @@ import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
-import { selectNormSnippetIdByItemId } from "./generalSelectors";
+import { selectSnippetIdByItemId } from "./generalSelectors";
 import * as listToPlayActions from "./listToPlayActions";
 import {
-  selectNormListToPlayEntities,
-  selectNormListToPlayPlaylistItems,
-  selectNormListToPlayResult,
-  selectNormListToPlaySnippetIds,
+  selectListToPlayEntities,
+  selectListToPlayPlaylistItems,
+  selectListToPlayResult,
+  selectListToPlaySnippetIds,
 } from "./listToPlaySelectors";
 import * as playlistActions from "./playlistActions";
 import {
-  selectAllNormPlaylists,
-  selectNormPlaylistById,
-  selectNormPlaylistIdByItemId,
-  selectNormPlaylistsResult,
+  selectAllPlaylists,
+  selectPlaylistById,
+  selectPlaylistIdByItemId,
+  selectPlaylistsResult,
 } from "./playlistSelectors";
 import {
-  NormListToPlayEntities,
-  NormListToPlayPlaylistItemsEntity,
-  NormListToPlayResultItem,
-  NormPlaylistsSourceEntity,
+  ListToPlayEntities,
+  ListToPlayPlaylistItemsEntity,
+  ListToPlayResultItem,
+  PlaylistsEntity,
 } from "./types";
 
 // ===============================================
 // Helpers
 // ===============================================
 /**
- * Compare and check each item in items array, add to normalized listToPlay if
+ * Compare and check each item in items array, add to listToPlay if
  * the item is unique with regards to snippetId (not itemId).
  *
  * @param items New listToPlay items to be added
@@ -49,17 +49,17 @@ import {
  */
 function* uniquelyAddListToPlayItems(
   items: {
-    resultItem: NormListToPlayResultItem;
+    resultItem: ListToPlayResultItem;
     foreignKey: string;
   }[]
 ) {
-  const prevEntities: NormListToPlayEntities = yield select(
-    selectNormListToPlayEntities
+  const prevEntities: ListToPlayEntities = yield select(
+    selectListToPlayEntities
   );
-  const prevResult: NormListToPlayResultItem[] = yield select(
-    selectNormListToPlayResult
+  const prevResult: ListToPlayResultItem[] = yield select(
+    selectListToPlayResult
   );
-  const snippetIds: string[] = yield select(selectNormListToPlaySnippetIds);
+  const snippetIds: string[] = yield select(selectListToPlaySnippetIds);
 
   // clone entities and result to preserve immutability of redux states
   const newEntities = cloneDeep(prevEntities);
@@ -71,7 +71,7 @@ function* uniquelyAddListToPlayItems(
       foreignKey,
     } = item;
     const currentSnippetId = yield select((state: AppState) =>
-      selectNormSnippetIdByItemId(state, itemId)
+      selectSnippetIdByItemId(state, itemId)
     );
 
     // check if snippetId of current item existed previously
@@ -85,8 +85,8 @@ function* uniquelyAddListToPlayItems(
     }
   }
 
-  // merge new entities and result to normalized listToPlay
-  yield put(listToPlayActions.addUniqueNormListToPlay(newEntities, newResult));
+  // merge new entities and result to listToPlay
+  yield put(listToPlayActions.addUniqueListToPlay(newEntities, newResult));
 }
 
 /**
@@ -102,11 +102,11 @@ function* uniquelyAddListToPlayItems(
  *
  */
 export function* labelAllOrPartialInPlaying(playlistId: string) {
-  const playlist: ReturnType<typeof selectNormPlaylistById> = yield select(
-    (state: AppState) => selectNormPlaylistById(state, playlistId)
+  const playlist: ReturnType<typeof selectPlaylistById> = yield select(
+    (state: AppState) => selectPlaylistById(state, playlistId)
   );
-  const listToPlayPlaylistItems: NormListToPlayPlaylistItemsEntity = yield select(
-    selectNormListToPlayPlaylistItems
+  const listToPlayPlaylistItems: ListToPlayPlaylistItemsEntity = yield select(
+    selectListToPlayPlaylistItems
   );
 
   const {
@@ -180,9 +180,9 @@ export function* labelAllOrPartialInPlaying(playlistId: string) {
 // ===============================================
 // Watchers
 // ===============================================
-export function* addNormListToPlayWatcher() {
-  yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof listToPlayActions.addNormListToPlayAction>
+export function* addListToPlayWatcher() {
+  yield takeEvery(ActionTypes.ADD_LIST_TO_PLAY, function*(
+    action: ActionType<typeof listToPlayActions.addListToPlayAction>
   ) {
     const {
       payload: { entities, result },
@@ -197,18 +197,18 @@ export function* addNormListToPlayWatcher() {
   });
 }
 
-export function* addNormListToPlayItemWatcher() {
-  yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEM, function*(
-    action: ActionType<typeof listToPlayActions.addNormListToPlayItemAction>
+export function* addListToPlayItemWatcher() {
+  yield takeEvery(ActionTypes.ADD_LIST_TO_PLAY_ITEM, function*(
+    action: ActionType<typeof listToPlayActions.addListToPlayItemAction>
   ) {
     const item = action.payload;
     yield call(uniquelyAddListToPlayItems, [item]);
   });
 }
 
-export function* addNormListToPlayItemsWatcher() {
-  yield takeEvery(ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS, function*(
-    action: ActionType<typeof listToPlayActions.addNormListToPlayItemsAction>
+export function* addListToPlayItemsWatcher() {
+  yield takeEvery(ActionTypes.ADD_LIST_TO_PLAY_ITEMS, function*(
+    action: ActionType<typeof listToPlayActions.addListToPlayItemsAction>
   ) {
     const { items } = action.payload;
     yield call(uniquelyAddListToPlayItems, items);
@@ -216,14 +216,14 @@ export function* addNormListToPlayItemsWatcher() {
 }
 
 /**
- * Saga which watching for CLEAR_LIST_TO_PLAY for normalized listToPlay.
+ * Saga which watching for CLEAR_LIST_TO_PLAY for listToPlay.
  * If triggered, it dispatches action to remove allInPlaying for playlists which
- * include all its items in normalized listToPlay
+ * include all its items in listToPlay
  *
  */
 export function* clearListToPlayWatcher() {
   yield takeLatest(ActionTypes.CLEAR_LIST_TO_PLAY, function*() {
-    const playlistIds: string[] = yield select(selectNormPlaylistsResult);
+    const playlistIds: string[] = yield select(selectPlaylistsResult);
 
     // remove allInPlaying label if found
     for (const playlistId of playlistIds) {
@@ -243,14 +243,14 @@ export function* filterListToPlayItemsWatcher() {
     action: ActionType<typeof listToPlayActions.filterListToPlayItemsAction>
   ) {
     const { itemIds } = action.payload;
-    const listToPlayResult: NormListToPlayResultItem[] = yield select(
-      selectNormListToPlayResult
+    const listToPlayResult: ListToPlayResultItem[] = yield select(
+      selectListToPlayResult
     );
-    const listToPlayEntities: NormListToPlayEntities = yield select(
-      selectNormListToPlayEntities
+    const listToPlayEntities: ListToPlayEntities = yield select(
+      selectListToPlayEntities
     );
     const filteredItems: {
-      resultItem: NormListToPlayResultItem;
+      resultItem: ListToPlayResultItem;
       foreignKey: string;
     }[] = [];
 
@@ -272,7 +272,7 @@ export function* filterListToPlayItemsWatcher() {
 
     // clear currentListToPlay before adding filteredItems
     yield put(listToPlayActions.clearListToPlayAction());
-    yield put(listToPlayActions.addNormListToPlayItemsAction(filteredItems));
+    yield put(listToPlayActions.addListToPlayItemsAction(filteredItems));
   });
 }
 // ===============================================
@@ -281,7 +281,7 @@ export function* filterListToPlayItemsWatcher() {
 
 /**
  * A special saga that watches for multiple actions
- * that involving add/delete normalized listToPlay items.
+ * that involving add/delete listToPlay items.
  * If the item(s) deleted is/are from playlist,
  * then the allInPlaying/partialInPlaying label
  * will be added or removed based on situation
@@ -290,21 +290,21 @@ export function* filterListToPlayItemsWatcher() {
 export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
   while (true) {
     const action: ActionType<
-      | typeof listToPlayActions.addUniqueNormListToPlay
-      | typeof listToPlayActions.deleteNormListToPlayItemByIdAction
-      | typeof listToPlayActions.deleteNormListToPlayItemsAction
-      | typeof listToPlayActions.updateNormListToPlayAction
+      | typeof listToPlayActions.addUniqueListToPlay
+      | typeof listToPlayActions.deleteListToPlayItemByIdAction
+      | typeof listToPlayActions.deleteListToPlayItemsAction
+      | typeof listToPlayActions.updateListToPlayAction
     > = yield take([
-      ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY,
-      ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
-      ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEMS,
-      ActionTypes.UPDATE_NORM_LIST_TO_PLAY,
+      ActionTypes.ADD_UNIQUE_LIST_TO_PLAY,
+      ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
+      ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
+      ActionTypes.UPDATE_LIST_TO_PLAY,
     ]);
     let playlistId: string | undefined;
     let playlistIds: string[] | undefined;
 
     switch (action.type) {
-      case "ADD_UNIQUE_NORM_LIST_TO_PLAY": {
+      case "ADD_UNIQUE_LIST_TO_PLAY": {
         const {
           entities: { playlistItems },
         } = action.payload;
@@ -314,12 +314,12 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
         break;
       }
 
-      case "DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID": {
+      case "DELETE_LIST_TO_PLAY_ITEM_BY_ID": {
         const { id: itemId } = action.payload;
 
         // playlistId is undefined if the itemId is belonged to video
         playlistId = yield select((state) =>
-          selectNormPlaylistIdByItemId(state, itemId)
+          selectPlaylistIdByItemId(state, itemId)
         );
 
         break;
@@ -327,11 +327,9 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
 
       // check if deleted itemIds are part of playlist's items
       // if so then add it to playlistIds array waiting to be removed
-      case "DELETE_NORM_LIST_TO_PLAY_ITEMS": {
+      case "DELETE_LIST_TO_PLAY_ITEMS": {
         const { ids: itemIds } = action.payload;
-        const playlists: NormPlaylistsSourceEntity = yield select(
-          selectAllNormPlaylists
-        );
+        const playlists: PlaylistsEntity = yield select(selectAllPlaylists);
         playlistIds = [];
 
         for (const [playlistId, playlist] of Object.entries(playlists)) {
@@ -347,17 +345,17 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
         break;
       }
 
-      case "UPDATE_NORM_LIST_TO_PLAY": {
+      case "UPDATE_LIST_TO_PLAY": {
         const { schema } = action.payload;
 
         // do nothing if the items updated are not from playlist
         if (schema === "videoItems") break;
 
         // check the availability of items in ALL playlists
-        // because UPDATE_NORM_LIST_TO_PLAY will delete
+        // because UPDATE_LIST_TO_PLAY will delete
         // most of the items regardless which playlist
         // those items belong
-        playlistIds = yield select(selectNormPlaylistsResult);
+        playlistIds = yield select(selectPlaylistsResult);
 
         break;
       }
@@ -381,9 +379,9 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
 
 export default function* listToPlaySagas() {
   yield all([
-    addNormListToPlayWatcher(),
-    addNormListToPlayItemWatcher(),
-    addNormListToPlayItemsWatcher(),
+    addListToPlayWatcher(),
+    addListToPlayItemWatcher(),
+    addListToPlayItemsWatcher(),
     clearListToPlayWatcher(),
     filterListToPlayItemsWatcher(),
     checkIfAllOrPartialPlaylistItemsInPlaying(),

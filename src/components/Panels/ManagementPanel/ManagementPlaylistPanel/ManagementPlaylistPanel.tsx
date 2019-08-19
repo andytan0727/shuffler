@@ -10,14 +10,14 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
-import { updateNormListToPlayAction } from "store/ytplaylist/listToPlayActions";
+import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
-  deleteNormPlaylistItemByIdAction,
-  shuffleNormPlaylistItems,
+  deletePlaylistItemByIdAction,
+  shufflePlaylistItems,
 } from "store/ytplaylist/playlistActions";
 import {
-  selectNormPlaylistItemIdsByPlaylistId,
-  selectNormPlaylistNameById,
+  selectPlaylistItemIdsByPlaylistId,
+  selectPlaylistNameById,
 } from "store/ytplaylist/playlistSelectors";
 
 import { Divider, Typography } from "@material-ui/core";
@@ -39,10 +39,10 @@ const ManagementPlaylistPanel = ({
   const playlistId: string = match.params.id;
   const dispatch = useDispatch();
   const playlistName = useSelector((state: AppState) =>
-    selectNormPlaylistNameById(state, playlistId)
+    selectPlaylistNameById(state, playlistId)
   );
   const playlistItemIds = useSelector((state: AppState) =>
-    selectNormPlaylistItemIdsByPlaylistId(state, playlistId)
+    selectPlaylistItemIdsByPlaylistId(state, playlistId)
   ) as string[];
   const checkboxHooks = useCheckbox();
   const { checked } = checkboxHooks;
@@ -54,7 +54,7 @@ const ManagementPlaylistPanel = ({
 
   const handlePlayPlaylist = useCallback(() => {
     dispatch(
-      updateNormListToPlayAction(
+      updateListToPlayAction(
         "playlistItems",
         playlistId,
         checked.length === 0 ? playlistItemIds : checked
@@ -65,12 +65,12 @@ const ManagementPlaylistPanel = ({
   }, [checked, dispatch, history, playlistId, playlistItemIds]);
 
   const handleShufflePlaylist = useCallback(() => {
-    dispatch(shuffleNormPlaylistItems(playlistId));
+    dispatch(shufflePlaylistItems(playlistId));
   }, [playlistId, dispatch]);
 
   const handleDeletePlaylistItems = useCallback(() => {
     checked.forEach((itemId) => {
-      dispatch(deleteNormPlaylistItemByIdAction(playlistId, itemId));
+      dispatch(deletePlaylistItemByIdAction(playlistId, itemId));
     });
   }, [checked, dispatch, playlistId]);
 

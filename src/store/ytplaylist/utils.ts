@@ -7,32 +7,32 @@ import remove from "lodash/remove";
 import set from "lodash/set";
 
 import {
+  ListToPlay,
+  ListToPlayEntities,
   MediaItem,
-  NormListToPlay,
-  NormListToPlayEntities,
-  NormPlaylistItemsEntity,
-  NormPlaylistsEntities,
-  NormPlaylistsOrVideos,
-  NormPlaylistsOrVideosEntities,
-  NormPlaylistsOrVideosItemsEntity,
+  PlaylistItemsEntity,
   PlaylistItemSnippet,
+  PlaylistsEntities,
+  PlaylistsOrVideos,
+  PlaylistsOrVideosEntities,
+  PlaylistsOrVideosItemsEntity,
   VideoItemSnippet,
 } from "./types";
 
-// ==================================================
+// =======================================
 // Type Guards
-// ==================================================
+// =======================================
 /**
- * Type guard for checking whether the normalized entities provided is playlists'
+ * Type guard for checking whether the entities provided is playlists'
  * entities or videos' entities
  *
  * @param entities
  * @returns
  */
 export const isPlaylistsEntities = (
-  entities: NormPlaylistsOrVideosEntities
-): entities is NormPlaylistsEntities =>
-  (entities as NormPlaylistsEntities).playlists !== undefined;
+  entities: PlaylistsOrVideosEntities
+): entities is PlaylistsEntities =>
+  (entities as PlaylistsEntities).playlists !== undefined;
 
 /**
  * Type guard for checking whether the supplied snippet belongs to playlist/video
@@ -45,11 +45,11 @@ export const isPlaylistItemSnippet = (
 ): snippet is PlaylistItemSnippet =>
   (snippet as PlaylistItemSnippet).playlistId !== undefined;
 
-// ==================================================
+// =======================================
 // Util functions
-// ==================================================
+// =======================================
 /**
- * Deep merge normalized entities (and accompanying result array) into
+ * Deep merge entities (and accompanying result array) into
  * existing store states.
  *
  * **_Note: This function mutates draft_**
@@ -58,9 +58,7 @@ export const isPlaylistItemSnippet = (
  * @param action
  * @returns Mutated (drafted) states
  */
-export const mergeNormalizedEntities = <
-  T extends NormPlaylistsOrVideos | NormListToPlay
->(
+export const mergeEntities = <T extends PlaylistsOrVideos | ListToPlay>(
   draft: T,
   action: { payload: T }
 ): T => {
@@ -83,7 +81,7 @@ export const mergeNormalizedEntities = <
  * @param mediaItem
  * @returns Mutated draft
  */
-export const updatePlaylistOrVideoNameById = <T extends NormPlaylistsOrVideos>(
+export const updatePlaylistOrVideoNameById = <T extends PlaylistsOrVideos>(
   draft: T,
   mediaItem: MediaItem
 ): T => {
@@ -97,7 +95,7 @@ export const updatePlaylistOrVideoNameById = <T extends NormPlaylistsOrVideos>(
 };
 
 export const deleteItemsEntity = (
-  itemsEntity: NormPlaylistsOrVideosItemsEntity,
+  itemsEntity: PlaylistsOrVideosItemsEntity,
   itemIds: string[]
 ) => {
   itemIds.forEach((itemId) => {
@@ -106,7 +104,7 @@ export const deleteItemsEntity = (
 };
 
 export const deleteSnippetsEntity = (
-  entities: NormPlaylistsOrVideosEntities,
+  entities: PlaylistsOrVideosEntities,
   snippetIds: string[]
 ) => {
   const snippetsEntity = get(entities, "snippets");
@@ -125,7 +123,7 @@ export const deleteSnippetsEntity = (
  * @param id Playlist/video id to delete
  * @returns Mutated draft
  */
-export const deletePlaylistOrVideoById = <T extends NormPlaylistsOrVideos>(
+export const deletePlaylistOrVideoById = <T extends PlaylistsOrVideos>(
   draft: T,
   id: string
 ): T => {
@@ -176,9 +174,9 @@ export const deletePlaylistOrVideoById = <T extends NormPlaylistsOrVideos>(
  * @returns
  */
 export const deleteListToPlayItemById = (
-  draft: NormListToPlay,
+  draft: ListToPlay,
   id: string
-): NormListToPlay => {
+): ListToPlay => {
   const [removedItem] = remove(draft.result, (item) => item.id === id);
 
   // do nothing if item cannot be found
@@ -198,7 +196,7 @@ export const deleteListToPlayItemById = (
  * @param itemId listToPlay item's id
  */
 export const isListToPlayItemExists = (
-  entities: NormListToPlayEntities,
+  entities: ListToPlayEntities,
   schema: SchemaType,
   itemId: string
 ) => !!entities[schema][itemId];
@@ -212,13 +210,13 @@ export const isListToPlayItemExists = (
  * @returns boolean result of true if playlist item exists
  */
 export const isPlaylistItemExists = (
-  playlistItems: NormPlaylistItemsEntity,
+  playlistItems: PlaylistItemsEntity,
   itemId: string
 ) => !!playlistItems[itemId];
 
-// =====================================================
+// =======================================
 // Utils for selectors
-// =====================================================
+// =======================================
 /**
  * Get snippet of playlist/video item from itemId provided. Returns snippet if
  * snippet could be found using itemId, else return undefined
@@ -229,7 +227,7 @@ export const isPlaylistItemExists = (
  *
  */
 export const getSnippetFromItemId = (
-  entities: NormPlaylistsOrVideosEntities,
+  entities: PlaylistsOrVideosEntities,
   itemId: string
 ) => {
   const snippetId = isPlaylistsEntities(entities)
@@ -258,7 +256,7 @@ export const getSnippetFromItemId = (
  *
  */
 export const getSnippetWithCombinedItemId = (
-  entities: NormPlaylistsOrVideosEntities,
+  entities: PlaylistsOrVideosEntities,
   itemId: string
 ) => {
   const snippet = getSnippetFromItemId(entities, itemId);

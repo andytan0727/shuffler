@@ -1,9 +1,9 @@
 import { denormalize, normalize, NormalizedSchema, schema } from "normalizr";
 import {
-  NormListToPlayEntities,
-  NormListToPlayResultItem,
+  FetchedVideo,
+  ListToPlayEntities,
+  ListToPlayResultItem,
   PlaylistItem,
-  Video,
   VideoItem,
 } from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
@@ -12,7 +12,7 @@ const listToPlayVideoItem = new schema.Entity(
   "videoItems",
   {},
   {
-    processStrategy: (entity: Video) => {
+    processStrategy: (entity: FetchedVideo) => {
       const id = entity["id"];
       return {
         id,
@@ -52,15 +52,15 @@ export const listToPlayItemSchema = new schema.Array(
 export const normalizeListToPlay = (
   originalListToPlay: DeepReadonly<(PlaylistItem | VideoItem)[]>
 ) =>
-  normalize<NormListToPlayEntities, NormListToPlayResultItem[]>(
+  normalize<ListToPlayEntities, ListToPlayResultItem[]>(
     originalListToPlay,
     listToPlayItemSchema
   );
 
 export const denormalizeListToPlay = (
   normalizedListToPlay: NormalizedSchema<
-    NormListToPlayEntities,
-    NormListToPlayResultItem
+    ListToPlayEntities,
+    ListToPlayResultItem
   >
 ) =>
   denormalize(

@@ -1,12 +1,12 @@
 import deepFreeze from "deep-freeze";
 import partial from "lodash/partial";
 
-import { deleteNormPlaylistItemByIdAction } from "./playlistActions";
+import { deletePlaylistItemByIdAction } from "./playlistActions";
 import { playlistsReducer } from "./playlistReducer";
 import { stateMaker } from "./testUtils";
-import { NormPlaylists } from "./types";
+import { Playlists } from "./types";
 
-const basePlaylistsState: NormPlaylists = {
+const basePlaylistsState: Playlists = {
   entities: {
     playlistItems: {},
     playlists: {},
@@ -26,15 +26,15 @@ const initialPlaylistsState = playlistsStatesMaker({
 deepFreeze(initialPlaylistsState);
 
 describe("Test playlistsReducer", () => {
-  test("should handle DELETE_NORM_PLAYLIST_ITEM_BY_ID action correctly", () => {
+  test("should handle DELETE_PLAYLIST_ITEM_BY_ID action correctly", () => {
     const initialStates = stateMaker(basePlaylistsState, {
       itemsLength: 2,
       sourceLength: 1,
-    }) as NormPlaylists;
+    }) as Playlists;
 
     const newStates = playlistsReducer(
       initialStates,
-      deleteNormPlaylistItemByIdAction("playlistId-1", "itemId-1-1")
+      deletePlaylistItemByIdAction("playlistId-1", "itemId-1-1")
     );
 
     expect(newStates).toEqual({

@@ -7,8 +7,8 @@ import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
 import {
-  selectNormPlaylistById,
-  selectNormPlaylistSnippetByItemId,
+  selectPlaylistSnippetByItemId,
+  selectPlaylistById,
 } from "store/ytplaylist/playlistSelectors";
 
 import styles from "./styles.module.scss";
@@ -23,10 +23,10 @@ const ManagementPlaylistsPanelGridItem = (
   const { playlistId } = props;
   const [enterPlaylist, setEnterPlaylist] = useState({});
   const playlist = useSelector((state: AppState) =>
-    selectNormPlaylistById(state, playlistId)
+    selectPlaylistById(state, playlistId)
   );
   const firstSnippet = useSelector((state: AppState) =>
-    selectNormPlaylistSnippetByItemId(state, playlist.items[0])
+    selectPlaylistSnippetByItemId(state, playlist.items[0])
   );
   const { allInPlaying, partialInPlaying, name: playlistName } = playlist;
 

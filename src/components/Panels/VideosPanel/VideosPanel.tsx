@@ -3,7 +3,7 @@ import { useCheckbox } from "components/Checkbox/hooks";
 import { makeSearchInput } from "components/Inputs";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectAllNormVideoItemIds } from "store/ytplaylist/videoSelectors";
+import { selectAllVideoItemIds } from "store/ytplaylist/videoSelectors";
 
 import styles from "./styles.module.scss";
 import VideosPanelItem from "./VideosPanelItem";
@@ -11,7 +11,7 @@ import VideosPanelItem from "./VideosPanelItem";
 const SearchVideoInput = makeSearchInput("videos");
 
 const VideosPanel = () => {
-  const itemIds = useSelector(selectAllNormVideoItemIds);
+  const itemIds = useSelector(selectAllVideoItemIds);
   const { checked, handleCheckOrUncheckId, clearChecked } = useCheckbox();
 
   return (

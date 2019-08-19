@@ -1,4 +1,4 @@
-import { Playlist, Video } from "store/ytplaylist/types";
+import { FetchedPlaylist, FetchedVideo } from "store/ytplaylist/types";
 import { ActionType } from "typesafe-actions";
 
 import * as ytapiAction from "./action";
@@ -16,14 +16,14 @@ export interface YTAPIState {
 export interface YTAPIPlaylistItems {
   apiBaseUrl: string;
   options: YTAPIParamOptions;
-  fetchedData: Playlist[];
+  fetchedData: FetchedPlaylist[];
   fetchLoading: boolean;
 }
 
 export interface YTAPIVideoItems {
   apiBaseUrl: string;
   options: YTAPIParamOptions;
-  fetchedData: Video[];
+  fetchedData: FetchedVideo[];
   fetchLoading: boolean;
 }
 

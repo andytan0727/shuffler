@@ -6,12 +6,12 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
-import { updateNormListToPlayAction } from "store/ytplaylist/listToPlayActions";
+import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
-  deleteNormPlaylistByIdAction,
-  shuffleNormPlaylistItems,
+  deletePlaylistByIdAction,
+  shufflePlaylistItems,
 } from "store/ytplaylist/playlistActions";
-import { selectNormPlaylistById } from "store/ytplaylist/playlistSelectors";
+import { selectPlaylistById } from "store/ytplaylist/playlistSelectors";
 import { notify } from "utils/helper/notifyHelper";
 
 import { IconButton, Tooltip } from "@material-ui/core";
@@ -37,7 +37,7 @@ const ManagementPlaylistsPanelGridItemBtn = (
   const { playlistId, history } = props;
   const dispatch = useDispatch();
   const playlist = useSelector((state: AppState) =>
-    selectNormPlaylistById(state, playlistId)
+    selectPlaylistById(state, playlistId)
   );
   const playlistInPlaying = !!(playlist && playlist.allInPlaying);
   const itemIds = playlist.items;
@@ -45,24 +45,20 @@ const ManagementPlaylistsPanelGridItemBtn = (
   const handlePlayPlaylist = useCallback(() => {
     // play whole playlist
     dispatch(
-      updateNormListToPlayAction(
-        "playlistItems",
-        playlistId,
-        itemIds as string[]
-      )
+      updateListToPlayAction("playlistItems", playlistId, itemIds as string[])
     );
 
     history.push("/player/ytplayer");
   }, [dispatch, history, itemIds, playlistId]);
 
   const handleShufflePlaylist = useCallback(() => {
-    dispatch(shuffleNormPlaylistItems(playlistId));
+    dispatch(shufflePlaylistItems(playlistId));
 
     notify("info", `Shuffling ...`);
   }, [dispatch, playlistId]);
 
   const handleDeletePlaylist = useCallback(() => {
-    dispatch(deleteNormPlaylistByIdAction(playlistId));
+    dispatch(deletePlaylistByIdAction(playlistId));
   }, [dispatch, playlistId]);
 
   return (

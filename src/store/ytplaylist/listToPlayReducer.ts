@@ -5,14 +5,10 @@ import zip from "lodash/zip";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
-import {
-  DeepRONormListToPlay,
-  NormListToPlay,
-  YTPlaylistNormedAction,
-} from "./types";
-import { deleteListToPlayItemById, mergeNormalizedEntities } from "./utils";
+import { DeepReadonlyListToPlay, ListToPlay, YTPlaylistActions } from "./types";
+import { deleteListToPlayItemById, mergeEntities } from "./utils";
 
-const initialListToPlayState: DeepRONormListToPlay = {
+const initialListToPlayState: DeepReadonlyListToPlay = {
   entities: {
     playlistItems: {},
     videoItems: {},
@@ -21,22 +17,23 @@ const initialListToPlayState: DeepRONormListToPlay = {
 };
 
 export const listToPlayReducer: Reducer<
-  DeepRONormListToPlay,
-  YTPlaylistNormedAction
-> = produce((draft: Draft<NormListToPlay>, action: YTPlaylistNormedAction) => {
+  DeepReadonlyListToPlay,
+  YTPlaylistActions
+> = produce((draft: Draft<ListToPlay>, action: YTPlaylistActions) => {
   switch (action.type) {
-    // for batch addition of items directly through normalized listToPlay
+    // for batch addition of items directly
+    // through normalized listToPlay
     // entities and result
-    case ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY: {
-      return mergeNormalizedEntities(draft, action);
+    case ActionTypes.ADD_UNIQUE_LIST_TO_PLAY: {
+      return mergeEntities(draft, action);
     }
 
-    // Update entire normalized listToPlay without preserving previous details
+    // Update entire listToPlay without preserving previous details
     // mainly used for play (ONE) and only one playlist
     // without mixing other videos/playlists
     // assume all snippets in (ONE) playlist taken from API are all unique
     // No need to check for uniqueness of snippets in (ONE) playlist
-    case ActionTypes.UPDATE_NORM_LIST_TO_PLAY: {
+    case ActionTypes.UPDATE_LIST_TO_PLAY: {
       const { schema, foreignKey, itemIds } = action.payload;
 
       // clear previous state
@@ -56,11 +53,11 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID: {
+    case ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID: {
       return deleteListToPlayItemById(draft, action.payload.id);
     }
 
-    case ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEMS: {
+    case ActionTypes.DELETE_LIST_TO_PLAY_ITEMS: {
       const { ids } = action.payload;
 
       ids.forEach((id) => {

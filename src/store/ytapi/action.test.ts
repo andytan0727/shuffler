@@ -1,4 +1,4 @@
-import { Playlist, Video } from "store/ytplaylist/types";
+import { FetchedPlaylist, FetchedVideo } from "store/ytplaylist/types";
 import {
   ADD_FETCHED_PLAYLIST_ID,
   ADD_FETCHED_VIDEO_ID,
@@ -29,10 +29,10 @@ describe("ytapi actions", () => {
   const customGlobal: unknown = global;
 
   // @ts-ignore
-  const playlist: Playlist = customGlobal.playlist;
+  const playlist: FetchedPlaylist = customGlobal.playlist;
 
   // @ts-ignore
-  const video: Video = customGlobal.video;
+  const video: FetchedVideo = customGlobal.video;
 
   // @ts-ignore
   const url: string = customGlobal.url;

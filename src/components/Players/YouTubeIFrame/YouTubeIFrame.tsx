@@ -8,7 +8,7 @@ import {
   selectRepeat,
 } from "store/ytplayer/selector";
 import { shuffleListToPlayAction } from "store/ytplaylist/listToPlayActions";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 import { isPlaylistItemSnippet } from "store/ytplaylist/utils";
 import { notify } from "utils/helper/notifyHelper";
@@ -29,7 +29,7 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
   const curSongIdx = useSelector(selectCurSongIdx);
   const playerVars = useSelector(selectPlayerVars);
   const repeat = useSelector(selectRepeat);
-  const listToPLaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPLaySnippets = useSelector(selectListToPlayResultSnippets);
   const dispatch = useDispatch();
   const currentSnippet = listToPLaySnippets[curSongIdx];
 

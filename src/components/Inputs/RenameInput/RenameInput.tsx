@@ -3,8 +3,8 @@ import { HandleCheckOrUncheckId } from "components/Checkbox/hooks";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "store";
-import { updateNormPlaylistNameByIdAction } from "store/ytplaylist/playlistActions";
-import { selectNormPlaylistNameById } from "store/ytplaylist/playlistSelectors";
+import { updatePlaylistNameByIdAction } from "store/ytplaylist/playlistActions";
+import { selectPlaylistNameById } from "store/ytplaylist/playlistSelectors";
 
 import styles from "./styles.module.scss";
 
@@ -17,7 +17,7 @@ const RenameInput = (props: RenameInputProps) => {
   const { id: playlistId, handleCheckOrUncheckId } = props;
   const [editName, setEditName] = useState({});
   const playlistName = useSelector((state: AppState) =>
-    selectNormPlaylistNameById(state, playlistId)
+    selectPlaylistNameById(state, playlistId)
   );
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const RenameInput = (props: RenameInputProps) => {
 
   const handleEditNameInputChange = useCallback(
     (playlistId: string) => (e: InputChangeEvent) => {
-      dispatch(updateNormPlaylistNameByIdAction(playlistId, e.target.value));
+      dispatch(updatePlaylistNameByIdAction(playlistId, e.target.value));
     },
     [dispatch]
   );

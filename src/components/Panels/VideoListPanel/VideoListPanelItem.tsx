@@ -9,7 +9,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "store";
 import {
-  selectNormPlaylistAllInPlayingById,
+  selectPlaylistAllInPlayingById,
   selectPartialInPlayingById,
 } from "store/ytplaylist/playlistSelectors";
 
@@ -30,7 +30,7 @@ interface VideoListPanelItemProps {
 const VideoListPanelItem = (props: VideoListPanelItemProps) => {
   const { playlistId, checked, handleCheckOrUncheckId } = props;
   const allInPlaying = useSelector((state: AppState) =>
-    selectNormPlaylistAllInPlayingById(state, playlistId)
+    selectPlaylistAllInPlayingById(state, playlistId)
   );
   const partialInPlaying = useSelector((state: AppState) =>
     selectPartialInPlayingById(state, playlistId)

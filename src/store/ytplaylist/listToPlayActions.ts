@@ -1,7 +1,7 @@
 import { createAction } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
-import { NormListToPlayEntities, NormListToPlayResultItem } from "./types";
+import { ListToPlayEntities, ListToPlayResultItem } from "./types";
 
 /**
  * Add normalized listToPlay entities to store
@@ -10,15 +10,12 @@ import { NormListToPlayEntities, NormListToPlayResultItem } from "./types";
  *
  * @param entities Normalized entities of listToPlay
  * @param result Normalized result of listToPlay
- * @returns ADD_NORM_LIST_TO_PLAY action object
+ * @returns ADD_LIST_TO_PLAY action object
  */
-export const addNormListToPlayAction = createAction(
-  ActionTypes.ADD_NORM_LIST_TO_PLAY,
+export const addListToPlayAction = createAction(
+  ActionTypes.ADD_LIST_TO_PLAY,
   (action) => {
-    return (
-      entities: NormListToPlayEntities,
-      result: NormListToPlayResultItem[]
-    ) =>
+    return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
       action({
         entities,
         result,
@@ -29,19 +26,16 @@ export const addNormListToPlayAction = createAction(
 /**
  * Add listToPlay entities and result unique
  * with snippetId associating with itemId of result
- * item to normalized listToPlay
+ * item to listToPlay
  *
  * @param entities Normalized entities of listToPlay
  * @param result Normalized result of listToPlay
- * @returns ADD_UNIQUE_NORM_LIST_TO_PLAY action object
+ * @returns ADD_UNIQUE_LIST_TO_PLAY action object
  */
-export const addUniqueNormListToPlay = createAction(
-  ActionTypes.ADD_UNIQUE_NORM_LIST_TO_PLAY,
+export const addUniqueListToPlay = createAction(
+  ActionTypes.ADD_UNIQUE_LIST_TO_PLAY,
   (action) => {
-    return (
-      entities: NormListToPlayEntities,
-      result: NormListToPlayResultItem[]
-    ) =>
+    return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
       action({
         entities,
         result,
@@ -58,10 +52,10 @@ export const addUniqueNormListToPlay = createAction(
  * @param foreignKey Id of playlist/video that owns this item
  * @returns ADD_LIST_TO_PLAY_ITEM action object
  */
-export const addNormListToPlayItemAction = createAction(
-  ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEM,
+export const addListToPlayItemAction = createAction(
+  ActionTypes.ADD_LIST_TO_PLAY_ITEM,
   (action) => {
-    return (resultItem: NormListToPlayResultItem, foreignKey: string) =>
+    return (resultItem: ListToPlayResultItem, foreignKey: string) =>
       action({
         resultItem,
         foreignKey,
@@ -70,21 +64,21 @@ export const addNormListToPlayItemAction = createAction(
 );
 
 /**
- * Add items as a batch to normalized listToPlay
+ * Add items as a batch to listToPlay
  *
  * **_Note: This action is handled through saga. No reducer logic involved_**
  *
- * @param items Item array consists of normalized listToPlay's result item and
+ * @param items Item array consists of listToPlay's result item and
  * foreign key
- * @returns ADD_NORM_LIST_TO_PLAY_ITEMS action object
+ * @returns ADD_LIST_TO_PLAY_ITEMS action object
  *
  */
-export const addNormListToPlayItemsAction = createAction(
-  ActionTypes.ADD_NORM_LIST_TO_PLAY_ITEMS,
+export const addListToPlayItemsAction = createAction(
+  ActionTypes.ADD_LIST_TO_PLAY_ITEMS,
   (action) => {
     return (
       items: {
-        resultItem: NormListToPlayResultItem;
+        resultItem: ListToPlayResultItem;
         foreignKey: string;
       }[]
     ) =>
@@ -95,15 +89,15 @@ export const addNormListToPlayItemsAction = createAction(
 );
 
 /**
- * Update entire normalized listToPlay with full replacement to previous state
+ * Update entire listToPlay with full replacement to previous state
  *
  * @param schema Schema type (playlistItems/videoItems)
  * @param foreignKey Id referring to the source (playlistId/videoId)
  * @param itemIds An array of itemIds
- * @returns UPDATE_NORM_LIST_TO_PLAY action object
+ * @returns UPDATE_LIST_TO_PLAY action object
  */
-export const updateNormListToPlayAction = createAction(
-  ActionTypes.UPDATE_NORM_LIST_TO_PLAY,
+export const updateListToPlayAction = createAction(
+  ActionTypes.UPDATE_LIST_TO_PLAY,
   (action) => {
     return (schema: SchemaType, foreignKey: string, itemIds: string[]) =>
       action({
@@ -120,8 +114,8 @@ export const updateNormListToPlayAction = createAction(
  * @param id Item id to be deleted
  * @returns DELETE_LIST_TO_PLAY_ITEM_BY_ID action object
  */
-export const deleteNormListToPlayItemByIdAction = createAction(
-  ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEM_BY_ID,
+export const deleteListToPlayItemByIdAction = createAction(
+  ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
   (action) => {
     return (id: string) =>
       action({
@@ -136,8 +130,8 @@ export const deleteNormListToPlayItemByIdAction = createAction(
  * @param ids Item ids array to be deleted
  * @returns DELETE_LIST_TO_PLAY_ITEMS action object
  */
-export const deleteNormListToPlayItemsAction = createAction(
-  ActionTypes.DELETE_NORM_LIST_TO_PLAY_ITEMS,
+export const deleteListToPlayItemsAction = createAction(
+  ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
   (action) => {
     return (ids: string[]) =>
       action({
@@ -193,7 +187,7 @@ export const chooseFirstItemAndShuffleListToPlayAction = createAction(
  * Then all the other listToPlay items are removed,
  * replaced with filtered items
  *
- * Unlike the almost identical **updateNormListToPlayAction**,
+ * Unlike the almost identical **updateListToPlayAction**,
  * this action filters only items that **existed previously**
  * in listToPlay
  *

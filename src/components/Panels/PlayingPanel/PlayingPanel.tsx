@@ -2,12 +2,12 @@ import { PlayingPanelBtnGroup } from "components/Buttons";
 import { CombinedPlaylist } from "components/Lists";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 
 import styles from "./styles.module.scss";
 
 const PlayingPanel = () => {
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
 
   return (
     <div className={styles.playingPanelDiv}>

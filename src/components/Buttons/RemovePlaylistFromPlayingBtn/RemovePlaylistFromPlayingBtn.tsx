@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { removeNormPlaylistFromNormListToPlayAction } from "store/ytplaylist/playlistActions";
+import { removePlaylistFromListToPlayAction } from "store/ytplaylist/playlistActions";
 import { notify } from "utils/helper/notifyHelper";
 
 import { IconButton, Tooltip } from "@material-ui/core";
@@ -18,7 +18,7 @@ const RemovePlaylistFromPlayingBtn = (
   const dispatch = useDispatch();
 
   const handleRemovePlaylistAsPlaying = useCallback(() => {
-    dispatch(removeNormPlaylistFromNormListToPlayAction(playlistId));
+    dispatch(removePlaylistFromListToPlayAction(playlistId));
 
     notify("success", "Removed playlist from Now Playing");
   }, [dispatch, playlistId]);

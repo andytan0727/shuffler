@@ -4,18 +4,14 @@ import uniq from "lodash/uniq";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
-import {
-  DeepRONormPlaylists,
-  NormPlaylists,
-  YTPlaylistNormedAction,
-} from "./types";
+import { DeepReadonlyPlaylists, Playlists, YTPlaylistActions } from "./types";
 import {
   deletePlaylistOrVideoById,
-  mergeNormalizedEntities,
+  mergeEntities,
   updatePlaylistOrVideoNameById,
 } from "./utils";
 
-const initialPlaylistsState: DeepRONormPlaylists = {
+const initialPlaylistsState: DeepReadonlyPlaylists = {
   entities: {
     playlistItems: {},
     playlists: {},
@@ -25,17 +21,17 @@ const initialPlaylistsState: DeepRONormPlaylists = {
 };
 
 export const playlistsReducer: Reducer<
-  DeepRONormPlaylists,
-  YTPlaylistNormedAction
-> = produce((draft: Draft<NormPlaylists>, action: YTPlaylistNormedAction) => {
+  DeepReadonlyPlaylists,
+  YTPlaylistActions
+> = produce((draft: Draft<Playlists>, action: YTPlaylistActions) => {
   switch (action.type) {
-    case ActionTypes.ADD_NORM_PLAYLIST: {
+    case ActionTypes.ADD_PLAYLIST: {
       const prevResult = original(draft.result);
 
       if (prevResult) {
         const { result } = action.payload;
 
-        return mergeNormalizedEntities(draft, {
+        return mergeEntities(draft, {
           ...action,
           payload: {
             ...action.payload,
@@ -47,13 +43,13 @@ export const playlistsReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.DELETE_NORM_PLAYLIST_BY_ID: {
+    case ActionTypes.DELETE_PLAYLIST_BY_ID: {
       const { id } = action.payload;
 
       return deletePlaylistOrVideoById(draft, id);
     }
 
-    case ActionTypes.DELETE_NORM_PLAYLIST_ITEM_BY_ID: {
+    case ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID: {
       const { playlistId, itemId } = action.payload;
 
       if (!draft.entities.playlistItems[itemId]) return draft;
@@ -74,7 +70,7 @@ export const playlistsReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.UPDATE_NORM_PLAYLIST_NAME_BY_ID: {
+    case ActionTypes.UPDATE_PLAYLIST_NAME_BY_ID: {
       const { id, name } = action.payload;
 
       return updatePlaylistOrVideoNameById(draft, {
@@ -125,7 +121,7 @@ export const playlistsReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.SHUFFLE_NORM_PLAYLIST_ITEMS: {
+    case ActionTypes.SHUFFLE_PLAYLIST_ITEMS: {
       const { id } = action.payload;
       const prevPlaylistItems = original(draft.entities.playlists[id].items);
 

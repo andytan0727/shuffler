@@ -3,14 +3,14 @@ import uniq from "lodash/uniq";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
-import { DeepRONormVideos, NormVideos, YTPlaylistNormedAction } from "./types";
+import { DeepReadonlyVideos, Videos, YTPlaylistActions } from "./types";
 import {
   deletePlaylistOrVideoById,
-  mergeNormalizedEntities,
+  mergeEntities,
   updatePlaylistOrVideoNameById,
 } from "./utils";
 
-const initialVideosState: DeepRONormVideos = {
+const initialVideosState: DeepReadonlyVideos = {
   entities: {
     videoItems: {},
     videos: {},
@@ -20,17 +20,17 @@ const initialVideosState: DeepRONormVideos = {
 };
 
 export const videosReducer: Reducer<
-  DeepRONormVideos,
-  YTPlaylistNormedAction
-> = produce((draft: Draft<NormVideos>, action: YTPlaylistNormedAction) => {
+  DeepReadonlyVideos,
+  YTPlaylistActions
+> = produce((draft: Draft<Videos>, action: YTPlaylistActions) => {
   switch (action.type) {
-    case ActionTypes.ADD_NORM_VIDEO: {
+    case ActionTypes.ADD_VIDEO: {
       const prevResult = original(draft.result);
 
       if (prevResult) {
         const { result } = action.payload;
 
-        return mergeNormalizedEntities(draft, {
+        return mergeEntities(draft, {
           ...action,
           payload: {
             ...action.payload,
@@ -42,7 +42,7 @@ export const videosReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.UPDATE_NORM_VIDEO_NAME_BY_ID: {
+    case ActionTypes.UPDATE_VIDEO_NAME_BY_ID: {
       const { id, name } = action.payload;
 
       return updatePlaylistOrVideoNameById(draft, {
@@ -52,7 +52,7 @@ export const videosReducer: Reducer<
       });
     }
 
-    case ActionTypes.DELETE_NORM_VIDEO_BY_ID: {
+    case ActionTypes.DELETE_VIDEO_BY_ID: {
       const { id } = action.payload;
 
       return deletePlaylistOrVideoById(draft, id);

@@ -3,21 +3,21 @@ import createCachedSelector from "re-reselect";
 import { AppState } from "store";
 
 import {
-  selectAllNormPlaylistItems,
-  selectNormPlaylistsEntities,
-  selectNormPlaylistSnippetByItemId,
+  selectAllPlaylistItems,
+  selectPlaylistsEntities,
+  selectPlaylistSnippetByItemId,
 } from "./playlistSelectors";
 import {
-  NormPlaylistsEntities,
-  NormVideosEntities,
   PlaylistItemSnippet,
+  PlaylistsEntities,
   VideoItemSnippet,
+  VideosEntities,
 } from "./types";
 import { getSnippetWithCombinedItemId, isPlaylistItemExists } from "./utils";
 import {
-  selectAllNormVideoItems,
-  selectNormVideosEntities,
-  selectNormVideoSnippetByItemId,
+  selectAllVideoItems,
+  selectVideosEntities,
+  selectVideoSnippetByItemId,
 } from "./videoSelectors";
 
 /**
@@ -26,9 +26,9 @@ import {
  * snippet could not be found on both playlist/video
  * states
  */
-export const selectNormSnippetByItemId = createCachedSelector(
-  selectNormPlaylistSnippetByItemId,
-  selectNormVideoSnippetByItemId,
+export const selectSnippetByItemId = createCachedSelector(
+  selectPlaylistSnippetByItemId,
+  selectVideoSnippetByItemId,
   (playlistSnippet, videoSnippet) => playlistSnippet || videoSnippet
 )((_, itemId) => `snippet-itemId-${itemId}`);
 
@@ -37,9 +37,9 @@ export const selectNormSnippetByItemId = createCachedSelector(
  * Used to get filteredSnippets of filtered states.
  * Undefined snippets are skipped
  */
-export const selectNormSnippetsByItemIds = createCachedSelector(
-  selectNormPlaylistsEntities,
-  selectNormVideosEntities,
+export const selectSnippetsByItemIds = createCachedSelector(
+  selectPlaylistsEntities,
+  selectVideosEntities,
   (_: AppState, itemIds: string[]) => itemIds,
   (playlistEntities, videoEntities, itemIds) => {
     const snippets: (PlaylistItemSnippet | VideoItemSnippet)[] = [];
@@ -49,13 +49,10 @@ export const selectNormSnippetsByItemIds = createCachedSelector(
 
       const snippet = isPlaylistItemExists(playlistItems, itemId)
         ? getSnippetWithCombinedItemId(
-            playlistEntities as NormPlaylistsEntities,
+            playlistEntities as PlaylistsEntities,
             itemId
           )
-        : getSnippetWithCombinedItemId(
-            videoEntities as NormVideosEntities,
-            itemId
-          );
+        : getSnippetWithCombinedItemId(videoEntities as VideosEntities, itemId);
 
       if (snippet) snippets.push(snippet);
     }
@@ -64,9 +61,9 @@ export const selectNormSnippetsByItemIds = createCachedSelector(
   }
 )((_, itemIds) => `snippets-itemIds-${itemIds.toString()}`);
 
-export const selectNormSnippetIdByItemId = createCachedSelector(
-  selectAllNormPlaylistItems,
-  selectAllNormVideoItems,
+export const selectSnippetIdByItemId = createCachedSelector(
+  selectAllPlaylistItems,
+  selectAllVideoItems,
   (_: AppState, itemId: string) => itemId,
   (playlistItems, videoItems, itemId) => {
     const playlistItem = playlistItems[itemId];

@@ -8,7 +8,7 @@ import {
 } from "components/Lists/ManagementPanelVirtualList";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectAllNormVideoItemIds } from "store/ytplaylist/videoSelectors";
+import { selectAllVideoItemIds } from "store/ytplaylist/videoSelectors";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -21,7 +21,7 @@ const ManagementPanelVirtualListVideoItem = withListItemSecondaryAction(
 );
 
 const ManagementVideosPanel = () => {
-  const videoItemIds = useSelector(selectAllNormVideoItemIds);
+  const videoItemIds = useSelector(selectAllVideoItemIds);
   const checkboxHooks = useCheckbox();
   const videoItemData = createItemData({
     ...checkboxHooks,

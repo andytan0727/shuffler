@@ -4,14 +4,14 @@ import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
 import {
-  DeepROFiltered,
+  DeepReadonlyFiltered,
   Filtered,
   PlaylistItemSnippet,
   VideoItemSnippet,
-  YTPlaylistNormedAction,
+  YTPlaylistActions,
 } from "./types";
 
-const initialFilteredState: DeepROFiltered = {
+const initialFilteredState: DeepReadonlyFiltered = {
   fuse: undefined,
   options: {
     keys: ["title"],
@@ -20,9 +20,9 @@ const initialFilteredState: DeepROFiltered = {
 };
 
 export const filteredReducer: Reducer<
-  DeepROFiltered,
-  YTPlaylistNormedAction
-> = produce((draft: Draft<Filtered>, action: YTPlaylistNormedAction) => {
+  DeepReadonlyFiltered,
+  YTPlaylistActions
+> = produce((draft: Draft<Filtered>, action: YTPlaylistActions) => {
   switch (action.type) {
     case ActionTypes.CREATE_FUSE: {
       const { snippets } = action.payload;

@@ -7,6 +7,7 @@ import React, { MemoExoticComponent, useCallback } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
+import { DeepReadonly } from "utility-types";
 
 import VirtualListSelectionHeader from "../VirtualListSelectionHeader";
 
@@ -31,7 +32,7 @@ export interface ItemData {
 
   // filtered list of snippets to be displayed
   // if not supplied/undefined then items will be displayed instead
-  filteredSnippets?: ListToPlaySnippets;
+  filteredSnippets?: DeepReadonly<ListToPlaySnippets>;
 }
 
 interface ManagementPanelVirtualListProps {

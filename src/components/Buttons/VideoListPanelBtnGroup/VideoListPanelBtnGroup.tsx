@@ -4,9 +4,9 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
-  addNormPlaylistToNormListToPlayAction,
-  deleteNormPlaylistByIdAction,
-  removeNormPlaylistsFromNormListToPlayAction,
+  addPlaylistToListToPlayAction,
+  deletePlaylistByIdAction,
+  removePlaylistsFromListToPlayAction,
 } from "store/ytplaylist/playlistActions";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
@@ -48,7 +48,7 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
     }
 
     for (const playlistId of playlistIds) {
-      dispatch(addNormPlaylistToNormListToPlayAction(playlistId));
+      dispatch(addPlaylistToListToPlayAction(playlistId));
     }
 
     // TODO: move notify to saga
@@ -63,7 +63,7 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
       return;
     }
 
-    dispatch(removeNormPlaylistsFromNormListToPlayAction(playlistIds));
+    dispatch(removePlaylistsFromListToPlayAction(playlistIds));
 
     // TODO: move notify to saga
     notify(
@@ -93,7 +93,7 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
 
     if (result.value) {
       playlistIds.forEach((playlistId) => {
-        dispatch(deleteNormPlaylistByIdAction(playlistId));
+        dispatch(deletePlaylistByIdAction(playlistId));
       });
 
       notify("success", "Successfully deleted playlist(s) 😎");

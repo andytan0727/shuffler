@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { useSelector } from "react-redux";
-import { selectNormListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { retryLazy } from "utils/helper/lazyImportHelper";
 
 import { useMediaQuery } from "@material-ui/core";
@@ -9,7 +9,7 @@ const LazyVideoList = lazy(() => retryLazy(() => import("../VideoList")));
 
 const CombinedPlaylist = () => {
   const matchesMobile = useMediaQuery("(max-width: 420px)");
-  const listToPlaySnippets = useSelector(selectNormListToPlayResultSnippets);
+  const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
 
   return (
     <React.Fragment>

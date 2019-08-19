@@ -1,49 +1,42 @@
-import map from "lodash/map";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 import { AppState } from "store";
 
-import { NormVideosEntities } from "./types";
+import { VideosEntities } from "./types";
 import { getSnippetFromItemId } from "./utils";
 
-export const selectNormVideosEntities = (state: AppState) =>
-  state.ytplaylistNormed.videos.entities;
+export const selectVideosEntities = (state: AppState) =>
+  state.ytplaylist.videos.entities;
 
-export const selectAllNormVideoSnippets = createSelector(
-  selectNormVideosEntities,
+export const selectAllVideoSnippets = createSelector(
+  selectVideosEntities,
   (entities) => entities.snippets
 );
 
-export const selectAllNormVideoSnippetsAsArray = createSelector(
-  selectAllNormVideoSnippets,
-  (snippets) => map(snippets, (val, key) => ({ id: key, ...val }))
-);
-
-export const selectAllNormVideoItems = createSelector(
-  selectNormVideosEntities,
+export const selectAllVideoItems = createSelector(
+  selectVideosEntities,
   (entities) => entities.videoItems
 );
 
-export const selectAllNormVideoItemIds = createSelector(
-  selectNormVideosEntities,
+export const selectAllVideoItemIds = createSelector(
+  selectVideosEntities,
   (entities) => Object.keys(entities.videoItems)
 );
 
-export const selectNormVideoItemIdsByVideoId = createCachedSelector(
-  selectNormVideosEntities,
+export const selectVideoItemIdsByVideoId = createCachedSelector(
+  selectVideosEntities,
   (_: AppState, videoId: string) => videoId,
   (entities, videoId) => entities.videos[videoId].items
 )((_, id) => `itemIds-videoId-${id}`);
 
-export const selectNormVideoSnippetByItemId = createCachedSelector(
-  selectNormVideosEntities,
+export const selectVideoSnippetByItemId = createCachedSelector(
+  selectVideosEntities,
   (_: AppState, itemId: string) => itemId,
-  (entities, itemId) =>
-    getSnippetFromItemId(entities as NormVideosEntities, itemId)
+  (entities, itemId) => getSnippetFromItemId(entities as VideosEntities, itemId)
 )((_, itemId) => `snippet-itemId-${itemId}`);
 
-export const selectNormVideoSnippetsByItemIds = createCachedSelector(
-  selectNormVideosEntities,
+export const selectVideoSnippetsByItemIds = createCachedSelector(
+  selectVideosEntities,
   (_: AppState, itemIds: string[]) => itemIds,
   (entities, itemIds) => {
     const snippetIds = itemIds.map(
@@ -54,8 +47,8 @@ export const selectNormVideoSnippetsByItemIds = createCachedSelector(
   }
 )((_, id) => `snippets-itemId-${id.toString()}`);
 
-export const selectNormVideoIdByItemId = createCachedSelector(
-  selectNormVideosEntities,
+export const selectVideoIdByItemId = createCachedSelector(
+  selectVideosEntities,
   (_: AppState, itemId: string) => itemId,
   (entities, itemId) => entities.videoItems[itemId].id
 )((_, itemId) => `videoId-itemId-${itemId}`);
