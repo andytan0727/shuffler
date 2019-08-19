@@ -52,6 +52,20 @@ declare global {
 
   type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
   type OnClickEvent = React.MouseEvent<HTMLDivElement | HTMLButtonElement>;
+
+  // for jest testing only
+  namespace NodeJS {
+    interface Global {
+      fetchedPlaylistItems: import("store/ytplaylist/types").PlaylistItem[];
+      fetchedVideoItem: import("store/ytplaylist/types").VideoItem;
+      playlist: import("store/ytplaylist/types").FetchedPlaylist;
+      video: FetchedVideo;
+      url: string;
+      playlistParams: BaseFetchParams & PlaylistParams;
+      playlistNextParams: BaseFetchParams & PlaylistParams;
+      videoParams: BaseFetchParams & VideoParams;
+    }
+  }
 }
 
 declare module "typesafe-actions" {

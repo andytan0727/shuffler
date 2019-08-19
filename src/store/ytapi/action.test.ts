@@ -1,4 +1,3 @@
-import { FetchedPlaylist, FetchedVideo } from "store/ytplaylist/types";
 import {
   ADD_FETCHED_PLAYLIST_ID,
   ADD_FETCHED_VIDEO_ID,
@@ -26,24 +25,11 @@ import {
 } from "./action";
 
 describe("ytapi actions", () => {
-  const customGlobal: unknown = global;
-
-  // @ts-ignore
-  const playlist: FetchedPlaylist = customGlobal.playlist;
-
-  // @ts-ignore
-  const video: FetchedVideo = customGlobal.video;
-
-  // @ts-ignore
-  const url: string = customGlobal.url;
-
-  const playlistParams: BaseFetchParams & PlaylistParams =
-    // @ts-ignore
-    customGlobal.playlistParams;
-
-  // @ts-ignore
-  const videoParams: BaseFetchParams & VideoParams = customGlobal.videoParams;
-
+  const playlist = global.playlist;
+  const video = global.video;
+  const url = global.url;
+  const playlistParams = global.playlistParams;
+  const videoParams = global.videoParams;
   const fetchParams = { ...playlistParams, ...videoParams };
 
   test("should create FETCH_PLAYLIST_DATA action object", () => {

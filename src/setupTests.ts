@@ -1,9 +1,15 @@
-/** @type {Array<PlaylistItem>} */
-const fetchedPlaylistItems = Array.from(
+import {
+  FetchedPlaylist,
+  FetchedVideo,
+  PlaylistItem,
+  VideoItem,
+} from "store/ytplaylist/types";
+
+const fetchedPlaylistItems: PlaylistItem[] = Array.from(
   { length: 10 },
   (_, idx) => idx + 1
 ).map((val) => ({
-  etag: "randomeTag",
+  etag: "randomTag",
   kind: "youtube#playlistItem",
   id: val.toString(),
   snippet: {
@@ -29,8 +35,7 @@ const fetchedPlaylistItems = Array.from(
   },
 }));
 
-/** @type {VideoItem} */
-const fetchedVideoItem = {
+const fetchedVideoItem: VideoItem = {
   etag: "random_string",
   id: "videoId",
   kind: "youtube#video",
@@ -54,22 +59,19 @@ const fetchedVideoItem = {
   },
 };
 
-/** @type {Playlist} */
-const playlist = {
+const playlist: FetchedPlaylist = {
   id: "playlistId",
   items: fetchedPlaylistItems,
 };
 
-/** @type {Video} */
-const video = {
+const video: FetchedVideo = {
   id: "videoId",
   items: [fetchedVideoItem],
 };
 
 const url = "http://sample.test.com";
 
-/** @type {BaseFetchParams & PlaylistParams} */
-const playlistParams = {
+const playlistParams: BaseFetchParams & PlaylistParams = {
   apiKey: "key",
   part: "snippet",
   maxResults: "50",
@@ -77,14 +79,12 @@ const playlistParams = {
   fields: ["items", "nextPageToken", "pageInfo"],
 };
 
-/** @type {BaseFetchParams & PlaylistParams} */
-const playlistNextParams = {
+const playlistNextParams: BaseFetchParams & PlaylistParams = {
   ...playlistParams,
   pageToken: "nextToken",
 };
 
-/** @type {BaseFetchParams & VideoParams} */
-const videoParams = {
+const videoParams: BaseFetchParams & VideoParams = {
   apiKey: "key",
   part: "snippet",
   id: "videoId",
@@ -92,13 +92,12 @@ const videoParams = {
   fields: ["items"],
 };
 
-/** @type {*} */
-const customGlobal = global;
-customGlobal.fetchedPlaylistItems = fetchedPlaylistItems;
-customGlobal.fetchedVideoItem = fetchedVideoItem;
-customGlobal.playlist = playlist;
-customGlobal.video = video;
-customGlobal.url = url;
-customGlobal.playlistParams = playlistParams;
-customGlobal.playlistNextParams = playlistNextParams;
-customGlobal.videoParams = videoParams;
+// assign to global
+global.fetchedPlaylistItems = fetchedPlaylistItems;
+global.fetchedVideoItem = fetchedVideoItem;
+global.playlist = playlist;
+global.video = video;
+global.url = url;
+global.playlistParams = playlistParams;
+global.playlistNextParams = playlistNextParams;
+global.videoParams = videoParams;
