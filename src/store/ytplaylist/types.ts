@@ -64,11 +64,13 @@ export interface PlaylistItemsEntity {
 }
 
 export interface PlaylistsEntity {
-  [key: string]: {
-    name?: string;
-    allInPlaying?: boolean;
-    partialInPlaying?: boolean;
-  } & BaseSourceEntity;
+  [key: string]: PlaylistsEntityItem;
+}
+
+export interface PlaylistsEntityItem extends BaseSourceEntity {
+  name?: string;
+  allInPlaying?: boolean;
+  partialInPlaying?: boolean;
 }
 
 export interface PlaylistSnippetsEntity {

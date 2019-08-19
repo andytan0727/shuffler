@@ -1,9 +1,9 @@
 import deepFreeze from "deep-freeze";
 import partial from "lodash/partial";
+import { stateMaker } from "utils/helper/testUtils";
 
 import { deletePlaylistItemByIdAction } from "../playlistActions";
 import { playlistsReducer } from "../playlistReducer";
-import { stateMaker } from "../testUtils";
 import { Playlists } from "../types";
 
 const basePlaylistsState: Playlists = {

@@ -1,62 +1,39 @@
+// this adds jest-dom's custom assertions
+import "@testing-library/jest-dom/extend-expect";
+
+import deepFreeze from "deep-freeze";
 import {
   FetchedPlaylist,
   FetchedVideo,
+  ListToPlay,
   PlaylistItem,
+  Playlists,
   VideoItem,
+  Videos,
 } from "store/ytplaylist/types";
+import {
+  makePlaylistSnippet,
+  makeVideoSnippet,
+  stateMaker,
+} from "utils/helper/testUtils";
 
 const fetchedPlaylistItems: PlaylistItem[] = Array.from(
   { length: 10 },
   (_, idx) => idx + 1
-).map((val) => ({
+).map((val, idx) => ({
   etag: "randomTag",
   kind: "youtube#playlistItem",
   id: val.toString(),
-  snippet: {
-    playlistId: "playlistId",
-    name: "Optional name",
-    channelId: "testChannelId",
-    channelTitle: "testChannelTitle",
-    title: `video-${val}`,
-    description: "playlist description",
-    position: 1,
-    publishedAt: "2019-02-02",
-    resourceId: {
-      kind: "youtube#video",
-      videoId: `vid-${val}`,
-    },
-    thumbnails: {
-      default: { height: 120, width: 120, url: "test.com" },
-      medium: { height: 120, width: 120, url: "test.com" },
-      high: { height: 120, width: 120, url: "test.com" },
-      standard: { height: 120, width: 120, url: "test.com" },
-      maxres: { height: 120, width: 120, url: "test.com" },
-    },
-  },
+  snippet: makePlaylistSnippet(val, idx),
 }));
 
 const fetchedVideoItem: VideoItem = {
   etag: "random_string",
   id: "videoId",
   kind: "youtube#video",
-  snippet: {
-    categoryId: "cat1",
-    channelId: "testChannelId",
-    channelTitle: "testChannelTitle",
-    liveBroadcastContent: "test",
-    localized: { title: "localTitle", description: "localDescription" },
-    publishedAt: "2019-02-12",
-    tags: ["test", "video"],
-    title: `video title`,
-    description: "video description",
-    thumbnails: {
-      default: { height: 120, width: 120, url: "test.com" },
-      medium: { height: 120, width: 120, url: "test.com" },
-      high: { height: 120, width: 120, url: "test.com" },
-      standard: { height: 120, width: 120, url: "test.com" },
-      maxres: { height: 120, width: 120, url: "test.com" },
-    },
-  },
+
+  // gives random videoId and itemId
+  snippet: makeVideoSnippet(Math.random(), Math.random()),
 };
 
 const playlist: FetchedPlaylist = {
@@ -92,7 +69,44 @@ const videoParams: BaseFetchParams & VideoParams = {
   fields: ["items"],
 };
 
-// assign to global
+// ================================================
+// Mock up ytplaylist redux states
+// ================================================
+const basePlaylistsState: Playlists = {
+  entities: {
+    playlistItems: {},
+    playlists: {},
+    snippets: {},
+  },
+  result: [],
+};
+
+const baseVideosState: Videos = {
+  entities: {
+    videoItems: {},
+    videos: {},
+    snippets: {},
+  },
+  result: [],
+};
+
+const baseListToPlayStates: ListToPlay = {
+  entities: {
+    playlistItems: {},
+    videoItems: {},
+  },
+  result: [],
+};
+
+const playlists = stateMaker(basePlaylistsState) as Playlists;
+const videos = stateMaker(baseVideosState) as Videos;
+// ================================================
+// End mock up ytplaylist redux states
+// ================================================
+
+// ================================================
+// Globals
+// ================================================
 global.fetchedPlaylistItems = fetchedPlaylistItems;
 global.fetchedVideoItem = fetchedVideoItem;
 global.playlist = playlist;
@@ -101,3 +115,18 @@ global.url = url;
 global.playlistParams = playlistParams;
 global.playlistNextParams = playlistNextParams;
 global.videoParams = videoParams;
+
+// redux
+global.basePlaylists = basePlaylistsState;
+global.baseVideos = baseVideosState;
+global.baseListToPlay = baseListToPlayStates;
+global.playlists = playlists;
+global.videos = videos;
+// ================================================
+// End Globals
+// ================================================
+
+// deep freeze immutable states in global
+deepFreeze(basePlaylistsState);
+deepFreeze(baseVideosState);
+deepFreeze(baseListToPlayStates);

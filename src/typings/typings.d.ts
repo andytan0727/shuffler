@@ -64,6 +64,21 @@ declare global {
       playlistParams: BaseFetchParams & PlaylistParams;
       playlistNextParams: BaseFetchParams & PlaylistParams;
       videoParams: BaseFetchParams & VideoParams;
+
+      // ==========================================
+      // ytplaylist Related
+      // ==========================================
+      // bare bone empty states
+      basePlaylists: import("store/ytplaylist/types").Playlists;
+      baseVideos: import("store/ytplaylist/types").Videos;
+      baseListToPlay: import("store/ytplaylist/types").ListToPlay;
+
+      // with some default values
+      playlists: import("store/ytplaylist/types").Playlists;
+      videos: import("store/ytplaylist/types").Videos;
+      // ==========================================
+      // End ytplaylist Related
+      // ==========================================
     }
   }
 }
