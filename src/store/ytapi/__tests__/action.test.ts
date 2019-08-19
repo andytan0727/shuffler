@@ -22,7 +22,7 @@ import {
   fetchVideoDataSuccessAction,
   setPlaylistUrlAction,
   setVideoUrlAction,
-} from "./action";
+} from "../action";
 
 describe("ytapi actions", () => {
   const playlist = global.playlist;

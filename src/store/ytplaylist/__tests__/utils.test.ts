@@ -2,9 +2,9 @@ import deepFreeze from "deep-freeze";
 import produce, { Draft } from "immer";
 import partial from "lodash/partial";
 
-import { stateMaker } from "./testUtils";
-import { Playlists, Videos } from "./types";
-import { deletePlaylistOrVideoById } from "./utils";
+import { stateMaker } from "../testUtils";
+import { Playlists, Videos } from "../types";
+import { deletePlaylistOrVideoById } from "../utils";
 
 const basePlaylistsState: Playlists = {
   entities: {

@@ -1,8 +1,8 @@
 import deepFreeze from "deep-freeze";
 
-import { setCurSongIdx, setVideoPlaying } from "./action";
-import { ytplayer as ytplayerReducer } from "./reducer";
-import { PlayerState } from "./types";
+import { setCurSongIdx, setVideoPlaying } from "../action";
+import { ytplayer as ytplayerReducer } from "../reducer";
+import { PlayerState } from "../types";
 
 describe("ytplayer reducer", () => {
   const initialState: PlayerState = {

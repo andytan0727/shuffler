@@ -1,10 +1,10 @@
 import deepFreeze from "deep-freeze";
 import partial from "lodash/partial";
 
-import { deletePlaylistItemByIdAction } from "./playlistActions";
-import { playlistsReducer } from "./playlistReducer";
-import { stateMaker } from "./testUtils";
-import { Playlists } from "./types";
+import { deletePlaylistItemByIdAction } from "../playlistActions";
+import { playlistsReducer } from "../playlistReducer";
+import { stateMaker } from "../testUtils";
+import { Playlists } from "../types";
 
 const basePlaylistsState: Playlists = {
   entities: {

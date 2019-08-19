@@ -1,6 +1,6 @@
 import { SET_PREFER_DARK_THEME } from "utils/constants/actionConstants";
 
-import { setPreferDarkTheme } from "./action";
+import { setPreferDarkTheme } from "../action";
 
 describe("userPreferences actions", () => {
   test("should create SET_PREFER_DARK_THEME action object", () => {

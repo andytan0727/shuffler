@@ -25,8 +25,8 @@ import {
   filterListToPlayItemsAction,
   shuffleListToPlayAction,
   updateListToPlayAction,
-} from "./listToPlayActions";
-import { ListToPlayEntities, ListToPlayResultItem } from "./types";
+} from "../listToPlayActions";
+import { ListToPlayEntities, ListToPlayResultItem } from "../types";
 
 const listToPlayEntities: ListToPlayEntities = {
   playlistItems: {},
