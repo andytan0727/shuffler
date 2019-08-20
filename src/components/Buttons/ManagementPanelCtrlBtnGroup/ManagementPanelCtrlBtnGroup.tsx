@@ -31,7 +31,7 @@ const ManagementPanelCtrlBtnGroup = (
           <PlayArrowIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Shuffle">
+      {filteredSnippets ? (
         <IconButton
           color="secondary"
           onClick={handleShuffle}
@@ -39,7 +39,14 @@ const ManagementPanelCtrlBtnGroup = (
         >
           <ShuffleIcon />
         </IconButton>
-      </Tooltip>
+      ) : (
+        <Tooltip title="Shuffle">
+          <IconButton color="secondary" onClick={handleShuffle}>
+            <ShuffleIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+
       <Tooltip title="Delete Selected">
         <IconButton color="secondary" onClick={handleDelete}>
           <DeleteIcon />

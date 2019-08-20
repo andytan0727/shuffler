@@ -42,7 +42,7 @@ export const selectPlaylistNameById = createCachedSelector(
 export const selectPlaylistItemIdsByPlaylistId = createCachedSelector(
   selectPlaylistsEntities,
   (_: AppState, playlistId: string) => playlistId,
-  (entities, id) => entities.playlists[id].items
+  (entities, id) => entities.playlists[id] && entities.playlists[id].items
 )((_, playlistId) => `playlistItemIds-playlistId-${playlistId}`);
 
 export const selectPlaylistSnippetIdsByPlaylistId = createCachedSelector(

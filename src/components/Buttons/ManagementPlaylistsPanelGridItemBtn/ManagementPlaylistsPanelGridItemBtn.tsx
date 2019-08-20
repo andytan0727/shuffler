@@ -31,7 +31,7 @@ interface ManagementPlaylistsPanelGridItemBtnProps {
  * Button group for grid item
  *
  */
-const ManagementPlaylistsPanelGridItemBtn = (
+export const ManagementPlaylistsPanelGridItemBtn = (
   props: ManagementPlaylistsPanelGridItemBtnProps & RouteComponentProps
 ) => {
   const { playlistId, history } = props;
@@ -39,8 +39,9 @@ const ManagementPlaylistsPanelGridItemBtn = (
   const playlist = useSelector((state: AppState) =>
     selectPlaylistById(state, playlistId)
   );
+
   const playlistInPlaying = !!(playlist && playlist.allInPlaying);
-  const itemIds = playlist.items;
+  const itemIds = playlist && playlist.items;
 
   const handlePlayPlaylist = useCallback(() => {
     // play whole playlist
