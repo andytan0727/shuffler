@@ -20,7 +20,7 @@ import { ytplaylistReducer, ytplaylistSagas } from "./ytplaylist";
 // To solve the problem of redux-persist _persist object is not extensible
 setAutoFreeze(false);
 
-function* rootSaga() {
+export function* rootSaga() {
   yield all([ytapiSaga(), userPreferencesSaga(), ytplaylistSagas()]);
 }
 

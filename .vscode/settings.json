@@ -8,6 +8,8 @@
     "modestbranding",
     "persistor",
     "playlistid",
+    "rerender",
+    "unmount",
     "videolist",
     "youtu",
     "ytapi",

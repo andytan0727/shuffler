@@ -225,3 +225,10 @@ export const stateMaker = (
     );
   });
 };
+
+export const makeListToPlaySnippets = (itemLength?: number) =>
+  Array.from({ length: itemLength || 10 }, (_, idx) => idx + 1).map((val) =>
+    Math.random() > 0.5
+      ? makePlaylistSnippet(val, val)
+      : makeVideoSnippet(val, val)
+  );
