@@ -30,7 +30,7 @@ const PlaylistInputPage = ({ match }: PlaylistInputPageProps) => {
         <Switch>
           <Route path={`${playlistInputPath}/tabs`} component={InputTabs} />
           <Route path={`${playlistInputPath}/panel`} component={LgPanel} />
-          <Redirect to={`${playlistInputPath}/tabs`} />
+          <Redirect to={`${playlistInputPath}/panel`} />
         </Switch>
       </Suspense>
       <ToggleDarkModeSwitch />

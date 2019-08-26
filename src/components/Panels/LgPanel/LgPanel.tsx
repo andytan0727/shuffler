@@ -59,7 +59,7 @@ const LgPanel = ({ match }: LgPanelProps) => {
             path={`${LgPanelPath}/playlists`}
             component={LgPlaylistsPanel}
           />
-          <Redirect to={`${LgPanelPath}/videos`} />
+          <Redirect to={`${LgPanelPath}/playing`} />
         </Switch>
       </Suspense>
     </div>
