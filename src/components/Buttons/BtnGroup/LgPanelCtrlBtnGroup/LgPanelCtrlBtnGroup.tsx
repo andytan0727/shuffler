@@ -2,10 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 
-import { IconButton, makeStyles, Tooltip } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import {
   Delete as DeleteIcon,
-  Edit as EditIcon,
   PlayArrow as PlayArrowIcon,
   Shuffle as ShuffleIcon,
 } from "@material-ui/icons";
@@ -15,34 +14,6 @@ export interface LgPanelCtrlBtnGroupProps {
   handleShuffle: (e: OnClickEvent) => void;
   handleDelete: (e: OnClickEvent) => void;
 }
-
-interface LgPanelCtrlBtnGroupWithRenameProps extends LgPanelCtrlBtnGroupProps {
-  handleRename: (e: OnClickEvent) => void;
-}
-
-const useStyles = makeStyles({
-  panelWithRenameDiv: {
-    display: "flex",
-  },
-});
-
-export const LgPanelCtrlBtnGroupWithRename = (
-  props: LgPanelCtrlBtnGroupWithRenameProps
-) => {
-  const { handleRename, ...rest } = props;
-  const classes = useStyles();
-
-  return (
-    <div className={classes.panelWithRenameDiv}>
-      <LgPanelCtrlBtnGroup {...rest} />
-      <Tooltip title="Rename">
-        <IconButton color="secondary" onClick={handleRename}>
-          <EditIcon />
-        </IconButton>
-      </Tooltip>
-    </div>
-  );
-};
 
 const LgPanelCtrlBtnGroup = (props: LgPanelCtrlBtnGroupProps) => {
   const { handlePlay, handleShuffle, handleDelete } = props;

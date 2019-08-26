@@ -1,4 +1,4 @@
-import { LgPanelCtrlBtnGroupWithRename } from "components/Buttons";
+import { LgPanelCtrlBtnGroup, RenamePlaylistButton } from "components/Buttons";
 import { useCheckbox } from "components/Checkbox/hooks";
 import {
   createItemData,
@@ -95,12 +95,14 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
       <Typography variant="h4" className={styles.title}>
         {playlistName || `Playlist-${playlistId}`}
       </Typography>
-      <LgPanelCtrlBtnGroupWithRename
-        handlePlay={handlePlayPlaylist}
-        handleShuffle={handleShufflePlaylist}
-        handleDelete={handleDeletePlaylistItems}
-        handleRename={handleRenamePlaylist}
-      />
+      <div className={styles.ctrlPanelDiv}>
+        <LgPanelCtrlBtnGroup
+          handlePlay={handlePlayPlaylist}
+          handleShuffle={handleShufflePlaylist}
+          handleDelete={handleDeletePlaylistItems}
+        />
+        <RenamePlaylistButton handleRename={handleRenamePlaylist} />
+      </div>
       <Divider />
       <LgPanelVirtualList itemData={playlistItemData}>
         {LgPanelVirtualListPlaylistItem}
