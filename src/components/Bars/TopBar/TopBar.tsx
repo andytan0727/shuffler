@@ -90,12 +90,13 @@ const TopBar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  activeClassName={styles.curActivePg}
-                  to="/playlistInput"
-                >
-                  Playlist
-                </NavLink>
+                <div className={styles.playerDropDown}>
+                  Playlist <ArrowDropDownIcon />
+                  <div className={styles.playerDropDownItem}>
+                    <NavLink to="/playlistInput/tabs">Tabs</NavLink>
+                    <NavLink to="/playlistInput/panel">Panel</NavLink>
+                  </div>
+                </div>
               </li>
               <li>
                 <div className={styles.playerDropDown}>
