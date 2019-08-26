@@ -8,7 +8,10 @@ import { makeListToPlaySnippets } from "utils/helper/testUtils";
 
 import { fireEvent } from "@testing-library/react";
 
-import ManagementPanelCtrlBtnGroup from "../ManagementPanelCtrlBtnGroup/ManagementPanelCtrlBtnGroup";
+import {
+  default as ManagementPanelCtrlBtnGroup,
+  ManagementPanelCtrlBtnGroupWithRename,
+} from "../ManagementPanelCtrlBtnGroup/ManagementPanelCtrlBtnGroup";
 
 describe("testing ManagementPanelCtrlBtnGroup UI renders", () => {
   const renderManagementPanelCtrlBtnGroup = partial(
@@ -88,6 +91,31 @@ describe("testing ManagementPanelCtrlBtnGroup UI renders", () => {
   });
 });
 
+describe("testing ManagementPanelCtrlBtnGroupWithRename UI renders", () => {
+  const renderManagementPanelCtrlBtnGroupWithRename = partial(
+    renderWithRedux,
+    <ManagementPanelCtrlBtnGroupWithRename
+      // event handler functions are not concerned in this test
+      handlePlay={jest.fn()}
+      handleShuffle={jest.fn()}
+      handleDelete={jest.fn()}
+      handleRename={jest.fn()}
+    />
+  );
+
+  test("should render rename button correctly", () => {
+    const { getByTitle } = renderManagementPanelCtrlBtnGroupWithRename();
+
+    const renameButtonElem = getByTitle(/rename/i);
+    expect(renameButtonElem).toBeInTheDocument();
+    expect(renameButtonElem).toHaveAttribute("type", "button");
+
+    const renameIconElem = renameButtonElem!.firstChild;
+    expect(renameIconElem).toBeInTheDocument();
+    expect(renameIconElem).toHaveClass("MuiIconButton-label");
+  });
+});
+
 describe("testing ManagementPanelCtrlBtnGroup clicks", () => {
   const mockHandlePlay = jest.fn();
   const mockHandleShuffle = jest.fn();
@@ -144,5 +172,37 @@ describe("testing ManagementPanelCtrlBtnGroup clicks", () => {
     expect(mockHandlePlay).toHaveBeenCalledTimes(1);
     expect(mockHandleShuffle).toHaveBeenCalledTimes(1);
     expect(mockHandleDelete).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("testing ManagementPanelCtrlBtnGroupWithRename clicks", () => {
+  const mockHandlePlay = jest.fn();
+  const mockHandleShuffle = jest.fn();
+  const mockHandleDelete = jest.fn();
+  const mockHandleRename = jest.fn();
+  const renderManagementPanelCtrlBtnGroupWithRename = partial(
+    renderWithRedux,
+    <ManagementPanelCtrlBtnGroupWithRename
+      handlePlay={mockHandlePlay}
+      handleShuffle={mockHandleShuffle}
+      handleDelete={mockHandleDelete}
+      handleRename={mockHandleRename}
+    />
+  );
+
+  test("should handle rename button click", () => {
+    const { getByTitle } = renderManagementPanelCtrlBtnGroupWithRename();
+
+    const renameButtonElem = getByTitle(/rename/i);
+    expect(renameButtonElem).toBeInTheDocument();
+
+    // test delete handler function
+    fireEvent.click(renameButtonElem);
+
+    // assert only rename function clicked
+    expect(mockHandlePlay).toHaveBeenCalledTimes(0);
+    expect(mockHandleShuffle).toHaveBeenCalledTimes(0);
+    expect(mockHandleDelete).toHaveBeenCalledTimes(0);
+    expect(mockHandleRename).toHaveBeenCalledTimes(1);
   });
 });
