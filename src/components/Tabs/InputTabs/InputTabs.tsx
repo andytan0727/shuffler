@@ -96,7 +96,7 @@ const InputTabs = () => {
       <Fab
         className={styles.panelBtn}
         color="inherit"
-        aria-label="change to management panel"
+        aria-label="change to lg panel"
         component={Link}
         to="/playlistInput/panel"
       >

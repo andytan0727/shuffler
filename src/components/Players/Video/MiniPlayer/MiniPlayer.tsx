@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { PlayerBasicCtrlBtnGroup } from "components/Buttons";
-import { LargePlaylist } from "components/Lists";
+import { MiniPlayerList } from "components/Lists";
 import YouTubeIFrame from "components/Players/YouTubeIFrame";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,8 +31,8 @@ const MiniPlayer = () => {
   const [curDisplayIdx, setCurDisplayIdx] = useState(curSongIdx);
   const [blurBg, setBlurBg] = useState(false);
   const [showYT, setShowYT] = useState(false);
-  const [showLargePlaylist, setShowLargePlaylist] = useState(false);
-  const transitions = useTransition(showLargePlaylist, null, {
+  const [showMiniPlayerList, setShowMiniPlayerList] = useState(false);
+  const transitions = useTransition(showMiniPlayerList, null, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
@@ -80,15 +80,15 @@ const MiniPlayer = () => {
     setBlurBg(false);
   }, []);
 
-  const handleShowLargePlaylist = useCallback((e) => {
+  const handleShowMiniPlayerList = useCallback((e) => {
     e.preventDefault();
-    setShowLargePlaylist(true);
+    setShowMiniPlayerList(true);
     setBlurBg(true);
   }, []);
 
-  const handleHideLargePlaylist = useCallback((e) => {
+  const handleHideMiniPlayerList = useCallback((e) => {
     e.preventDefault();
-    setShowLargePlaylist(false);
+    setShowMiniPlayerList(false);
     setBlurBg(false);
   }, []);
 
@@ -153,7 +153,7 @@ const MiniPlayer = () => {
             <button onClick={handleShowYT}>
               <PlayCircleIcon />
             </button>
-            <button onClick={handleShowLargePlaylist}>
+            <button onClick={handleShowMiniPlayerList}>
               <ListIcon />
             </button>
           </div>
@@ -209,8 +209,8 @@ const MiniPlayer = () => {
               key={key}
               style={{ position: "relative", zIndex: 2, ...props }}
             >
-              <LargePlaylist
-                handleHideLargePlaylist={handleHideLargePlaylist}
+              <MiniPlayerList
+                handleHideMiniPlayerList={handleHideMiniPlayerList}
               />
             </animated.div>
           )

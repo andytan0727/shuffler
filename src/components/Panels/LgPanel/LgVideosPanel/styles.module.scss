@@ -1,0 +1,11 @@
+@import "../../../../utils/styles/panelStyles";
+
+.lgVideosPanelDiv {
+  @extend %lgPanelDiv;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}

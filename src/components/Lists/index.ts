@@ -1,5 +1,3 @@
-import CombinedPlaylist from "./CombinedPlaylist";
-import LargePlaylist from "./LargePlaylist";
-import VideoList from "./VideoList";
-
-export { CombinedPlaylist, LargePlaylist, VideoList };
+export { default as CombinedPlaylist } from "./CombinedPlaylist";
+export { default as MiniPlayerList } from "./MiniPlayerList";
+export { default as VideoList } from "./VideoList";

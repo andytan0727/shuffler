@@ -1,10 +1,7 @@
 import partial from "lodash/partial";
 import React from "react";
 import { AppState } from "store";
-import {
-  selectListToPlayPlaylistItemByItemId,
-  selectListToPlayResult,
-} from "store/ytplaylist/listToPlaySelectors";
+import { selectListToPlayResult } from "store/ytplaylist/listToPlaySelectors";
 import { DeepPartial } from "utility-types";
 import { generateMockStore, renderWithRedux } from "utils/helper/mockStore";
 

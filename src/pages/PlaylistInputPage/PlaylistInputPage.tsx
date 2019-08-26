@@ -12,8 +12,8 @@ interface PlaylistInputPageProps {
 const InputTabs = lazy(() =>
   retryLazy(() => import("components/Tabs/InputTabs"))
 );
-const ManagementPanel = lazy(() =>
-  retryLazy(() => import("components/Panels/ManagementPanel"))
+const LgPanel = lazy(() =>
+  retryLazy(() => import("components/Panels/LgPanel"))
 );
 
 /**
@@ -29,10 +29,7 @@ const PlaylistInputPage = ({ match }: PlaylistInputPageProps) => {
       <Suspense fallback={<div>loading...</div>}>
         <Switch>
           <Route path={`${playlistInputPath}/tabs`} component={InputTabs} />
-          <Route
-            path={`${playlistInputPath}/panel`}
-            component={ManagementPanel}
-          />
+          <Route path={`${playlistInputPath}/panel`} component={LgPanel} />
           <Redirect to={`${playlistInputPath}/tabs`} />
         </Switch>
       </Suspense>

@@ -1,0 +1,17 @@
+@import "../../../../utils/styles/panelStyles";
+
+.lgPlaylistPanelDiv {
+  width: 100%;
+  margin: 1.5rem;
+  display: grid;
+  grid-auto-rows: min-content;
+  grid-row-gap: 1.5rem;
+  grid-template-columns: auto;
+
+  .title {
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

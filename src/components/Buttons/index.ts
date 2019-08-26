@@ -1,10 +1,10 @@
 import AddPlaylistToPlayingBtn from "./AddPlaylistToPlayingBtn";
 import { DeleteItemButton } from "./DeleteButtons";
 import {
-  default as ManagementPanelCtrlBtnGroup,
-  ManagementPanelCtrlBtnGroupWithRename,
-} from "./ManagementPanelCtrlBtnGroup/ManagementPanelCtrlBtnGroup";
-import ManagementPlaylistsPanelGridItemBtn from "./ManagementPlaylistsPanelGridItemBtn";
+  default as LgPanelCtrlBtnGroup,
+  LgPanelCtrlBtnGroupWithRename,
+} from "./LgPanelCtrlBtnGroup/LgPanelCtrlBtnGroup";
+import LgPlaylistsPanelGridItemBtn from "./LgPlaylistsPanelGridItemBtn";
 import PlayerBasicCtrlBtnGroup from "./PlayerBasicCtrlBtnGroup";
 import PlayingPanelBtnGroup from "./PlayingPanelBtnGroup";
 import RemovePlaylistFromPlayingBtn from "./RemovePlaylistFromPlayingBtn";
@@ -15,9 +15,9 @@ import VideosPanelBtnGroup from "./VideosPanelBtnGroup";
 export {
   AddPlaylistToPlayingBtn,
   DeleteItemButton,
-  ManagementPanelCtrlBtnGroup,
-  ManagementPanelCtrlBtnGroupWithRename,
-  ManagementPlaylistsPanelGridItemBtn,
+  LgPanelCtrlBtnGroup,
+  LgPanelCtrlBtnGroupWithRename,
+  LgPlaylistsPanelGridItemBtn,
   PlayerBasicCtrlBtnGroup,
   PlayingPanelBtnGroup,
   RemovePlaylistFromPlayingBtn,
