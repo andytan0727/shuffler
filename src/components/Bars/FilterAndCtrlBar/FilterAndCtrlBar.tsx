@@ -1,5 +1,5 @@
 import { LgPanelCtrlBtnGroup } from "components/Buttons";
-import { LgPanelCtrlBtnGroupProps } from "components/Buttons/LgPanelCtrlBtnGroup";
+import { LgPanelCtrlBtnGroupProps } from "components/Buttons/BtnGroup/LgPanelCtrlBtnGroup";
 import { FilterSnippetInput } from "components/Inputs";
 import { FilterSnippetInputProps } from "components/Inputs/FilterSnippetInput";
 import React from "react";

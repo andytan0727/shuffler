@@ -11,7 +11,7 @@ import { fireEvent } from "@testing-library/react";
 import {
   default as LgPanelCtrlBtnGroup,
   LgPanelCtrlBtnGroupWithRename,
-} from "../LgPanelCtrlBtnGroup/LgPanelCtrlBtnGroup";
+} from "../BtnGroup/LgPanelCtrlBtnGroup/LgPanelCtrlBtnGroup";
 
 describe("testing LgPanelCtrlBtnGroup UI renders", () => {
   const renderLgPanelCtrlBtnGroup = partial(

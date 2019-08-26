@@ -10,7 +10,7 @@ import { generateMockStore, renderWithRedux } from "utils/helper/mockStore";
 
 import { fireEvent, wait, waitForElement } from "@testing-library/react";
 
-import PlayingPanelBtnGroup from "../PlayingPanelBtnGroup";
+import PlayingPanelBtnGroup from "../BtnGroup/PlayingPanelBtnGroup";
 
 // mocking scrollTo to prevent jsdom not implemented err0r
 window.scrollTo = jest.fn();

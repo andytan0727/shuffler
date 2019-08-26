@@ -1,7 +1,7 @@
 import React from "react";
 import { renderWithRedux } from "utils/helper/mockStore";
 
-import SwitchPanelRadioBtn from "../SwitchPanelRadioBtn";
+import SwitchPanelRadioBtn from "../BtnGroup/SwitchPanelRadioBtnGroup";
 
 const mockHandleChangePanel = jest.fn();
 

@@ -1,16 +1,16 @@
 import AddPlaylistToPlayingBtn from "./AddPlaylistToPlayingBtn";
-import { DeleteItemButton } from "./DeleteButtons";
 import {
   default as LgPanelCtrlBtnGroup,
   LgPanelCtrlBtnGroupWithRename,
-} from "./LgPanelCtrlBtnGroup/LgPanelCtrlBtnGroup";
-import LgPlaylistsPanelGridItemBtn from "./LgPlaylistsPanelGridItemBtn";
-import PlayerBasicCtrlBtnGroup from "./PlayerBasicCtrlBtnGroup";
-import PlayingPanelBtnGroup from "./PlayingPanelBtnGroup";
+} from "./BtnGroup/LgPanelCtrlBtnGroup/LgPanelCtrlBtnGroup";
+import LgPlaylistsPanelGridItemBtn from "./BtnGroup/LgPlaylistsPanelGridItemBtnGroup";
+import PlayerBasicCtrlBtnGroup from "./BtnGroup/PlayerBasicCtrlBtnGroup";
+import PlayingPanelBtnGroup from "./BtnGroup/PlayingPanelBtnGroup";
+import SwitchPanelRadioBtn from "./BtnGroup/SwitchPanelRadioBtnGroup";
+import VideoListPanelBtnGroup from "./BtnGroup/VideoListPanelBtnGroup";
+import VideosPanelBtnGroup from "./BtnGroup/VideosPanelBtnGroup";
+import { DeleteItemButton } from "./DeleteButtons";
 import RemovePlaylistFromPlayingBtn from "./RemovePlaylistFromPlayingBtn";
-import SwitchPanelRadioBtn from "./SwitchPanelRadioBtn";
-import VideoListPanelBtnGroup from "./VideoListPanelBtnGroup";
-import VideosPanelBtnGroup from "./VideosPanelBtnGroup";
 
 export {
   AddPlaylistToPlayingBtn,

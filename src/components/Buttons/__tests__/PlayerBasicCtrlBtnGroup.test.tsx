@@ -12,7 +12,7 @@ import { generateMockStore, renderWithRedux } from "utils/helper/mockStore";
 
 import { fireEvent } from "@testing-library/react";
 
-import PlayerBasicCtrlBtnGroup from "../PlayerBasicCtrlBtnGroup";
+import PlayerBasicCtrlBtnGroup from "../BtnGroup/PlayerBasicCtrlBtnGroup";
 
 // NOTE: this is a component that renders with the
 // minimal redux store setup. This means that

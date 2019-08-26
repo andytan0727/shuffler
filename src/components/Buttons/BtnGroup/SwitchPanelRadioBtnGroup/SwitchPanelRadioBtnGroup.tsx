@@ -11,17 +11,17 @@ import {
 
 import styles from "./styles.module.scss";
 
-interface SwitchPanelRadioBtnProps {
+interface SwitchPanelRadioBtnGroupProps {
   checkedButton: string;
   handleChangePanel: (e: InputChangeEvent) => void;
 }
 
-const SwitchPanelRadioBtn = (props: SwitchPanelRadioBtnProps) => {
+const SwitchPanelRadioBtnGroup = (props: SwitchPanelRadioBtnGroupProps) => {
   const { checkedButton, handleChangePanel } = props;
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
 
   return (
-    <div className={styles.switchPanelRadio}>
+    <div className={styles.switchPanelRadios}>
       <div className={styles.radioDiv}>
         <input
           id="playlistRadio"
@@ -76,4 +76,4 @@ const SwitchPanelRadioBtn = (props: SwitchPanelRadioBtnProps) => {
   );
 };
 
-export default SwitchPanelRadioBtn;
+export default SwitchPanelRadioBtnGroup;

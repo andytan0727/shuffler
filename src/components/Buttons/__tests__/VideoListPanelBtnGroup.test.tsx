@@ -2,7 +2,7 @@ import partial from "lodash/partial";
 import React from "react";
 import { renderWithRedux } from "utils/helper/mockStore";
 
-import VideoListPanelBtnGroup from "../VideoListPanelBtnGroup";
+import VideoListPanelBtnGroup from "../BtnGroup/VideoListPanelBtnGroup";
 
 describe("testing VideoListPanelBtnGroup UI renders", () => {
   const renderVideoListPanelBtnGroup = partial(

@@ -19,7 +19,7 @@ import { generateMockStore, renderWithRedux } from "utils/helper/mockStore";
 
 import { fireEvent } from "@testing-library/react";
 
-import LgPlaylistsPanelGridItemBtn from "../LgPlaylistsPanelGridItemBtn";
+import LgPlaylistsPanelGridItemBtn from "../BtnGroup/LgPlaylistsPanelGridItemBtnGroup";
 
 const playlistId = "playlistId-1";
 const mockHistory: string[] = [];
