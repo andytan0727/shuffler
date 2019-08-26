@@ -1,4 +1,4 @@
-import { ManagementPanelCtrlBtnGroup } from "components/Buttons";
+import { ManagementPanelCtrlBtnGroupWithRename } from "components/Buttons";
 import { useCheckbox } from "components/Checkbox/hooks";
 import {
   createItemData,
@@ -14,11 +14,13 @@ import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
   deletePlaylistItemByIdAction,
   shufflePlaylistItems,
+  updatePlaylistNameByIdAction,
 } from "store/ytplaylist/playlistActions";
 import {
   selectPlaylistItemIdsByPlaylistId,
   selectPlaylistNameById,
 } from "store/ytplaylist/playlistSelectors";
+import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -74,15 +76,33 @@ const ManagementPlaylistPanel = ({
     });
   }, [checked, dispatch, playlistId]);
 
+  const handleRenamePlaylist = useCallback(async () => {
+    const customSwal = await generateCustomSwal();
+    const result = await customSwal!.fire({
+      title: "Enter new playlist name",
+      input: "text",
+      showCancelButton: true,
+      confirmButtonText: "Ok, Done! 🔥",
+      cancelButtonText: "Cancel",
+    });
+    const newName = result.value;
+
+    if (newName) {
+      dispatch(updatePlaylistNameByIdAction(playlistId, newName));
+      notify("success", "Successfully renamed playlist 😎");
+    }
+  }, [dispatch, playlistId]);
+
   return (
     <div className={styles.managementPlaylistPanelDiv}>
       <Typography variant="h4" className={styles.title}>
-        Playlist {playlistName || playlistId}
+        {playlistName || `Playlist-${playlistId}`}
       </Typography>
-      <ManagementPanelCtrlBtnGroup
+      <ManagementPanelCtrlBtnGroupWithRename
         handlePlay={handlePlayPlaylist}
         handleShuffle={handleShufflePlaylist}
         handleDelete={handleDeletePlaylistItems}
+        handleRename={handleRenamePlaylist}
       />
       <Divider />
       <ManagementPanelVirtualList itemData={playlistItemData}>
