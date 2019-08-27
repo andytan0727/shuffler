@@ -294,11 +294,13 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
       | typeof listToPlayActions.deleteListToPlayItemByIdAction
       | typeof listToPlayActions.deleteListToPlayItemsAction
       | typeof listToPlayActions.updateListToPlayAction
+      | typeof playlistActions.syncPlaylistFromYTByIdSuccessAction
     > = yield take([
       ActionTypes.ADD_UNIQUE_LIST_TO_PLAY,
       ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
       ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
       ActionTypes.UPDATE_LIST_TO_PLAY,
+      ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
     ]);
     let playlistId: string | undefined;
     let playlistIds: string[] | undefined;
@@ -357,6 +359,11 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
         // those items belong
         playlistIds = yield select(selectPlaylistsResult);
 
+        break;
+      }
+
+      case "SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS": {
+        playlistId = action.payload.playlistId;
         break;
       }
 

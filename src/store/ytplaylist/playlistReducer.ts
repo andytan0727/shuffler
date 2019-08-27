@@ -70,6 +70,21 @@ export const playlistsReducer: Reducer<
       return draft;
     }
 
+    // TODO: add update loader
+    case ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID: {
+      return draft;
+    }
+
+    // TODO: add loader
+    case ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS: {
+      return draft;
+    }
+
+    // TODO: add failed notification and clear loader
+    case ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED: {
+      return draft;
+    }
+
     case ActionTypes.UPDATE_PLAYLIST_NAME_BY_ID: {
       const { id, name } = action.payload;
 

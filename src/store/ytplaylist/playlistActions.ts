@@ -96,8 +96,9 @@ export const deletePlaylistByIdAction = createAction(
  * Delete playlist's item and snippet by specifying itemId with the id of
  * the belonging playlist
  *
- * @param {string} playlistId Playlist id in which the playlistItem is located
- * @param {string} itemId PlaylistItem id to delete
+ * @param playlistId Playlist id in which the playlistItem is located
+ * @param itemId PlaylistItem id to delete
+ * @returns DELETE_PLAYLIST_ITEM_BY_ID action object
  */
 export const deletePlaylistItemByIdAction = createAction(
   ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID,
@@ -108,6 +109,45 @@ export const deletePlaylistItemByIdAction = createAction(
         itemId,
       });
   }
+);
+
+/**
+ * Synchronize whole playlist with YouTube by fetching
+ * new data from YouTube playlist.
+ * New and old playlist will be deeply merged with lodash merge
+ *
+ * **_Note: This action is handled through saga. No reducer logic involved_**
+ *
+ * @param playlistId Playlist Id to sync with
+ * @returns SYNC_PLAYLIST_FROM_YT_BY_ID action object
+ */
+export const syncPlaylistFromYTByIdAction = createAction(
+  ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID,
+  (action) => {
+    return (playlistId: string) => action({ playlistId });
+  }
+);
+
+/**
+ * Action to dispatch when synchronization is successful
+ *
+ * @param playlistId Playlist id which sync is successful
+ * @returns SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS action object
+ */
+export const syncPlaylistFromYTByIdSuccessAction = createAction(
+  ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
+  (action) => {
+    return (playlistId: string) => action({ playlistId });
+  }
+);
+
+/**
+ * Action to dispatch when synchronization is failed
+ *
+ * @returns SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED action object
+ */
+export const syncPlaylistFromYTByIdFailedAction = createAction(
+  ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED
 );
 
 /**
