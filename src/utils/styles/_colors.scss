@@ -10,10 +10,12 @@ $playing: #08d56a;
 
 // dark colors
 // $black: rgb(43, 47, 51);
-$black: lighten(black, 10%);
+$black: lighten(black, 10%); // #1a1a1a
 $blackLight: #4e4b53;
-$blackDark: lighten(black, 5%);
+$blackDark: lighten(black, 5%); // #0d0d0d
 $softBlack: #414a4c;
+$lightGrey: #2a2a2a;
+$darkGrey: #282828;
 
 // light colors
 $white: #f7f7f7;

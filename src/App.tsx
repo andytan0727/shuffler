@@ -6,13 +6,13 @@ import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
+import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
+import { retryLazy } from "utils/helper/lazyImportHelper";
+import { createShufflerMuiTheme } from "utils/helper/themeHelper";
 
-import purple from "@material-ui/core/colors/purple";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
 import { setPreferDarkTheme } from "./store/userPreferences/action";
-import { useKeyDown } from "./utils/helper/keyboardShortcutHelper";
-import { retryLazy } from "./utils/helper/lazyImportHelper";
 
 // lazy loading pages
 const PgNavbar = lazy(() => retryLazy(() => import("./pages/PgNavbar")));
@@ -35,34 +35,9 @@ const App = () => {
   const [scrolling, setScrolling] = useState(false);
   initialTheme = preferDarkTheme;
 
-  const theme = createMuiTheme({
+  const theme = createShufflerMuiTheme({
     palette: {
       type: preferDarkTheme ? "dark" : "light",
-      primary: { main: purple[800] },
-      secondary: { main: purple["A200"] },
-      background: {
-        // @ts-ignore
-        black: "#1a1a1a",
-        blackLight: "#4e4b53",
-        lightGrey: "#2a2a2a",
-        darkGrey: "#282828",
-        blackDark: "#0d0d0d",
-        softBlack: "#414a4c",
-      },
-    },
-    typography: {
-      fontFamily: [
-        "-apple-system",
-        "BlinkMacSystemFont",
-        "Roboto",
-        '"Segoe UI"',
-        '"Helvetica Neue"',
-        "Ubuntu",
-        "Cantarell",
-        "Fira Sans",
-        "Droid Sans",
-        "sans-serif",
-      ].join(","),
     },
   });
 

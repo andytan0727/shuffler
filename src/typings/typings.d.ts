@@ -1,5 +1,7 @@
 import { ActionType } from "typesafe-actions";
 
+import { TypeBackground } from "@material-ui/core/styles/createPalette";
+
 declare global {
   type SchemaType = "playlistItems" | "videoItems";
   type MediaSourceType = "playlists" | "videos";
@@ -86,5 +88,17 @@ declare global {
 declare module "typesafe-actions" {
   interface Types {
     RootAction: ActionType<typeof import("../store").default>;
+  }
+}
+
+// extends MUI default palette background colors
+declare module "@material-ui/core/styles/createPalette" {
+  interface TypeBackground {
+    black: string;
+    blackLight: string;
+    lightGrey: string;
+    darkGrey: string;
+    blackDark: string;
+    softBlack: string;
   }
 }

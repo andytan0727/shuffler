@@ -14,10 +14,12 @@
   --white-color-rgb: #{red($white), green($white), blue($white)};
 
   /* colors */
-  --dark-black: #{$black};
-  --dark-blackLight: #{$blackLight};
-  --dark-blackDark: #{$blackDark};
-  --dark-softBlack: #{$softBlack};
+  --black: #{$black};
+  --blackLight: #{$blackLight};
+  --blackDark: #{$blackDark};
+  --softBlack: #{$softBlack};
+  --lightGrey: #{$lightGrey};
+  --darkGrey: #{$darkGrey};
   --dark-purple-gradient: #{$darkPurpleRadialGradient};
   --light-purple-gradient: #{$lightPurpleRadialGradient};
   --light-pink-gradient: #{$lightPinkLinearGradient};
@@ -44,7 +46,7 @@
   /* Dark mode */
   --dark-text-color: #{$white};
   --dark-contrast-text-color: var(--light-text-color);
-  --dark-bg-color: var(--dark-black);
+  --dark-bg-color: var(--black);
   --dark-contrast-bg-color: var(--light-bg-color);
   --dark-bg-color-rgb: var(--black-color-rgb);
   --dark-gradient-bg: var(--light-purple-gradient);
