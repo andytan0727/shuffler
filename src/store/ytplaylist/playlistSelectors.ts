@@ -7,10 +7,22 @@ import { AppState } from "store";
 import { PlaylistItemSnippet, PlaylistsEntities } from "./types";
 import { getSnippetFromItemId } from "./utils";
 
-export const selectPlaylistsEntities = (state: AppState) =>
-  state.ytplaylist.playlists.entities;
-export const selectPlaylistsResult = (state: AppState) =>
-  state.ytplaylist.playlists.result;
+const selectPlaylists = (state: AppState) => state.ytplaylist.playlists;
+
+export const selectPlaylistUpdating = createSelector(
+  selectPlaylists,
+  (playlists) => playlists.updating
+);
+
+export const selectPlaylistsEntities = createSelector(
+  selectPlaylists,
+  (playlists) => playlists.entities
+);
+
+export const selectPlaylistsResult = createSelector(
+  selectPlaylists,
+  (playlists) => playlists.result
+);
 
 export const selectAllPlaylistItems = createSelector(
   selectPlaylistsEntities,

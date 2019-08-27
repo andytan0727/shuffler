@@ -12,6 +12,7 @@ import {
 } from "./utils";
 
 const initialPlaylistsState: DeepReadonlyPlaylists = {
+  updating: false,
   entities: {
     playlistItems: {},
     playlists: {},
@@ -65,18 +66,18 @@ export const playlistsReducer: Reducer<
       return draft;
     }
 
-    // TODO: add update loader
     case ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID: {
+      draft.updating = true;
       return draft;
     }
 
-    // TODO: add loader
     case ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS: {
+      draft.updating = false;
       return draft;
     }
 
-    // TODO: add failed notification and clear loader
     case ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED: {
+      draft.updating = false;
       return draft;
     }
 

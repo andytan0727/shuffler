@@ -84,6 +84,7 @@ export interface PlaylistsEntities {
 }
 
 export interface Playlists {
+  updating: boolean;
   entities: PlaylistsEntities;
   result: string[];
 }

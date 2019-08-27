@@ -10,6 +10,7 @@ import {
   PlaylistVideoListItemSecondaryAction,
   withListItemSecondaryAction,
 } from "components/Lists/LgPanelVirtualList";
+import SyncPlaylistLoader from "components/Loadings/SyncPlaylistLoader";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -24,6 +25,7 @@ import {
 import {
   selectPlaylistItemIdsByPlaylistId,
   selectPlaylistNameById,
+  selectPlaylistUpdating,
 } from "store/ytplaylist/playlistSelectors";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
@@ -50,6 +52,7 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
   ) as string[];
   const checkboxHooks = useCheckbox();
   const { checked } = checkboxHooks;
+  const updating = useSelector(selectPlaylistUpdating);
 
   const playlistItemData = createItemData({
     ...checkboxHooks,
@@ -101,24 +104,27 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
   }, [dispatch, playlistId]);
 
   return (
-    <div className={styles.lgPlaylistPanelDiv}>
-      <Typography variant="h4" className={styles.title}>
-        {playlistName || `Playlist-${playlistId}`}
-      </Typography>
-      <div className={styles.ctrlPanelDiv}>
-        <LgPanelCtrlBtnGroup
-          handlePlay={handlePlayPlaylist}
-          handleShuffle={handleShufflePlaylist}
-          handleDelete={handleDeletePlaylistItems}
-        />
-        <RenamePlaylistButton handleRename={handleRenamePlaylist} />
-        <SyncPlaylistButton handleSyncPlaylist={handleSyncPlaylist} />
+    <React.Fragment>
+      <SyncPlaylistLoader open={updating} />
+      <div className={styles.lgPlaylistPanelDiv}>
+        <Typography variant="h4" className={styles.title}>
+          {playlistName || `Playlist-${playlistId}`}
+        </Typography>
+        <div className={styles.ctrlPanelDiv}>
+          <LgPanelCtrlBtnGroup
+            handlePlay={handlePlayPlaylist}
+            handleShuffle={handleShufflePlaylist}
+            handleDelete={handleDeletePlaylistItems}
+          />
+          <RenamePlaylistButton handleRename={handleRenamePlaylist} />
+          <SyncPlaylistButton handleSyncPlaylist={handleSyncPlaylist} />
+        </div>
+        <Divider />
+        <LgPanelVirtualList itemData={playlistItemData}>
+          {LgPanelVirtualListPlaylistItem}
+        </LgPanelVirtualList>
       </div>
-      <Divider />
-      <LgPanelVirtualList itemData={playlistItemData}>
-        {LgPanelVirtualListPlaylistItem}
-      </LgPanelVirtualList>
-    </div>
+    </React.Fragment>
   );
 };
 

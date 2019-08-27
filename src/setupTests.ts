@@ -73,6 +73,7 @@ const videoParams: BaseFetchParams & VideoParams = {
 // Mock up ytplaylist redux states
 // ================================================
 const basePlaylistsState: Playlists = {
+  updating: false,
   entities: {
     playlistItems: {},
     playlists: {},

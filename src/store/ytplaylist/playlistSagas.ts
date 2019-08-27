@@ -2,6 +2,7 @@ import difference from "lodash/difference";
 import {
   all,
   call,
+  delay,
   put,
   select,
   take,
@@ -71,6 +72,8 @@ export function* syncPlaylistFromYTByIdSuccess(
   // listToPlay's checkIfAllOrPartialPlaylistItemsInPlaying watcher
   // if everything goes well
   yield put(playlistActions.syncPlaylistFromYTByIdSuccessAction(playlistId));
+
+  notify("success", "Successfully synced your playlist with YouTube.");
 }
 // ===============================================
 // End Helpers
@@ -235,6 +238,9 @@ export function* syncPlaylistFromYTByIdWatcher() {
       const baseUrl: string = yield select(selectPlaylistBaseUrl);
       const params: FetchParams = yield select(selectPlaylistParams);
 
+      // delay 950ms to display syncing spinner without flashing
+      yield delay(950);
+
       try {
         const playlistItems = yield call(
           recursivelyFetchPlaylistData,
@@ -257,7 +263,7 @@ export function* syncPlaylistFromYTByIdWatcher() {
         yield put(playlistActions.syncPlaylistFromYTByIdFailedAction());
         notify(
           "error",
-          "Unable to update your playlist. Please try again later."
+          "Unable to sync your playlist. Please try again later."
         );
       }
     }

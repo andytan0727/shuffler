@@ -7,6 +7,7 @@ import { playlistsReducer } from "../playlistReducer";
 import { Playlists } from "../types";
 
 const basePlaylistsState: Playlists = {
+  updating: false,
   entities: {
     playlistItems: {},
     playlists: {},

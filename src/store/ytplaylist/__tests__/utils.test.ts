@@ -7,6 +7,7 @@ import { Playlists, Videos } from "../types";
 import { deletePlaylistOrVideoById } from "../utils";
 
 const basePlaylistsState: Playlists = {
+  updating: false,
   entities: {
     playlistItems: {},
     playlists: {},
