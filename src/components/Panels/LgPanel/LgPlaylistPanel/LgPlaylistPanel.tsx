@@ -1,4 +1,8 @@
-import { LgPanelCtrlBtnGroup, RenamePlaylistButton } from "components/Buttons";
+import {
+  LgPanelCtrlBtnGroup,
+  RenamePlaylistButton,
+  SyncPlaylistButton,
+} from "components/Buttons";
 import { useCheckbox } from "components/Checkbox/hooks";
 import {
   createItemData,
@@ -14,6 +18,7 @@ import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
   deletePlaylistItemByIdAction,
   shufflePlaylistItems,
+  syncPlaylistFromYTByIdAction,
   updatePlaylistNameByIdAction,
 } from "store/ytplaylist/playlistActions";
 import {
@@ -90,6 +95,11 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
     }
   }, [dispatch, playlistId]);
 
+  // sync playlist by fetching latest data from upstream (YouTube)
+  const handleSyncPlaylist = useCallback(async () => {
+    dispatch(syncPlaylistFromYTByIdAction(playlistId));
+  }, [dispatch, playlistId]);
+
   return (
     <div className={styles.lgPlaylistPanelDiv}>
       <Typography variant="h4" className={styles.title}>
@@ -102,6 +112,7 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
           handleDelete={handleDeletePlaylistItems}
         />
         <RenamePlaylistButton handleRename={handleRenamePlaylist} />
+        <SyncPlaylistButton handleSyncPlaylist={handleSyncPlaylist} />
       </div>
       <Divider />
       <LgPanelVirtualList itemData={playlistItemData}>

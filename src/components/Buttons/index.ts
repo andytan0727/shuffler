@@ -9,6 +9,7 @@ import VideosPanelBtnGroup from "./BtnGroup/VideosPanelBtnGroup";
 import { DeleteItemButton } from "./DeleteButtons";
 import RemovePlaylistFromPlayingBtn from "./RemovePlaylistFromPlayingBtn";
 import RenamePlaylistButton from "./RenamePlaylistButton";
+import SyncPlaylistButton from "./SyncPlaylistButton";
 
 export {
   AddPlaylistToPlayingBtn,
@@ -20,6 +21,7 @@ export {
   RemovePlaylistFromPlayingBtn,
   RenamePlaylistButton,
   SwitchPanelRadioBtn,
+  SyncPlaylistButton,
   VideoListPanelBtnGroup,
   VideosPanelBtnGroup,
 };
