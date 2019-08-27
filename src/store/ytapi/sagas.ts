@@ -6,7 +6,10 @@ import * as YTPlaylistTypes from "store/ytplaylist/types";
 import * as videoActions from "store/ytplaylist/videoActions";
 import { ActionType } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
-import { fetchYoutubeAPIData } from "utils/helper/fetchHelper";
+import {
+  fetchYoutubeAPIData,
+  recursivelyFetchPlaylistData,
+} from "utils/helper/fetchHelper";
 import { notify } from "utils/helper/notifyHelper";
 
 import * as ytapi from "./action";
@@ -131,37 +134,11 @@ export function* fetchVideoDataSuccess(data: YTPlaylistTypes.FetchedVideo) {
 export function* fetchPlaylistData(action: FetchPlaylistDataAction) {
   const { url, params } = action.payload;
   try {
-    let count = 2;
-    const items = [];
-
-    let data: YTPlaylistTypes.FetchedPlaylist = yield call(
-      fetchYoutubeAPIData,
+    const items: YTPlaylistTypes.PlaylistItem[] = yield call(
+      recursivelyFetchPlaylistData,
       url,
-      params,
-      "playlists"
+      params
     );
-    items.push(...data.items);
-
-    while (data.nextPageToken) {
-      if (count > 5) {
-        alert(
-          "Number of videos in your playlist exceeded limit set by us (250 videos/playlist)"
-        );
-        break;
-      }
-
-      data = yield call(
-        fetchYoutubeAPIData,
-        url,
-        {
-          ...params,
-          pageToken: data.nextPageToken,
-        },
-        "playlists"
-      );
-      items.push(...data.items);
-      count++;
-    }
 
     if (
       ((Array.isArray && Array.isArray(items)) || items instanceof Array) &&
