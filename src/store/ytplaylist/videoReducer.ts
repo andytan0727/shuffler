@@ -28,15 +28,10 @@ export const videosReducer: Reducer<
       const prevResult = original(draft.result);
 
       if (prevResult) {
-        const { result } = action.payload;
+        const { entities, result } = action.payload;
+        const uniqueVideoResult = uniq([...prevResult, ...result]);
 
-        return mergeEntities(draft, {
-          ...action,
-          payload: {
-            ...action.payload,
-            result: uniq([...prevResult, ...result]),
-          },
-        });
+        return mergeEntities(draft, entities, uniqueVideoResult);
       }
 
       return draft;

@@ -55,17 +55,16 @@ export const isPlaylistItemSnippet = (
  * **_Note: This function mutates draft_**
  *
  * @param draft Drafted proxy states of store states provided by immer
- * @param action
+ * @param entities Normalized states entities to be added
+ * @param result Normalized states result to be added
  * @returns Mutated (drafted) states
  */
 export const mergeEntities = <T extends PlaylistsOrVideos | ListToPlay>(
   draft: T,
-  action: { payload: T }
+  entities: T["entities"],
+  result: T["result"]
 ): T => {
-  const { entities, result } = action.payload;
-
   merge(draft.entities, entities);
-
   draft.result = result;
 
   return draft;

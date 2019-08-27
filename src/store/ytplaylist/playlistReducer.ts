@@ -29,15 +29,10 @@ export const playlistsReducer: Reducer<
       const prevResult = original(draft.result);
 
       if (prevResult) {
-        const { result } = action.payload;
+        const { entities, result } = action.payload;
+        const uniquePlaylistResult = uniq([...prevResult, ...result]);
 
-        return mergeEntities(draft, {
-          ...action,
-          payload: {
-            ...action.payload,
-            result: uniq([...prevResult, ...result]),
-          },
-        });
+        return mergeEntities(draft, entities, uniquePlaylistResult);
       }
 
       return draft;

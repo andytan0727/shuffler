@@ -25,7 +25,8 @@ export const listToPlayReducer: Reducer<
     // through normalized listToPlay
     // entities and result
     case ActionTypes.ADD_UNIQUE_LIST_TO_PLAY: {
-      return mergeEntities(draft, action);
+      const { entities, result } = action.payload;
+      return mergeEntities(draft, entities, result);
     }
 
     // Update entire listToPlay without preserving previous details
