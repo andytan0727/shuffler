@@ -137,6 +137,13 @@ const initialStates = {
         "Added function to click and play one song, then shuffle the rest",
       ],
     },
+    {
+      version: "3.5.0",
+      changes: [
+        "New rename playlist feature",
+        "New sync playlist with YouTube feature.",
+      ],
+    },
   ],
 };
 
