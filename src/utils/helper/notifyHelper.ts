@@ -52,11 +52,20 @@ export const notify = async (
     };
 
     switch (type) {
-      case "warning":
-      case "error": {
+      case "warning": {
         await customSwal!.fire({
           ...swalDefaultConfig,
           position: "top-end",
+          timer: 2500,
+        });
+        break;
+      }
+
+      case "error": {
+        await customSwal!.fire({
+          ...swalDefaultConfig,
+          toast: false,
+          position: "center",
           timer: 2500,
         });
         break;
