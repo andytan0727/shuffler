@@ -71,6 +71,7 @@
     "@types/react-youtube": "^7.6.2",
     "@types/redux": "^3.6.0",
     "@types/redux-logger": "^3.0.7",
+    "@types/webpack-env": "^1.14.0",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
     "deep-freeze": "^0.0.1",

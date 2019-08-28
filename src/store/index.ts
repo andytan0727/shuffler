@@ -64,6 +64,16 @@ const store =
       )
     : createStore(persistedReducer, compose(applyMiddleware(sagaMiddleware)));
 
+// Hot module replacement to persist previous store state
+// Mainly for states that are not persisted
+if (process.env.NODE_ENV === "development" && module.hot) {
+  module.hot.accept(() => {
+    // This fetch the new state of the above reducers.
+    const nextRootReducer = rootReducer;
+    store.replaceReducer(persistReducer(rootPersistConfig, nextRootReducer));
+  });
+}
+
 sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);

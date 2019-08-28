@@ -13,17 +13,31 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import store, { persistor } from "./store";
 
-ReactDOM.render(
-  <Provider store={store}>
-    <CssBaseline />
-    <PersistGate loading={null} persistor={persistor}>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </PersistGate>
-  </Provider>,
-  document.getElementById("root")
-);
+const rootNode = document.getElementById("root") as Element;
+
+const render = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <CssBaseline />
+      <PersistGate loading={null} persistor={persistor}>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </PersistGate>
+    </Provider>,
+    rootNode
+  );
+};
+
+if (module.hot) {
+  module.hot.accept(() => {
+    ReactDOM.unmountComponentAtNode(rootNode);
+    render();
+  });
+}
+
+// initial rendering
+render();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
