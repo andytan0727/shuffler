@@ -22,6 +22,7 @@ $white: #f7f7f7;
 
 // box shadows
 $blackBoxShadow: 0 11px 29px 0 rgba(0, 0, 0, 0.3);
+$blackBoxShadowBottom: 0 1px 29px 0px rgba(0, 0, 0, 0.2);
 
 // gradients
 $lightPurpleRadialGradient: radial-gradient(
@@ -60,4 +61,34 @@ $darkPinkLinearGradient: linear-gradient(
   #ff9a9e 0%,
   #fecfef 99%,
   #fecfef 100%
+);
+$darkPurpleLinearGradient: linear-gradient(
+  to right,
+  #2a0029,
+  #29002b,
+  #29002e,
+  #270030,
+  #260033,
+  #250033,
+  #230034,
+  #220034,
+  #210033,
+  #200031,
+  #1f0030,
+  #1e002e
+);
+$darkPurpleRadialGradient2: radial-gradient(
+  circle,
+  #2a0029,
+  #29002b,
+  #29002e,
+  #270030,
+  #260033,
+  #250033,
+  #230034,
+  #220034,
+  #210033,
+  #200031,
+  #1f0030,
+  #1e002e
 );

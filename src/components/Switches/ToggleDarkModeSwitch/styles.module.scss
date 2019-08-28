@@ -11,8 +11,9 @@
 .toggleDarkModeSwitchLabel {
   position: fixed;
   position: absolute;
-  top: 0%;
-  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2%;
   cursor: pointer;
 
   &::before {

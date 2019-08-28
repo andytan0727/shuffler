@@ -1,4 +1,3 @@
-import { ToggleDarkModeSwitch } from "components/Switches";
 import React, { lazy, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { retryLazy } from "utils/helper/lazyImportHelper";
@@ -33,7 +32,6 @@ const PlaylistInputPage = ({ match }: PlaylistInputPageProps) => {
           <Redirect to={`${playlistInputPath}/panel`} />
         </Switch>
       </Suspense>
-      <ToggleDarkModeSwitch />
     </div>
   );
 };

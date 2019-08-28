@@ -4,6 +4,9 @@
 .githubLogo {
   width: 20px;
   height: 15px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 
   &:hover {
     path {
@@ -13,7 +16,7 @@
 
   @media screen and (min-width: $mobile-width) {
     width: 50px;
-    height: 30px;
+    height: 40px;
   }
 }
 
@@ -58,6 +61,7 @@
 // TopBar settings for dark theme
 .nav {
   user-select: none;
+  box-shadow: $blackBoxShadowBottom;
 
   nav {
     width: 100%;
@@ -65,8 +69,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding: 8px 0;
     z-index: 2;
 
     .logo {
@@ -112,11 +115,6 @@
       &:hover {
         color: $primaryLight;
       }
-    }
-
-    .menuButton {
-      display: inline-flex;
-      margin-right: 15px;
     }
   }
 
