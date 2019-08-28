@@ -1,15 +1,8 @@
-import debounce from "lodash/debounce";
-import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "store";
-import {
-  clearFilteredSnippets,
-  createFuse,
-  fuzzySearchSnippetsByTitle,
-} from "store/ytplaylist/filteredActions";
-import { selectSnippetsByItemIds } from "store/ytplaylist/generalSelectors";
+import React from "react";
 
 import TextField from "@material-ui/core/TextField";
+
+import useFilter from "../hooks/useFilter";
 
 export interface FilterSnippetInputProps {
   itemIds: string[];
@@ -17,44 +10,18 @@ export interface FilterSnippetInputProps {
 
 const FilterSnippetInput = (props: FilterSnippetInputProps) => {
   const { itemIds } = props;
-  const snippets = useSelector((state: AppState) =>
-    selectSnippetsByItemIds(state, itemIds)
-  );
-  const dispatch = useDispatch();
-
-  const debouncedSearch = debounce((value: string) => {
-    dispatch(fuzzySearchSnippetsByTitle(value));
-  }, 50);
-
-  const handleSearch = useCallback(
-    (e: InputChangeEvent) => {
-      const value = e.target.value;
-
-      if (!value) {
-        dispatch(clearFilteredSnippets());
-      } else {
-        debouncedSearch(value);
-      }
-    },
-    [debouncedSearch, dispatch]
-  );
-
-  // create fuse on mount and on snippets change
-  useEffect(() => {
-    dispatch(createFuse(snippets));
-  }, [dispatch, snippets]);
+  const { filterValue, handleFilter } = useFilter(itemIds);
 
   return (
-    <React.Fragment>
-      <TextField
-        id="filter"
-        label="filter"
-        placeholder="filter by title"
-        onChange={handleSearch}
-        margin="dense"
-        variant="outlined"
-      />
-    </React.Fragment>
+    <TextField
+      id="filter"
+      value={filterValue}
+      label="filter"
+      placeholder="filter by title"
+      onChange={handleFilter}
+      margin="dense"
+      variant="outlined"
+    />
   );
 };
 
