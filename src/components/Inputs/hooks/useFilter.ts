@@ -15,9 +15,10 @@ import { selectSnippetsByItemIds } from "store/ytplaylist/generalSelectors";
  * Hooks used for filtering playlist/video/listToPlay items
  *
  * @param itemIds ItemIds for getting snippets
+ * @param uniqueIdentifier Identifier used to determine whether to clear input and filteredSnippets
  * @returns States and handlers for filtering snippets
  */
-const useFilter = (itemIds: string[]) => {
+const useFilter = (itemIds: string[], uniqueIdentifier?: string) => {
   const [filterValue, setFilterValue] = useState("");
   const snippets = useSelector((state: AppState) =>
     selectSnippetsByItemIds(state, itemIds)
@@ -49,16 +50,16 @@ const useFilter = (itemIds: string[]) => {
     dispatch(createFuse(snippets));
   }, [dispatch, snippets]);
 
-  // Clear filtered snippets and make it undefined
-  // when the filter component is unmounted.
-  // This can prevent previously filtered snippets
-  // show on another panel
+  // Clean/clear filter input and snippets
+  // If uniqueIdentifier is not supplied, then
+  // text field value and filteredSnippets will
+  // only be cleared on unmount or by user
   useEffect(() => {
     dispatch(clearFilteredSnippets());
 
     // clear filter input
     setFilterValue("");
-  }, [dispatch]);
+  }, [dispatch, uniqueIdentifier]);
 
   return {
     filterValue,

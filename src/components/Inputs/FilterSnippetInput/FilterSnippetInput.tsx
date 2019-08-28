@@ -6,11 +6,12 @@ import useFilter from "../hooks/useFilter";
 
 export interface FilterSnippetInputProps {
   itemIds: string[];
+  uniqueIdentifier?: string;
 }
 
 const FilterSnippetInput = (props: FilterSnippetInputProps) => {
-  const { itemIds } = props;
-  const { filterValue, handleFilter } = useFilter(itemIds);
+  const { itemIds, uniqueIdentifier } = props;
+  const { filterValue, handleFilter } = useFilter(itemIds, uniqueIdentifier);
 
   return (
     <TextField

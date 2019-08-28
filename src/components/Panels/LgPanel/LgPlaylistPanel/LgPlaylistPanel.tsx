@@ -4,6 +4,7 @@ import {
   SyncPlaylistButton,
 } from "components/Buttons";
 import { useCheckbox } from "components/Checkbox/hooks";
+import { FilterSnippetInput } from "components/Inputs";
 import {
   createItemData,
   LgPanelVirtualList,
@@ -15,6 +16,7 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
+import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
   deletePlaylistItemByIdAction,
@@ -54,9 +56,11 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
   const { checked } = checkboxHooks;
   const updating = useSelector(selectPlaylistUpdating);
 
+  const filteredSnippets = useSelector(selectFilteredSnippets);
   const playlistItemData = createItemData({
     ...checkboxHooks,
     items: playlistItemIds,
+    filteredSnippets,
   });
 
   const handlePlayPlaylist = useCallback(() => {
@@ -111,6 +115,10 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
           {playlistName || `Playlist-${playlistId}`}
         </Typography>
         <div className={styles.ctrlPanelDiv}>
+          <FilterSnippetInput
+            itemIds={playlistItemIds}
+            uniqueIdentifier={playlistId}
+          />
           <LgPanelCtrlBtnGroup
             handlePlay={handlePlayPlaylist}
             handleShuffle={handleShufflePlaylist}
