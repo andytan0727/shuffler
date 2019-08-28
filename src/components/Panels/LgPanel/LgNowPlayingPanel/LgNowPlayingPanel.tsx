@@ -6,10 +6,9 @@ import {
   ListToPlayListItemSecondaryAction,
   withListItemSecondaryAction,
 } from "components/Lists/LgPanelVirtualList";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
-import { clearFilteredSnippets } from "store/ytplaylist/filteredActions";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
   deleteListToPlayItemsAction,
@@ -70,13 +69,6 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
     // clear all checked videos after deletion
     clearChecked();
   }, [dispatch, checked, clearChecked]);
-
-  // clear filtered result if user is leaving now playing panel
-  useEffect(() => {
-    return () => {
-      dispatch(clearFilteredSnippets());
-    };
-  }, [dispatch]);
 
   return (
     <div className={styles.lgNowPlayingPanelDiv}>

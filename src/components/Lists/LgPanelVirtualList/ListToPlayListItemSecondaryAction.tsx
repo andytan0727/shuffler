@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
+import { removeFilteredSnippetsByItemIds } from "store/ytplaylist/filteredActions";
+import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
   chooseFirstItemAndShuffleListToPlayAction,
   deleteListToPlayItemByIdAction,
@@ -24,6 +26,7 @@ const ListToPlayListItemSecondaryAction = (
 ) => {
   const { itemId, history } = props;
   const dispatch = useDispatch();
+  const filteredSnippets = useSelector(selectFilteredSnippets);
 
   // play this video then shuffle the rest of the list
   const handlePlayAndShuffle = useCallback(() => {
@@ -34,7 +37,11 @@ const ListToPlayListItemSecondaryAction = (
 
   const handleDeleteItemFromListToPlay = useCallback(() => {
     dispatch(deleteListToPlayItemByIdAction(itemId));
-  }, [dispatch, itemId]);
+
+    // remove listToPlay items from filteredSnippets
+    // if user is filtering
+    if (filteredSnippets) dispatch(removeFilteredSnippetsByItemIds([itemId]));
+  }, [dispatch, filteredSnippets, itemId]);
 
   return (
     <div>
