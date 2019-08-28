@@ -21,6 +21,8 @@ import * as ActionTypes from "utils/constants/actionConstants";
 import { recursivelyFetchPlaylistData } from "utils/helper/fetchHelper";
 import { notify } from "utils/helper/notifyHelper";
 
+import { removeFilteredSnippetsByItemIds } from "./filteredActions";
+import { selectFilteredSnippets } from "./filteredSelectors";
 import * as listToPlayActions from "./listToPlayActions";
 import {
   selectListToPlayPlaylistItems,
@@ -32,6 +34,7 @@ import {
   FetchedPlaylist,
   ListToPlayPlaylistItemsEntity,
   ListToPlayResultItem,
+  ListToPlaySnippets,
   PlaylistsEntities,
 } from "./types";
 
@@ -133,6 +136,14 @@ export function* deletePlaylistItemByIdWatcher() {
 
     // remove item from listToPlay as well after the playlist item was deleted
     yield put(listToPlayActions.deleteListToPlayItemByIdAction(itemId));
+
+    // remove playlist items in filtered snippets as well
+    // if user is filtering
+    const filteredSnippets: ListToPlaySnippets | undefined = yield select(
+      selectFilteredSnippets
+    );
+
+    if (filteredSnippets) yield put(removeFilteredSnippetsByItemIds([itemId]));
   });
 }
 

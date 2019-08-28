@@ -4,10 +4,7 @@ import * as ActionTypes from "utils/constants/actionConstants";
 
 import { removeFilteredSnippetsByItemIds } from "./filteredActions";
 import { selectFilteredSnippets } from "./filteredSelectors";
-import {
-  deleteListToPlayItemByIdAction,
-  deleteListToPlayItemsAction,
-} from "./listToPlayActions";
+import { deleteListToPlayItemsAction } from "./listToPlayActions";
 
 /**
  * Saga which determines whether or not remove filteredSnippets items
@@ -16,11 +13,8 @@ import {
  */
 export function* removeFilteredSnippetsOnItemsDeletion() {
   while (true) {
-    const action: ActionType<
-      typeof deleteListToPlayItemsAction | typeof deleteListToPlayItemByIdAction
-    > = yield take([
+    const action: ActionType<typeof deleteListToPlayItemsAction> = yield take([
       ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
-      ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
     ]);
     const filteredSnippets = yield select(selectFilteredSnippets);
     let itemIds: string[] | undefined = undefined;
@@ -29,13 +23,6 @@ export function* removeFilteredSnippetsOnItemsDeletion() {
       case "DELETE_LIST_TO_PLAY_ITEMS": {
         const { ids } = action.payload;
         itemIds = [...ids];
-
-        break;
-      }
-
-      case "DELETE_LIST_TO_PLAY_ITEM_BY_ID": {
-        const { id: itemId } = action.payload;
-        itemIds = [itemId];
 
         break;
       }

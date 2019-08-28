@@ -39,7 +39,7 @@ const PlaylistVideoListItemSecondaryAction = (
         itemId
       )
     );
-  }, [dispatch, snippet, itemId]);
+  }, [dispatch, itemId, snippet]);
 
   return (
     <div>
