@@ -1,3 +1,5 @@
+@import "../../../../utils/styles/colors";
+
 .playPauseIcon {
   height: 45px;
   width: 45px;
@@ -10,5 +12,5 @@
 }
 
 .toggledRepeat {
-  fill: rgb(95, 228, 95);
+  fill: $playing;
 }

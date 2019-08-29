@@ -1,3 +1,4 @@
+import { PlayerList } from "components/Lists";
 import VideoPlayer from "components/Players/Video/VideoPlayer";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +7,6 @@ import { selectCurSongIdx } from "store/ytplayer/selector";
 import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 
 import NoVideoFound from "../NoVideoFound";
-import PlayerPageList from "./PlayerPageList";
 import styles from "./styles.module.scss";
 
 const YTPlayerPage = () => {
@@ -26,24 +26,27 @@ const YTPlayerPage = () => {
     };
   }, [dispatch]);
 
-  return (
-    <React.Fragment>
-      {listToPlaySnippets.length !== 0 ? (
-        <div className={styles.ytPlayerDiv}>
-          <div id="vid-wrapper" className={styles.player}>
-            <h3 className={styles.videoTitle}>
-              {currentSnippet && currentSnippet.title}
-            </h3>
-            <VideoPlayer />
-          </div>
-          <div className={styles.playlist}>
-            <PlayerPageList />
-          </div>
-        </div>
-      ) : (
-        <NoVideoFound />
-      )}
-    </React.Fragment>
+  return listToPlaySnippets.length !== 0 ? (
+    <div className={styles.ytPlayerDiv}>
+      <div className={styles.player}>
+        <h3 className={styles.videoTitle}>
+          {currentSnippet && currentSnippet.title}
+        </h3>
+        <VideoPlayer />
+      </div>
+      <div className={styles.playlist}>
+        <h3 className={styles.playerListTitle}>
+          <span role="img" aria-label="currently-playing">
+            📻
+          </span>
+          &nbsp;Currently playing:{" "}
+          {`${curSongIdx + 1}/${listToPlaySnippets.length}`}
+        </h3>
+        <PlayerList items={listToPlaySnippets} />
+      </div>
+    </div>
+  ) : (
+    <NoVideoFound />
   );
 };
 

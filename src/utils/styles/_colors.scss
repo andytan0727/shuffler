@@ -6,7 +6,7 @@ $secondary: #e040fb;
 $secondaryLight: #ff79ff;
 $secondaryDark: #aa00c7;
 $error: #eb064b;
-$playing: #08d56a;
+$playing: rgb(95, 228, 95);
 
 // dark colors
 // $black: rgb(43, 47, 51);
@@ -79,16 +79,9 @@ $darkPurpleLinearGradient: linear-gradient(
 );
 $darkPurpleRadialGradient2: radial-gradient(
   circle,
-  #2a0029,
-  #29002b,
-  #29002e,
-  #270030,
-  #260033,
-  #250033,
-  #230034,
-  #220034,
-  #210033,
-  #200031,
-  #1f0030,
-  #1e002e
+  #5f0068,
+  #530052,
+  #45003d,
+  #36022b,
+  #27001c
 );

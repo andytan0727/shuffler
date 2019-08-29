@@ -84,6 +84,9 @@ export function* setPreferDarkThemeWatcher() {
     // ===============================
     // /player/ytplayer route
     // ===============================
+    // Set YT player bg color
+    _setCSSWithPreferredMode("--yt-player-bg");
+
     // Set YT player playlist bg color
     _setCSSWithPreferredMode("--yt-player-list-bg");
   }

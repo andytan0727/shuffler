@@ -20,6 +20,7 @@
   --softBlack: #{$softBlack};
   --lightGrey: #{$lightGrey};
   --darkGrey: #{$darkGrey};
+  --playing: #{$playing};
   --dark-purple-gradient: #{$darkPurpleRadialGradient};
   --light-purple-gradient: #{$lightPurpleRadialGradient};
   --light-pink-gradient: #{$lightPinkLinearGradient};
@@ -40,6 +41,7 @@
   --light-switch-shadow-color: #373d4e;
   --light-switch-icon: "🌚";
   --light-switch-text: "dark mode";
+  --light-yt-player-bg: var(--light-panel-gradient-bg);
   --light-yt-player-list-bg: #{$white};
   --light-theme-color: #e593c2;
 
@@ -58,7 +60,8 @@
   --dark-switch-shadow-color: #fce477;
   --dark-switch-icon: "🌝";
   --dark-switch-text: "light mode";
-  --dark-yt-player-list-bg: #{lighten(black, 20%)};
+  --dark-yt-player-bg: #{$darkPurpleRadialGradient2};
+  --dark-yt-player-list-bg: inherit;
   --dark-theme-color: #7962d5;
 
   /* Default mode (dark) */
@@ -76,6 +79,7 @@
   --switch-shadow-color: var(--dark-switch-shadow-color);
   --switch-icon: var(--dark-switch-icon);
   --switch-text: var(--dark-switch-text);
+  --yt-player-bg: var(--dark-yt-player-bg);
   --yt-player-list-bg: var(--dark-yt-player-list-bg);
   --theme-color: var(--dark-theme-color);
 }
@@ -85,6 +89,8 @@ html {
 }
 
 body {
+  // overflow: hidden;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI",

@@ -4,21 +4,17 @@ import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 
-import styles from "./styles.module.scss";
-
 const VideoPlayer = () => {
   const ytPlayer = useRef<any>(null);
   const listToPlaySnippets = useSelector(selectListToPlayResultSnippets);
 
-  return (
+  return listToPlaySnippets.length !== 0 ? (
     <React.Fragment>
-      {listToPlaySnippets.length !== 0 && (
-        <div className={styles.playerWrapper}>
-          <YouTubeIFrame ref={ytPlayer} />
-          <PlayerBasicCtrlBtnGroup ytPlayerRef={ytPlayer} />
-        </div>
-      )}
+      <YouTubeIFrame ref={ytPlayer} />
+      <PlayerBasicCtrlBtnGroup ytPlayerRef={ytPlayer} />
     </React.Fragment>
+  ) : (
+    <div>Unable to load video</div>
   );
 };
 
