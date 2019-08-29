@@ -12,10 +12,6 @@ const useStyles = makeStyles({
     overflow: "hidden",
   },
   toggleDarkModeSwitchLabel: {
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    right: "2%",
     cursor: "pointer",
 
     "&::before": {
