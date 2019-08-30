@@ -1,0 +1,86 @@
+@import "../../../../utils/styles/colors";
+@import "../../../../utils/styles/variables";
+@import "./placeholders";
+
+%ytIframeDiv {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($black, 0.9);
+
+  .closeButton {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    border: none;
+    background-color: transparent;
+    color: white;
+
+    svg {
+      transform: scale(1.5);
+    }
+
+    &:hover {
+      cursor: pointer;
+      transform: rotate(180deg);
+      transition: transform 500ms linear;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.hideYTIframe {
+  @extend %ytIframeDiv;
+  opacity: 0;
+  z-index: -1;
+  transition: all 500ms ease-in;
+
+  iframe {
+    transform: translateY(1000px);
+    transition: transform 250ms linear;
+  }
+}
+
+.showYTIframe {
+  @extend %ytIframeDiv;
+  opacity: 1;
+  z-index: 2;
+  transition: opacity 500ms ease-in;
+
+  // responsive YouTube Iframe
+  .ytIframe {
+    width: 100%;
+    height: 30em;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: $tablet-width) {
+      width: 80%;
+      height: 40em;
+    }
+
+    @media screen and (min-width: $extra-large-display-width) {
+      height: 50em;
+    }
+
+    > div:nth-of-type(1) {
+      background-color: black;
+      flex-grow: 1;
+    }
+  }
+
+  iframe {
+    transform: translateY(0px);
+    transition: transform 250ms linear;
+  }
+}

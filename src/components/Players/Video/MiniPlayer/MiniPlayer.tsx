@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { PlayerBasicCtrlBtnGroup } from "components/Buttons";
 import { MiniPlayerList } from "components/Lists";
-import YouTubeIFrame from "components/Players/YouTubeIFrame";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { animated, useTransition } from "react-spring";
@@ -11,15 +10,9 @@ import { selectCurSongIdx, selectPlaying } from "store/ytplayer/selector";
 import { selectListToPlayResultSnippets } from "store/ytplaylist/listToPlaySelectors";
 import { setEscOverlay, useKeyDown } from "utils/helper/keyboardShortcutHelper";
 
-import {
-  Close as CloseIcon,
-  List as ListIcon,
-  MusicVideo as MusicVideoIcon,
-  PlayArrow as PlayArrowIcon,
-  PlayCircleFilled as PlayCircleIcon,
-} from "@material-ui/icons";
-
+import MiniPlayerSidePanel from "./MiniPlayerSidePanel";
 import styles from "./styles.module.scss";
+import YTIFrameOverlay from "./YTIFrameOverlay";
 
 const MiniPlayer = () => {
   const ytPlayerRef = useRef<any>(null);
@@ -28,7 +21,6 @@ const MiniPlayer = () => {
   const playing = useSelector(selectPlaying);
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
   const dispatch = useDispatch();
-  const [curDisplayIdx, setCurDisplayIdx] = useState(curSongIdx);
   const [blurBg, setBlurBg] = useState(false);
   const [showYT, setShowYT] = useState(false);
   const [showMiniPlayerList, setShowMiniPlayerList] = useState(false);
@@ -37,44 +29,15 @@ const MiniPlayer = () => {
     enter: { opacity: 1 },
     leave: { opacity: 0 },
   });
-
   const currentSnippet = listToPlaySnippets[curSongIdx];
-  const songListLen = listToPlaySnippets.length;
 
-  const handleWheel = useCallback(
-    (e) => {
-      const deltaY = e.deltaY;
-
-      if (deltaY > 0 && curDisplayIdx < songListLen - 1) {
-        setCurDisplayIdx(curDisplayIdx + 1);
-      }
-
-      if (deltaY < 0 && curDisplayIdx > 0) {
-        setCurDisplayIdx(curDisplayIdx - 1);
-      }
-    },
-    [curDisplayIdx, songListLen]
-  );
-
-  const handlePlayClicked = useCallback(() => {
-    dispatch(setCurSongIdx(curDisplayIdx));
-  }, [curDisplayIdx, dispatch]);
-
-  const handleSetCurDisplayIdx = useCallback(
-    (e) => {
-      e.preventDefault();
-      setCurDisplayIdx(curSongIdx);
-    },
-    [curSongIdx]
-  );
-
-  const handleShowYT = useCallback((e) => {
+  const handleShowYTOverlay = useCallback((e) => {
     e.preventDefault();
     setShowYT(true);
     setBlurBg(true);
   }, []);
 
-  const handleHideYT = useCallback((e) => {
+  const handleHideYTOverlay = useCallback((e: OnClickEvent) => {
     e.preventDefault();
     setShowYT(false);
     setBlurBg(false);
@@ -93,12 +56,9 @@ const MiniPlayer = () => {
   }, []);
 
   // set shortcut to close YT overlay
-  useKeyDown(setEscOverlay(handleHideYT));
+  useKeyDown(setEscOverlay(handleHideYTOverlay));
 
-  useEffect(() => {
-    setCurDisplayIdx(curSongIdx);
-  }, [curSongIdx]);
-
+  // reset playlist current song to first song after unmounted
   useEffect(() => {
     return () => {
       dispatch(setCurSongIdx(0));
@@ -138,70 +98,21 @@ const MiniPlayer = () => {
 
           <PlayerBasicCtrlBtnGroup ytPlayerRef={ytPlayerRef} />
         </div>
-        <div
-          className={
-            preferDarkTheme ? styles.playlistDark : styles.playlistLight
-          }
-          data-cursong={curSongIdx + 1}
-          data-listlen={songListLen}
-          onWheel={handleWheel}
-        >
-          <div className={styles.listButtonDiv}>
-            <button onClick={handleSetCurDisplayIdx}>
-              <MusicVideoIcon />
-            </button>
-            <button onClick={handleShowYT}>
-              <PlayCircleIcon />
-            </button>
-            <button onClick={handleShowMiniPlayerList}>
-              <ListIcon />
-            </button>
-          </div>
-          <ul>
-            <li>
-              {listToPlaySnippets[curDisplayIdx - 2] &&
-                listToPlaySnippets[curDisplayIdx - 2]!.title}
-            </li>
-            <li>
-              {listToPlaySnippets[curDisplayIdx - 1] &&
-                listToPlaySnippets[curDisplayIdx - 1]!.title}
-            </li>
-            <li
-              className={classNames({
-                [styles.curSongPlaying]:
-                  playing && curSongIdx === curDisplayIdx,
-              })}
-              onClick={handlePlayClicked}
-            >
-              {curSongIdx === curDisplayIdx && playing && <PlayArrowIcon />}
-              {listToPlaySnippets[curDisplayIdx] &&
-                listToPlaySnippets[curDisplayIdx]!.title}
-            </li>
-            <li>
-              {listToPlaySnippets[curDisplayIdx + 1] &&
-                listToPlaySnippets[curDisplayIdx + 1]!.title}
-            </li>
-            <li>
-              {listToPlaySnippets[curDisplayIdx + 2] &&
-                listToPlaySnippets[curDisplayIdx + 2]!.title}
-            </li>
-          </ul>
-        </div>
+
+        <MiniPlayerSidePanel
+          handleShowMiniPlayerList={handleShowMiniPlayerList}
+          handleShowYTOverlay={handleShowYTOverlay}
+          playing={playing}
+        />
       </div>
 
       {/* YT IFrame that display none */}
-      <div
-        className={classNames({
-          [styles.hideYTIframe]: !showYT,
-          [styles.showYTIframe]: showYT,
-        })}
-      >
-        <button className={styles.closeButton} onClick={handleHideYT}>
-          <CloseIcon />
-        </button>
-        <YouTubeIFrame ref={ytPlayerRef} />
-        <PlayerBasicCtrlBtnGroup ytPlayerRef={ytPlayerRef} />
-      </div>
+      <YTIFrameOverlay
+        showYT={showYT}
+        handleHideYTOverlay={handleHideYTOverlay}
+        ytPlayerRef={ytPlayerRef}
+      />
+
       {transitions.map(
         ({ item, key, props }) =>
           item && (
