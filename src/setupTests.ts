@@ -21,14 +21,12 @@ const fetchedPlaylistItems: PlaylistItem[] = Array.from(
   { length: 10 },
   (_, idx) => idx + 1
 ).map((val, idx) => ({
-  etag: "randomTag",
   kind: "youtube#playlistItem",
   id: val.toString(),
   snippet: makePlaylistSnippet(val, idx),
 }));
 
 const fetchedVideoItem: VideoItem = {
-  etag: "random_string",
   id: "videoId",
   kind: "youtube#video",
 
@@ -53,7 +51,10 @@ const playlistParams: BaseFetchParams & PlaylistParams = {
   part: "snippet",
   maxResults: "50",
   playlistId: "",
-  fields: ["items", "nextPageToken", "pageInfo"],
+  fields: [
+    "items(id,kind,snippet(title,playlistId,thumbnails,resourceId))",
+    "nextPageToken",
+  ],
 };
 
 const playlistNextParams: BaseFetchParams & PlaylistParams = {
@@ -66,7 +67,7 @@ const videoParams: BaseFetchParams & VideoParams = {
   part: "snippet",
   id: "videoId",
   maxResults: "5",
-  fields: ["items"],
+  fields: ["items(id,kind,snippet(title,thumbnails))"],
 };
 
 // ================================================

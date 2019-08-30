@@ -10,7 +10,6 @@ declare global {
   interface BaseItemsEntity {
     id: string;
     kind: string;
-    etag: string;
   }
 
   interface BaseSourceEntity {

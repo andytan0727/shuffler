@@ -21,19 +21,11 @@ const makeItem = (
 ) => ({
   id: `itemId-${sourceId}-${itemId}`,
   kind,
-  etag: "randomString",
   snippet: `snippetId-${sourceId}-${itemId}`,
 });
 
 const makeSnippet = (sourceId: number, itemId: number) => ({
-  categoryId: `categoryId-${sourceId}-${itemId}`,
   title: `title-${sourceId}-${itemId}`,
-  channelId: `channelId-${sourceId}-${itemId}`,
-  channelTitle: `channelTitle-${sourceId}-${itemId}`,
-  description: `description-${sourceId}-${itemId}`,
-  liveBroadcastContent: `broadcast-${sourceId}-${itemId}`,
-  publishedAt: `published-${sourceId}-${itemId}`,
-  tags: [`tag-${sourceId}-${itemId}`],
   thumbnails: {
     default: {
       height: itemId,
@@ -61,10 +53,7 @@ const makeSnippet = (sourceId: number, itemId: number) => ({
       url: `url-${sourceId}-${itemId}`,
     },
   },
-  localized: {
-    title: `test-${sourceId}-${itemId}`,
-    description: `test-${sourceId}-${itemId}`,
-  },
+
   itemId: itemId.toString(),
 });
 // ===================================
@@ -89,7 +78,6 @@ export const makePlaylistSnippet = (
   return {
     ...snippet,
     playlistId: `playlistId-${playlistId}`,
-    position: playlistId * itemId,
     resourceId: {
       kind: "youtube#video",
       videoId: `videoId-${playlistId}-${itemId}`,

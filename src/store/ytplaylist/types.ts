@@ -32,7 +32,6 @@ export interface VideoThumbnailsProperties {
 // =====================================================
 export interface FetchedPlaylist {
   id: string;
-  name?: string;
   nextPageToken?: string;
   items: PlaylistItem[];
 }
@@ -43,12 +42,7 @@ export interface PlaylistItem extends BaseItemsEntity {
 
 export interface PlaylistItemSnippet {
   id?: string;
-  channelId: string;
-  channelTitle: string;
-  description: string;
   playlistId: string;
-  position: number;
-  publishedAt: string;
   title: string;
   resourceId: { kind: string; videoId: string };
   thumbnails?: VideoThumbnails;
@@ -105,16 +99,8 @@ export interface VideoItem extends BaseItemsEntity {
 
 export interface VideoItemSnippet {
   id?: string;
-  categoryId: string;
-  channelId: string;
-  channelTitle: string;
-  description: string;
-  liveBroadcastContent: string;
-  publishedAt: string;
-  tags: string[];
   thumbnails?: VideoThumbnails;
   title: string;
-  localized: { title: string; description: string };
 
   // for the usage in filtered snippets in filtered redux states
   itemId?: string;
