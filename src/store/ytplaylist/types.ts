@@ -42,7 +42,13 @@ export interface PlaylistItem extends BaseItemsEntity {
 
 export interface PlaylistItemSnippet {
   id?: string;
+
+  // NOTE: playlistId from snippet maybe invalid
+  //       especially when there are two or more
+  //       identical exists on one or more playlists.
+  //       Use it sparingly
   playlistId: string;
+
   title: string;
   resourceId: { kind: string; videoId: string };
   thumbnails?: VideoThumbnails;

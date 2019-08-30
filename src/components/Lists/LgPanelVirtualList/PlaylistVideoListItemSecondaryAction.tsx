@@ -1,8 +1,10 @@
 import { DeleteItemButton } from "components/Buttons";
 import { makeToggleItemToListToPlaySwitch } from "components/Switches";
 import React, { useCallback, useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "store";
 import { deletePlaylistItemByIdAction } from "store/ytplaylist/playlistActions";
+import { selectPlaylistIdByItemId } from "store/ytplaylist/playlistSelectors";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 import { isPlaylistItemSnippet } from "store/ytplaylist/utils";
 import { deleteVideoByIdAction } from "store/ytplaylist/videoActions";
@@ -18,6 +20,12 @@ const PlaylistVideoListItemSecondaryAction = (
   const { itemId, snippet } = props;
   const dispatch = useDispatch();
   const snippetId = snippet.id!;
+  const playlistId = useSelector((state: AppState) =>
+    selectPlaylistIdByItemId(state, itemId)
+  );
+
+  if (!playlistId)
+    throw new Error("Playlist not found with the corresponding itemId.");
 
   // Switch component which depends on the sourceType
   const ToggleItemToListToPlaySwitch = useMemo(
@@ -33,13 +41,8 @@ const PlaylistVideoListItemSecondaryAction = (
   }, [dispatch, snippetId]);
 
   const handleDeletePlaylistItem = useCallback(() => {
-    dispatch(
-      deletePlaylistItemByIdAction(
-        (snippet as PlaylistItemSnippet).playlistId,
-        itemId
-      )
-    );
-  }, [dispatch, itemId, snippet]);
+    dispatch(deletePlaylistItemByIdAction(playlistId, itemId));
+  }, [dispatch, itemId, playlistId]);
 
   return (
     <div>

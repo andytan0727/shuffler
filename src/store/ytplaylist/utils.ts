@@ -5,6 +5,7 @@ import merge from "lodash/merge";
 import pull from "lodash/pull";
 import remove from "lodash/remove";
 import set from "lodash/set";
+import some from "lodash/some";
 
 import {
   ListToPlay,
@@ -44,6 +45,27 @@ export const isPlaylistItemSnippet = (
   snippet: PlaylistItemSnippet | VideoItemSnippet
 ): snippet is PlaylistItemSnippet =>
   (snippet as PlaylistItemSnippet).playlistId !== undefined;
+
+// =======================================
+// End Type Guards
+// =======================================
+
+// =======================================
+// Assertion
+// =======================================
+export const isSnippetDuplicated = (
+  originalEntities: PlaylistsEntities,
+  snippetId: string
+) => {
+  return some(
+    originalEntities.playlistItems,
+    (playlistItem) => playlistItem.snippet === snippetId
+  );
+};
+
+// =======================================
+// End Assertion
+// =======================================
 
 // =======================================
 // Util functions
@@ -93,6 +115,14 @@ export const updatePlaylistOrVideoNameById = <T extends PlaylistsOrVideos>(
   return draft;
 };
 
+/**
+ * Delete playlist/video item entity
+ *
+ * **_Note: This function mutates itemsEntity_**
+ *
+ * @param itemsEntity
+ * @param itemIds
+ */
 export const deleteItemsEntity = (
   itemsEntity: PlaylistsOrVideosItemsEntity,
   itemIds: string[]
@@ -102,6 +132,18 @@ export const deleteItemsEntity = (
   });
 };
 
+/**
+ * Delete playlist/video snippets
+ *
+ * This function should be always executed after
+ * deleting items, else isSnippetDuplicated assertion
+ * will be failed
+ *
+ * **_Note: This function mutates entities_**
+ *
+ * @param entities Playlist/video entities
+ * @param snippetIds Snippet ids array to delete
+ */
 export const deleteSnippetsEntity = (
   entities: PlaylistsOrVideosEntities,
   snippetIds: string[]
@@ -109,6 +151,14 @@ export const deleteSnippetsEntity = (
   const snippetsEntity = get(entities, "snippets");
 
   snippetIds.forEach((snippetId) => {
+    // do not delete snippet if there is another reference
+    // to the snippet (duplicated snippet)
+    if (
+      isPlaylistsEntities(entities) &&
+      isSnippetDuplicated(entities, snippetId)
+    )
+      return;
+
     delete snippetsEntity[snippetId];
   });
 };
@@ -212,6 +262,9 @@ export const isPlaylistItemExists = (
   playlistItems: PlaylistItemsEntity,
   itemId: string
 ) => !!playlistItems[itemId];
+// =======================================
+// End Util functions
+// =======================================
 
 // =======================================
 // Utils for selectors

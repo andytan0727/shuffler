@@ -5,7 +5,7 @@ import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 import { AppState } from "store";
 
-import { PlaylistItemSnippet, PlaylistsEntities } from "./types";
+import { PlaylistsEntities } from "./types";
 import { getSnippetFromItemId } from "./utils";
 
 const selectPlaylists = (state: AppState) => state.ytplaylist.playlists;
@@ -84,14 +84,14 @@ export const selectPlaylistSnippetsByPlaylistId = createCachedSelector(
     }))
 )((_, playlistId) => `playlistSnippets-playlistId-${playlistId}`);
 
-/**
- * Select playlistId by itemId.
- *
- * **Note: returned result might be undefined.**
- */
 export const selectPlaylistIdByItemId = createCachedSelector(
-  selectPlaylistSnippetByItemId,
-  (snippet) => snippet && (snippet as PlaylistItemSnippet).playlistId
+  selectPlaylistsResult,
+  selectAllPlaylists,
+  (_: AppState, itemId: string) => itemId,
+  (playlistIds, playlists, itemId) =>
+    playlistIds.find((playlistId) =>
+      playlists[playlistId].items.includes(itemId)
+    )
 )((_, itemId) => `playlistId-playlistItemId-${itemId}`);
 
 export const selectPlaylistAllInPlayingById = createCachedSelector(

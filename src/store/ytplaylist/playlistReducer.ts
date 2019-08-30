@@ -1,4 +1,5 @@
 import produce, { Draft, original } from "immer";
+import remove from "lodash/remove";
 import shuffle from "lodash/shuffle";
 import uniq from "lodash/uniq";
 import { Reducer } from "typesafe-actions";
@@ -7,6 +8,7 @@ import * as ActionTypes from "utils/constants/actionConstants";
 import { DeepReadonlyPlaylists, Playlists, YTPlaylistActions } from "./types";
 import {
   deletePlaylistOrVideoById,
+  isSnippetDuplicated,
   mergeEntities,
   updatePlaylistOrVideoNameById,
 } from "./utils";
@@ -50,18 +52,27 @@ export const playlistsReducer: Reducer<
 
       if (!draft.entities.playlistItems[itemId]) return draft;
 
-      const itemToDelete = draft.entities.playlistItems[itemId];
+      const snippetIdToDelete = draft.entities.playlistItems[itemId].snippet;
 
-      // first, delete the snippet corresponds to the playlistItem
-      delete draft.entities.snippets[itemToDelete.snippet];
-
-      // next, delete the corresponding playlistItem
+      // delete playlistItem first
+      // NOTE: this is important to avoid false positive
+      //       for isSnippetDuplicated assertion below
+      //       as it will always give the result of
+      //       snippet is duplicated every time this
+      //       playlistItem is detected
       delete draft.entities.playlistItems[itemId];
 
+      // delete the snippet corresponds to the
+      // playlistItem if the snippet is not duplicated.
+      if (!isSnippetDuplicated(draft.entities, snippetIdToDelete)) {
+        delete draft.entities.snippets[snippetIdToDelete];
+      }
+
       // finally, delete the itemId from items array in parent playlist
-      draft.entities.playlists[playlistId].items = draft.entities.playlists[
-        playlistId
-      ].items.filter((id) => id !== itemId);
+      remove(
+        draft.entities.playlists[playlistId].items,
+        (playlistItemId) => playlistItemId === itemId
+      );
 
       return draft;
     }

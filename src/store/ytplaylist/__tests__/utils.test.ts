@@ -2,9 +2,10 @@ import deepFreeze from "deep-freeze";
 import produce, { Draft } from "immer";
 import partial from "lodash/partial";
 import { stateMaker } from "utils/helper/testUtils";
+import playlistsWithDuplicatedSnippets from "utils/mocks/duplicatedPlaylistSnippets";
 
 import { Playlists, Videos } from "../types";
-import { deletePlaylistOrVideoById } from "../utils";
+import { deletePlaylistOrVideoById, isSnippetDuplicated } from "../utils";
 
 const basePlaylistsState: Playlists = {
   updating: false,
@@ -98,5 +99,46 @@ describe("Test deletePlaylistOrVideoById util functions", () => {
         itemsLength: 10,
       })
     );
+  });
+});
+
+describe("testing isSnippetDuplicated function", () => {
+  test("should return true if snippets are duplicated", () => {
+    // snippetId-1 is duplicated in the mocked playlists
+    expect(
+      isSnippetDuplicated(
+        playlistsWithDuplicatedSnippets.entities,
+        "snippetId-1"
+      )
+    ).toBeTruthy();
+  });
+
+  test("should return false if snippets are not duplicated", () => {
+    const deletedPlaylist2 = produce(
+      playlistsWithDuplicatedSnippets,
+      (draft) => {
+        const playlistId = "playlistId-2";
+        const itemIds = draft.entities.playlists[playlistId].items;
+        delete draft.entities.playlists[playlistId];
+
+        itemIds.forEach(
+          (itemId) => delete draft.entities.playlistItems[itemId]
+        );
+      }
+    );
+
+    // then delete playlist1's item1 also to prevent false positive result
+    // because isSnippetDuplicated checks for playlistItems first
+    const deletedPlaylist1Item1 = produce(deletedPlaylist2, (draft) => {
+      const playlistId = "playlistId-1";
+      const itemId1 = draft.entities.playlists[playlistId].items[0];
+
+      delete draft.entities.playlistItems[itemId1];
+    });
+
+    // assuming snippetId-4 is from DELETED playlistItem
+    expect(
+      isSnippetDuplicated(deletedPlaylist1Item1.entities, "snippetId-1")
+    ).toBeFalsy();
   });
 });

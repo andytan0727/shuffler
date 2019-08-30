@@ -318,8 +318,6 @@ export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
 
       case "DELETE_LIST_TO_PLAY_ITEM_BY_ID": {
         const { id: itemId } = action.payload;
-
-        // playlistId is undefined if the itemId is belonged to video
         playlistId = yield select((state) =>
           selectPlaylistIdByItemId(state, itemId)
         );

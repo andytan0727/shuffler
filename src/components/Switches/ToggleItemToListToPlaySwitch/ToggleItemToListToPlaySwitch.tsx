@@ -76,6 +76,11 @@ export const makeToggleItemToListToPlaySwitch = (source: MediaSourceType) =>
     );
     const schema = source === "playlists" ? "playlistItems" : "videoItems";
 
+    if (!sourceId)
+      throw new Error(
+        "Source(playlist/video) not found with the corresponding itemId"
+      );
+
     const handleToggleListToPlayItem = useCallback(() => {
       dispatch(
         !isListToPlayItemExists(listToPlayEntities, schema, itemId)
