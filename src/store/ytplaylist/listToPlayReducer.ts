@@ -6,7 +6,7 @@ import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
 import { DeepReadonlyListToPlay, ListToPlay, YTPlaylistActions } from "./types";
-import { deleteListToPlayItemById, mergeEntities } from "./utils";
+import { deleteListToPlayItemById, deepMergeStates } from "./utils";
 
 const initialListToPlayState: DeepReadonlyListToPlay = {
   entities: {
@@ -26,7 +26,7 @@ export const listToPlayReducer: Reducer<
     // entities and result
     case ActionTypes.ADD_UNIQUE_LIST_TO_PLAY: {
       const { entities, result } = action.payload;
-      return mergeEntities(draft, entities, result);
+      return deepMergeStates(draft, entities, result);
     }
 
     // Update entire listToPlay without preserving previous details

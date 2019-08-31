@@ -1,15 +1,14 @@
 import produce, { Draft, original } from "immer";
 import remove from "lodash/remove";
 import shuffle from "lodash/shuffle";
-import uniq from "lodash/uniq";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
 import { DeepReadonlyPlaylists, Playlists, YTPlaylistActions } from "./types";
 import {
+  deepMergeStates,
   deletePlaylistOrVideoById,
   isSnippetDuplicated,
-  mergeEntities,
   updatePlaylistOrVideoNameById,
 } from "./utils";
 
@@ -29,21 +28,12 @@ export const playlistsReducer: Reducer<
 > = produce((draft: Draft<Playlists>, action: YTPlaylistActions) => {
   switch (action.type) {
     case ActionTypes.ADD_PLAYLIST: {
-      const prevResult = original(draft.result);
-
-      if (prevResult) {
-        const { entities, result } = action.payload;
-        const uniquePlaylistResult = uniq([...prevResult, ...result]);
-
-        return mergeEntities(draft, entities, uniquePlaylistResult);
-      }
-
-      return draft;
+      const { entities, result } = action.payload;
+      return deepMergeStates(draft, entities, result);
     }
 
     case ActionTypes.DELETE_PLAYLIST_BY_ID: {
       const { id } = action.payload;
-
       return deletePlaylistOrVideoById(draft, id);
     }
 

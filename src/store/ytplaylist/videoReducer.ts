@@ -1,12 +1,11 @@
-import produce, { Draft, original } from "immer";
-import uniq from "lodash/uniq";
+import produce, { Draft } from "immer";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
 
 import { DeepReadonlyVideos, Videos, YTPlaylistActions } from "./types";
 import {
+  deepMergeStates,
   deletePlaylistOrVideoById,
-  mergeEntities,
   updatePlaylistOrVideoNameById,
 } from "./utils";
 
@@ -25,16 +24,8 @@ export const videosReducer: Reducer<
 > = produce((draft: Draft<Videos>, action: YTPlaylistActions) => {
   switch (action.type) {
     case ActionTypes.ADD_VIDEO: {
-      const prevResult = original(draft.result);
-
-      if (prevResult) {
-        const { entities, result } = action.payload;
-        const uniqueVideoResult = uniq([...prevResult, ...result]);
-
-        return mergeEntities(draft, entities, uniqueVideoResult);
-      }
-
-      return draft;
+      const { entities, result } = action.payload;
+      return deepMergeStates(draft, entities, result);
     }
 
     case ActionTypes.UPDATE_VIDEO_NAME_BY_ID: {

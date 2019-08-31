@@ -6,10 +6,12 @@ import pull from "lodash/pull";
 import remove from "lodash/remove";
 import set from "lodash/set";
 import some from "lodash/some";
+import uniq from "lodash/uniq";
 
 import {
   ListToPlay,
   ListToPlayEntities,
+  ListToPlayResultItem,
   MediaItem,
   PlaylistItemsEntity,
   PlaylistItemSnippet,
@@ -31,7 +33,7 @@ import {
  * @returns
  */
 export const isPlaylistsEntities = (
-  entities: PlaylistsOrVideosEntities
+  entities: PlaylistsOrVideosEntities | ListToPlayEntities
 ): entities is PlaylistsEntities =>
   (entities as PlaylistsEntities).playlists !== undefined;
 
@@ -45,6 +47,10 @@ export const isPlaylistItemSnippet = (
   snippet: PlaylistItemSnippet | VideoItemSnippet
 ): snippet is PlaylistItemSnippet =>
   (snippet as PlaylistItemSnippet).playlistId !== undefined;
+
+export const isPlaylistOrVideoResult = (
+  result: string[] | ListToPlayResultItem[]
+): result is string[] => typeof result[0] === "string";
 
 // =======================================
 // End Type Guards
@@ -81,12 +87,25 @@ export const isSnippetDuplicated = (
  * @param result Normalized states result to be added
  * @returns Mutated (drafted) states
  */
-export const mergeEntities = <T extends PlaylistsOrVideos | ListToPlay>(
+export const deepMergeStates = <T extends PlaylistsOrVideos | ListToPlay>(
   draft: T,
   entities: T["entities"],
   result: T["result"]
 ): T => {
   merge(draft.entities, entities);
+
+  // make sure no duplicated video/playlist exists
+  // in their result array
+  if (
+    isPlaylistOrVideoResult(draft.result) &&
+    isPlaylistOrVideoResult(result)
+  ) {
+    const prevResult = draft.result;
+    draft.result = uniq([...prevResult, ...result]);
+    return draft;
+  }
+
+  // listToPlay result array is already checked on saga side
   draft.result = result;
 
   return draft;
