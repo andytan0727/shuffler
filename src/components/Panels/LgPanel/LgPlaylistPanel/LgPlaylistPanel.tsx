@@ -19,7 +19,7 @@ import { AppState } from "store";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
 import {
-  deletePlaylistItemByIdAction,
+  deletePlaylistItemsByIdAction,
   shufflePlaylistItems,
   syncPlaylistFromYTByIdAction,
   updatePlaylistNameByIdAction,
@@ -53,7 +53,7 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
     selectPlaylistItemIdsByPlaylistId(state, playlistId)
   ) as string[];
   const checkboxHooks = useCheckbox();
-  const { checked } = checkboxHooks;
+  const { checked, clearChecked } = checkboxHooks;
   const updating = useSelector(selectPlaylistUpdating);
 
   const filteredSnippets = useSelector(selectFilteredSnippets);
@@ -80,10 +80,10 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
   }, [playlistId, dispatch]);
 
   const handleDeletePlaylistItems = useCallback(() => {
-    checked.forEach((itemId) => {
-      dispatch(deletePlaylistItemByIdAction(playlistId, itemId));
-    });
-  }, [checked, dispatch, playlistId]);
+    dispatch(deletePlaylistItemsByIdAction(playlistId, checked));
+
+    clearChecked();
+  }, [checked, clearChecked, dispatch, playlistId]);
 
   const handleRenamePlaylist = useCallback(async () => {
     const customSwal = await generateCustomSwal();

@@ -112,6 +112,24 @@ export const deletePlaylistItemByIdAction = createAction(
 );
 
 /**
+ * Batch deletion version of deletePlaylistItemByIdAction
+ *
+ * @param playlistId Playlist id in which the playlistItem is located
+ * @param itemIds PlaylistItem ids array to delete
+ * @returns DELETE_PLAYLIST_ITEMS_BY_ID action object
+ */
+export const deletePlaylistItemsByIdAction = createAction(
+  ActionTypes.DELETE_PLAYLIST_ITEMS_BY_ID,
+  (action) => {
+    return (playlistId: string, itemIds: string[]) =>
+      action({
+        playlistId,
+        itemIds,
+      });
+  }
+);
+
+/**
  * Synchronize whole playlist with YouTube by fetching
  * new data from YouTube playlist.
  * New and old playlist will be deeply merged with lodash merge

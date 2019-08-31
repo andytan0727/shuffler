@@ -18,7 +18,6 @@ import {
   PlaylistsEntities,
   PlaylistsOrVideos,
   PlaylistsOrVideosEntities,
-  PlaylistsOrVideosItemsEntity,
   VideoItemSnippet,
 } from "./types";
 
@@ -69,6 +68,31 @@ export const isSnippetDuplicated = (
   );
 };
 
+/**
+ * Check if particular item from playlists/videos exists in listToPlay
+ *
+ * @param entities Normalized listToPlay entities
+ * @param schema listToPlay item schema (playlistItems/videoItems)
+ * @param itemId listToPlay item's id
+ */
+export const isListToPlayItemExists = (
+  entities: ListToPlayEntities,
+  schema: SchemaType,
+  itemId: string
+) => !!entities[schema][itemId];
+
+/**
+ * Check if playlist item with the provided itemId exists.
+ * If no then the itemId is belonged to videos
+ *
+ * @param playlistItems Normalized playlist/video items entity
+ * @param itemId Item id to check
+ * @returns boolean result of true if playlist item exists
+ */
+export const isPlaylistItemExists = (
+  playlistItems: PlaylistItemsEntity,
+  itemId: string
+) => !!playlistItems[itemId];
 // =======================================
 // End Assertion
 // =======================================
@@ -139,15 +163,20 @@ export const updatePlaylistOrVideoNameById = <T extends PlaylistsOrVideos>(
  *
  * **_Note: This function mutates itemsEntity_**
  *
- * @param itemsEntity
- * @param itemIds
+ * @param entities Playlist/video entities containing items to be deleted
+ * @param itemIds ItemIds of items to be deleted
  */
 export const deleteItemsEntity = (
-  itemsEntity: PlaylistsOrVideosItemsEntity,
+  entities: PlaylistsOrVideosEntities,
   itemIds: string[]
 ) => {
   itemIds.forEach((itemId) => {
-    delete itemsEntity[itemId];
+    if (isPlaylistsEntities(entities)) {
+      delete entities.playlistItems[itemId];
+      return;
+    }
+
+    delete entities.videoItems[itemId];
   });
 };
 
@@ -221,7 +250,7 @@ export const deletePlaylistOrVideoById = <T extends PlaylistsOrVideos>(
   delete sourceEntity[id];
 
   // delete related playlist/video items
-  deleteItemsEntity(itemsEntity, itemIds);
+  deleteItemsEntity(entities, itemIds);
 
   // delete related snippets
   deleteSnippetsEntity(entities, snippetIds);
@@ -230,6 +259,41 @@ export const deletePlaylistOrVideoById = <T extends PlaylistsOrVideos>(
   pull(result, id);
 
   return draft;
+};
+
+/**
+ * Delete individual playlistItem.
+ *
+ * **_Note: This function mutates entities_**
+ *
+ * @param entities
+ * @param playlistId
+ * @param itemId
+ */
+export const deletePlaylistItem = (
+  entities: PlaylistsEntities,
+  playlistId: string,
+  itemId: string
+) => {
+  // do nothing if playlistItem could not be found
+  if (!entities.playlistItems[itemId]) return;
+
+  const snippetIdToDelete = entities.playlistItems[itemId].snippet;
+
+  // delete playlistItem first
+  // NOTE: this is important to avoid false positive
+  //       for isSnippetDuplicated assertion below
+  //       as it will always give the result of
+  //       snippet is duplicated every time this
+  //       playlistItem is detected
+  deleteItemsEntity(entities, [itemId]);
+
+  deleteSnippetsEntity(entities, [snippetIdToDelete]);
+
+  remove(
+    entities.playlists[playlistId].items,
+    (playlistItemId) => playlistItemId === itemId
+  );
 };
 
 /**
@@ -256,31 +320,6 @@ export const deleteListToPlayItemById = (
   return draft;
 };
 
-/**
- * Check if particular item from playlists/videos exists in listToPlay
- *
- * @param entities Normalized listToPlay entities
- * @param schema listToPlay item schema (playlistItems/videoItems)
- * @param itemId listToPlay item's id
- */
-export const isListToPlayItemExists = (
-  entities: ListToPlayEntities,
-  schema: SchemaType,
-  itemId: string
-) => !!entities[schema][itemId];
-
-/**
- * Check if playlist item with the provided itemId exists.
- * If no then the itemId is belonged to videos
- *
- * @param playlistItems Normalized playlist/video items entity
- * @param itemId Item id to check
- * @returns boolean result of true if playlist item exists
- */
-export const isPlaylistItemExists = (
-  playlistItems: PlaylistItemsEntity,
-  itemId: string
-) => !!playlistItems[itemId];
 // =======================================
 // End Util functions
 // =======================================

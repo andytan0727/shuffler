@@ -1,5 +1,4 @@
 import produce, { Draft, original } from "immer";
-import remove from "lodash/remove";
 import shuffle from "lodash/shuffle";
 import { Reducer } from "typesafe-actions";
 import * as ActionTypes from "utils/constants/actionConstants";
@@ -7,8 +6,8 @@ import * as ActionTypes from "utils/constants/actionConstants";
 import { DeepReadonlyPlaylists, Playlists, YTPlaylistActions } from "./types";
 import {
   deepMergeStates,
+  deletePlaylistItem,
   deletePlaylistOrVideoById,
-  isSnippetDuplicated,
   updatePlaylistOrVideoNameById,
 } from "./utils";
 
@@ -40,29 +39,17 @@ export const playlistsReducer: Reducer<
     case ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID: {
       const { playlistId, itemId } = action.payload;
 
-      if (!draft.entities.playlistItems[itemId]) return draft;
+      deletePlaylistItem(draft.entities, playlistId, itemId);
 
-      const snippetIdToDelete = draft.entities.playlistItems[itemId].snippet;
+      return draft;
+    }
 
-      // delete playlistItem first
-      // NOTE: this is important to avoid false positive
-      //       for isSnippetDuplicated assertion below
-      //       as it will always give the result of
-      //       snippet is duplicated every time this
-      //       playlistItem is detected
-      delete draft.entities.playlistItems[itemId];
+    case ActionTypes.DELETE_PLAYLIST_ITEMS_BY_ID: {
+      const { playlistId, itemIds } = action.payload;
 
-      // delete the snippet corresponds to the
-      // playlistItem if the snippet is not duplicated.
-      if (!isSnippetDuplicated(draft.entities, snippetIdToDelete)) {
-        delete draft.entities.snippets[snippetIdToDelete];
-      }
-
-      // finally, delete the itemId from items array in parent playlist
-      remove(
-        draft.entities.playlists[playlistId].items,
-        (playlistItemId) => playlistItemId === itemId
-      );
+      itemIds.forEach((itemId) => {
+        deletePlaylistItem(draft.entities, playlistId, itemId);
+      });
 
       return draft;
     }

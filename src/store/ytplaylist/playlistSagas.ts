@@ -61,11 +61,9 @@ export function* syncPlaylistFromYTByIdSuccess(
   // Also automatically update listToPlay
   // by deletePlaylistItemByIdWatcher
   if (itemIdsToDelete.length !== 0) {
-    for (const itemId of itemIdsToDelete) {
-      yield put(
-        playlistActions.deletePlaylistItemByIdAction(playlistId, itemId)
-      );
-    }
+    yield put(
+      playlistActions.deletePlaylistItemsByIdAction(playlistId, itemIdsToDelete)
+    );
   }
 
   // add newly updated playlist
@@ -121,30 +119,59 @@ export function* deletePlaylistByIdWatcher() {
 }
 
 /**
- * Saga which watching for DELETE_PLAYLIST_ITEM_BY_ID action.
- * If triggered, it dispatch an action to delete the respective playlist item from
- * listToPlay (if exists) as well
+ * Saga which watching for actions that delete playlist item(s)
+ * i.e. DELETE_PLAYLIST_ITEM(S)_BY_ID
+ *
+ * If triggered, it dispatch an action to:
+ *   - delete the respective playlist item from
+ *     listToPlay (if exists) and
+ *   - delete filtered snippets if user deletes
+ *     playlist item(s) when applying filter
  *
  */
-export function* deletePlaylistItemByIdWatcher() {
-  yield takeEvery(ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID, function*(
-    action: ActionType<typeof playlistActions.deletePlaylistItemByIdAction>
-  ) {
-    const {
-      payload: { itemId },
-    } = action;
+export function* deletePlaylistItemsWatcher() {
+  yield takeEvery(
+    [
+      ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID,
+      ActionTypes.DELETE_PLAYLIST_ITEMS_BY_ID,
+    ],
+    function*(
+      action: ActionType<
+        | typeof playlistActions.deletePlaylistItemByIdAction
+        | typeof playlistActions.deletePlaylistItemsByIdAction
+      >
+    ) {
+      const itemIds: string[] = [];
 
-    // remove item from listToPlay as well after the playlist item was deleted
-    yield put(listToPlayActions.deleteListToPlayItemByIdAction(itemId));
+      switch (action.type) {
+        case "DELETE_PLAYLIST_ITEM_BY_ID": {
+          const { itemId } = action.payload;
+          itemIds.push(itemId);
+          break;
+        }
 
-    // remove playlist items in filtered snippets as well
-    // if user is filtering
-    const filteredSnippets: ListToPlaySnippets | undefined = yield select(
-      selectFilteredSnippets
-    );
+        case "DELETE_PLAYLIST_ITEMS_BY_ID": {
+          const { itemIds: playlistItemIs } = action.payload;
+          itemIds.push(...playlistItemIs);
+          break;
+        }
 
-    if (filteredSnippets) yield put(removeFilteredSnippetsByItemIds([itemId]));
-  });
+        default:
+          break;
+      }
+
+      // remove item from listToPlay as well after the playlist item was deleted
+      yield put(listToPlayActions.deleteListToPlayItemsAction(itemIds));
+
+      // remove playlist items in filtered snippets as well
+      // if user is filtering
+      const filteredSnippets: ListToPlaySnippets | undefined = yield select(
+        selectFilteredSnippets
+      );
+
+      if (filteredSnippets) yield put(removeFilteredSnippetsByItemIds(itemIds));
+    }
+  );
 }
 
 /**
@@ -284,7 +311,7 @@ export function* syncPlaylistFromYTByIdWatcher() {
 export default function* playlistSagas() {
   yield all([
     deletePlaylistByIdWatcher(),
-    deletePlaylistItemByIdWatcher(),
+    deletePlaylistItemsWatcher(),
     addPlaylistToListToPlayWatcher(),
     removePlaylistFromListToPlayWatcher(),
     removePlaylistsFromListToPlayWatcher(),
