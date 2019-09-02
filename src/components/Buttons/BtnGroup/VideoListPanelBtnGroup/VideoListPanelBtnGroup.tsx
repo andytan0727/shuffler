@@ -1,14 +1,17 @@
 import classNames from "classnames";
 import { ClearChecked } from "components/Checkbox/hooks";
 import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
-  addPlaylistToListToPlayAction,
-  deletePlaylistByIdAction,
-  removePlaylistsFromListToPlayAction,
-} from "store/ytplaylist/playlistActions";
-import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
+  generateCustomSwal,
+  noPlaylistProvidedAlert,
+} from "utils/helper/notifyHelper";
+import {
+  useAddPlaylistToPlaying,
+  useDeletePlaylist,
+  useRemovePlaylistFromPlaying,
+} from "utils/hooks/playlistsHooks";
 
 import {
   Add as AddIcon,
@@ -27,89 +30,29 @@ interface VideoListPanelBtnGroupOwnProps {
 
 type VideoListPanelBtnGroupProps = VideoListPanelBtnGroupOwnProps;
 
-const noPlaylistSelectedAlert = async () => {
-  const customSwal = await generateCustomSwal();
-  await customSwal!.fire({
-    title: "No playlist is selected!💢",
-    text: "Please select at least one playlist!",
-    type: "warning",
-  });
-};
-
 const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
   const { checked: playlistIds, clearChecked, setViewPlaylist } = props;
+  const totalPlaylistsChecked = playlistIds.length;
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
-  const dispatch = useDispatch();
 
-  const handleAddPlaylistToPlaying = useCallback(async () => {
-    if (!playlistIds.length) {
-      await noPlaylistSelectedAlert();
-      return;
-    }
-
-    for (const playlistId of playlistIds) {
-      dispatch(addPlaylistToListToPlayAction(playlistId));
-    }
-
-    // TODO: move notify to saga
-    notify("success", "Successfully added selected playlist(s) to playing 😎");
-
-    clearChecked();
-  }, [clearChecked, dispatch, playlistIds]);
-
-  const handleRemovePlaylistFromPlaying = useCallback(async () => {
-    if (!playlistIds.length) {
-      await noPlaylistSelectedAlert();
-      return;
-    }
-
-    dispatch(removePlaylistsFromListToPlayAction(playlistIds));
-
-    // TODO: move notify to saga
-    notify(
-      "success",
-      `Successfully removed selected playlist(s) from playing 😎`
-    );
-
-    clearChecked();
-  }, [clearChecked, dispatch, playlistIds]);
-
-  const handleDeletePlaylist = useCallback(async () => {
-    const customSwal = await generateCustomSwal();
-
-    if (!playlistIds.length) {
-      await noPlaylistSelectedAlert();
-      return;
-    }
-
-    const result = await customSwal!.fire({
-      title: "Remove playlist",
-      text: "Are you sure?🤔",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it please!🔥",
-      cancelButtonText: "No!!!😱",
-    });
-
-    if (result.value) {
-      playlistIds.forEach((playlistId) => {
-        dispatch(deletePlaylistByIdAction(playlistId));
-      });
-
-      notify("success", "Successfully deleted playlist(s) 😎");
-      clearChecked();
-    }
-  }, [clearChecked, dispatch, playlistIds]);
+  // ==========================================
+  // Handlers
+  // ==========================================
+  const { handleAddPlaylistToPlaying } = useAddPlaylistToPlaying(playlistIds);
+  const { handleRemovePlaylistFromPlaying } = useRemovePlaylistFromPlaying(
+    playlistIds
+  );
+  const { handleDeletePlaylist } = useDeletePlaylist(playlistIds);
 
   const handleViewPlaylist = useCallback(async () => {
     const customSwal = await generateCustomSwal();
 
-    if (!playlistIds.length) {
-      await noPlaylistSelectedAlert();
+    if (!totalPlaylistsChecked) {
+      await noPlaylistProvidedAlert();
       return;
     }
 
-    if (playlistIds.length > 1) {
+    if (totalPlaylistsChecked > 1) {
       await customSwal!.fire({
         title: "You can only view one playlist at once",
         text: "Please select only one playlist!",
@@ -120,7 +63,10 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
     }
 
     setViewPlaylist(true);
-  }, [playlistIds.length, clearChecked, setViewPlaylist]);
+  }, [totalPlaylistsChecked, clearChecked, setViewPlaylist]);
+  // ==========================================
+  // End handlers
+  // ==========================================
 
   return (
     <div

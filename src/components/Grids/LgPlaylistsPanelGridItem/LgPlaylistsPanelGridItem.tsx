@@ -1,4 +1,4 @@
-import { LgPlaylistsPanelGridItemBtn } from "components/Buttons";
+import { LgPlaylistsPanelGridItemBtnGroup } from "components/Buttons";
 import {
   AllPlaylistInPlayingIcon,
   PartialPlaylistInPlayingIcon,
@@ -66,7 +66,7 @@ const LgPlaylistsPanelGridItem = (props: LgPlaylistsPanelGridItemProps) => {
         onMouseLeave={handlePlaylistMouseLeave(playlistId)}
       >
         {(enterPlaylist as PlainObject)[playlistId] && (
-          <LgPlaylistsPanelGridItemBtn playlistId={playlistId} />
+          <LgPlaylistsPanelGridItemBtnGroup playlistId={playlistId} />
         )}
       </li>
       <div className={styles.gridItemTitleDiv}>

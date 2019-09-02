@@ -1,6 +1,6 @@
 import AddPlaylistToPlayingBtn from "./AddPlaylistToPlayingBtn";
 import { default as LgPanelCtrlBtnGroup } from "./BtnGroup/LgPanelCtrlBtnGroup/LgPanelCtrlBtnGroup";
-import LgPlaylistsPanelGridItemBtn from "./BtnGroup/LgPlaylistsPanelGridItemBtnGroup";
+import LgPlaylistsPanelGridItemBtnGroup from "./BtnGroup/LgPlaylistsPanelGridItemBtnGroup";
 import PlayerBasicCtrlBtnGroup from "./BtnGroup/PlayerBasicCtrlBtnGroup";
 import PlayingPanelBtnGroup from "./BtnGroup/PlayingPanelBtnGroup";
 import SwitchPanelRadioBtn from "./BtnGroup/SwitchPanelRadioBtnGroup";
@@ -15,7 +15,7 @@ export {
   AddPlaylistToPlayingBtn,
   DeleteItemButton,
   LgPanelCtrlBtnGroup,
-  LgPlaylistsPanelGridItemBtn,
+  LgPlaylistsPanelGridItemBtnGroup,
   PlayerBasicCtrlBtnGroup,
   PlayingPanelBtnGroup,
   RemovePlaylistFromPlayingBtn,

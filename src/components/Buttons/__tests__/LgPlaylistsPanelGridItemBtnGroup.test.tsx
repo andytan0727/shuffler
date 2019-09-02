@@ -17,9 +17,12 @@ import { ListToPlayEntities } from "store/ytplaylist/types";
 import { DeepPartial } from "utility-types";
 import { generateMockStore, renderWithRedux } from "utils/helper/mockStore";
 
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, wait, waitForElement } from "@testing-library/react";
 
 import LgPlaylistsPanelGridItemBtn from "../BtnGroup/LgPlaylistsPanelGridItemBtnGroup";
+
+// mocking scrollTo to prevent jsdom not implemented err0r
+window.scrollTo = jest.fn();
 
 const playlistId = "playlistId-1";
 const mockHistory: string[] = [];
@@ -230,10 +233,13 @@ describe("testing LgPlaylistsPanelGridItemBtn clicks", () => {
     unsubscribe();
   });
 
-  test("should handle delete button clicks correctly", () => {
-    const { getByTitle, unmount } = renderLgPlaylistsPanelGridItemBtn(
-      storeWithPlaylists
-    );
+  test("should handle delete button clicks correctly", async () => {
+    const {
+      container,
+      getByTitle,
+      getByText,
+      unmount,
+    } = renderLgPlaylistsPanelGridItemBtn(storeWithPlaylists);
 
     const deleteButtonElem = getByTitle(/delete/i);
     expect(deleteButtonElem).toBeInTheDocument();
@@ -245,6 +251,18 @@ describe("testing LgPlaylistsPanelGridItemBtn clicks", () => {
     // fire click event to delete playlist
     // the component is unmounted after playlist is deleted
     fireEvent.click(deleteButtonElem);
+
+    // get sweetalert2 delete button
+    const confirmButtonElem = await waitForElement(
+      () => getByText("Yes, delete it please!🔥"),
+      {
+        container,
+      }
+    );
+    expect(confirmButtonElem).toBeInTheDocument();
+    expect(confirmButtonElem).toHaveClass("swal2-confirm");
+    // clicks and wait the promise to resolve
+    await wait(() => fireEvent.click(confirmButtonElem));
     unmount();
 
     // deleted one playlist

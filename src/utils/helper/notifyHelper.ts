@@ -94,3 +94,15 @@ export const notify = async (
     if (swalContainerLeftOver) swalContainerLeftOver.remove();
   }
 };
+
+/**
+ * Custom alert for playlists addition/removal actions
+ */
+export const noPlaylistProvidedAlert = async () => {
+  const customSwal = await generateCustomSwal();
+  await customSwal!.fire({
+    title: "No playlist provided!💢",
+    text: "Please select at least one playlist!",
+    type: "warning",
+  });
+};

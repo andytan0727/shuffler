@@ -2,17 +2,16 @@ import {
   AddPlaylistToPlayingBtn,
   RemovePlaylistFromPlayingBtn,
 } from "components/Buttons";
-import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
-import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
-import {
-  deletePlaylistByIdAction,
-  shufflePlaylistItems,
-} from "store/ytplaylist/playlistActions";
 import { selectPlaylistById } from "store/ytplaylist/playlistSelectors";
-import { notify } from "utils/helper/notifyHelper";
+import {
+  useDeletePlaylist,
+  usePlayPlaylist,
+  useShufflePlaylist,
+} from "utils/hooks/playlistsHooks";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import {
@@ -35,32 +34,25 @@ export const LgPlaylistsPanelGridItemBtn = (
   props: LgPlaylistsPanelGridItemBtnProps & RouteComponentProps
 ) => {
   const { playlistId, history } = props;
-  const dispatch = useDispatch();
   const playlist = useSelector((state: AppState) =>
     selectPlaylistById(state, playlistId)
   );
-
-  const playlistInPlaying = !!(playlist && playlist.allInPlaying);
   const itemIds = playlist && playlist.items;
+  const playlistInPlaying = !!(playlist && playlist.allInPlaying);
 
-  const handlePlayPlaylist = useCallback(() => {
-    // play whole playlist
-    dispatch(
-      updateListToPlayAction("playlistItems", playlistId, itemIds as string[])
-    );
-
-    history.push("/player/ytplayer");
-  }, [dispatch, history, itemIds, playlistId]);
-
-  const handleShufflePlaylist = useCallback(() => {
-    dispatch(shufflePlaylistItems(playlistId));
-
-    notify("info", `Shuffling ...`);
-  }, [dispatch, playlistId]);
-
-  const handleDeletePlaylist = useCallback(() => {
-    dispatch(deletePlaylistByIdAction(playlistId));
-  }, [dispatch, playlistId]);
+  // ===============================================
+  // Handlers
+  // ===============================================
+  const { handleShufflePlaylist } = useShufflePlaylist(playlistId);
+  const { handlePlayPlaylist } = usePlayPlaylist(
+    playlistId,
+    itemIds as string[],
+    history
+  );
+  const { handleDeletePlaylist } = useDeletePlaylist([playlistId]);
+  // ===============================================
+  // End handlers
+  // ===============================================
 
   return (
     <div>

@@ -1,7 +1,5 @@
-import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { addPlaylistToListToPlayAction } from "store/ytplaylist/playlistActions";
-import { notify } from "utils/helper/notifyHelper";
+import React from "react";
+import { useAddPlaylistToPlaying } from "utils/hooks/playlistsHooks";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
@@ -13,17 +11,12 @@ interface AddPlaylistToPlayingBtnProps {
 
 const AddPlaylistToPlayingBtn = (props: AddPlaylistToPlayingBtnProps) => {
   const { playlistId, iconSize } = props;
-  const dispatch = useDispatch();
 
-  const handleAddPlaylistAsPlaying = useCallback(() => {
-    dispatch(addPlaylistToListToPlayAction(playlistId));
-
-    notify("success", "Added playlist to Now Playing");
-  }, [dispatch, playlistId]);
+  const { handleAddPlaylistToPlaying } = useAddPlaylistToPlaying([playlistId]);
 
   return (
     <Tooltip title="Add Playlist to Now Playing">
-      <IconButton onClick={handleAddPlaylistAsPlaying}>
+      <IconButton onClick={handleAddPlaylistToPlaying}>
         <AddIcon fontSize={iconSize} />
       </IconButton>
     </Tooltip>

@@ -1,7 +1,5 @@
-import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { removePlaylistFromListToPlayAction } from "store/ytplaylist/playlistActions";
-import { notify } from "utils/helper/notifyHelper";
+import React from "react";
+import { useRemovePlaylistFromPlaying } from "utils/hooks/playlistsHooks";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import { Remove as RemoveIcon } from "@material-ui/icons";
@@ -15,17 +13,14 @@ const RemovePlaylistFromPlayingBtn = (
   props: RemovePlaylistFromPlayingBtnProps
 ) => {
   const { playlistId, iconSize } = props;
-  const dispatch = useDispatch();
 
-  const handleRemovePlaylistAsPlaying = useCallback(() => {
-    dispatch(removePlaylistFromListToPlayAction(playlistId));
-
-    notify("success", "Removed playlist from Now Playing");
-  }, [dispatch, playlistId]);
+  const { handleRemovePlaylistFromPlaying } = useRemovePlaylistFromPlaying([
+    playlistId,
+  ]);
 
   return (
     <Tooltip title="Remove Playlist from Now Playing">
-      <IconButton onClick={handleRemovePlaylistAsPlaying}>
+      <IconButton onClick={handleRemovePlaylistFromPlaying}>
         <RemoveIcon fontSize={iconSize} />
       </IconButton>
     </Tooltip>

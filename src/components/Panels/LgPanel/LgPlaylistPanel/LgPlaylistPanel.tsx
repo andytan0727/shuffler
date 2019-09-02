@@ -12,24 +12,23 @@ import {
   withListItemSecondaryAction,
 } from "components/Lists/LgPanelVirtualList";
 import SyncPlaylistLoader from "components/Loadings/SyncPlaylistLoader";
-import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
-import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
-import {
-  deletePlaylistItemsByIdAction,
-  shufflePlaylistItems,
-  syncPlaylistFromYTByIdAction,
-  updatePlaylistNameByIdAction,
-} from "store/ytplaylist/playlistActions";
 import {
   selectPlaylistItemIdsByPlaylistId,
   selectPlaylistNameById,
   selectPlaylistUpdating,
 } from "store/ytplaylist/playlistSelectors";
-import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
+import {
+  useDeletePlaylistItems,
+  usePlayPlaylist,
+  useRenamePlaylist,
+  useShufflePlaylist,
+  useSyncPlaylist,
+} from "utils/hooks/playlistsHooks";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -45,7 +44,6 @@ const LgPanelVirtualListPlaylistItem = withListItemSecondaryAction(
 
 const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
   const playlistId: string = match.params.id;
-  const dispatch = useDispatch();
   const playlistName = useSelector((state: AppState) =>
     selectPlaylistNameById(state, playlistId)
   );
@@ -63,49 +61,29 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
     filteredSnippets,
   });
 
-  const handlePlayPlaylist = useCallback(() => {
-    dispatch(
-      updateListToPlayAction(
-        "playlistItems",
-        playlistId,
-        checked.length === 0 ? playlistItemIds : checked
-      )
-    );
+  // ===============================================
+  // handlers
+  // ===============================================
+  const { handlePlayPlaylist } = usePlayPlaylist(
+    playlistId,
+    checked.length === 0 ? playlistItemIds : checked,
+    history
+  );
+  const { handleShufflePlaylist } = useShufflePlaylist(playlistId);
+  const { handleRenamePlaylist } = useRenamePlaylist(playlistId);
+  const { handleDeletePlaylistItems } = useDeletePlaylistItems(
+    playlistId,
+    checked
+  );
+  const { handleSyncPlaylist } = useSyncPlaylist(playlistId);
+  // ===============================================
+  // End handlers
+  // ===============================================
 
-    history.push("/player/ytplayer");
-  }, [checked, dispatch, history, playlistId, playlistItemIds]);
-
-  const handleShufflePlaylist = useCallback(() => {
-    dispatch(shufflePlaylistItems(playlistId));
-  }, [playlistId, dispatch]);
-
-  const handleDeletePlaylistItems = useCallback(() => {
-    dispatch(deletePlaylistItemsByIdAction(playlistId, checked));
-
+  // clear checked mainly on playlistItems deletion
+  useEffect(() => {
     clearChecked();
-  }, [checked, clearChecked, dispatch, playlistId]);
-
-  const handleRenamePlaylist = useCallback(async () => {
-    const customSwal = await generateCustomSwal();
-    const result = await customSwal!.fire({
-      title: "Enter new playlist name",
-      input: "text",
-      showCancelButton: true,
-      confirmButtonText: "Ok, Done! 🔥",
-      cancelButtonText: "Cancel",
-    });
-    const newName = result.value;
-
-    if (newName) {
-      dispatch(updatePlaylistNameByIdAction(playlistId, newName));
-      notify("success", "Successfully renamed playlist 😎");
-    }
-  }, [dispatch, playlistId]);
-
-  // sync playlist by fetching latest data from upstream (YouTube)
-  const handleSyncPlaylist = useCallback(async () => {
-    dispatch(syncPlaylistFromYTByIdAction(playlistId));
-  }, [dispatch, playlistId]);
+  }, [clearChecked, playlistItemIds]);
 
   return (
     <React.Fragment>
