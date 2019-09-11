@@ -35,7 +35,7 @@ const PlayerList = (props: PlayerListProps) => {
   });
   const curSongIdx = useSelector(selectCurSongIdx);
   const listRef = useRef<FixedSizeList>(null);
-  const matchLargeDisplay = useMediaQuery("(max-width: 950px)");
+  const matchLargeDisplay = useMediaQuery("(min-width: 950px)");
   const itemCount = items.length;
 
   useEffect(() => {
@@ -53,12 +53,12 @@ const PlayerList = (props: PlayerListProps) => {
           <FixedSizeList
             ref={listRef}
             className={classes.playerListContainer}
-            height={matchLargeDisplay ? height - 62 : height - 135}
+            height={matchLargeDisplay ? height - 128 : height - 62}
             width={width}
             itemKey={_getItemKey}
             itemData={items}
             itemCount={itemCount}
-            itemSize={90}
+            itemSize={matchLargeDisplay ? height * 0.117 : 90}
           >
             {PlayerListItem}
           </FixedSizeList>
