@@ -4,7 +4,7 @@ import classNames from "classnames";
 import throttle from "lodash/throttle";
 import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import { useKeyDown } from "utils/helper/keyboardShortcutHelper";
 import { retryLazy } from "utils/helper/lazyImportHelper";
@@ -16,7 +16,6 @@ import { setPreferDarkTheme } from "./store/userPreferences/action";
 
 // lazy loading pages
 const PgNavbar = lazy(() => retryLazy(() => import("./pages/PgNavbar")));
-const MainPage = lazy(() => retryLazy(() => import("./pages/MainPage")));
 const PlaylistInputPage = lazy(() =>
   retryLazy(() => import("./pages/PlaylistInputPage"))
 );
@@ -106,11 +105,9 @@ const App = () => {
             </div>
             <div className="App-main">
               <Switch>
-                <Route path="/" exact component={MainPage} />
-                <Route path="/playlistInput" component={PlaylistInputPage} />
                 <Route path="/player" component={PlayerPage} />
                 <Route path="/about" component={AboutPage} />
-                <Redirect to="/" />
+                <Route path="/" component={PlaylistInputPage} />
               </Switch>
             </div>
           </Suspense>

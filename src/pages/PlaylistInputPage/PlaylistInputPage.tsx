@@ -4,10 +4,6 @@ import { retryLazy } from "utils/helper/lazyImportHelper";
 
 import styles from "./styles.module.scss";
 
-interface PlaylistInputPageProps {
-  match: MatchRoute;
-}
-
 const InputTabs = lazy(() =>
   retryLazy(() => import("components/Tabs/InputTabs"))
 );
@@ -20,16 +16,14 @@ const LgPanel = lazy(() =>
  * A route switcher to playlist tabs or panels
  *
  */
-const PlaylistInputPage = ({ match }: PlaylistInputPageProps) => {
-  const playlistInputPath = match.path;
-
+const PlaylistInputPage = () => {
   return (
     <div className={styles.playlistInputDiv}>
       <Suspense fallback={<div>loading...</div>}>
         <Switch>
-          <Route path={`${playlistInputPath}/tabs`} component={InputTabs} />
-          <Route path={`${playlistInputPath}/panel`} component={LgPanel} />
-          <Redirect to={`${playlistInputPath}/panel`} />
+          <Route path="/tabs" component={InputTabs} />
+          <Route path="/panel" component={LgPanel} />
+          <Redirect to="/panel" />
         </Switch>
       </Suspense>
     </div>

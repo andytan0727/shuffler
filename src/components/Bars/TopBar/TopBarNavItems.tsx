@@ -5,7 +5,7 @@ import { ArrowDropDown as ArrowDropDownIcon } from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 
-const defaultPlaylistInputPgUrl = "/playlistInput/panel";
+const defaultPlaylistInputPgUrl = "/panel";
 const defaultPlayerPgUrl = "/player/ytplayer";
 
 const PlaylistInputDropdown = () => {
@@ -19,7 +19,7 @@ const PlaylistInputDropdown = () => {
       </NavLink>
 
       <div className={styles.dropdownItem}>
-        <NavLink to="/playlistInput/tabs">Tabs</NavLink>
+        <NavLink to="/tabs">Tabs</NavLink>
         <NavLink to={defaultPlaylistInputPgUrl}>Panel</NavLink>
       </div>
     </div>

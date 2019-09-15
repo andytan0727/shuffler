@@ -65,7 +65,7 @@ export function* setPreferDarkThemeWatcher() {
     _setCSSWithPreferredMode("--theme-color");
 
     // ===============================
-    // /playlistInput route
+    // PlaylistInput
     // ===============================
     // Set panel bg color
     _setCSSWithPreferredMode("--panel-bg-color");
