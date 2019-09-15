@@ -5,6 +5,42 @@ import { ArrowDropDown as ArrowDropDownIcon } from "@material-ui/icons";
 
 import styles from "./styles.module.scss";
 
+const defaultPlaylistInputPgUrl = "/playlistInput/panel";
+const defaultPlayerPgUrl = "/player/ytplayer";
+
+const PlaylistInputDropdown = () => {
+  return (
+    <div className={styles.dropdown}>
+      <NavLink
+        className={styles.dropdownItemParent}
+        to={defaultPlaylistInputPgUrl}
+      >
+        Playlist <ArrowDropDownIcon />
+      </NavLink>
+
+      <div className={styles.dropdownItem}>
+        <NavLink to="/playlistInput/tabs">Tabs</NavLink>
+        <NavLink to={defaultPlaylistInputPgUrl}>Panel</NavLink>
+      </div>
+    </div>
+  );
+};
+
+const PlayerDropdown = () => {
+  return (
+    <div className={styles.dropdown}>
+      <NavLink className={styles.dropdownItemParent} to={defaultPlayerPgUrl}>
+        Player <ArrowDropDownIcon />
+      </NavLink>
+
+      <div className={styles.dropdownItem}>
+        <NavLink to={defaultPlayerPgUrl}>YT Player</NavLink>
+        <NavLink to="/player/miniplayer">Mini Player</NavLink>
+      </div>
+    </div>
+  );
+};
+
 const TopBarNavItems: React.FunctionComponent = () => {
   return (
     <ul className={styles.navItems}>
@@ -12,22 +48,10 @@ const TopBarNavItems: React.FunctionComponent = () => {
         <NavLink to="/what-is-new">What&apos;s New</NavLink>
       </li>
       <li>
-        <div className={styles.dropdown}>
-          Playlist <ArrowDropDownIcon />
-          <div className={styles.dropdownItem}>
-            <NavLink to="/playlistInput/tabs">Tabs</NavLink>
-            <NavLink to="/playlistInput/panel">Panel</NavLink>
-          </div>
-        </div>
+        <PlaylistInputDropdown />
       </li>
       <li>
-        <div className={styles.dropdown}>
-          Player <ArrowDropDownIcon />
-          <div className={styles.dropdownItem}>
-            <NavLink to="/player/ytplayer">YT Player</NavLink>
-            <NavLink to="/player/miniplayer">Mini Player</NavLink>
-          </div>
-        </div>
+        <PlayerDropdown />
       </li>
       <li>
         <NavLink to="/about">About</NavLink>

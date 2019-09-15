@@ -76,12 +76,26 @@
   align-items: center;
   cursor: pointer;
 
+  a {
+    color: var(--text-color);
+    text-decoration: none;
+
+    &:hover {
+      color: $primaryLight;
+    }
+  }
+
   &:hover {
     .dropdownItem {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
     }
+  }
+
+  .dropdownItemParent {
+    display: flex;
+    align-items: center;
   }
 
   .dropdownItem {
@@ -96,14 +110,7 @@
     box-shadow: $blackBoxShadow;
 
     a {
-      color: var(--text-color);
       padding: 10px 20px;
-      text-decoration: none;
-
-      &:hover {
-        background-color: var(--bg-color);
-        color: $primaryLight;
-      }
     }
   }
 }

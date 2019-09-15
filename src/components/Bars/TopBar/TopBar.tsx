@@ -40,30 +40,32 @@ const TopBar: React.FunctionComponent = () => {
     <nav className={styles.nav}>
       <ShufflerTextLogoAnchor />
 
-      {matchSmallDisplay && (
-        <IconButton onClick={handleToggleNavOverlay}>
-          <MenuIcon fontSize="default" />
-        </IconButton>
-      )}
-
       {/* for large display */}
-      {!matchSmallDisplay && <TopBarNavItems />}
+      {!matchSmallDisplay ? (
+        <TopBarNavItems />
+      ) : (
+        <React.Fragment>
+          <IconButton onClick={handleToggleNavOverlay}>
+            <MenuIcon fontSize="default" />
+          </IconButton>
 
-      {/* for smaller screen than large display */}
-      {transitions.map(
-        ({ item, key, props }) =>
-          item && (
-            <animated.div
-              className={styles.navOverlay}
-              key={key}
-              style={props}
-              onClick={handleToggleNavOverlay}
-            >
-              <SmallDisplayNavItems
-                handleToggleNavOverlay={handleToggleNavOverlay}
-              />
-            </animated.div>
-          )
+          {/* overlay for screen smaller than large display */}
+          {transitions.map(
+            ({ item, key, props }) =>
+              item && (
+                <animated.div
+                  className={styles.navOverlay}
+                  key={key}
+                  style={props}
+                  onClick={handleToggleNavOverlay}
+                >
+                  <SmallDisplayNavItems
+                    handleToggleNavOverlay={handleToggleNavOverlay}
+                  />
+                </animated.div>
+              )
+          )}
+        </React.Fragment>
       )}
 
       <div
