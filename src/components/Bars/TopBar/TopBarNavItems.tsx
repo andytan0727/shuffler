@@ -45,9 +45,6 @@ const TopBarNavItems: React.FunctionComponent = () => {
   return (
     <ul className={styles.navItems}>
       <li>
-        <NavLink to="/what-is-new">What&apos;s New</NavLink>
-      </li>
-      <li>
         <PlaylistInputDropdown />
       </li>
       <li>

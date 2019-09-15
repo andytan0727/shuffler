@@ -1,3 +1,6 @@
+// NOTE: appGeneral is kept for versioning reference, and it is not involved
+//       in any operation or function of this app (Shuffler)
+
 import { AnyAction } from "redux";
 
 const initialStates = {

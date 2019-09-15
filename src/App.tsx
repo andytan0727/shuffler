@@ -21,9 +21,6 @@ const PlaylistInputPage = lazy(() =>
   retryLazy(() => import("./pages/PlaylistInputPage"))
 );
 const PlayerPage = lazy(() => retryLazy(() => import("./pages/PlayerPage")));
-const WhatIsNewPage = lazy(() =>
-  retryLazy(() => import("./pages/WhatIsNewPage"))
-);
 const AboutPage = lazy(() => retryLazy(() => import("./pages/AboutPage")));
 
 // use a variable to assign fixed value that won't change after every re-render
@@ -110,7 +107,6 @@ const App = () => {
             <div className="App-main">
               <Switch>
                 <Route path="/" exact component={MainPage} />
-                <Route path="/what-is-new" component={WhatIsNewPage} />
                 <Route path="/playlistInput" component={PlaylistInputPage} />
                 <Route path="/player" component={PlayerPage} />
                 <Route path="/about" component={AboutPage} />
