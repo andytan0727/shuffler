@@ -9,6 +9,7 @@ import VideosPanelBtnGroup from "./BtnGroup/VideosPanelBtnGroup";
 import { DeleteItemButton } from "./DeleteButtons";
 import RemovePlaylistFromPlayingBtn from "./RemovePlaylistFromPlayingBtn";
 import RenamePlaylistButton from "./RenamePlaylistButton";
+import ShowLgPanelDialogBtn from "./ShowLgPanelDialogBtn";
 import SyncPlaylistButton from "./SyncPlaylistButton";
 
 export {
@@ -21,6 +22,7 @@ export {
   RemovePlaylistFromPlayingBtn,
   RenamePlaylistButton,
   SwitchPanelRadioBtn,
+  ShowLgPanelDialogBtn,
   SyncPlaylistButton,
   VideoListPanelBtnGroup,
   VideosPanelBtnGroup,

@@ -1,6 +1,8 @@
+import { ShowLgPanelDialogBtn } from "components/Buttons";
+import { LgPanelDialog } from "components/Dialog";
 import { PlayerList } from "components/Lists";
 import VideoPlayer from "components/Players/Video/VideoPlayer";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx } from "store/ytplayer/selector";
@@ -15,6 +17,8 @@ const YTPlayerPage = () => {
   const dispatch = useDispatch();
   const currentSnippet = listToPlaySnippets[curSongIdx];
 
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     // reset curSongIdx to prevent bugs when routing pages
     dispatch(setCurSongIdx(0));
@@ -26,6 +30,14 @@ const YTPlayerPage = () => {
     };
   }, [dispatch]);
 
+  const handleOpenDialog = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const handleCloseDialog = useCallback(() => {
+    setOpen(false);
+  }, []);
+
   return listToPlaySnippets.length !== 0 ? (
     <div className={styles.ytPlayerDiv}>
       <div className={styles.player}>
@@ -35,14 +47,27 @@ const YTPlayerPage = () => {
         <VideoPlayer />
       </div>
       <div className={styles.playlist}>
-        <h3 className={styles.playerListTitle}>
-          <span role="img" aria-label="currently-playing">
-            📻
-          </span>
-          &nbsp;Currently playing:{" "}
-          {`${curSongIdx + 1}/${listToPlaySnippets.length}`}
-        </h3>
+        <div className={styles.playlistHeader}>
+          <h3 className={styles.playerListTitle}>
+            <span role="img" aria-label="currently-playing">
+              📻
+            </span>
+            &nbsp;Currently playing:{" "}
+            {`${curSongIdx + 1}/${listToPlaySnippets.length}`}
+          </h3>
+
+          <div
+            style={{
+              marginRight: "auto",
+            }}
+          ></div>
+          <ShowLgPanelDialogBtn handleOpenDialog={handleOpenDialog} />
+        </div>
+
         <PlayerList items={listToPlaySnippets} />
+
+        {/* a temporary dialog with portable playlistInput LgPanel */}
+        <LgPanelDialog open={open} handleCloseDialog={handleCloseDialog} />
       </div>
     </div>
   ) : (

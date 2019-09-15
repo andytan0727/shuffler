@@ -69,11 +69,16 @@ $ytListBg: var(--yt-player-list-bg);
     grid-area: playlist;
     background-color: $ytListBg;
 
-    .playerListTitle {
-      margin: 0;
-      padding: 1rem 0;
-      padding-left: 1rem;
-      font-size: 1.2rem;
+    .playlistHeader {
+      display: flex;
+      align-items: center;
+
+      .playerListTitle {
+        margin: 0;
+        padding: 1rem 0;
+        padding-left: 1rem;
+        font-size: 1.2rem;
+      }
     }
   }
 }

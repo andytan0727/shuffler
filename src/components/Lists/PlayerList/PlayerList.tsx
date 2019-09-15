@@ -53,12 +53,12 @@ const PlayerList = (props: PlayerListProps) => {
           <FixedSizeList
             ref={listRef}
             className={classes.playerListContainer}
-            height={matchLargeDisplay ? height - 128 : height - 62}
+            height={matchLargeDisplay ? height - 128.6 : height - 62}
             width={width}
             itemKey={_getItemKey}
             itemData={items}
             itemCount={itemCount}
-            itemSize={matchLargeDisplay ? height * 0.117 : 90}
+            itemSize={matchLargeDisplay ? height * 0.116 : 90}
           >
             {PlayerListItem}
           </FixedSizeList>
