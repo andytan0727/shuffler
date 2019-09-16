@@ -22,6 +22,7 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/camelcase": ["error", { properties: "never" }],
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
 
     // hooks
     "react-hooks/rules-of-hooks": "error",

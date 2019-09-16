@@ -22,7 +22,11 @@ export const playlistSchema = new schema.Array(playlistItemsSchema);
 
 export const normalizePlaylists = (
   originalPlaylists: DeepReadonly<FetchedPlaylist[]>
-) => normalize<PlaylistsEntities, string[]>(originalPlaylists, playlistSchema);
+) =>
+  normalize<typeof originalPlaylists, PlaylistsEntities, string[]>(
+    originalPlaylists,
+    playlistSchema
+  );
 
 export const denormalizePlaylists = (
   normalizedPlaylists: NormalizedSchema<PlaylistsEntities, string[]>

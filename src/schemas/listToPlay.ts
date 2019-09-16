@@ -52,10 +52,11 @@ export const listToPlayItemSchema = new schema.Array(
 export const normalizeListToPlay = (
   originalListToPlay: DeepReadonly<(PlaylistItem | VideoItem)[]>
 ) =>
-  normalize<ListToPlayEntities, ListToPlayResultItem[]>(
-    originalListToPlay,
-    listToPlayItemSchema
-  );
+  normalize<
+    typeof originalListToPlay,
+    ListToPlayEntities,
+    ListToPlayResultItem[]
+  >(originalListToPlay, listToPlayItemSchema);
 
 export const denormalizeListToPlay = (
   normalizedListToPlay: NormalizedSchema<

@@ -34,28 +34,14 @@ describe("ytplayer reducer", () => {
   });
 
   test("should handle SET_CURRENT_SONG_IDX", () => {
-    expect(
-      ytplayerReducer(
-        initialState,
-
-        // @ts-ignore
-        setCurSongIdx(1)
-      )
-    ).toEqual({
+    expect(ytplayerReducer(initialState, setCurSongIdx(1))).toEqual({
       ...initialState,
       curSongIdx: 1,
     });
   });
 
   test("should handle SET_VIDEO_PLAYING", () => {
-    expect(
-      ytplayerReducer(
-        initialState,
-
-        // @ts-ignore
-        setVideoPlaying(true)
-      )
-    ).toEqual({
+    expect(ytplayerReducer(initialState, setVideoPlaying(true))).toEqual({
       ...initialState,
       playing: true,
     });

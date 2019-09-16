@@ -35,6 +35,7 @@ import {
   ListToPlayPlaylistItemsEntity,
   ListToPlayResultItem,
   ListToPlaySnippets,
+  PlaylistItem,
   PlaylistsEntities,
 } from "./types";
 
@@ -280,7 +281,7 @@ export function* syncPlaylistFromYTByIdWatcher() {
       yield delay(950);
 
       try {
-        const playlistItems = yield call(
+        const playlistItems: PlaylistItem[] = yield call(
           recursivelyFetchPlaylistData,
           baseUrl,
           {
