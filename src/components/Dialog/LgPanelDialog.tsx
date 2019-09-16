@@ -1,18 +1,17 @@
+import { CloseLgPanelDialogBtn } from "components/Buttons";
 import LgPanel from "components/Panels/LgPanel";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useCallback } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import {
   AppBar,
   Dialog,
-  IconButton,
   makeStyles,
   Slide,
   Toolbar,
   Typography,
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
-import CloseIcon from "@material-ui/icons/Close";
 
 interface LgPanelDialogProps extends RouteComponentProps {
   open: boolean;
@@ -26,11 +25,11 @@ const useStyles = makeStyles({
   paper: {
     backgroundColor: "rgba(var(--bg-color-rgb), 0.9)",
   },
-  dialogCloseBtn: {
-    marginRight: "1rem",
-  },
 });
 
+/**
+ * Custom component to change default fade transition of dialog
+ */
 const Transition = forwardRef(function Transition(props: TransitionProps, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
@@ -46,8 +45,28 @@ Transition.displayName = "Transition";
 const LgPanelDialog: React.FunctionComponent<LgPanelDialogProps> = (
   props: LgPanelDialogProps
 ) => {
-  const { open, handleCloseDialog, match } = props;
+  const {
+    open,
+    handleCloseDialog,
+    history,
+
+    // react-router match provide to LgPanel for routing
+    match,
+  } = props;
   const classes = useStyles();
+
+  /**
+   *  Reset url caused by routing in dialog to normal url
+   *
+   *  e.g. when the dialog is opened, it will show
+   *       /player/ytplayer/panel/playing, and so on when
+   *       user is navigating panel in dialog. This function
+   *       is to reset the url back to /player/ytplayer
+   *       when the dialog is exited
+   */
+  const handleResetUrl = useCallback(() => {
+    history.push("/player/ytplayer");
+  }, [history]);
 
   return (
     <Dialog
@@ -58,18 +77,11 @@ const LgPanelDialog: React.FunctionComponent<LgPanelDialogProps> = (
       open={open}
       onClose={handleCloseDialog}
       TransitionComponent={Transition}
+      onExited={handleResetUrl}
     >
       <AppBar className={classes.appBar} color="inherit" elevation={5}>
         <Toolbar>
-          <IconButton
-            className={classes.dialogCloseBtn}
-            edge="start"
-            color="inherit"
-            onClick={handleCloseDialog}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
+          <CloseLgPanelDialogBtn handleCloseDialog={handleCloseDialog} />
 
           <Typography variant="h6">Manage Playlists</Typography>
         </Toolbar>
