@@ -1,5 +1,8 @@
 import classNames from "classnames";
-import { useMediaControl } from "components/Players/hooks/useMediaControl";
+import {
+  handleBlur,
+  useMediaControlWithShortcuts,
+} from "components/Players/hooks/useMediaControlWithShortcuts";
 import React from "react";
 import { useSelector } from "react-redux";
 import YouTube from "react-youtube";
@@ -39,8 +42,7 @@ const PlayerBasicCtrlBtnGroup = (props: PlayerBasicCtrlBtnGroupProps) => {
     handleNext,
     handleShuffleListToPlay,
     handleToggleRepeat,
-    handleBlur,
-  } = useMediaControl(ytPlayerRef);
+  } = useMediaControlWithShortcuts(ytPlayerRef);
 
   return (
     <div className={styles.ctrlBtnGroup}>
