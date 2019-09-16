@@ -1,6 +1,3 @@
-// NOTE: appGeneral is kept for versioning reference, and it is not involved
-//       in any operation or function of this app (Shuffler)
-
 import { AnyAction } from "redux";
 
 const initialStates = {
@@ -145,6 +142,15 @@ const initialStates = {
       changes: [
         "New rename playlist feature",
         "New sync playlist with YouTube feature.",
+      ],
+    },
+    {
+      version: "4.0.0-beta",
+      changes: [
+        "Added new LgPanelDialog in player page",
+        "Removed WhatIsNew page and main page",
+        "Main page of shuffler is now playlistInput's LgPanel",
+        "Changed ytplayer ui",
       ],
     },
   ],
