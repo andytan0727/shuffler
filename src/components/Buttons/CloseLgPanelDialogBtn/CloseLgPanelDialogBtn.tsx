@@ -18,9 +18,6 @@ const CloseLgPanelDialogBtn: React.FunctionComponent<
       color="inherit"
       onClick={handleCloseDialog}
       aria-label="close dialog"
-      style={{
-        marginRight: "1rem",
-      }}
     >
       <CloseIcon />
     </IconButton>

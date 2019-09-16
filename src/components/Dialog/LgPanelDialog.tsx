@@ -21,6 +21,11 @@ interface LgPanelDialogProps extends RouteComponentProps {
 const useStyles = makeStyles({
   appBar: {
     position: "relative",
+
+    "& .MuiToolbar-root": {
+      display: "flex",
+      justifyContent: "space-between",
+    },
   },
   paper: {
     backgroundColor: "rgba(var(--bg-color-rgb), 0.9)",
@@ -81,9 +86,9 @@ const LgPanelDialog: React.FunctionComponent<LgPanelDialogProps> = (
     >
       <AppBar className={classes.appBar} color="inherit" elevation={5}>
         <Toolbar>
-          <CloseLgPanelDialogBtn handleCloseDialog={handleCloseDialog} />
-
           <Typography variant="h6">Manage Playlists</Typography>
+
+          <CloseLgPanelDialogBtn handleCloseDialog={handleCloseDialog} />
         </Toolbar>
       </AppBar>
       <LgPanel match={match} />
