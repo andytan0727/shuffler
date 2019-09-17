@@ -2,8 +2,10 @@ import get from "lodash/get";
 import createCachedSelector from "re-reselect";
 import { AppState } from "store";
 
+import { selectListToPlayPlaylistItems } from "./listToPlaySelectors";
 import {
   selectAllPlaylistItems,
+  selectPlaylistItemIdsByPlaylistId,
   selectPlaylistsEntities,
   selectPlaylistSnippetByItemId,
 } from "./playlistSelectors";
@@ -76,3 +78,11 @@ export const selectSnippetIdByItemId = createCachedSelector(
       : get(videoItem, "snippet");
   }
 )((_, itemId) => `snippetId-itemId-${itemId}`);
+
+export const selectListToPlayPlaylistItemsCount = createCachedSelector(
+  selectPlaylistItemIdsByPlaylistId,
+  selectListToPlayPlaylistItems,
+  (itemIds, listToPlayPlaylistItems) =>
+    itemIds.filter((itemId) => listToPlayPlaylistItems[itemId] !== undefined)
+      .length
+)((_, playlistId) => `listToPlayPlaylistItems-playlistId-${playlistId}`);

@@ -1,13 +1,9 @@
 import cloneDeep from "lodash/cloneDeep";
-import map from "lodash/map";
-import uniq from "lodash/uniq";
 import {
   all,
   call,
-  fork,
   put,
   select,
-  take,
   takeEvery,
   takeLatest,
 } from "redux-saga/effects";
@@ -19,23 +15,12 @@ import { selectSnippetIdByItemId } from "./generalSelectors";
 import * as listToPlayActions from "./listToPlayActions";
 import {
   selectListToPlayEntities,
-  selectListToPlayPlaylistItems,
   selectListToPlayResult,
   selectListToPlaySnippetIds,
 } from "./listToPlaySelectors";
 import * as playlistActions from "./playlistActions";
-import {
-  selectAllPlaylists,
-  selectPlaylistById,
-  selectPlaylistIdByItemId,
-  selectPlaylistsResult,
-} from "./playlistSelectors";
-import {
-  ListToPlayEntities,
-  ListToPlayPlaylistItemsEntity,
-  ListToPlayResultItem,
-  PlaylistsEntity,
-} from "./types";
+import { selectPlaylistsResult } from "./playlistSelectors";
+import { ListToPlayEntities, ListToPlayResultItem } from "./types";
 
 // ===============================================
 // Helpers
@@ -89,90 +74,6 @@ function* uniquelyAddListToPlayItems(
   yield put(listToPlayActions.addUniqueListToPlay(newEntities, newResult));
 }
 
-/**
- * A helper function to label
- * allInPlaying/partialInPlaying label
- * of certain playlist based on the following simple rules:
- *
- * - All items in listToPlay: allInPlaying [/] partialInPlaying [X]
- * - No item in listToPlay: allInPlaying [X] partialInPlaying [X]
- * - Some items in listToPlay: allInPlaying [X] partialInPlaying[/]
- *
- * @param playlistId Playlist id to check
- *
- */
-export function* labelAllOrPartialInPlaying(playlistId: string) {
-  const playlist: ReturnType<typeof selectPlaylistById> = yield select(
-    (state: AppState) => selectPlaylistById(state, playlistId)
-  );
-  const listToPlayPlaylistItems: ListToPlayPlaylistItemsEntity = yield select(
-    selectListToPlayPlaylistItems
-  );
-
-  const {
-    allInPlaying: prevAllInPlaying,
-    partialInPlaying: prevPartialInPlaying,
-    items: itemIds,
-  } = playlist;
-  const numOfPlaylistItems = itemIds.length;
-  let numOfPlaylistItemsInListToPlay = 0;
-
-  for (const itemId of itemIds) {
-    if (listToPlayPlaylistItems[itemId]) {
-      numOfPlaylistItemsInListToPlay += 1;
-    }
-  }
-
-  // conditions for checking existence of playlist items in listToPlay
-  // const allItemsExist =
-  //   numOfPlaylistItemsInListToPlay === numOfPlaylistItems && !prevAllInPlaying;
-  const allItemsExist = numOfPlaylistItemsInListToPlay === numOfPlaylistItems;
-  const noItemExists = numOfPlaylistItemsInListToPlay === 0;
-  const someItemsExist =
-    numOfPlaylistItemsInListToPlay < numOfPlaylistItems && !noItemExists;
-
-  // if all items exist in listToPlay
-  // add allInPlaying label
-  // and optionally remove partialInPlaying label (if exists)
-  if (allItemsExist) {
-    if (prevPartialInPlaying) {
-      yield put(
-        playlistActions.removePartialInPlayingLabelByIdAction(playlistId)
-      );
-    }
-
-    if (!prevAllInPlaying) {
-      yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
-    }
-  }
-
-  // if no items exist in listToPlay
-  // remove either allInPlaying/partialInPlaying label
-  if (noItemExists) {
-    if (prevAllInPlaying) {
-      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
-    }
-
-    if (prevPartialInPlaying) {
-      yield put(
-        playlistActions.removePartialInPlayingLabelByIdAction(playlistId)
-      );
-    }
-  }
-
-  // if some of the items exist in listToPlay
-  // add partialInPlaying label
-  // and optionally remove allInPlaying label (if exists)
-  if (someItemsExist) {
-    if (prevAllInPlaying) {
-      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
-    }
-
-    if (!prevPartialInPlaying) {
-      yield put(playlistActions.addPartialInPlayingLabelByIdAction(playlistId));
-    }
-  }
-}
 // ===============================================
 // End helpers
 // ===============================================
@@ -279,109 +180,6 @@ export function* filterListToPlayItemsWatcher() {
 // End Watchers
 // ===============================================
 
-/**
- * A special saga that watches for multiple actions
- * that involving add/delete listToPlay items.
- * If the item(s) deleted is/are from playlist,
- * then the allInPlaying/partialInPlaying label
- * will be added or removed based on situation
- *
- */
-export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
-  while (true) {
-    const action: ActionType<
-      | typeof listToPlayActions.addUniqueListToPlay
-      | typeof listToPlayActions.deleteListToPlayItemByIdAction
-      | typeof listToPlayActions.deleteListToPlayItemsAction
-      | typeof listToPlayActions.updateListToPlayAction
-      | typeof playlistActions.syncPlaylistFromYTByIdSuccessAction
-    > = yield take([
-      ActionTypes.ADD_UNIQUE_LIST_TO_PLAY,
-      ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
-      ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
-      ActionTypes.UPDATE_LIST_TO_PLAY,
-      ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
-    ]);
-    let playlistId: string | undefined;
-    let playlistIds: string[] | undefined;
-
-    switch (action.type) {
-      case "ADD_UNIQUE_LIST_TO_PLAY": {
-        const {
-          entities: { playlistItems },
-        } = action.payload;
-
-        playlistIds = uniq(map(playlistItems, (item) => item.foreignKey));
-
-        break;
-      }
-
-      case "DELETE_LIST_TO_PLAY_ITEM_BY_ID": {
-        const { id: itemId } = action.payload;
-        playlistId = yield select((state) =>
-          selectPlaylistIdByItemId(state, itemId)
-        );
-
-        break;
-      }
-
-      // check if deleted itemIds are part of playlist's items
-      // if so then add it to playlistIds array waiting to be removed
-      case "DELETE_LIST_TO_PLAY_ITEMS": {
-        const { ids: itemIds } = action.payload;
-        const playlists: PlaylistsEntity = yield select(selectAllPlaylists);
-        playlistIds = [];
-
-        for (const [playlistId, playlist] of Object.entries(playlists)) {
-          const playlistContainsDeletedItem = playlist.items.some(
-            (playlistItemId) => itemIds.includes(playlistItemId)
-          );
-
-          if (playlistContainsDeletedItem) {
-            playlistIds.push(playlistId);
-          }
-        }
-
-        break;
-      }
-
-      case "UPDATE_LIST_TO_PLAY": {
-        const { schema } = action.payload;
-
-        // do nothing if the items updated are not from playlist
-        if (schema === "videoItems") break;
-
-        // check the availability of items in ALL playlists
-        // because UPDATE_LIST_TO_PLAY will delete
-        // most of the items regardless which playlist
-        // those items belong
-        playlistIds = yield select(selectPlaylistsResult);
-
-        break;
-      }
-
-      case "SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS": {
-        playlistId = action.payload.playlistId;
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-
-    if (playlistId) {
-      yield fork(labelAllOrPartialInPlaying, playlistId);
-    }
-
-    if (playlistIds && playlistIds.length !== 0) {
-      for (const playlistId of playlistIds) {
-        yield fork(labelAllOrPartialInPlaying, playlistId);
-      }
-    }
-  }
-}
-
 export default function* listToPlaySagas() {
   yield all([
     addListToPlayWatcher(),
@@ -389,6 +187,5 @@ export default function* listToPlaySagas() {
     addListToPlayItemsWatcher(),
     clearListToPlayWatcher(),
     filterListToPlayItemsWatcher(),
-    checkIfAllOrPartialPlaylistItemsInPlaying(),
   ]);
 }

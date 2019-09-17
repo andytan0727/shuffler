@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { all } from "redux-saga/effects";
 
+import checkLabelSagas from "./checkLabelSagas";
 import { filteredReducer } from "./filteredReducer";
 import filteredSagas from "./filteredSagas";
 import { listToPlayReducer } from "./listToPlayReducer";
@@ -13,6 +14,7 @@ import videoSagas from "./videoSagas";
 // composing sagas
 export function* ytplaylistSagas() {
   yield all([
+    checkLabelSagas(),
     filteredSagas(),
     listToPlaySagas(),
     playlistSagas(),
