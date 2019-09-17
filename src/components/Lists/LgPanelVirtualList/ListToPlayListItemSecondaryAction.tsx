@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
+import { setCurSongIdx } from "store/ytplayer/action";
 import { removeFilteredSnippetsByItemIds } from "store/ytplaylist/filteredActions";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
@@ -31,6 +32,12 @@ const ListToPlayListItemSecondaryAction = (
   // play this video then shuffle the rest of the list
   const handlePlayAndShuffle = useCallback(() => {
     dispatch(chooseFirstItemAndShuffleListToPlayAction(itemId));
+
+    // reset song idx to 0 as a precautionary step
+    // this is true for LgPanelDialog which does not
+    // unmount the whole player page, therefore the song
+    // idx could not be changed in LgPanelDialog
+    dispatch(setCurSongIdx(0));
 
     history.push("/player/ytplayer");
   }, [dispatch, history, itemId]);
