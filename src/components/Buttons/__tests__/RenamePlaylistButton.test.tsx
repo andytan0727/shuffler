@@ -4,19 +4,19 @@ import { renderWithRedux } from "utils/helper/mockStore";
 
 import { fireEvent } from "@testing-library/react";
 
-import RenamePlaylistButton from "../RenamePlaylistButton";
+import RenamePlaylistBtn from "../RenamePlaylistBtn";
 
-describe("testing RenamePlaylistButton UI renders", () => {
-  const renderRenamePlaylistButton = partial(
+describe("testing RenamePlaylistBtn UI renders", () => {
+  const renderRenamePlaylistBtn = partial(
     renderWithRedux,
-    <RenamePlaylistButton
+    <RenamePlaylistBtn
       // event handler functions are not concerned in this test
       handleRename={jest.fn()}
     />
   );
 
   test("should render rename button correctly", () => {
-    const { getByTitle } = renderRenamePlaylistButton();
+    const { getByTitle } = renderRenamePlaylistBtn();
 
     const renameButtonElem = getByTitle(/rename/i);
     expect(renameButtonElem).toBeInTheDocument();
@@ -28,15 +28,15 @@ describe("testing RenamePlaylistButton UI renders", () => {
   });
 });
 
-describe("testing RenamePlaylistButton clicks", () => {
+describe("testing RenamePlaylistBtn clicks", () => {
   const mockHandleRename = jest.fn();
-  const renderRenamePlaylistButton = partial(
+  const renderRenamePlaylistBtn = partial(
     renderWithRedux,
-    <RenamePlaylistButton handleRename={mockHandleRename} />
+    <RenamePlaylistBtn handleRename={mockHandleRename} />
   );
 
   test("should handle rename button click", () => {
-    const { getByTitle } = renderRenamePlaylistButton();
+    const { getByTitle } = renderRenamePlaylistBtn();
 
     const renameButtonElem = getByTitle(/rename/i);
     expect(renameButtonElem).toBeInTheDocument();

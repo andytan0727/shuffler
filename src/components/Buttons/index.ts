@@ -7,27 +7,27 @@ import SwitchPanelRadioBtn from "./BtnGroup/SwitchPanelRadioBtnGroup";
 import VideoListPanelBtnGroup from "./BtnGroup/VideoListPanelBtnGroup";
 import VideosPanelBtnGroup from "./BtnGroup/VideosPanelBtnGroup";
 import CloseLgPanelDialogBtn from "./CloseLgPanelDialogBtn";
-import { DeleteItemButton } from "./DeleteButtons";
+import DeleteItemBtn from "./DeleteItemBtn";
 import RemovePlaylistFromPlayingBtn from "./RemovePlaylistFromPlayingBtn";
-import RenamePlaylistButton from "./RenamePlaylistButton";
+import RenamePlaylistBtn from "./RenamePlaylistBtn";
 import SearchPlaylistBtn from "./SearchPlaylistBtn";
 import ShowLgPanelDialogBtn from "./ShowLgPanelDialogBtn";
-import SyncPlaylistButton from "./SyncPlaylistButton";
+import SyncPlaylistBtn from "./SyncPlaylistBtn";
 
 export {
   AddPlaylistToPlayingBtn,
   CloseLgPanelDialogBtn,
-  DeleteItemButton,
+  DeleteItemBtn,
   LgPanelCtrlBtnGroup,
   LgPlaylistsPanelGridItemBtnGroup,
   PlayerBasicCtrlBtnGroup,
   PlayingPanelBtnGroup,
   RemovePlaylistFromPlayingBtn,
-  RenamePlaylistButton,
+  RenamePlaylistBtn,
   SwitchPanelRadioBtn,
   ShowLgPanelDialogBtn,
   SearchPlaylistBtn,
-  SyncPlaylistButton,
+  SyncPlaylistBtn,
   VideoListPanelBtnGroup,
   VideosPanelBtnGroup,
 };

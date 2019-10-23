@@ -4,16 +4,16 @@ import { renderWithRedux } from "utils/helper/mockStore";
 
 import { fireEvent } from "@testing-library/react";
 
-import SyncPlaylistButton from "../SyncPlaylistButton";
+import SyncPlaylistBtn from "../SyncPlaylistBtn";
 
-describe("testing SyncPlaylistButton UI renders", () => {
-  const renderSyncPlaylistButton = partial(
+describe("testing SyncPlaylistBtn UI renders", () => {
+  const renderSyncPlaylistBtn = partial(
     renderWithRedux,
-    <SyncPlaylistButton handleSyncPlaylist={jest.fn()} />
+    <SyncPlaylistBtn handleSyncPlaylist={jest.fn()} />
   );
 
-  test("should render SyncPlaylistButton correctly", () => {
-    const { getByTitle } = renderSyncPlaylistButton();
+  test("should render SyncPlaylistBtn correctly", () => {
+    const { getByTitle } = renderSyncPlaylistBtn();
 
     const syncButtonElem = getByTitle(/sync/i);
 
@@ -30,15 +30,15 @@ describe("testing SyncPlaylistButton UI renders", () => {
   });
 });
 
-describe("testing SyncPlaylistButton clicks", () => {
+describe("testing SyncPlaylistBtn clicks", () => {
   const mockHandleSyncPlaylist = jest.fn();
-  const renderSyncPlaylistButton = partial(
+  const renderSyncPlaylistBtn = partial(
     renderWithRedux,
-    <SyncPlaylistButton handleSyncPlaylist={mockHandleSyncPlaylist} />
+    <SyncPlaylistBtn handleSyncPlaylist={mockHandleSyncPlaylist} />
   );
 
   test("should handle sync playlist function click correctly", () => {
-    const { getByTitle } = renderSyncPlaylistButton();
+    const { getByTitle } = renderSyncPlaylistBtn();
 
     const syncButtonElem = getByTitle(/sync/i);
 

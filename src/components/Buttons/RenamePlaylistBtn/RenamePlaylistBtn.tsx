@@ -3,13 +3,13 @@ import React from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
 import { Edit as EditIcon } from "@material-ui/icons";
 
-interface RenamePlaylistButtonProps {
+interface RenamePlaylistBtnProps {
   handleRename: () => void;
 }
 
-const RenamePlaylistButton: React.FunctionComponent<
-  RenamePlaylistButtonProps
-> = (props: RenamePlaylistButtonProps) => {
+const RenamePlaylistBtn: React.FunctionComponent<RenamePlaylistBtnProps> = (
+  props: RenamePlaylistBtnProps
+) => {
   const { handleRename } = props;
 
   return (
@@ -21,4 +21,4 @@ const RenamePlaylistButton: React.FunctionComponent<
   );
 };
 
-export default RenamePlaylistButton;
+export default RenamePlaylistBtn;

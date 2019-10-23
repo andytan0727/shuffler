@@ -1,4 +1,4 @@
-import { DeleteItemButton } from "components/Buttons";
+import { DeleteItemBtn } from "components/Buttons";
 import { makeToggleItemToListToPlaySwitch } from "components/Switches";
 import React, { useMemo } from "react";
 import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
@@ -30,7 +30,7 @@ const PlaylistVideoListItemSecondaryAction = (
   return (
     <div>
       <ToggleItemToListToPlaySwitch itemId={itemId} />
-      <DeleteItemButton
+      <DeleteItemBtn
         handleOnClick={
           isPlaylistItemSnippet(snippet)
             ? handleDeletePlaylistItem

@@ -3,11 +3,11 @@ import React from "react";
 import IconButton from "@material-ui/core/IconButton";
 import { Delete as DeleteIcon } from "@material-ui/icons";
 
-interface DeleteItemButtonProps {
+interface DeleteItemBtnProps {
   handleOnClick: (e: OnClickEvent) => void;
 }
 
-const DeleteItemButton = (props: DeleteItemButtonProps) => {
+const DeleteItemBtn = (props: DeleteItemBtnProps) => {
   const { handleOnClick } = props;
 
   return (
@@ -17,4 +17,4 @@ const DeleteItemButton = (props: DeleteItemButtonProps) => {
   );
 };
 
-export default DeleteItemButton;
+export default DeleteItemBtn;

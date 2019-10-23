@@ -1,7 +1,7 @@
 import {
   LgPanelCtrlBtnGroup,
-  RenamePlaylistButton,
-  SyncPlaylistButton,
+  RenamePlaylistBtn,
+  SyncPlaylistBtn,
 } from "components/Buttons";
 import { useCheckbox } from "components/Checkbox/hooks";
 import { FilterSnippetInput } from "components/Inputs";
@@ -102,8 +102,8 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
             handleShuffle={handleShufflePlaylist}
             handleDelete={handleDeletePlaylistItems}
           />
-          <RenamePlaylistButton handleRename={handleRenamePlaylist} />
-          <SyncPlaylistButton handleSyncPlaylist={handleSyncPlaylist} />
+          <RenamePlaylistBtn handleRename={handleRenamePlaylist} />
+          <SyncPlaylistBtn handleSyncPlaylist={handleSyncPlaylist} />
         </div>
         <Divider />
         <LgPanelVirtualList itemData={playlistItemData}>

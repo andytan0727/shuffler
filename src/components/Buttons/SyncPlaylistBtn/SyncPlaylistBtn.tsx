@@ -3,12 +3,12 @@ import React from "react";
 import { IconButton, Tooltip } from "@material-ui/core";
 import { Sync as SyncIcon } from "@material-ui/icons";
 
-interface SyncPlaylistButtonProps {
+interface SyncPlaylistBtnProps {
   handleSyncPlaylist: () => void;
 }
 
-const SyncPlaylistButton: React.FunctionComponent<SyncPlaylistButtonProps> = (
-  props: SyncPlaylistButtonProps
+const SyncPlaylistBtn: React.FunctionComponent<SyncPlaylistBtnProps> = (
+  props: SyncPlaylistBtnProps
 ) => {
   const { handleSyncPlaylist } = props;
 
@@ -21,4 +21,4 @@ const SyncPlaylistButton: React.FunctionComponent<SyncPlaylistButtonProps> = (
   );
 };
 
-export default SyncPlaylistButton;
+export default SyncPlaylistBtn;

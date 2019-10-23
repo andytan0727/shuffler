@@ -2,13 +2,13 @@ import React from "react";
 
 import { fireEvent, render } from "@testing-library/react";
 
-import DeleteItemButton from "../DeleteButtons/DeleteItemButton";
+import DeleteItemBtn from "../DeleteItemBtn";
 
-describe("testing DeleteItemButton UI renders", () => {
+describe("testing DeleteItemBtn UI renders", () => {
   test("should render button with delete icon correctly", () => {
     const mockHandleOnClick = jest.fn();
     const { container } = render(
-      <DeleteItemButton handleOnClick={mockHandleOnClick} />
+      <DeleteItemBtn handleOnClick={mockHandleOnClick} />
     );
 
     // first child should be button
@@ -31,11 +31,11 @@ describe("testing DeleteItemButton UI renders", () => {
   });
 });
 
-describe("testing DeleteItemButton clicks", () => {
+describe("testing DeleteItemBtn clicks", () => {
   test("should handle delete correctly", () => {
     const mockHandleOnClick = jest.fn();
     const { container } = render(
-      <DeleteItemButton handleOnClick={mockHandleOnClick} />
+      <DeleteItemBtn handleOnClick={mockHandleOnClick} />
     );
 
     // first child should be button
