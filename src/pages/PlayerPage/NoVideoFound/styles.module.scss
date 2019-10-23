@@ -1,4 +1,4 @@
-@import '../../../utils/styles/variables';
+@import "../../../utils/styles/variables";
 
 .noVideo {
   width: 100%;
@@ -6,6 +6,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .noVideoTitleDiv {
+    display: flex;
+    align-items: center;
+
+    & button {
+      margin-left: 0.5rem;
+    }
+  }
 
   img {
     height: 60%;
