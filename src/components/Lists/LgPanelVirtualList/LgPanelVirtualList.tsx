@@ -1,3 +1,4 @@
+import { SearchPlaylistBtn } from "components/Buttons";
 import {
   CheckboxHooksReturn,
   HandleCheckOrUncheckId,
@@ -8,6 +9,8 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { ListToPlaySnippets } from "store/ytplaylist/types";
 import { DeepReadonly } from "utility-types";
+
+import { makeStyles } from "@material-ui/core";
 
 import VirtualListSelectionHeader from "../VirtualListSelectionHeader";
 
@@ -56,6 +59,16 @@ const _getItemKey = (index: number, data: ItemData): string | number =>
  */
 export const createItemData = memoizeOne((itemData: ItemData) => itemData);
 
+const useStyles = makeStyles({
+  noItemDiv: {
+    fontSize: "1.4rem",
+
+    "& button": {
+      marginLeft: ".5rem",
+    },
+  },
+});
+
 /**
  * LgPanelVirtualList component
  *
@@ -73,6 +86,7 @@ const LgPanelVirtualList = (props: LgPanelVirtualListProps) => {
     items,
   } = itemData;
   const itemCount = filteredSnippets ? filteredSnippets.length : items.length;
+  const classes = useStyles();
 
   // select (check) all filteredSnippets if they exist
   // else select all original items
@@ -94,7 +108,10 @@ const LgPanelVirtualList = (props: LgPanelVirtualListProps) => {
 
   // prevent property undefined error if no items/filteredSnippets
   return itemCount === 0 ? (
-    <div>No video found</div>
+    <div className={classes.noItemDiv}>
+      <span>No video found. Search for some playlist? </span>
+      <SearchPlaylistBtn />
+    </div>
   ) : (
     <AutoSizer>
       {({ height, width }) => (
