@@ -1,6 +1,6 @@
 import { all, put, select, take } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import { DELETE_LIST_TO_PLAY_ITEMS } from "utils/constants/actionConstants";
 
 import { removeFilteredSnippetsByItemIds } from "./filteredActions";
 import { selectFilteredSnippets } from "./filteredSelectors";
@@ -14,7 +14,7 @@ import { deleteListToPlayItemsAction } from "./listToPlayActions";
 export function* removeFilteredSnippetsOnItemsDeletion() {
   while (true) {
     const action: ActionType<typeof deleteListToPlayItemsAction> = yield take([
-      ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
+      DELETE_LIST_TO_PLAY_ITEMS,
     ]);
     const filteredSnippets = yield select(selectFilteredSnippets);
     let itemIds: string[] | undefined = undefined;

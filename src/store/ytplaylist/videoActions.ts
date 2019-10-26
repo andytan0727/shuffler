@@ -1,5 +1,13 @@
 import { createAction } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_VIDEO,
+  ADD_VIDEO_TO_LIST_TO_PLAY,
+  ADD_VIDEOS_TO_LIST_TO_PLAY,
+  DELETE_VIDEO_BY_ID,
+  REMOVE_VIDEO_FROM_LIST_TO_PLAY,
+  REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
+  UPDATE_VIDEO_NAME_BY_ID,
+} from "utils/constants/actionConstants";
 
 import { VideosEntities } from "./types";
 
@@ -10,7 +18,7 @@ import { VideosEntities } from "./types";
  * @param result Normalized videos result from videos states
  * @returns ADD_FETCHED_VIDEO action object
  */
-export const addVideoAction = createAction(ActionTypes.ADD_VIDEO, (action) => {
+export const addVideoAction = createAction(ADD_VIDEO, (action) => {
   return (entities: VideosEntities, result: string[]) =>
     action({
       entities,
@@ -27,7 +35,7 @@ export const addVideoAction = createAction(ActionTypes.ADD_VIDEO, (action) => {
  * @returns ADD_VIDEO_TO_LIST_TO_PLAY action object
  */
 export const addVideoToListToPlayAction = createAction(
-  ActionTypes.ADD_VIDEO_TO_LIST_TO_PLAY,
+  ADD_VIDEO_TO_LIST_TO_PLAY,
   (action) => {
     return (videoId: string) =>
       action({
@@ -45,7 +53,7 @@ export const addVideoToListToPlayAction = createAction(
  * @returns ADD_VIDEOS_TO_LIST_TO_PLAY action object
  */
 export const addVideosToListToPlayAction = createAction(
-  ActionTypes.ADD_VIDEOS_TO_LIST_TO_PLAY,
+  ADD_VIDEOS_TO_LIST_TO_PLAY,
   (action) => {
     return (videoIds: string[]) =>
       action({
@@ -62,7 +70,7 @@ export const addVideosToListToPlayAction = createAction(
  * @returns UPDATE_VIDEO_NAME_BY_ID action object
  */
 export const updateVideoNameByIdAction = createAction(
-  ActionTypes.UPDATE_VIDEO_NAME_BY_ID,
+  UPDATE_VIDEO_NAME_BY_ID,
   (action) => {
     return (id: string, name: string) =>
       action({
@@ -79,7 +87,7 @@ export const updateVideoNameByIdAction = createAction(
  * @returns DELETE_VIDEO_BY_ID action object
  */
 export const deleteVideoByIdAction = createAction(
-  ActionTypes.DELETE_VIDEO_BY_ID,
+  DELETE_VIDEO_BY_ID,
   (action) => {
     return (id: string) =>
       action({
@@ -97,7 +105,7 @@ export const deleteVideoByIdAction = createAction(
  *
  */
 export const removeVideoFromListToPlayAction = createAction(
-  ActionTypes.REMOVE_VIDEO_FROM_LIST_TO_PLAY,
+  REMOVE_VIDEO_FROM_LIST_TO_PLAY,
   (action) => {
     return (videoId: string) =>
       action({
@@ -115,7 +123,7 @@ export const removeVideoFromListToPlayAction = createAction(
  *
  */
 export const removeVideosFromListToPlayAction = createAction(
-  ActionTypes.REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
+  REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
   (action) => {
     return (videoIds: string[]) =>
       action({

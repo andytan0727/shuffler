@@ -1,21 +1,32 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
-import * as schemas from "schemas";
+import {
+  normalizeListToPlay,
+  normalizePlaylists,
+  normalizeVideos,
+} from "schemas";
 import * as listToPlayActions from "store/ytplaylist/listToPlayActions";
 import * as playlistActions from "store/ytplaylist/playlistActions";
 import * as YTPlaylistTypes from "store/ytplaylist/types";
 import * as videoActions from "store/ytplaylist/videoActions";
 import { ActionType } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  FETCH_PLAYLIST_DATA,
+  FETCH_VIDEO_DATA,
+} from "utils/constants/actionConstants";
 import {
   fetchYoutubeAPIData,
   recursivelyFetchPlaylistData,
 } from "utils/helper/fetchHelper";
 import { notify } from "utils/helper/notifyHelper";
 
-import * as ytapi from "./action";
+import * as ytapiActions from "./action";
 
-type FetchPlaylistDataAction = ActionType<typeof ytapi.fetchPlaylistDataAction>;
-type FetchVideoDataAction = ActionType<typeof ytapi.fetchVideoDataAction>;
+type FetchPlaylistDataAction = ActionType<
+  typeof ytapiActions.fetchPlaylistDataAction
+>;
+type FetchVideoDataAction = ActionType<
+  typeof ytapiActions.fetchVideoDataAction
+>;
 
 // ====================================================
 // Helper sagas
@@ -32,7 +43,7 @@ export function* addFetchItemsToListToPlay(
   const {
     entities: listToPlayEntities,
     result: listToPlayResult,
-  } = schemas.normalizeListToPlay(items);
+  } = normalizeListToPlay(items);
 
   yield put(
     listToPlayActions.addListToPlayAction(listToPlayEntities, listToPlayResult)
@@ -49,7 +60,7 @@ export function* addFetchedPlaylist(playlist: YTPlaylistTypes.FetchedPlaylist) {
   const {
     entities: playlistEntities,
     result: playlistResult,
-  } = schemas.normalizePlaylists([playlist]);
+  } = normalizePlaylists([playlist]);
   const playlistId = playlistResult[0];
 
   if (playlistResult.length === 0 || playlistResult.length > 1)
@@ -74,10 +85,9 @@ export function* addFetchedPlaylist(playlist: YTPlaylistTypes.FetchedPlaylist) {
  * @param video FetchedVideo data
  */
 export function* addFetchedVideo(video: YTPlaylistTypes.FetchedVideo) {
-  const {
-    entities: videoEntities,
-    result: videoResult,
-  } = schemas.normalizeVideos([video]);
+  const { entities: videoEntities, result: videoResult } = normalizeVideos([
+    video,
+  ]);
 
   if (videoResult.length === 0 || videoResult.length > 1)
     throw new Error("Saga: No or more than one video is found");
@@ -99,12 +109,12 @@ export function* fetchPlaylistDataSuccess(
     items,
   };
 
-  yield put(ytapi.fetchPlaylistDataSuccessAction(fetchedPlaylist));
+  yield put(ytapiActions.fetchPlaylistDataSuccessAction(fetchedPlaylist));
 
   yield call(addFetchedPlaylist, fetchedPlaylist);
 
   // add fetched playlist's id to redux store
-  yield put(ytapi.addFetchedPlaylistIdAction(id));
+  yield put(ytapiActions.addFetchedPlaylistIdAction(id));
 }
 
 export function* fetchVideoDataSuccess(data: YTPlaylistTypes.FetchedVideo) {
@@ -115,12 +125,12 @@ export function* fetchVideoDataSuccess(data: YTPlaylistTypes.FetchedVideo) {
     items,
   };
 
-  yield put(ytapi.fetchVideoDataSuccessAction(data));
+  yield put(ytapiActions.fetchVideoDataSuccessAction(data));
 
   yield call(addFetchedVideo, fetchedVideo);
 
   // add fetched video's id to redux store
-  yield put(ytapi.addFetchedVideoIdAction(id));
+  yield put(ytapiActions.addFetchedVideoIdAction(id));
 }
 // ====================================================
 
@@ -148,12 +158,12 @@ export function* fetchPlaylistData(action: FetchPlaylistDataAction) {
 
     yield call(fetchPlaylistDataSuccess, items);
   } catch (err) {
-    yield put(ytapi.fetchPlaylistDataFailedAction());
+    yield put(ytapiActions.fetchPlaylistDataFailedAction());
     console.error(`Error in fetchPlaylistData: ${err}`);
     notify("error", "❌ Error in searching playlist!");
   } finally {
     // clear playlist url either success or failed
-    yield put(ytapi.setPlaylistUrlAction(""));
+    yield put(ytapiActions.setPlaylistUrlAction(""));
   }
 }
 
@@ -180,12 +190,12 @@ export function* fetchVideoData(action: FetchVideoDataAction) {
 
     yield call(fetchVideoDataSuccess, data);
   } catch (err) {
-    yield put(ytapi.fetchVideoDataFailedAction());
+    yield put(ytapiActions.fetchVideoDataFailedAction());
     console.error(`Error in fetchVideoData: ${err}`);
     notify("error", "❌ Error in searching video!");
   } finally {
     // clear video url either success or failed
-    yield put(ytapi.setVideoUrlAction(""));
+    yield put(ytapiActions.setVideoUrlAction(""));
   }
 }
 
@@ -193,11 +203,11 @@ export function* fetchVideoData(action: FetchVideoDataAction) {
 // Saga Watchers
 // ====================================================
 function* fetchPlaylistDataWatcher() {
-  yield takeLatest(ActionTypes.FETCH_PLAYLIST_DATA, fetchPlaylistData);
+  yield takeLatest(FETCH_PLAYLIST_DATA, fetchPlaylistData);
 }
 
 function* fetchVideoDataWatcher() {
-  yield takeLatest(ActionTypes.FETCH_VIDEO_DATA, fetchVideoData);
+  yield takeLatest(FETCH_VIDEO_DATA, fetchVideoData);
 }
 
 export default function* ytapiSaga() {

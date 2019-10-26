@@ -1,6 +1,10 @@
 import produce, { Draft } from "immer";
 import { Reducer } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_VIDEO,
+  DELETE_VIDEO_BY_ID,
+  UPDATE_VIDEO_NAME_BY_ID,
+} from "utils/constants/actionConstants";
 
 import { DeepReadonlyVideos, Videos, YTPlaylistActions } from "./types";
 import {
@@ -23,12 +27,12 @@ export const videosReducer: Reducer<
   YTPlaylistActions
 > = produce((draft: Draft<Videos>, action: YTPlaylistActions) => {
   switch (action.type) {
-    case ActionTypes.ADD_VIDEO: {
+    case ADD_VIDEO: {
       const { entities, result } = action.payload;
       return deepMergeStates(draft, entities, result);
     }
 
-    case ActionTypes.UPDATE_VIDEO_NAME_BY_ID: {
+    case UPDATE_VIDEO_NAME_BY_ID: {
       const { id, name } = action.payload;
 
       return updatePlaylistOrVideoNameById(draft, {
@@ -38,7 +42,7 @@ export const videosReducer: Reducer<
       });
     }
 
-    case ActionTypes.DELETE_VIDEO_BY_ID: {
+    case DELETE_VIDEO_BY_ID: {
       const { id } = action.payload;
 
       return deletePlaylistOrVideoById(draft, id);

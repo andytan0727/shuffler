@@ -1,5 +1,17 @@
 import { createAction } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_LIST_TO_PLAY,
+  ADD_LIST_TO_PLAY_ITEM,
+  ADD_LIST_TO_PLAY_ITEMS,
+  ADD_UNIQUE_LIST_TO_PLAY,
+  CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
+  CLEAR_LIST_TO_PLAY,
+  DELETE_LIST_TO_PLAY_ITEM_BY_ID,
+  DELETE_LIST_TO_PLAY_ITEMS,
+  FILTER_LIST_TO_PLAY_ITEMS,
+  SHUFFLE_LIST_TO_PLAY,
+  UPDATE_LIST_TO_PLAY,
+} from "utils/constants/actionConstants";
 
 import { ListToPlayEntities, ListToPlayResultItem } from "./types";
 
@@ -12,16 +24,13 @@ import { ListToPlayEntities, ListToPlayResultItem } from "./types";
  * @param result Normalized result of listToPlay
  * @returns ADD_LIST_TO_PLAY action object
  */
-export const addListToPlayAction = createAction(
-  ActionTypes.ADD_LIST_TO_PLAY,
-  (action) => {
-    return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
-      action({
-        entities,
-        result,
-      });
-  }
-);
+export const addListToPlayAction = createAction(ADD_LIST_TO_PLAY, (action) => {
+  return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
+    action({
+      entities,
+      result,
+    });
+});
 
 /**
  * Add listToPlay entities and result unique
@@ -33,7 +42,7 @@ export const addListToPlayAction = createAction(
  * @returns ADD_UNIQUE_LIST_TO_PLAY action object
  */
 export const addUniqueListToPlay = createAction(
-  ActionTypes.ADD_UNIQUE_LIST_TO_PLAY,
+  ADD_UNIQUE_LIST_TO_PLAY,
   (action) => {
     return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
       action({
@@ -53,7 +62,7 @@ export const addUniqueListToPlay = createAction(
  * @returns ADD_LIST_TO_PLAY_ITEM action object
  */
 export const addListToPlayItemAction = createAction(
-  ActionTypes.ADD_LIST_TO_PLAY_ITEM,
+  ADD_LIST_TO_PLAY_ITEM,
   (action) => {
     return (resultItem: ListToPlayResultItem, foreignKey: string) =>
       action({
@@ -74,7 +83,7 @@ export const addListToPlayItemAction = createAction(
  *
  */
 export const addListToPlayItemsAction = createAction(
-  ActionTypes.ADD_LIST_TO_PLAY_ITEMS,
+  ADD_LIST_TO_PLAY_ITEMS,
   (action) => {
     return (
       items: {
@@ -97,7 +106,7 @@ export const addListToPlayItemsAction = createAction(
  * @returns UPDATE_LIST_TO_PLAY action object
  */
 export const updateListToPlayAction = createAction(
-  ActionTypes.UPDATE_LIST_TO_PLAY,
+  UPDATE_LIST_TO_PLAY,
   (action) => {
     return (schema: SchemaType, foreignKey: string, itemIds: string[]) =>
       action({
@@ -115,7 +124,7 @@ export const updateListToPlayAction = createAction(
  * @returns DELETE_LIST_TO_PLAY_ITEM_BY_ID action object
  */
 export const deleteListToPlayItemByIdAction = createAction(
-  ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
+  DELETE_LIST_TO_PLAY_ITEM_BY_ID,
   (action) => {
     return (id: string) =>
       action({
@@ -131,7 +140,7 @@ export const deleteListToPlayItemByIdAction = createAction(
  * @returns DELETE_LIST_TO_PLAY_ITEMS action object
  */
 export const deleteListToPlayItemsAction = createAction(
-  ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
+  DELETE_LIST_TO_PLAY_ITEMS,
   (action) => {
     return (ids: string[]) =>
       action({
@@ -145,9 +154,7 @@ export const deleteListToPlayItemsAction = createAction(
  *
  * @returns CLEAR_LIST_TO_PLAY action object for redux store
  */
-export const clearListToPlayAction = createAction(
-  ActionTypes.CLEAR_LIST_TO_PLAY
-);
+export const clearListToPlayAction = createAction(CLEAR_LIST_TO_PLAY);
 
 /**
  * Shuffle listToPlay
@@ -157,7 +164,7 @@ export const clearListToPlayAction = createAction(
  * @returns SHUFFLE_LIST_TO_PLAY action object
  */
 export const shuffleListToPlayAction = createAction(
-  ActionTypes.SHUFFLE_LIST_TO_PLAY,
+  SHUFFLE_LIST_TO_PLAY,
   (action) => {
     return (itemIds?: string[]) =>
       action({
@@ -173,7 +180,7 @@ export const shuffleListToPlayAction = createAction(
  * @returns CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY action object
  */
 export const chooseFirstItemAndShuffleListToPlayAction = createAction(
-  ActionTypes.CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
+  CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
   (action) => {
     return (itemId: string) =>
       action({
@@ -197,7 +204,7 @@ export const chooseFirstItemAndShuffleListToPlayAction = createAction(
  * @returns FILTER_LIST_TO_PLAY_ITEMS action object
  */
 export const filterListToPlayItemsAction = createAction(
-  ActionTypes.FILTER_LIST_TO_PLAY_ITEMS,
+  FILTER_LIST_TO_PLAY_ITEMS,
   (action) => {
     return (itemIds: string[]) =>
       action({

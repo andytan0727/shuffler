@@ -1,5 +1,10 @@
 import { createAction } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  CLEAR_FILTERED_SNIPPETS,
+  CREATE_FUSE,
+  FUZZY_SEARCH_SNIPPETS_BY_TITLE,
+  REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS,
+} from "utils/constants/actionConstants";
 
 import { ListToPlaySnippets } from "./types";
 
@@ -9,7 +14,7 @@ import { ListToPlaySnippets } from "./types";
  * @param snippets An array of Playlist/video snippet
  * @returns CREATE_FUSE action object
  */
-export const createFuse = createAction(ActionTypes.CREATE_FUSE, (action) => {
+export const createFuse = createAction(CREATE_FUSE, (action) => {
   return (snippets: ListToPlaySnippets) =>
     action({
       snippets,
@@ -23,7 +28,7 @@ export const createFuse = createAction(ActionTypes.CREATE_FUSE, (action) => {
  *
  */
 export const fuzzySearchSnippetsByTitle = createAction(
-  ActionTypes.FUZZY_SEARCH_SNIPPETS_BY_TITLE,
+  FUZZY_SEARCH_SNIPPETS_BY_TITLE,
   (action) => {
     return (title: string) =>
       action({
@@ -37,9 +42,7 @@ export const fuzzySearchSnippetsByTitle = createAction(
  *
  * @returns CLEAR_FILTERED_SNIPPETS action object
  */
-export const clearFilteredSnippets = createAction(
-  ActionTypes.CLEAR_FILTERED_SNIPPETS
-);
+export const clearFilteredSnippets = createAction(CLEAR_FILTERED_SNIPPETS);
 
 /**
  * Remove filtered snippets by itemIds (when deleting items from original list)
@@ -48,7 +51,7 @@ export const clearFilteredSnippets = createAction(
  * @returns REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS action object
  */
 export const removeFilteredSnippetsByItemIds = createAction(
-  ActionTypes.REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS,
+  REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS,
   (action) => {
     return (itemIds: string[]) =>
       action({

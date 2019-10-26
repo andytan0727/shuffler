@@ -9,16 +9,29 @@ import {
 } from "redux-saga/effects";
 import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_LIST_TO_PLAY,
+  ADD_LIST_TO_PLAY_ITEM,
+  ADD_LIST_TO_PLAY_ITEMS,
+  CLEAR_LIST_TO_PLAY,
+  FILTER_LIST_TO_PLAY_ITEMS,
+} from "utils/constants/actionConstants";
 
 import { selectSnippetIdByItemId } from "./generalSelectors";
-import * as listToPlayActions from "./listToPlayActions";
+import {
+  addListToPlayAction,
+  addListToPlayItemAction,
+  addListToPlayItemsAction,
+  addUniqueListToPlay,
+  clearListToPlayAction,
+  filterListToPlayItemsAction,
+} from "./listToPlayActions";
 import {
   selectListToPlayEntities,
   selectListToPlayResult,
   selectListToPlaySnippetIds,
 } from "./listToPlaySelectors";
-import * as playlistActions from "./playlistActions";
+import { removeAllInPlayingLabelByIdAction } from "./playlistActions";
 import { selectPlaylistsResult } from "./playlistSelectors";
 import { ListToPlayEntities, ListToPlayResultItem } from "./types";
 
@@ -71,7 +84,7 @@ function* uniquelyAddListToPlayItems(
   }
 
   // merge new entities and result to listToPlay
-  yield put(listToPlayActions.addUniqueListToPlay(newEntities, newResult));
+  yield put(addUniqueListToPlay(newEntities, newResult));
 }
 
 // ===============================================
@@ -82,8 +95,8 @@ function* uniquelyAddListToPlayItems(
 // Watchers
 // ===============================================
 export function* addListToPlayWatcher() {
-  yield takeEvery(ActionTypes.ADD_LIST_TO_PLAY, function*(
-    action: ActionType<typeof listToPlayActions.addListToPlayAction>
+  yield takeEvery(ADD_LIST_TO_PLAY, function*(
+    action: ActionType<typeof addListToPlayAction>
   ) {
     const {
       payload: { entities, result },
@@ -99,8 +112,8 @@ export function* addListToPlayWatcher() {
 }
 
 export function* addListToPlayItemWatcher() {
-  yield takeEvery(ActionTypes.ADD_LIST_TO_PLAY_ITEM, function*(
-    action: ActionType<typeof listToPlayActions.addListToPlayItemAction>
+  yield takeEvery(ADD_LIST_TO_PLAY_ITEM, function*(
+    action: ActionType<typeof addListToPlayItemAction>
   ) {
     const item = action.payload;
     yield call(uniquelyAddListToPlayItems, [item]);
@@ -108,8 +121,8 @@ export function* addListToPlayItemWatcher() {
 }
 
 export function* addListToPlayItemsWatcher() {
-  yield takeEvery(ActionTypes.ADD_LIST_TO_PLAY_ITEMS, function*(
-    action: ActionType<typeof listToPlayActions.addListToPlayItemsAction>
+  yield takeEvery(ADD_LIST_TO_PLAY_ITEMS, function*(
+    action: ActionType<typeof addListToPlayItemsAction>
   ) {
     const { items } = action.payload;
     yield call(uniquelyAddListToPlayItems, items);
@@ -123,12 +136,12 @@ export function* addListToPlayItemsWatcher() {
  *
  */
 export function* clearListToPlayWatcher() {
-  yield takeLatest(ActionTypes.CLEAR_LIST_TO_PLAY, function*() {
+  yield takeLatest(CLEAR_LIST_TO_PLAY, function*() {
     const playlistIds: string[] = yield select(selectPlaylistsResult);
 
     // remove allInPlaying label if found
     for (const playlistId of playlistIds) {
-      yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
+      yield put(removeAllInPlayingLabelByIdAction(playlistId));
     }
   });
 }
@@ -140,8 +153,8 @@ export function* clearListToPlayWatcher() {
  *
  */
 export function* filterListToPlayItemsWatcher() {
-  yield takeEvery(ActionTypes.FILTER_LIST_TO_PLAY_ITEMS, function*(
-    action: ActionType<typeof listToPlayActions.filterListToPlayItemsAction>
+  yield takeEvery(FILTER_LIST_TO_PLAY_ITEMS, function*(
+    action: ActionType<typeof filterListToPlayItemsAction>
   ) {
     const { itemIds } = action.payload;
     const listToPlayResult: ListToPlayResultItem[] = yield select(
@@ -172,8 +185,8 @@ export function* filterListToPlayItemsWatcher() {
     }
 
     // clear currentListToPlay before adding filteredItems
-    yield put(listToPlayActions.clearListToPlayAction());
-    yield put(listToPlayActions.addListToPlayItemsAction(filteredItems));
+    yield put(clearListToPlayAction());
+    yield put(addListToPlayItemsAction(filteredItems));
   });
 }
 // ===============================================

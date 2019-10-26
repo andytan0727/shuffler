@@ -1,7 +1,12 @@
 import Fuse from "fuse.js";
 import produce, { Draft, original } from "immer";
 import { Reducer } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  CLEAR_FILTERED_SNIPPETS,
+  CREATE_FUSE,
+  FUZZY_SEARCH_SNIPPETS_BY_TITLE,
+  REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS,
+} from "utils/constants/actionConstants";
 
 import {
   DeepReadonlyFiltered,
@@ -24,7 +29,7 @@ export const filteredReducer: Reducer<
   YTPlaylistActions
 > = produce((draft: Draft<Filtered>, action: YTPlaylistActions) => {
   switch (action.type) {
-    case ActionTypes.CREATE_FUSE: {
+    case CREATE_FUSE: {
       const { snippets } = action.payload;
       const options = original(draft.options);
 
@@ -37,7 +42,7 @@ export const filteredReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.FUZZY_SEARCH_SNIPPETS_BY_TITLE: {
+    case FUZZY_SEARCH_SNIPPETS_BY_TITLE: {
       const { title } = action.payload;
 
       if (!draft.fuse) {
@@ -48,12 +53,12 @@ export const filteredReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.CLEAR_FILTERED_SNIPPETS: {
+    case CLEAR_FILTERED_SNIPPETS: {
       draft.snippets = undefined;
       return draft;
     }
 
-    case ActionTypes.REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS: {
+    case REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS: {
       const { itemIds } = action.payload;
       const prevFilteredSnippets = original(draft.snippets);
 

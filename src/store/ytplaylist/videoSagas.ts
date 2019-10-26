@@ -1,9 +1,25 @@
 import { all, put, takeEvery } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_VIDEO_TO_LIST_TO_PLAY,
+  ADD_VIDEOS_TO_LIST_TO_PLAY,
+  DELETE_VIDEO_BY_ID,
+  REMOVE_VIDEO_FROM_LIST_TO_PLAY,
+  REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
+} from "utils/constants/actionConstants";
 
-import * as listToPlayActions from "./listToPlayActions";
-import * as videoActions from "./videoActions";
+import {
+  addListToPlayItemAction,
+  deleteListToPlayItemByIdAction,
+  deleteListToPlayItemsAction,
+} from "./listToPlayActions";
+import {
+  addVideosToListToPlayAction,
+  addVideoToListToPlayAction,
+  deleteVideoByIdAction,
+  removeVideoFromListToPlayAction,
+  removeVideosFromListToPlayAction,
+} from "./videoActions";
 
 /**
  * Saga which watching for DELETE_VIDEO_BY_ID action.
@@ -12,15 +28,15 @@ import * as videoActions from "./videoActions";
  *
  */
 export function* deleteVideoByIdWatcher() {
-  yield takeEvery(ActionTypes.DELETE_VIDEO_BY_ID, function*(
-    action: ActionType<typeof videoActions.deleteVideoByIdAction>
+  yield takeEvery(DELETE_VIDEO_BY_ID, function*(
+    action: ActionType<typeof deleteVideoByIdAction>
   ) {
     const {
       payload: { id },
     } = action;
 
     // remove item from listToPlay videoItems
-    yield put(listToPlayActions.deleteListToPlayItemByIdAction(id));
+    yield put(deleteListToPlayItemByIdAction(id));
   });
 }
 
@@ -31,8 +47,8 @@ export function* deleteVideoByIdWatcher() {
  *
  */
 export function* addVideoToListToPlayWatcher() {
-  yield takeEvery(ActionTypes.ADD_VIDEO_TO_LIST_TO_PLAY, function*(
-    action: ActionType<typeof videoActions.addVideoToListToPlayAction>
+  yield takeEvery(ADD_VIDEO_TO_LIST_TO_PLAY, function*(
+    action: ActionType<typeof addVideoToListToPlayAction>
   ) {
     const {
       payload: { videoId },
@@ -47,7 +63,7 @@ export function* addVideoToListToPlayWatcher() {
     };
 
     yield put(
-      listToPlayActions.addListToPlayItemAction(
+      addListToPlayItemAction(
         listToPlayVideoItem.resultItem,
         listToPlayVideoItem.foreignKey
       )
@@ -62,15 +78,15 @@ export function* addVideoToListToPlayWatcher() {
  *
  */
 export function* addVideosToListToPlayWatcher() {
-  yield takeEvery(ActionTypes.ADD_VIDEOS_TO_LIST_TO_PLAY, function*(
-    action: ActionType<typeof videoActions.addVideosToListToPlayAction>
+  yield takeEvery(ADD_VIDEOS_TO_LIST_TO_PLAY, function*(
+    action: ActionType<typeof addVideosToListToPlayAction>
   ) {
     const {
       payload: { videoIds },
     } = action;
 
     for (const videoId of videoIds) {
-      yield put(videoActions.addVideoToListToPlayAction(videoId));
+      yield put(addVideoToListToPlayAction(videoId));
     }
   });
 }
@@ -81,14 +97,14 @@ export function* addVideosToListToPlayWatcher() {
  *
  */
 export function* removeVideoFromListToPlayWatcher() {
-  yield takeEvery(ActionTypes.REMOVE_VIDEO_FROM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof videoActions.removeVideoFromListToPlayAction>
+  yield takeEvery(REMOVE_VIDEO_FROM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof removeVideoFromListToPlayAction>
   ) {
     const {
       payload: { videoId: itemId },
     } = action;
 
-    yield put(listToPlayActions.deleteListToPlayItemByIdAction(itemId));
+    yield put(deleteListToPlayItemByIdAction(itemId));
   });
 }
 
@@ -99,14 +115,14 @@ export function* removeVideoFromListToPlayWatcher() {
  *
  */
 export function* removeVideosFromListToPlayWatcher() {
-  yield takeEvery(ActionTypes.REMOVE_VIDEOS_FROM_LIST_TO_PLAY, function*(
-    action: ActionType<typeof videoActions.removeVideosFromListToPlayAction>
+  yield takeEvery(REMOVE_VIDEOS_FROM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof removeVideosFromListToPlayAction>
   ) {
     const {
       payload: { videoIds: itemIds },
     } = action;
 
-    yield put(listToPlayActions.deleteListToPlayItemsAction(itemIds));
+    yield put(deleteListToPlayItemsAction(itemIds));
   });
 }
 

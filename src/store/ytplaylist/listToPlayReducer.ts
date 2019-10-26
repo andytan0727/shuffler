@@ -3,10 +3,18 @@ import remove from "lodash/remove";
 import shuffle from "lodash/shuffle";
 import zip from "lodash/zip";
 import { Reducer } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_UNIQUE_LIST_TO_PLAY,
+  CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
+  CLEAR_LIST_TO_PLAY,
+  DELETE_LIST_TO_PLAY_ITEM_BY_ID,
+  DELETE_LIST_TO_PLAY_ITEMS,
+  SHUFFLE_LIST_TO_PLAY,
+  UPDATE_LIST_TO_PLAY,
+} from "utils/constants/actionConstants";
 
 import { DeepReadonlyListToPlay, ListToPlay, YTPlaylistActions } from "./types";
-import { deleteListToPlayItemById, deepMergeStates } from "./utils";
+import { deepMergeStates, deleteListToPlayItemById } from "./utils";
 
 const initialListToPlayState: DeepReadonlyListToPlay = {
   entities: {
@@ -24,7 +32,7 @@ export const listToPlayReducer: Reducer<
     // for batch addition of items directly
     // through normalized listToPlay
     // entities and result
-    case ActionTypes.ADD_UNIQUE_LIST_TO_PLAY: {
+    case ADD_UNIQUE_LIST_TO_PLAY: {
       const { entities, result } = action.payload;
       return deepMergeStates(draft, entities, result);
     }
@@ -34,7 +42,7 @@ export const listToPlayReducer: Reducer<
     // without mixing other videos/playlists
     // assume all snippets in (ONE) playlist taken from API are all unique
     // No need to check for uniqueness of snippets in (ONE) playlist
-    case ActionTypes.UPDATE_LIST_TO_PLAY: {
+    case UPDATE_LIST_TO_PLAY: {
       const { schema, foreignKey, itemIds } = action.payload;
 
       // clear previous state
@@ -54,11 +62,11 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID: {
+    case DELETE_LIST_TO_PLAY_ITEM_BY_ID: {
       return deleteListToPlayItemById(draft, action.payload.id);
     }
 
-    case ActionTypes.DELETE_LIST_TO_PLAY_ITEMS: {
+    case DELETE_LIST_TO_PLAY_ITEMS: {
       const { ids } = action.payload;
 
       ids.forEach((id) => {
@@ -68,7 +76,7 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.CLEAR_LIST_TO_PLAY: {
+    case CLEAR_LIST_TO_PLAY: {
       draft.entities.playlistItems = {};
       draft.entities.videoItems = {};
       draft.result = [];
@@ -82,7 +90,7 @@ export const listToPlayReducer: Reducer<
     // itemIds array
     // If no itemIds array provided, this action will
     // go through normal shuffling process
-    case ActionTypes.SHUFFLE_LIST_TO_PLAY: {
+    case SHUFFLE_LIST_TO_PLAY: {
       const { itemIds } = action.payload;
       const removedItemIndexes: number[] = [];
 
@@ -117,7 +125,7 @@ export const listToPlayReducer: Reducer<
       return draft;
     }
 
-    case ActionTypes.CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY: {
+    case CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY: {
       const { itemId } = action.payload;
 
       const [removedItem] = remove(draft.result, (item) => item.id === itemId);

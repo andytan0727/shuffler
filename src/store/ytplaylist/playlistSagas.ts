@@ -17,18 +17,41 @@ import {
   selectYTApiKey,
 } from "store/ytapi/selectors";
 import { ActionType } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_PLAYLIST_TO_LIST_TO_PLAY,
+  DELETE_PLAYLIST_BY_ID,
+  DELETE_PLAYLIST_ITEM_BY_ID,
+  DELETE_PLAYLIST_ITEMS_BY_ID,
+  REMOVE_PLAYLIST_FROM_LIST_TO_PLAY,
+  REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
+  SYNC_PLAYLIST_FROM_YT_BY_ID,
+} from "utils/constants/actionConstants";
 import { recursivelyFetchPlaylistData } from "utils/helper/fetchHelper";
 import { notify } from "utils/helper/notifyHelper";
 
 import { removeFilteredSnippetsByItemIds } from "./filteredActions";
 import { selectFilteredSnippets } from "./filteredSelectors";
-import * as listToPlayActions from "./listToPlayActions";
+import {
+  addListToPlayItemsAction,
+  deleteListToPlayItemsAction,
+} from "./listToPlayActions";
 import {
   selectListToPlayPlaylistItems,
   selectListToPlayResult,
 } from "./listToPlaySelectors";
-import * as playlistActions from "./playlistActions";
+import {
+  addPlaylistAction,
+  addPlaylistToListToPlayAction,
+  deletePlaylistByIdAction,
+  deletePlaylistItemByIdAction,
+  deletePlaylistItemsByIdAction,
+  removeAllInPlayingLabelByIdAction,
+  removePlaylistFromListToPlayAction,
+  removePlaylistsFromListToPlayAction,
+  syncPlaylistFromYTByIdAction,
+  syncPlaylistFromYTByIdFailedAction,
+  syncPlaylistFromYTByIdSuccessAction,
+} from "./playlistActions";
 import { selectPlaylistItemIdsByPlaylistId } from "./playlistSelectors";
 import {
   FetchedPlaylist,
@@ -62,18 +85,16 @@ export function* syncPlaylistFromYTByIdSuccess(
   // Also automatically update listToPlay
   // by deletePlaylistItemByIdWatcher
   if (itemIdsToDelete.length !== 0) {
-    yield put(
-      playlistActions.deletePlaylistItemsByIdAction(playlistId, itemIdsToDelete)
-    );
+    yield put(deletePlaylistItemsByIdAction(playlistId, itemIdsToDelete));
   }
 
   // add newly updated playlist
-  yield put(playlistActions.addPlaylistAction(entities, result));
+  yield put(addPlaylistAction(entities, result));
 
   // dispatch update playlist success action to notify
   // listToPlay's checkIfAllOrPartialPlaylistItemsInPlaying watcher
   // if everything goes well
-  yield put(playlistActions.syncPlaylistFromYTByIdSuccessAction(playlistId));
+  yield put(syncPlaylistFromYTByIdSuccessAction(playlistId));
 
   notify("success", "Successfully synced your playlist with YouTube.");
 }
@@ -89,11 +110,9 @@ export function* syncPlaylistFromYTByIdSuccess(
  */
 export function* deletePlaylistByIdWatcher() {
   yield takeEvery(
-    ActionTypes.DELETE_PLAYLIST_BY_ID,
+    DELETE_PLAYLIST_BY_ID,
 
-    function*(
-      action: ActionType<typeof playlistActions.deletePlaylistByIdAction>
-    ) {
+    function*(action: ActionType<typeof deletePlaylistByIdAction>) {
       const { id: playlistId } = action.payload;
       const listToPlayResultItems: ListToPlayResultItem[] = yield select(
         selectListToPlayResult
@@ -112,9 +131,7 @@ export function* deletePlaylistByIdWatcher() {
       }
 
       if (itemIdsOfItemsToDelete.length !== 0)
-        yield put(
-          listToPlayActions.deleteListToPlayItemsAction(itemIdsOfItemsToDelete)
-        );
+        yield put(deleteListToPlayItemsAction(itemIdsOfItemsToDelete));
     }
   );
 }
@@ -132,14 +149,11 @@ export function* deletePlaylistByIdWatcher() {
  */
 export function* deletePlaylistItemsWatcher() {
   yield takeEvery(
-    [
-      ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID,
-      ActionTypes.DELETE_PLAYLIST_ITEMS_BY_ID,
-    ],
+    [DELETE_PLAYLIST_ITEM_BY_ID, DELETE_PLAYLIST_ITEMS_BY_ID],
     function*(
       action: ActionType<
-        | typeof playlistActions.deletePlaylistItemByIdAction
-        | typeof playlistActions.deletePlaylistItemsByIdAction
+        | typeof deletePlaylistItemByIdAction
+        | typeof deletePlaylistItemsByIdAction
       >
     ) {
       const itemIds: string[] = [];
@@ -162,7 +176,7 @@ export function* deletePlaylistItemsWatcher() {
       }
 
       // remove item from listToPlay as well after the playlist item was deleted
-      yield put(listToPlayActions.deleteListToPlayItemsAction(itemIds));
+      yield put(deleteListToPlayItemsAction(itemIds));
 
       // remove playlist items in filtered snippets as well
       // if user is filtering
@@ -182,8 +196,8 @@ export function* deletePlaylistItemsWatcher() {
  *
  */
 export function* addPlaylistToListToPlayWatcher() {
-  yield takeEvery(ActionTypes.ADD_PLAYLIST_TO_LIST_TO_PLAY, function*(
-    action: ActionType<typeof playlistActions.addPlaylistToListToPlayAction>
+  yield takeEvery(ADD_PLAYLIST_TO_LIST_TO_PLAY, function*(
+    action: ActionType<typeof addPlaylistToListToPlayAction>
   ) {
     const {
       payload: { playlistId },
@@ -202,7 +216,7 @@ export function* addPlaylistToListToPlayWatcher() {
     }));
 
     // add all items in the playlist into listToPlay
-    yield put(listToPlayActions.addListToPlayItemsAction(playlistItems));
+    yield put(addListToPlayItemsAction(playlistItems));
   });
 }
 
@@ -214,10 +228,8 @@ export function* addPlaylistToListToPlayWatcher() {
  *
  */
 export function* removePlaylistFromListToPlayWatcher() {
-  yield takeEvery(ActionTypes.REMOVE_PLAYLIST_FROM_LIST_TO_PLAY, function*(
-    action: ActionType<
-      typeof playlistActions.removePlaylistFromListToPlayAction
-    >
+  yield takeEvery(REMOVE_PLAYLIST_FROM_LIST_TO_PLAY, function*(
+    action: ActionType<typeof removePlaylistFromListToPlayAction>
   ) {
     const {
       payload: { playlistId },
@@ -228,10 +240,10 @@ export function* removePlaylistFromListToPlayWatcher() {
     );
 
     // remove allInPlaying label
-    yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
+    yield put(removeAllInPlayingLabelByIdAction(playlistId));
 
     // remove all items from listToPlay
-    yield put(listToPlayActions.deleteListToPlayItemsAction(itemIds));
+    yield put(deleteListToPlayItemsAction(itemIds));
   });
 }
 
@@ -246,12 +258,12 @@ export function* removePlaylistsFromListToPlayWatcher() {
   while (true) {
     const {
       payload: { playlistIds },
-    }: ActionType<
-      typeof playlistActions.removePlaylistsFromListToPlayAction
-    > = yield take(ActionTypes.REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY);
+    }: ActionType<typeof removePlaylistsFromListToPlayAction> = yield take(
+      REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY
+    );
 
     for (const playlistId of playlistIds) {
-      yield put(playlistActions.removePlaylistFromListToPlayAction(playlistId));
+      yield put(removePlaylistFromListToPlayAction(playlistId));
     }
   }
 }
@@ -267,11 +279,9 @@ export function* removePlaylistsFromListToPlayWatcher() {
  */
 export function* syncPlaylistFromYTByIdWatcher() {
   yield takeLatest(
-    ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID,
+    SYNC_PLAYLIST_FROM_YT_BY_ID,
 
-    function*(
-      action: ActionType<typeof playlistActions.syncPlaylistFromYTByIdAction>
-    ) {
+    function*(action: ActionType<typeof syncPlaylistFromYTByIdAction>) {
       const { playlistId } = action.payload;
       const apiKey: string = yield select(selectYTApiKey);
       const baseUrl: string = yield select(selectPlaylistBaseUrl);
@@ -299,7 +309,7 @@ export function* syncPlaylistFromYTByIdWatcher() {
 
         yield call(syncPlaylistFromYTByIdSuccess, entities, result);
       } catch (err) {
-        yield put(playlistActions.syncPlaylistFromYTByIdFailedAction());
+        yield put(syncPlaylistFromYTByIdFailedAction());
         notify(
           "error",
           "Unable to sync your playlist. Please try again later."

@@ -1,7 +1,18 @@
 import produce, { Draft } from "immer";
 import union from "lodash/union";
 import { Reducer } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_FETCHED_PLAYLIST_ID,
+  ADD_FETCHED_VIDEO_ID,
+  FETCH_PLAYLIST_DATA,
+  FETCH_PLAYLIST_DATA_FAILED,
+  FETCH_PLAYLIST_DATA_SUCCESS,
+  FETCH_VIDEO_DATA,
+  FETCH_VIDEO_DATA_FAILED,
+  FETCH_VIDEO_DATA_SUCCESS,
+  SET_PLAYLIST_URL,
+  SET_VIDEO_URL,
+} from "utils/constants/actionConstants";
 
 import { YTAPIAction, YTAPIState } from "./types";
 
@@ -44,12 +55,12 @@ export const ytapi: Reducer<YTAPIState, YTAPIAction> = produce(
       // -------------------------------------
       // Playlists
       // -------------------------------------
-      case ActionTypes.FETCH_PLAYLIST_DATA: {
+      case FETCH_PLAYLIST_DATA: {
         draft.playlistItems.fetchLoading = true;
         return draft;
       }
 
-      case ActionTypes.FETCH_PLAYLIST_DATA_SUCCESS: {
+      case FETCH_PLAYLIST_DATA_SUCCESS: {
         draft.playlistItems.fetchLoading = false;
 
         const dataToAdd = action.payload.data;
@@ -67,19 +78,19 @@ export const ytapi: Reducer<YTAPIState, YTAPIAction> = produce(
         return draft;
       }
 
-      case ActionTypes.FETCH_PLAYLIST_DATA_FAILED: {
+      case FETCH_PLAYLIST_DATA_FAILED: {
         draft.playlistItems.fetchLoading = false;
         return draft;
       }
 
-      case ActionTypes.ADD_FETCHED_PLAYLIST_ID: {
+      case ADD_FETCHED_PLAYLIST_ID: {
         draft.fetchedPlaylistId = union(draft.fetchedPlaylistId, [
           action.payload.id,
         ]);
         return draft;
       }
 
-      case ActionTypes.SET_PLAYLIST_URL: {
+      case SET_PLAYLIST_URL: {
         draft.playlistUrl = action.payload.playlistUrl;
         return draft;
       }
@@ -87,12 +98,12 @@ export const ytapi: Reducer<YTAPIState, YTAPIAction> = produce(
       // -------------------------------------
       // Videos
       // -------------------------------------
-      case ActionTypes.FETCH_VIDEO_DATA: {
+      case FETCH_VIDEO_DATA: {
         draft.videos.fetchLoading = true;
         return draft;
       }
 
-      case ActionTypes.FETCH_VIDEO_DATA_SUCCESS: {
+      case FETCH_VIDEO_DATA_SUCCESS: {
         draft.videos.fetchLoading = false;
 
         const dataToAdd = action.payload.data;
@@ -110,17 +121,17 @@ export const ytapi: Reducer<YTAPIState, YTAPIAction> = produce(
         return draft;
       }
 
-      case ActionTypes.FETCH_VIDEO_DATA_FAILED: {
+      case FETCH_VIDEO_DATA_FAILED: {
         draft.videos.fetchLoading = false;
         return draft;
       }
 
-      case ActionTypes.ADD_FETCHED_VIDEO_ID: {
+      case ADD_FETCHED_VIDEO_ID: {
         draft.fetchedVideoId = union(draft.fetchedVideoId, action.payload.id);
         return draft;
       }
 
-      case ActionTypes.SET_VIDEO_URL: {
+      case SET_VIDEO_URL: {
         draft.videoUrl = action.payload.videoUrl;
         return draft;
       }

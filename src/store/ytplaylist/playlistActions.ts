@@ -1,5 +1,22 @@
 import { createAction } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_ALL_IN_PLAYING_LABEL_BY_ID,
+  ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID,
+  ADD_PLAYLIST,
+  ADD_PLAYLIST_TO_LIST_TO_PLAY,
+  DELETE_PLAYLIST_BY_ID,
+  DELETE_PLAYLIST_ITEM_BY_ID,
+  DELETE_PLAYLIST_ITEMS_BY_ID,
+  REMOVE_ALL_IN_PLAYING_LABEL_BY_ID,
+  REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID,
+  REMOVE_PLAYLIST_FROM_LIST_TO_PLAY,
+  REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
+  SHUFFLE_PLAYLIST_ITEMS,
+  SYNC_PLAYLIST_FROM_YT_BY_ID,
+  SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED,
+  SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
+  UPDATE_PLAYLIST_NAME_BY_ID,
+} from "utils/constants/actionConstants";
 
 import { PlaylistsEntities } from "./types";
 
@@ -10,16 +27,13 @@ import { PlaylistsEntities } from "./types";
  * @param result Normalized states result of playlists
  * @returns ADD_FETCHED_PLAYLIST action object
  */
-export const addPlaylistAction = createAction(
-  ActionTypes.ADD_PLAYLIST,
-  (action) => {
-    return (entities: PlaylistsEntities, result: string[]) =>
-      action({
-        entities,
-        result,
-      });
-  }
-);
+export const addPlaylistAction = createAction(ADD_PLAYLIST, (action) => {
+  return (entities: PlaylistsEntities, result: string[]) =>
+    action({
+      entities,
+      result,
+    });
+});
 
 /**
  * Add all items in the specified playlist into listToPlay
@@ -30,7 +44,7 @@ export const addPlaylistAction = createAction(
  * @returns ADD_PLAYLIST_TO_LIST_TO_PLAY action object
  */
 export const addPlaylistToListToPlayAction = createAction(
-  ActionTypes.ADD_PLAYLIST_TO_LIST_TO_PLAY,
+  ADD_PLAYLIST_TO_LIST_TO_PLAY,
   (action) => {
     return (playlistId: string) =>
       action({
@@ -48,7 +62,7 @@ export const addPlaylistToListToPlayAction = createAction(
  *
  */
 export const removePlaylistFromListToPlayAction = createAction(
-  ActionTypes.REMOVE_PLAYLIST_FROM_LIST_TO_PLAY,
+  REMOVE_PLAYLIST_FROM_LIST_TO_PLAY,
   (action) => {
     return (playlistId: string) =>
       action({
@@ -67,7 +81,7 @@ export const removePlaylistFromListToPlayAction = createAction(
  *
  */
 export const removePlaylistsFromListToPlayAction = createAction(
-  ActionTypes.REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
+  REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
   (action) => {
     return (playlistIds: string[]) =>
       action({
@@ -83,7 +97,7 @@ export const removePlaylistsFromListToPlayAction = createAction(
  * @returns DELETE_PLAYLIST_BY_ID action object
  */
 export const deletePlaylistByIdAction = createAction(
-  ActionTypes.DELETE_PLAYLIST_BY_ID,
+  DELETE_PLAYLIST_BY_ID,
   (action) => {
     return (id: string) =>
       action({
@@ -101,7 +115,7 @@ export const deletePlaylistByIdAction = createAction(
  * @returns DELETE_PLAYLIST_ITEM_BY_ID action object
  */
 export const deletePlaylistItemByIdAction = createAction(
-  ActionTypes.DELETE_PLAYLIST_ITEM_BY_ID,
+  DELETE_PLAYLIST_ITEM_BY_ID,
   (action) => {
     return (playlistId: string, itemId: string) =>
       action({
@@ -119,7 +133,7 @@ export const deletePlaylistItemByIdAction = createAction(
  * @returns DELETE_PLAYLIST_ITEMS_BY_ID action object
  */
 export const deletePlaylistItemsByIdAction = createAction(
-  ActionTypes.DELETE_PLAYLIST_ITEMS_BY_ID,
+  DELETE_PLAYLIST_ITEMS_BY_ID,
   (action) => {
     return (playlistId: string, itemIds: string[]) =>
       action({
@@ -140,7 +154,7 @@ export const deletePlaylistItemsByIdAction = createAction(
  * @returns SYNC_PLAYLIST_FROM_YT_BY_ID action object
  */
 export const syncPlaylistFromYTByIdAction = createAction(
-  ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID,
+  SYNC_PLAYLIST_FROM_YT_BY_ID,
   (action) => {
     return (playlistId: string) => action({ playlistId });
   }
@@ -153,7 +167,7 @@ export const syncPlaylistFromYTByIdAction = createAction(
  * @returns SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS action object
  */
 export const syncPlaylistFromYTByIdSuccessAction = createAction(
-  ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
+  SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
   (action) => {
     return (playlistId: string) => action({ playlistId });
   }
@@ -165,7 +179,7 @@ export const syncPlaylistFromYTByIdSuccessAction = createAction(
  * @returns SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED action object
  */
 export const syncPlaylistFromYTByIdFailedAction = createAction(
-  ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED
+  SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED
 );
 
 /**
@@ -176,7 +190,7 @@ export const syncPlaylistFromYTByIdFailedAction = createAction(
  * @returns UPDATE_PLAYLIST_NAME_BY_ID action object
  */
 export const updatePlaylistNameByIdAction = createAction(
-  ActionTypes.UPDATE_PLAYLIST_NAME_BY_ID,
+  UPDATE_PLAYLIST_NAME_BY_ID,
   (action) => {
     return (id: string, name: string) =>
       action({
@@ -193,7 +207,7 @@ export const updatePlaylistNameByIdAction = createAction(
  * @param id Playlist id to add allInPlaying label
  */
 export const addAllInPlayingLabelByIdAction = createAction(
-  ActionTypes.ADD_ALL_IN_PLAYING_LABEL_BY_ID,
+  ADD_ALL_IN_PLAYING_LABEL_BY_ID,
   (action) => (id: string) => action({ id })
 );
 
@@ -202,7 +216,7 @@ export const addAllInPlayingLabelByIdAction = createAction(
  * @param id Playlist id to remove allInPlaying label
  */
 export const removeAllInPlayingLabelByIdAction = createAction(
-  ActionTypes.REMOVE_ALL_IN_PLAYING_LABEL_BY_ID,
+  REMOVE_ALL_IN_PLAYING_LABEL_BY_ID,
   (action) => (id: string) => action({ id })
 );
 
@@ -213,7 +227,7 @@ export const removeAllInPlayingLabelByIdAction = createAction(
  * @param id Playlist id to add partialInPlaying label
  */
 export const addPartialInPlayingLabelByIdAction = createAction(
-  ActionTypes.ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID,
+  ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID,
   (action) => (id: string) => action({ id })
 );
 
@@ -222,7 +236,7 @@ export const addPartialInPlayingLabelByIdAction = createAction(
  * @param id Playlist id to remove partialInPlaying label
  */
 export const removePartialInPlayingLabelByIdAction = createAction(
-  ActionTypes.REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID,
+  REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID,
   (action) => (id: string) => action({ id })
 );
 
@@ -231,6 +245,6 @@ export const removePartialInPlayingLabelByIdAction = createAction(
  * @param id Playlist id to shuffle
  */
 export const shufflePlaylistItems = createAction(
-  ActionTypes.SHUFFLE_PLAYLIST_ITEMS,
+  SHUFFLE_PLAYLIST_ITEMS,
   (action) => (id: string) => action({ id })
 );

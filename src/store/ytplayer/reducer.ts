@@ -1,6 +1,10 @@
 import produce, { Draft } from "immer";
 import { Reducer } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  SET_CURRENT_SONG_IDX,
+  SET_VIDEO_PLAYING,
+  TOGGLE_REPEAT,
+} from "utils/constants/actionConstants";
 
 import { PlayerState, YTPlayerAction } from "./types";
 
@@ -22,17 +26,17 @@ const initialState: PlayerState = {
 export const ytplayer: Reducer<PlayerState, YTPlayerAction> = produce(
   (draft: Draft<PlayerState>, action: YTPlayerAction) => {
     switch (action.type) {
-      case ActionTypes.SET_CURRENT_SONG_IDX: {
+      case SET_CURRENT_SONG_IDX: {
         draft.curSongIdx = action.payload.songIdx;
         return draft;
       }
 
-      case ActionTypes.SET_VIDEO_PLAYING: {
+      case SET_VIDEO_PLAYING: {
         draft.playing = action.payload.playing;
         return draft;
       }
 
-      case ActionTypes.TOGGLE_REPEAT: {
+      case TOGGLE_REPEAT: {
         draft.repeat = !draft.repeat;
         return draft;
       }

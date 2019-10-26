@@ -2,20 +2,44 @@ import { map, uniq } from "lodash";
 import { all, call, fork, put, select, take } from "redux-saga/effects";
 import { AppState } from "store";
 import { ActionType } from "typesafe-actions";
-import * as ActionTypes from "utils/constants/actionConstants";
+import {
+  ADD_UNIQUE_LIST_TO_PLAY,
+  DELETE_LIST_TO_PLAY_ITEM_BY_ID,
+  DELETE_LIST_TO_PLAY_ITEMS,
+  SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
+  UPDATE_LIST_TO_PLAY,
+} from "utils/constants/actionConstants";
 
 import { selectListToPlayPlaylistItemsCount } from "./generalSelectors";
-import * as listToPlayActions from "./listToPlayActions";
-import * as playlistActions from "./playlistActions";
-import * as playlistSelectors from "./playlistSelectors";
+import {
+  addUniqueListToPlay,
+  deleteListToPlayItemByIdAction,
+  deleteListToPlayItemsAction,
+  updateListToPlayAction,
+} from "./listToPlayActions";
+import {
+  addAllInPlayingLabelByIdAction,
+  addPartialInPlayingLabelByIdAction,
+  removeAllInPlayingLabelByIdAction,
+  removePartialInPlayingLabelByIdAction,
+  syncPlaylistFromYTByIdSuccessAction,
+} from "./playlistActions";
+import {
+  selectPlaylistById,
+  selectPlaylistIdByItemId,
+  selectPlaylistsResult,
+} from "./playlistSelectors";
+// import * as listToPlayActions from "./listToPlayActions";
+// import * as playlistActions from "./playlistActions";
+// import * as playlistSelectors from "./playlistSelectors";
 import { PlaylistsEntityItem } from "./types";
 
 type CheckLabelActionsWatched = ActionType<
-  | typeof listToPlayActions.addUniqueListToPlay
-  | typeof listToPlayActions.deleteListToPlayItemByIdAction
-  | typeof listToPlayActions.deleteListToPlayItemsAction
-  | typeof listToPlayActions.updateListToPlayAction
-  | typeof playlistActions.syncPlaylistFromYTByIdSuccessAction
+  | typeof addUniqueListToPlay
+  | typeof deleteListToPlayItemByIdAction
+  | typeof deleteListToPlayItemsAction
+  | typeof updateListToPlayAction
+  | typeof syncPlaylistFromYTByIdSuccessAction
 >;
 
 // ===============================================
@@ -25,18 +49,14 @@ function* removeExistingPartialInPlayingLabel(
   prevLabel: boolean | undefined,
   playlistId: string
 ) {
-  if (prevLabel)
-    yield put(
-      playlistActions.removePartialInPlayingLabelByIdAction(playlistId)
-    );
+  if (prevLabel) yield put(removePartialInPlayingLabelByIdAction(playlistId));
 }
 
 function* removeExistingAllInPlayingLabel(
   prevLabel: boolean | undefined,
   playlistId: string
 ) {
-  if (prevLabel)
-    yield put(playlistActions.removeAllInPlayingLabelByIdAction(playlistId));
+  if (prevLabel) yield put(removeAllInPlayingLabelByIdAction(playlistId));
 }
 
 function* removeAllLabels(
@@ -64,8 +84,7 @@ function* addAllInPlayingLabel(
     playlistId
   );
 
-  if (!prevAllInPlaying)
-    yield put(playlistActions.addAllInPlayingLabelByIdAction(playlistId));
+  if (!prevAllInPlaying) yield put(addAllInPlayingLabelByIdAction(playlistId));
 }
 
 function* addPartialInPlayingLabel(
@@ -76,7 +95,7 @@ function* addPartialInPlayingLabel(
   yield call(removeExistingAllInPlayingLabel, prevAllInPlaying, playlistId);
 
   if (!prevPartialInPlaying)
-    yield put(playlistActions.addPartialInPlayingLabelByIdAction(playlistId));
+    yield put(addPartialInPlayingLabelByIdAction(playlistId));
 }
 
 /**
@@ -94,7 +113,7 @@ export function* labelAllOrPartialInPlaying(playlistId: string) {
   if (!playlistId) return;
 
   const playlist: PlaylistsEntityItem = yield select((state: AppState) =>
-    playlistSelectors.selectPlaylistById(state, playlistId)
+    selectPlaylistById(state, playlistId)
   );
   const listToPlayPlaylistItemsCount: number = yield select((state: AppState) =>
     selectListToPlayPlaylistItemsCount(state, playlistId)
@@ -166,7 +185,7 @@ function* getPlaylistIds(action: CheckLabelActionsWatched) {
     case "DELETE_LIST_TO_PLAY_ITEM_BY_ID": {
       return [
         yield select((state: AppState) =>
-          playlistSelectors.selectPlaylistIdByItemId(state, action.payload.id)
+          selectPlaylistIdByItemId(state, action.payload.id)
         ),
       ];
     }
@@ -178,9 +197,7 @@ function* getPlaylistIds(action: CheckLabelActionsWatched) {
 
       for (const itemId of action.payload.ids) {
         temp.push(
-          yield select((state) =>
-            playlistSelectors.selectPlaylistIdByItemId(state, itemId)
-          )
+          yield select((state) => selectPlaylistIdByItemId(state, itemId))
         );
       }
 
@@ -192,7 +209,7 @@ function* getPlaylistIds(action: CheckLabelActionsWatched) {
     // most of the items regardless which playlist
     // those items belong
     case "UPDATE_LIST_TO_PLAY": {
-      return yield select(playlistSelectors.selectPlaylistsResult);
+      return yield select(selectPlaylistsResult);
     }
 
     case "SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS": {
@@ -220,11 +237,11 @@ function* getPlaylistIds(action: CheckLabelActionsWatched) {
 export function* checkIfAllOrPartialPlaylistItemsInPlaying() {
   while (true) {
     const action: CheckLabelActionsWatched = yield take([
-      ActionTypes.ADD_UNIQUE_LIST_TO_PLAY,
-      ActionTypes.DELETE_LIST_TO_PLAY_ITEM_BY_ID,
-      ActionTypes.DELETE_LIST_TO_PLAY_ITEMS,
-      ActionTypes.UPDATE_LIST_TO_PLAY,
-      ActionTypes.SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
+      ADD_UNIQUE_LIST_TO_PLAY,
+      DELETE_LIST_TO_PLAY_ITEM_BY_ID,
+      DELETE_LIST_TO_PLAY_ITEMS,
+      UPDATE_LIST_TO_PLAY,
+      SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
     ]);
     const playlistIds: string[] = yield call(getPlaylistIds, action);
 
