@@ -153,6 +153,13 @@ const initialStates = {
         "Changed ytplayer ui",
       ],
     },
+    {
+      version: "4.0.0",
+      changes: [
+        "Shuffler is reached stable v4 after long run testing.",
+        "Make local storage to store normalized data.",
+      ],
+    },
   ],
 };
 
