@@ -3,9 +3,9 @@
 </p>
 
 # Shuffler
-[![Build Status](https://travis-ci.com/andytan0727/yt_random_player.svg?branch=master)](https://travis-ci.com/andytan0727/yt_random_player)
-[![Maintainability](https://api.codeclimate.com/v1/badges/f2872edc6b8fca25790b/maintainability)](https://codeclimate.com/github/andytan0727/yt_random_player/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/f2872edc6b8fca25790b/test_coverage)](https://codeclimate.com/github/andytan0727/yt_random_player/test_coverage)
+[![Build Status](https://travis-ci.com/andytan0727/shuffler.svg?branch=master)](https://travis-ci.com/andytan0727/shuffler)
+[![Maintainability](https://api.codeclimate.com/v1/badges/15ee7e777754799fc83d/maintainability)](https://codeclimate.com/github/andytan0727/shuffler/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/15ee7e777754799fc83d/test_coverage)](https://codeclimate.com/github/andytan0727/shuffler/test_coverage)
 
 A shuffler that randomize your YouTube playlist.
 
