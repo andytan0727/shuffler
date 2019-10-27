@@ -1,4 +1,5 @@
 import { ReactComponent as ShufflerLogo } from "assets/shufflerLogoLarge.svg";
+import { ChangelogModal } from "components/Dialog";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectLatestAppVersion } from "store/appGeneral/selector";
@@ -27,6 +28,13 @@ const AboutPage = () => {
           >
             {`v${latestVersion}`}
           </Typography>
+
+          <div
+            style={{
+              marginLeft: "auto",
+            }}
+          ></div>
+          <ChangelogModal />
         </div>
         <p>
           Another simple and modern YouTube randomizer that shuffles your
