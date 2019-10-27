@@ -160,6 +160,13 @@ const initialStates = {
         "Make local storage to store normalized data.",
       ],
     },
+    {
+      version: "4.1.0",
+      changes: [
+        "Add changelog button to About page",
+        "Fix the problem of rename input dialog staying behind of manage playlist dialog",
+      ],
+    },
   ],
 };
 
