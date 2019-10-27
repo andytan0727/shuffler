@@ -15,6 +15,7 @@ export const generateCustomSwal = async (mixinOptions = {}) => {
 
     return Swal.default.mixin({
       customClass: {
+        container: notifyStyles.swalContainer,
         popup: notifyStyles.swalPopup,
         title: notifyStyles.swalTitle,
         content: notifyStyles.swalContent,

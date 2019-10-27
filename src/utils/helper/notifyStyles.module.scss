@@ -1,5 +1,11 @@
 @import "../styles/colors";
 
+// z-index as 3000 to ensure swal dialog stays in front
+// of LgPanelDialog which has a z-index of 1300
+.swalContainer {
+  z-index: 3000;
+}
+
 .swalPopup {
   background-color: var(--bg-color);
   color: var(--text-color);

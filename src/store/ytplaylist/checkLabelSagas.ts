@@ -29,9 +29,6 @@ import {
   selectPlaylistIdByItemId,
   selectPlaylistsResult,
 } from "./playlistSelectors";
-// import * as listToPlayActions from "./listToPlayActions";
-// import * as playlistActions from "./playlistActions";
-// import * as playlistSelectors from "./playlistSelectors";
 import { PlaylistsEntityItem } from "./types";
 
 type CheckLabelActionsWatched = ActionType<
