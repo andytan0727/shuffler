@@ -1,4 +1,5 @@
 import { FilterAndCtrlBar } from "components/Bars";
+import { ClearNowPlayingBtn } from "components/Buttons";
 import { useCheckbox } from "components/Checkbox/hooks";
 import {
   createItemData,
@@ -11,11 +12,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
+  clearListToPlayAction,
   deleteListToPlayItemsAction,
   filterListToPlayItemsAction,
   shuffleListToPlayAction,
 } from "store/ytplaylist/listToPlayActions";
-import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
+import {
+  selectAllListToPlayItemIds,
+  selectListToPlayTotalItems,
+} from "store/ytplaylist/listToPlaySelectors";
+import { notify } from "utils/helper/notifyHelper";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -32,6 +38,7 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
   const filteredSnippets = useSelector(selectFilteredSnippets);
   const dispatch = useDispatch();
   const listToPlayItemIds = useSelector(selectAllListToPlayItemIds);
+  const itemsCount = useSelector(selectListToPlayTotalItems);
   const checkboxHooks = useCheckbox();
   const { checked, clearChecked } = checkboxHooks;
 
@@ -70,15 +77,29 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
     clearChecked();
   }, [dispatch, checked, clearChecked]);
 
+  // clear listToPlay items
+  // alert user if they attempted to clear an empty listToPlay
+  const handleClearNowPlaying = useCallback(() => {
+    if (itemsCount === 0) {
+      notify("warning", "Now playing is empty");
+      return;
+    }
+
+    dispatch(clearListToPlayAction());
+  }, [dispatch, itemsCount]);
+
   return (
     <div className={styles.lgNowPlayingPanelDiv}>
       <Typography variant="h4">Now Playing</Typography>
-      <FilterAndCtrlBar
-        itemIds={listToPlayItemIds}
-        handlePlay={handlePlayListToPlay}
-        handleShuffle={handleShuffleListToPlay}
-        handleDelete={handleDeleteListToPlayItems}
-      />
+      <div className={styles.ctrlPanelDiv}>
+        <FilterAndCtrlBar
+          itemIds={listToPlayItemIds}
+          handlePlay={handlePlayListToPlay}
+          handleShuffle={handleShuffleListToPlay}
+          handleDelete={handleDeleteListToPlayItems}
+        />
+        <ClearNowPlayingBtn handleClearNowPlaying={handleClearNowPlaying} />
+      </div>
 
       <Divider />
       <LgPanelVirtualList itemData={listToPlayItemData}>

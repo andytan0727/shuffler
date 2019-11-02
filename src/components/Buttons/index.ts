@@ -6,6 +6,7 @@ import PlayingPanelBtnGroup from "./BtnGroup/PlayingPanelBtnGroup";
 import SwitchPanelRadioBtn from "./BtnGroup/SwitchPanelRadioBtnGroup";
 import VideoListPanelBtnGroup from "./BtnGroup/VideoListPanelBtnGroup";
 import VideosPanelBtnGroup from "./BtnGroup/VideosPanelBtnGroup";
+import ClearNowPlayingBtn from "./ClearNowPlayingBtn";
 import CloseLgPanelDialogBtn from "./CloseLgPanelDialogBtn";
 import DeleteItemBtn from "./DeleteItemBtn";
 import RemovePlaylistFromPlayingBtn from "./RemovePlaylistFromPlayingBtn";
@@ -16,6 +17,7 @@ import SyncPlaylistBtn from "./SyncPlaylistBtn";
 
 export {
   AddPlaylistToPlayingBtn,
+  ClearNowPlayingBtn,
   CloseLgPanelDialogBtn,
   DeleteItemBtn,
   LgPanelCtrlBtnGroup,
