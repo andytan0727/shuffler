@@ -1,8 +1,6 @@
 import { FilterAndCtrlBar } from "components/Bars";
 import { ClearNowPlayingBtn } from "components/Buttons";
-import { useCheckbox } from "components/Checkbox/hooks";
 import {
-  createItemData,
   LgPanelVirtualList,
   ListToPlayListItemSecondaryAction,
   withListItemSecondaryAction,
@@ -10,8 +8,8 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
-import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
+import { useShowFilteredItems } from "utils/hooks/filteredHooks";
 import {
   useClearListToPlay,
   useDeleteListToPlayItems,
@@ -31,10 +29,10 @@ const LgPanelVirtualListToPlayItem = withListItemSecondaryAction(
 
 const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
   const { history } = props;
-  const filteredSnippets = useSelector(selectFilteredSnippets);
   const listToPlayItemIds = useSelector(selectAllListToPlayItemIds);
-  const checkboxHooks = useCheckbox();
-  const { checked, clearChecked } = checkboxHooks;
+  const { checked, clearChecked, filteredItems } = useShowFilteredItems(
+    listToPlayItemIds
+  );
   const { handlePlayListToPlay } = usePlayListToPlay(history, checked);
   const { handleShuffleListToPlay } = useShuffleListToPlay(checked);
   const { handleDeleteListToPlayItems } = useDeleteListToPlayItems(
@@ -42,15 +40,6 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
     clearChecked
   );
   const { handleClearListToPlay } = useClearListToPlay();
-
-  // allow filtered snippets to be shown on list item
-  // for details please refer to
-  // LgPanelVirtualList/ LgPanelVirtualListItem
-  const listToPlayItemData = createItemData({
-    ...checkboxHooks,
-    items: listToPlayItemIds,
-    filteredSnippets,
-  });
 
   return (
     <div className={styles.lgNowPlayingPanelDiv}>
@@ -66,7 +55,7 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
       </div>
 
       <Divider />
-      <LgPanelVirtualList itemData={listToPlayItemData}>
+      <LgPanelVirtualList itemData={filteredItems}>
         {LgPanelVirtualListToPlayItem}
       </LgPanelVirtualList>
     </div>

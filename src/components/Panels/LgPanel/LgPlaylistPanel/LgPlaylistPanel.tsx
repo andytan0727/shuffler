@@ -3,25 +3,23 @@ import {
   RenamePlaylistBtn,
   SyncPlaylistBtn,
 } from "components/Buttons";
-import { useCheckbox } from "components/Checkbox/hooks";
 import { FilterSnippetInput } from "components/Inputs";
 import {
-  createItemData,
   LgPanelVirtualList,
   PlaylistVideoListItemSecondaryAction,
   withListItemSecondaryAction,
 } from "components/Lists/LgPanelVirtualList";
 import SyncPlaylistLoader from "components/Loadings/SyncPlaylistLoader";
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
-import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
   selectPlaylistItemIdsByPlaylistId,
   selectPlaylistNameById,
   selectPlaylistUpdating,
 } from "store/ytplaylist/playlistSelectors";
+import { useShowFilteredItems } from "utils/hooks/filteredHooks";
 import {
   useDeletePlaylistItems,
   usePlayPlaylist,
@@ -47,23 +45,12 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
   const playlistName = useSelector((state: AppState) =>
     selectPlaylistNameById(state, playlistId)
   );
+  const updating = useSelector(selectPlaylistUpdating);
   const playlistItemIds = useSelector((state: AppState) =>
     selectPlaylistItemIdsByPlaylistId(state, playlistId)
   ) as string[];
-  const checkboxHooks = useCheckbox();
-  const { checked, clearChecked } = checkboxHooks;
-  const updating = useSelector(selectPlaylistUpdating);
+  const { checked, filteredItems } = useShowFilteredItems(playlistItemIds);
 
-  const filteredSnippets = useSelector(selectFilteredSnippets);
-  const playlistItemData = createItemData({
-    ...checkboxHooks,
-    items: playlistItemIds,
-    filteredSnippets,
-  });
-
-  // ===============================================
-  // handlers
-  // ===============================================
   const { handlePlayPlaylist } = usePlayPlaylist(
     playlistId,
     checked.length === 0 ? playlistItemIds : checked,
@@ -76,14 +63,6 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
     checked
   );
   const { handleSyncPlaylist } = useSyncPlaylist(playlistId);
-  // ===============================================
-  // End handlers
-  // ===============================================
-
-  // clear checked mainly on playlistItems deletion
-  useEffect(() => {
-    clearChecked();
-  }, [clearChecked, playlistItemIds]);
 
   return (
     <React.Fragment>
@@ -106,7 +85,7 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
           <SyncPlaylistBtn handleSyncPlaylist={handleSyncPlaylist} />
         </div>
         <Divider />
-        <LgPanelVirtualList itemData={playlistItemData}>
+        <LgPanelVirtualList itemData={filteredItems}>
           {LgPanelVirtualListPlaylistItem}
         </LgPanelVirtualList>
       </div>
