@@ -7,21 +7,17 @@ import {
   ListToPlayListItemSecondaryAction,
   withListItemSecondaryAction,
 } from "components/Lists/LgPanelVirtualList";
-import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
+import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
 import {
-  clearListToPlayAction,
-  deleteListToPlayItemsAction,
-  filterListToPlayItemsAction,
-  shuffleListToPlayAction,
-} from "store/ytplaylist/listToPlayActions";
-import {
-  selectAllListToPlayItemIds,
-  selectListToPlayTotalItems,
-} from "store/ytplaylist/listToPlaySelectors";
-import { notify } from "utils/helper/notifyHelper";
+  useClearListToPlay,
+  useDeleteListToPlayItems,
+  usePlayListToPlay,
+  useShuffleListToPlay,
+} from "utils/hooks/listToPlayHooks";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -36,11 +32,16 @@ const LgPanelVirtualListToPlayItem = withListItemSecondaryAction(
 const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
   const { history } = props;
   const filteredSnippets = useSelector(selectFilteredSnippets);
-  const dispatch = useDispatch();
   const listToPlayItemIds = useSelector(selectAllListToPlayItemIds);
-  const itemsCount = useSelector(selectListToPlayTotalItems);
   const checkboxHooks = useCheckbox();
   const { checked, clearChecked } = checkboxHooks;
+  const { handlePlayListToPlay } = usePlayListToPlay(history, checked);
+  const { handleShuffleListToPlay } = useShuffleListToPlay(checked);
+  const { handleDeleteListToPlayItems } = useDeleteListToPlayItems(
+    checked,
+    clearChecked
+  );
+  const { handleClearListToPlay } = useClearListToPlay();
 
   // allow filtered snippets to be shown on list item
   // for details please refer to
@@ -50,43 +51,6 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
     items: listToPlayItemIds,
     filteredSnippets,
   });
-
-  // play only checked items if checked is not empty
-  // else play the entire original listToPlay
-  const handlePlayListToPlay = useCallback(() => {
-    if (checked.length !== 0) {
-      dispatch(filterListToPlayItemsAction(checked));
-    }
-
-    history.push("/player/ytplayer");
-  }, [dispatch, checked, history]);
-
-  // shuffle listToPlay with items' position in checked array remain constant
-  // if checked array is empty, normal old shuffle is executed instead
-  const handleShuffleListToPlay = useCallback(() => {
-    dispatch(
-      shuffleListToPlayAction(checked.length !== 0 ? checked : undefined)
-    );
-  }, [checked, dispatch]);
-
-  // delete listToPlay items without deleting original items from playlists/videos
-  const handleDeleteListToPlayItems = useCallback(() => {
-    dispatch(deleteListToPlayItemsAction(checked));
-
-    // clear all checked videos after deletion
-    clearChecked();
-  }, [dispatch, checked, clearChecked]);
-
-  // clear listToPlay items
-  // alert user if they attempted to clear an empty listToPlay
-  const handleClearNowPlaying = useCallback(() => {
-    if (itemsCount === 0) {
-      notify("warning", "Now playing is empty");
-      return;
-    }
-
-    dispatch(clearListToPlayAction());
-  }, [dispatch, itemsCount]);
 
   return (
     <div className={styles.lgNowPlayingPanelDiv}>
@@ -98,7 +62,7 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
           handleShuffle={handleShuffleListToPlay}
           handleDelete={handleDeleteListToPlayItems}
         />
-        <ClearNowPlayingBtn handleClearNowPlaying={handleClearNowPlaying} />
+        <ClearNowPlayingBtn handleClearNowPlaying={handleClearListToPlay} />
       </div>
 
       <Divider />

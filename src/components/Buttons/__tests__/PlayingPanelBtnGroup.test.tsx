@@ -8,7 +8,7 @@ import {
 import { DeepPartial } from "utility-types";
 import { generateMockStore, renderWithRedux } from "utils/helper/mockStore";
 
-import { fireEvent, wait, waitForElement } from "@testing-library/react";
+import { fireEvent } from "@testing-library/react";
 
 import PlayingPanelBtnGroup from "../BtnGroup/PlayingPanelBtnGroup";
 
@@ -177,9 +177,7 @@ describe("testing PlayingPanelBtnGroup buttons clicks", () => {
   });
 
   test("should handle clear button clicks", async () => {
-    const { container, getByText } = renderPlayingPanelBtnGroup(
-      storeWithListToPlay
-    );
+    const { container } = renderPlayingPanelBtnGroup(storeWithListToPlay);
 
     const clearButtonElem = container.querySelectorAll("button")[2];
     expect(clearButtonElem).toBeInTheDocument();
@@ -192,19 +190,6 @@ describe("testing PlayingPanelBtnGroup buttons clicks", () => {
 
     // clicks clear button
     fireEvent.click(clearButtonElem);
-
-    // get sweetalert2 clear button
-    const confirmButtonElem = await waitForElement(
-      () => getByText("Yes, clear it please!🔥"),
-      {
-        container,
-      }
-    );
-    expect(confirmButtonElem).toBeInTheDocument();
-    expect(confirmButtonElem).toHaveClass("swal2-confirm");
-
-    // clicks and wait the promise to resolve
-    await wait(() => fireEvent.click(confirmButtonElem));
 
     // assert next listToPlay entities and result to be empty
     const nextListToPlayPlaylistItems = selectListToPlayPlaylistItems(
