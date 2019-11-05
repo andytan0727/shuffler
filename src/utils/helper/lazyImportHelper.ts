@@ -37,7 +37,7 @@ export const delayLazy = <T>(
   lazyFun: () => Promise<T>,
   timeout = 500
 ): Promise<T> =>
-  Promise.all([
+  Promise.all<T>([
     lazyFun(),
     new Promise((resolve) => setTimeout(resolve, timeout)),
   ]).then(([importedModule]) => importedModule);

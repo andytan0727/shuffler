@@ -15,5 +15,6 @@
     "ytapi",
     "ytplayer",
     "ytplaylist"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
