@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RouteComponentProps } from "react-router";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { setCurSongIdx } from "store/ytplayer/action";
 import { removeFilteredSnippetsByItemIds } from "store/ytplaylist/filteredActions";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
@@ -9,7 +8,6 @@ import {
   chooseFirstItemAndShuffleListToPlayAction,
   deleteListToPlayItemByIdAction,
 } from "store/ytplaylist/listToPlayActions";
-import { PlaylistItemSnippet, VideoItemSnippet } from "store/ytplaylist/types";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import {
@@ -17,16 +15,16 @@ import {
   PlayArrow as PlayArrowIcon,
 } from "@material-ui/icons";
 
-interface ListToPlayListItemSecondaryActionProps extends RouteComponentProps {
+interface ListToPlayListItemSecondaryActionProps {
   itemId: string;
-  snippet: PlaylistItemSnippet | VideoItemSnippet;
 }
 
-const ListToPlayListItemSecondaryAction = (
-  props: ListToPlayListItemSecondaryActionProps
-) => {
-  const { itemId, history } = props;
+const ListToPlayListItemSecondaryAction: React.FC<
+  ListToPlayListItemSecondaryActionProps
+> = (props: ListToPlayListItemSecondaryActionProps) => {
+  const { itemId } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   const filteredSnippets = useSelector(selectFilteredSnippets);
 
   // play this video then shuffle the rest of the list
@@ -65,4 +63,4 @@ const ListToPlayListItemSecondaryAction = (
   );
 };
 
-export default withRouter(ListToPlayListItemSecondaryAction);
+export default ListToPlayListItemSecondaryAction;

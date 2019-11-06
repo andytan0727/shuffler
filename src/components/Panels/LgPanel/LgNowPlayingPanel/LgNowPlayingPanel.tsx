@@ -7,7 +7,6 @@ import {
 } from "components/Lists/LgPanelVirtualList";
 import React from "react";
 import { useSelector } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router";
 import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
 import { useShowFilteredItems } from "utils/hooks/filteredHooks";
 import {
@@ -21,19 +20,16 @@ import { Divider, Typography } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
 
-type LgNowPlayingPanelProps = RouteComponentProps;
-
 const LgPanelVirtualListToPlayItem = withListItemSecondaryAction(
   ListToPlayListItemSecondaryAction
 );
 
-const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
-  const { history } = props;
+const LgNowPlayingPanel: React.FC = () => {
   const listToPlayItemIds = useSelector(selectAllListToPlayItemIds);
   const { checked, clearChecked, filteredItems } = useShowFilteredItems(
     listToPlayItemIds
   );
-  const { handlePlayListToPlay } = usePlayListToPlay(history, checked);
+  const { handlePlayListToPlay } = usePlayListToPlay(checked);
   const { handleShuffleListToPlay } = useShuffleListToPlay(checked);
   const { handleDeleteListToPlayItems } = useDeleteListToPlayItems(
     checked,
@@ -62,4 +58,4 @@ const LgNowPlayingPanel = (props: LgNowPlayingPanelProps) => {
   );
 };
 
-export default withRouter(LgNowPlayingPanel);
+export default LgNowPlayingPanel;

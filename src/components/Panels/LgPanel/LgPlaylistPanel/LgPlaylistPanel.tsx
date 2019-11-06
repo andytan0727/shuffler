@@ -12,7 +12,7 @@ import {
 import SyncPlaylistLoader from "components/Loadings/SyncPlaylistLoader";
 import React from "react";
 import { useSelector } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import { AppState } from "store";
 import {
   selectPlaylistItemIdsByPlaylistId,
@@ -32,16 +32,14 @@ import { Divider, Typography } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
 
-interface LgPlaylistPanelProps extends RouteComponentProps {
-  match: MatchRoute;
-}
-
 const LgPanelVirtualListPlaylistItem = withListItemSecondaryAction(
   PlaylistVideoListItemSecondaryAction
 );
 
-const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
-  const playlistId: string = match.params.id;
+const LgPlaylistPanel: React.FC = () => {
+  const {
+    params: { id: playlistId },
+  } = useRouteMatch();
   const playlistName = useSelector((state: AppState) =>
     selectPlaylistNameById(state, playlistId)
   );
@@ -53,8 +51,7 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
 
   const { handlePlayPlaylist } = usePlayPlaylist(
     playlistId,
-    checked.length === 0 ? playlistItemIds : checked,
-    history
+    checked.length === 0 ? playlistItemIds : checked
   );
   const { handleShufflePlaylist } = useShufflePlaylist(playlistId);
   const { handleRenamePlaylist } = useRenamePlaylist(playlistId);
@@ -93,4 +90,4 @@ const LgPlaylistPanel = ({ match, history }: LgPlaylistPanelProps) => {
   );
 };
 
-export default withRouter(LgPlaylistPanel);
+export default LgPlaylistPanel;

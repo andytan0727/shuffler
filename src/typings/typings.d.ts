@@ -37,7 +37,9 @@ declare global {
     isExact: boolean;
     url: string;
     path: string;
-    params: any;
+    params: {
+      id: string;
+    };
   }
 
   type PlaylistParams = BaseFetchParams & {
@@ -88,6 +90,12 @@ declare module "typesafe-actions" {
   interface Types {
     RootAction: ActionType<typeof import("../store").default>;
   }
+}
+
+declare module "react-router-dom" {
+  export const useHistory: () => import("react-router-dom").RouteComponentProps["history"];
+
+  export const useRouteMatch: () => MatchRoute;
 }
 
 // extends MUI default palette background colors

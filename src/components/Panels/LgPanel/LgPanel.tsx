@@ -1,14 +1,10 @@
 import FullPageSpinner from "components/Loadings/FullPageSpinner";
 import React, { lazy, Suspense, useEffect } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import { delayLazy, retryLazy } from "utils/helper/lazyImportHelper";
 
 import LgPanelDrawer from "./LgPanelDrawer";
 import styles from "./styles.module.scss";
-
-interface LgPanelProps {
-  match: MatchRoute;
-}
 
 const LgVideosPanel = lazy(() =>
   delayLazy(() => retryLazy(() => import("./LgVideosPanel")))
@@ -32,8 +28,8 @@ const LgPlaylistsPanel = lazy(() =>
  * related to video Lg
  *
  */
-const LgPanel = ({ match }: LgPanelProps) => {
-  const LgPanelPath = match.path;
+const LgPanel: React.FC = () => {
+  const { path: lgPanelPath } = useRouteMatch();
 
   useEffect(() => {
     if (!localStorage.getItem("visited-panel")) {
@@ -46,20 +42,20 @@ const LgPanel = ({ match }: LgPanelProps) => {
       <Route component={LgPanelDrawer} />
       <Suspense fallback={<FullPageSpinner />}>
         <Switch>
-          <Route path={`${LgPanelPath}/videos`} component={LgVideosPanel} />
+          <Route path={`${lgPanelPath}/videos`} component={LgVideosPanel} />
           <Route
-            path={`${LgPanelPath}/recent`}
+            path={`${lgPanelPath}/recent`}
             component={LgRecentlyPlayedPanel}
           />
           <Route
-            path={`${LgPanelPath}/playing`}
+            path={`${lgPanelPath}/playing`}
             component={LgNowPlayingPanel}
           />
           <Route
-            path={`${LgPanelPath}/playlists`}
+            path={`${lgPanelPath}/playlists`}
             component={LgPlaylistsPanel}
           />
-          <Redirect to={`${LgPanelPath}/playing`} />
+          <Redirect to={`${lgPanelPath}/playing`} />
         </Switch>
       </Suspense>
     </div>

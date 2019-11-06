@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import React from "react";
 import { useSelector } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
 import { selectPreferDarkTheme } from "store/userPreferences/selector";
 import {
   useClearListToPlay,
@@ -17,10 +16,9 @@ import {
 
 import styles from "./styles.module.scss";
 
-const PlayingPanelBtnGroup = (props: RouteComponentProps) => {
-  const { history } = props;
+const PlayingPanelBtnGroup: React.FC = () => {
   const preferDarkTheme = useSelector(selectPreferDarkTheme);
-  const { handlePlayListToPlay } = usePlayListToPlay(history);
+  const { handlePlayListToPlay } = usePlayListToPlay();
   const { handleShuffleListToPlay } = useShuffleListToPlay();
   const { handleClearListToPlay } = useClearListToPlay();
 
@@ -47,4 +45,4 @@ const PlayingPanelBtnGroup = (props: RouteComponentProps) => {
   );
 };
 
-export default withRouter(PlayingPanelBtnGroup);
+export default PlayingPanelBtnGroup;

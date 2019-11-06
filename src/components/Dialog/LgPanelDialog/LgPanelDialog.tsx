@@ -1,7 +1,7 @@
 import { CloseLgPanelDialogBtn } from "components/Buttons";
 import LgPanel from "components/Panels/LgPanel";
 import React, { forwardRef, useCallback } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import { useHistory } from "react-router-dom";
 
 import {
   AppBar,
@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
 
-interface LgPanelDialogProps extends RouteComponentProps {
+interface LgPanelDialogProps {
   open: boolean;
   handleCloseDialog: () => void;
 }
@@ -47,17 +47,11 @@ Transition.displayName = "Transition";
  *
  * @param props
  */
-const LgPanelDialog: React.FunctionComponent<LgPanelDialogProps> = (
+const LgPanelDialog: React.FC<LgPanelDialogProps> = (
   props: LgPanelDialogProps
 ) => {
-  const {
-    open,
-    handleCloseDialog,
-    history,
-
-    // react-router match provide to LgPanel for routing
-    match,
-  } = props;
+  const { open, handleCloseDialog } = props;
+  const history = useHistory();
   const classes = useStyles();
 
   /**
@@ -91,9 +85,9 @@ const LgPanelDialog: React.FunctionComponent<LgPanelDialogProps> = (
           <CloseLgPanelDialogBtn handleCloseDialog={handleCloseDialog} />
         </Toolbar>
       </AppBar>
-      <LgPanel match={match} />
+      <LgPanel />
     </Dialog>
   );
 };
 
-export default withRouter(LgPanelDialog);
+export default LgPanelDialog;

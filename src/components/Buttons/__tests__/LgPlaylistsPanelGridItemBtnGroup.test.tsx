@@ -27,17 +27,9 @@ window.scrollTo = jest.fn();
 const playlistId = "playlistId-1";
 const mockHistory: string[] = [];
 
-jest.mock("react-router", () => ({
-  withRouter: (Comp: React.ComponentType) => {
-    const MockedRoutedComponent = (props: any) => (
-      <Comp
-        {...props}
-        history={mockHistory} // mock react router history item
-      />
-    );
-
-    return MockedRoutedComponent;
-  },
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => mockHistory,
 }));
 
 // NOTE: this is a component that renders with the

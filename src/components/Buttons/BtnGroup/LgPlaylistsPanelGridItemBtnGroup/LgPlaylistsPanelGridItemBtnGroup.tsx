@@ -4,7 +4,6 @@ import {
 } from "components/Buttons";
 import React from "react";
 import { useSelector } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
 import { AppState } from "store";
 import { selectPlaylistById } from "store/ytplaylist/playlistSelectors";
 import {
@@ -30,29 +29,22 @@ interface LgPlaylistsPanelGridItemBtnProps {
  * Button group for grid item
  *
  */
-export const LgPlaylistsPanelGridItemBtn = (
-  props: LgPlaylistsPanelGridItemBtnProps & RouteComponentProps
-) => {
-  const { playlistId, history } = props;
+export const LgPlaylistsPanelGridItemBtn: React.FC<
+  LgPlaylistsPanelGridItemBtnProps
+> = (props: LgPlaylistsPanelGridItemBtnProps) => {
+  const { playlistId } = props;
   const playlist = useSelector((state: AppState) =>
     selectPlaylistById(state, playlistId)
   );
   const itemIds = playlist && playlist.items;
   const playlistInPlaying = !!(playlist && playlist.allInPlaying);
 
-  // ===============================================
-  // Handlers
-  // ===============================================
   const { handleShufflePlaylist } = useShufflePlaylist(playlistId);
   const { handlePlayPlaylist } = usePlayPlaylist(
     playlistId,
-    itemIds as string[],
-    history
+    itemIds as string[]
   );
   const { handleDeletePlaylist } = useDeletePlaylist([playlistId]);
-  // ===============================================
-  // End handlers
-  // ===============================================
 
   return (
     <div>
@@ -86,4 +78,4 @@ export const LgPlaylistsPanelGridItemBtn = (
   );
 };
 
-export default withRouter(LgPlaylistsPanelGridItemBtn);
+export default LgPlaylistsPanelGridItemBtn;

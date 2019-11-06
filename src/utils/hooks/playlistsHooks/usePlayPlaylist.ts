@@ -1,6 +1,6 @@
-import { History } from "history";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
 
 /**
@@ -10,15 +10,11 @@ import { updateListToPlayAction } from "store/ytplaylist/listToPlayActions";
  *
  * @param playlistId PlaylistId of playlist to play
  * @param itemIds ItemIds of items in the playlist to play
- * @param history History object from react-router (particularly from withRouter)
  * @returns Object containing handler function
  */
-export const usePlayPlaylist = (
-  playlistId: string,
-  itemIds: string[],
-  history: History
-) => {
+export const usePlayPlaylist = (playlistId: string, itemIds: string[]) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   /**
    * Update (replace) entire listToPlay with items from

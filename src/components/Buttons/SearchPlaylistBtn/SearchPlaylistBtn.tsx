@@ -1,13 +1,11 @@
 import React, { useCallback } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import { useHistory } from "react-router-dom";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import { SearchOutlined as SearchOutlinedIcon } from "@material-ui/icons";
 
-const SearchPlaylistBtn: React.FC<RouteComponentProps> = (
-  props: RouteComponentProps
-) => {
-  const { history } = props;
+const SearchPlaylistBtn: React.FC = () => {
+  const history = useHistory();
 
   const handleOnClick = useCallback(() => {
     history.push("/panel/playlists");
@@ -22,4 +20,4 @@ const SearchPlaylistBtn: React.FC<RouteComponentProps> = (
   );
 };
 
-export default withRouter(SearchPlaylistBtn);
+export default SearchPlaylistBtn;
