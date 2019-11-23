@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
@@ -8,7 +8,7 @@ import { ListToPlaySnippets } from "store/ytplaylist/types";
 
 import { makeStyles, useMediaQuery } from "@material-ui/core";
 
-import PlayerListItem from "./PlayerListItem";
+import { withPlayerListRef } from "./PlayerListItem";
 
 interface PlayerListProps {
   items: ListToPlaySnippets;
@@ -37,12 +37,13 @@ const PlayerList = (props: PlayerListProps) => {
   const listRef = useRef<FixedSizeList>(null);
   const matchLargeDisplay = useMediaQuery("(min-width: 950px)");
   const itemCount = items.length;
+  const PlayerListItem = useMemo(() => withPlayerListRef(listRef), [listRef]);
 
   useEffect(() => {
     const currentListRef = listRef.current;
     // scroll to current song in playing list
     if (currentListRef) {
-      currentListRef.scrollToItem(curSongIdx, "smart");
+      currentListRef.scrollToItem(curSongIdx, "start");
     }
   }, [curSongIdx]);
 

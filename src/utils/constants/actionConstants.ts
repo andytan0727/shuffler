@@ -71,6 +71,7 @@ export const CLEAR_LIST_TO_PLAY = "CLEAR_LIST_TO_PLAY" as const;
 export const SHUFFLE_LIST_TO_PLAY = "SHUFFLE_LIST_TO_PLAY" as const;
 export const CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY = "CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY" as const;
 export const FILTER_LIST_TO_PLAY_ITEMS = "FILTER_LIST_TO_PLAY_ITEMS" as const;
+export const QUEUE_LIST_TO_PLAY_ITEM = "QUEUE_LIST_TO_PLAY_ITEM" as const;
 
 // =========================
 // ytplaylist filtered

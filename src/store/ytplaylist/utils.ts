@@ -320,6 +320,23 @@ export const deleteListToPlayItemById = (
   return draft;
 };
 
+/**
+ * Remove the specified item from items and return it. Wrapper around lodash remove
+ *
+ * @param items Result items from normalized Redux store
+ * @param itemId Id of item to remove
+ */
+export const removeResultItem = (
+  items: ListToPlayResultItem[],
+  itemId: string
+) => {
+  const [removedItem] = remove(items, (item) => item.id === itemId);
+
+  if (!removedItem) throw new Error("Item not found in listToPlay");
+
+  return removedItem;
+};
+
 // =======================================
 // End Util functions
 // =======================================

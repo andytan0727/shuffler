@@ -9,12 +9,17 @@ import {
   CLEAR_LIST_TO_PLAY,
   DELETE_LIST_TO_PLAY_ITEM_BY_ID,
   DELETE_LIST_TO_PLAY_ITEMS,
+  QUEUE_LIST_TO_PLAY_ITEM,
   SHUFFLE_LIST_TO_PLAY,
   UPDATE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
 
 import { DeepReadonlyListToPlay, ListToPlay, YTPlaylistActions } from "./types";
-import { deepMergeStates, deleteListToPlayItemById } from "./utils";
+import {
+  deepMergeStates,
+  deleteListToPlayItemById,
+  removeResultItem,
+} from "./utils";
 
 const initialListToPlayState: DeepReadonlyListToPlay = {
   entities: {
@@ -128,15 +133,22 @@ export const listToPlayReducer: Reducer<
     case CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY: {
       const { itemId } = action.payload;
 
-      const [removedItem] = remove(draft.result, (item) => item.id === itemId);
-
-      if (!removedItem) throw new Error("Item not found in listToPlay");
+      const removedItem = removeResultItem(draft.result, itemId);
 
       // shuffle then insert removed item as first item
       // this creates the effect of fixed first item then shuffle
       draft.result = shuffle(draft.result);
       draft.result.splice(0, 0, removedItem);
 
+      return draft;
+    }
+
+    case QUEUE_LIST_TO_PLAY_ITEM: {
+      const { curSongIdx, itemId } = action.payload;
+
+      const removedItem = removeResultItem(draft.result, itemId);
+
+      draft.result.splice(curSongIdx + 1, 0, removedItem);
       return draft;
     }
 

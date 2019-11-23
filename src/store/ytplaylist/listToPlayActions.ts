@@ -9,6 +9,7 @@ import {
   DELETE_LIST_TO_PLAY_ITEM_BY_ID,
   DELETE_LIST_TO_PLAY_ITEMS,
   FILTER_LIST_TO_PLAY_ITEMS,
+  QUEUE_LIST_TO_PLAY_ITEM,
   SHUFFLE_LIST_TO_PLAY,
   UPDATE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
@@ -209,6 +210,24 @@ export const filterListToPlayItemsAction = createAction(
     return (itemIds: string[]) =>
       action({
         itemIds,
+      });
+  }
+);
+
+/**
+ * Queue the selected video after currently playing video in playing list
+ *
+ * @param curSongIdx Index of currently playing video
+ * @param itemId Item id of the selected video
+ * @returns QUEUE_LIST_TO_PLAY_ITEM action object
+ */
+export const queueListToPlayItemAction = createAction(
+  QUEUE_LIST_TO_PLAY_ITEM,
+  (action) => {
+    return (curSongIdx: number, itemId: string) =>
+      action({
+        curSongIdx,
+        itemId,
       });
   }
 );
