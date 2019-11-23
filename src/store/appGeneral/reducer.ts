@@ -167,6 +167,12 @@ const initialStates = {
         "Fix the problem of rename input dialog staying behind of manage playlist dialog",
       ],
     },
+    {
+      version: "4.2.0",
+      changes: [
+        "Add feature to queue selected video after currently playing video",
+      ],
+    },
   ],
 };
 
