@@ -1,5 +1,4 @@
 import at from "lodash/at";
-import get from "lodash/get";
 import has from "lodash/has";
 import merge from "lodash/merge";
 import pull from "lodash/pull";
@@ -196,7 +195,9 @@ export const deleteSnippetsEntity = (
   entities: PlaylistsOrVideosEntities,
   snippetIds: string[]
 ) => {
-  const snippetsEntity = get(entities, "snippets");
+  const snippetsEntity = entities?.snippets;
+
+  if (!snippetsEntity) return;
 
   snippetIds.forEach((snippetId) => {
     // do not delete snippet if there is another reference
@@ -236,7 +237,7 @@ export const deletePlaylistOrVideoById = <T extends PlaylistsOrVideos>(
     ? entities.playlistItems
     : entities.videoItems;
 
-  const itemIds = get(sourceEntity, [id, "items"]);
+  const itemIds = sourceEntity[id]?.items;
 
   // lodash/at unable to resolve snippet's stringify property path of [id].snippet type
   // which is a string array
@@ -358,8 +359,8 @@ export const getSnippetFromItemId = (
   itemId: string
 ) => {
   const snippetId = isPlaylistsEntities(entities)
-    ? get(entities.playlistItems[itemId], "snippet")
-    : get(entities.videoItems[itemId], "snippet");
+    ? entities.playlistItems[itemId]?.snippet
+    : entities.videoItems[itemId]?.snippet;
 
   const snippet = entities.snippets[snippetId];
 

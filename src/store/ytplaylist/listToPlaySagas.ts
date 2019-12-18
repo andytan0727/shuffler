@@ -68,7 +68,7 @@ function* uniquelyAddListToPlayItems(
       resultItem: { id: itemId, schema },
       foreignKey,
     } = item;
-    const currentSnippetId = yield select((state: AppState) =>
+    const currentSnippetId: string = yield select((state: AppState) =>
       selectSnippetIdByItemId(state, itemId)
     );
 

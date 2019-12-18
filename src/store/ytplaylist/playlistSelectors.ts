@@ -1,4 +1,3 @@
-import get from "lodash/get";
 import map from "lodash/map";
 import pick from "lodash/pick";
 import createCachedSelector from "re-reselect";
@@ -52,7 +51,7 @@ export const selectPlaylistById = createCachedSelector(
 export const selectPlaylistNameById = createCachedSelector(
   selectPlaylistsEntities,
   (_: AppState, playlistId: string) => playlistId,
-  (entities, id) => get(entities.playlists[id], "name")
+  (entities, id) => entities.playlists[id]?.name
 )((_, id) => `playlistName-playlistId-${id}`);
 
 export const selectPlaylistItemIdsByPlaylistId = createCachedSelector(

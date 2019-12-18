@@ -1,4 +1,3 @@
-import get from "lodash/get";
 import createCachedSelector from "re-reselect";
 import { AppState } from "store";
 
@@ -73,9 +72,7 @@ export const selectSnippetIdByItemId = createCachedSelector(
 
     // return playlistItem's snippet id if the itemId belongs to playlist,
     // else return videoItem's snippet id
-    return playlistItem
-      ? get(playlistItem, "snippet")
-      : get(videoItem, "snippet");
+    return playlistItem?.snippet ?? videoItem?.snippet;
   }
 )((_, itemId) => `snippetId-itemId-${itemId}`);
 

@@ -1,5 +1,4 @@
 import produce from "immer";
-import get from "lodash/get";
 import {
   PlaylistItemSnippet,
   Playlists,
@@ -190,9 +189,9 @@ export const stateMaker = (
     excludeId?: number;
   }
 ): Playlists | Videos => {
-  const sourceLength = get(customizer, "sourceLength");
-  const itemsLength = get(customizer, "itemsLength");
-  const excludeId = get(customizer, "excludeId");
+  const sourceLength = customizer?.sourceLength;
+  const itemsLength = customizer?.itemsLength;
+  const excludeId = customizer?.excludeId;
 
   return produce(states, (draft) => {
     Array.from({ length: sourceLength || 10 }, (_, idx) => idx + 1).forEach(
