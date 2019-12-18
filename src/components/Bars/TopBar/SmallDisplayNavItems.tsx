@@ -10,9 +10,9 @@ interface SmallDisplayNavItemsProps {
   handleToggleNavOverlay: (e: OnClickEvent) => void;
 }
 
-const SmallDisplayNavItems: React.FunctionComponent<
-  SmallDisplayNavItemsProps
-> = (props: SmallDisplayNavItemsProps) => {
+const SmallDisplayNavItems: React.FC<SmallDisplayNavItemsProps> = (
+  props: SmallDisplayNavItemsProps
+) => {
   const { handleToggleNavOverlay } = props;
 
   return (

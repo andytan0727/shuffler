@@ -7,7 +7,7 @@ interface SyncPlaylistBtnProps {
   handleSyncPlaylist: () => void;
 }
 
-const SyncPlaylistBtn: React.FunctionComponent<SyncPlaylistBtnProps> = (
+const SyncPlaylistBtn: React.FC<SyncPlaylistBtnProps> = (
   props: SyncPlaylistBtnProps
 ) => {
   const { handleSyncPlaylist } = props;

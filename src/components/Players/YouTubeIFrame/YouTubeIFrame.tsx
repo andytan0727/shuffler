@@ -52,9 +52,9 @@ const YouTubeIFrame = (props: YouTubeIFrameProps) => {
       videoId={
         // playlist: if resourceId present
         // video: else
-        isPlaylistItemSnippet(currentSnippet as (
-          | PlaylistItemSnippet
-          | VideoItemSnippet))
+        isPlaylistItemSnippet(
+          currentSnippet as PlaylistItemSnippet | VideoItemSnippet
+        )
           ? (currentSnippet as PlaylistItemSnippet).resourceId.videoId
           : currentSnippet.id
       }

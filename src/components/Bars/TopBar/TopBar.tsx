@@ -19,7 +19,7 @@ const ShufflerTextLogoAnchor = () => {
   );
 };
 
-const TopBar: React.FunctionComponent = () => {
+const TopBar: React.FC = () => {
   const [show, setShow] = useState(false);
   const matchSmallDisplay = useMediaQuery("(max-width: 950px)");
   const transitions = useTransition(show, null, {

@@ -1,3 +1,1 @@
-export {
-  makeToggleItemToListToPlaySwitch,
-} from "./ToggleItemToListToPlaySwitch";
+export { makeToggleItemToListToPlaySwitch } from "./ToggleItemToListToPlaySwitch";

@@ -37,7 +37,7 @@ interface SyncPlaylistLoaderProps {
   open: boolean;
 }
 
-const SyncPlaylistLoader: React.FunctionComponent<SyncPlaylistLoaderProps> = (
+const SyncPlaylistLoader: React.FC<SyncPlaylistLoaderProps> = (
   props: SyncPlaylistLoaderProps
 ) => {
   const { open } = props;

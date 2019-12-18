@@ -7,9 +7,9 @@ interface ShowLgPanelDialogBtnProps {
   handleOpenDialog: () => void;
 }
 
-const ShowLgPanelDialogBtn: React.FunctionComponent<
-  ShowLgPanelDialogBtnProps
-> = (props: ShowLgPanelDialogBtnProps) => {
+const ShowLgPanelDialogBtn: React.FC<ShowLgPanelDialogBtnProps> = (
+  props: ShowLgPanelDialogBtnProps
+) => {
   const { handleOpenDialog } = props;
 
   return (

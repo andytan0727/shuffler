@@ -1,4 +1,2 @@
 export { default as ToggleDarkModeSwitch } from "./ToggleDarkModeSwitch";
-export {
-  makeToggleItemToListToPlaySwitch,
-} from "./ToggleItemToListToPlaySwitch";
+export { makeToggleItemToListToPlaySwitch } from "./ToggleItemToListToPlaySwitch";

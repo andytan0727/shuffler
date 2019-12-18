@@ -7,7 +7,7 @@ interface RenamePlaylistBtnProps {
   handleRename: () => void;
 }
 
-const RenamePlaylistBtn: React.FunctionComponent<RenamePlaylistBtnProps> = (
+const RenamePlaylistBtn: React.FC<RenamePlaylistBtnProps> = (
   props: RenamePlaylistBtnProps
 ) => {
   const { handleRename } = props;

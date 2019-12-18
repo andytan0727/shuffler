@@ -41,7 +41,7 @@ const PlayerDropdown = () => {
   );
 };
 
-const TopBarNavItems: React.FunctionComponent = () => {
+const TopBarNavItems: React.FC = () => {
   return (
     <ul className={styles.navItems}>
       <li>

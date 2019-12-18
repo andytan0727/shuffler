@@ -29,9 +29,9 @@ interface LgPlaylistsPanelGridItemBtnProps {
  * Button group for grid item
  *
  */
-export const LgPlaylistsPanelGridItemBtn: React.FC<
-  LgPlaylistsPanelGridItemBtnProps
-> = (props: LgPlaylistsPanelGridItemBtnProps) => {
+export const LgPlaylistsPanelGridItemBtn: React.FC<LgPlaylistsPanelGridItemBtnProps> = (
+  props: LgPlaylistsPanelGridItemBtnProps
+) => {
   const { playlistId } = props;
   const playlist = useSelector((state: AppState) =>
     selectPlaylistById(state, playlistId)

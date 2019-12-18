@@ -7,9 +7,9 @@ interface CloseLgPanelDialogBtnProps {
   handleCloseDialog: () => void;
 }
 
-const CloseLgPanelDialogBtn: React.FunctionComponent<
-  CloseLgPanelDialogBtnProps
-> = (props: CloseLgPanelDialogBtnProps) => {
+const CloseLgPanelDialogBtn: React.FC<CloseLgPanelDialogBtnProps> = (
+  props: CloseLgPanelDialogBtnProps
+) => {
   const { handleCloseDialog } = props;
 
   return (

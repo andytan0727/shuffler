@@ -19,9 +19,9 @@ interface ListToPlayListItemSecondaryActionProps {
   itemId: string;
 }
 
-const ListToPlayListItemSecondaryAction: React.FC<
-  ListToPlayListItemSecondaryActionProps
-> = (props: ListToPlayListItemSecondaryActionProps) => {
+const ListToPlayListItemSecondaryAction: React.FC<ListToPlayListItemSecondaryActionProps> = (
+  props: ListToPlayListItemSecondaryActionProps
+) => {
   const { itemId } = props;
   const dispatch = useDispatch();
   const history = useHistory();
