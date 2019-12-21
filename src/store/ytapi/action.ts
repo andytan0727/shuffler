@@ -21,14 +21,11 @@ import {
  */
 export const fetchPlaylistDataAction = createAction(
   FETCH_PLAYLIST_DATA,
-  (action) => {
-    return (url: string, params: FetchParams) =>
-      action({
-        url,
-        params,
-      });
-  }
-);
+  (url: string, params: FetchParams) => ({
+    url,
+    params,
+  })
+)();
 
 /**
  * Executes when successfully fetched playlist data from YouTube Data API
@@ -38,13 +35,10 @@ export const fetchPlaylistDataAction = createAction(
  */
 export const fetchPlaylistDataSuccessAction = createAction(
   FETCH_PLAYLIST_DATA_SUCCESS,
-  (action) => {
-    return (data: FetchedPlaylist) =>
-      action({
-        data,
-      });
-  }
-);
+  (data: FetchedPlaylist) => ({
+    data,
+  })
+)();
 
 /**
  * Executes when failed to fetch playlist data from YouTube Data API
@@ -53,7 +47,7 @@ export const fetchPlaylistDataSuccessAction = createAction(
  */
 export const fetchPlaylistDataFailedAction = createAction(
   FETCH_PLAYLIST_DATA_FAILED
-);
+)();
 
 /**
  * Add fetched playlist's to Redux store
@@ -62,13 +56,10 @@ export const fetchPlaylistDataFailedAction = createAction(
  */
 export const addFetchedPlaylistIdAction = createAction(
   ADD_FETCHED_PLAYLIST_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
+  (id: string) => ({
+    id,
+  })
+)();
 
 /**
  * Set given playlist URL
@@ -76,12 +67,12 @@ export const addFetchedPlaylistIdAction = createAction(
  * @param playlistUrl
  * @return SET_PLAYLIST_URL action object for Redux
  */
-export const setPlaylistUrlAction = createAction(SET_PLAYLIST_URL, (action) => {
-  return (playlistUrl: string) =>
-    action({
-      playlistUrl,
-    });
-});
+export const setPlaylistUrlAction = createAction(
+  SET_PLAYLIST_URL,
+  (playlistUrl: string) => ({
+    playlistUrl,
+  })
+)();
 
 /**
  * Fetching videos information asynchronously from API to Redux
@@ -89,13 +80,13 @@ export const setPlaylistUrlAction = createAction(SET_PLAYLIST_URL, (action) => {
  * @param params Extra params for request
  * @returns FETCH_VIDEO_DATA action object
  */
-export const fetchVideoDataAction = createAction(FETCH_VIDEO_DATA, (action) => {
-  return (url: string, params: FetchParams) =>
-    action({
-      url,
-      params,
-    });
-});
+export const fetchVideoDataAction = createAction(
+  FETCH_VIDEO_DATA,
+  (url: string, params: FetchParams) => ({
+    url,
+    params,
+  })
+)();
 
 /**
  * Executes when successfully fetched video data from YouTube Data API
@@ -105,20 +96,19 @@ export const fetchVideoDataAction = createAction(FETCH_VIDEO_DATA, (action) => {
  */
 export const fetchVideoDataSuccessAction = createAction(
   FETCH_VIDEO_DATA_SUCCESS,
-  (action) => {
-    return (data: FetchedVideo) =>
-      action({
-        data,
-      });
-  }
-);
+  (data: FetchedVideo) => ({
+    data,
+  })
+)();
 
 /**
  * Executes when failed to fetch video data from YouTube Data API
  *
  * @returns FETCH_VIDEO_DATA_FAILED action object
  */
-export const fetchVideoDataFailedAction = createAction(FETCH_VIDEO_DATA_FAILED);
+export const fetchVideoDataFailedAction = createAction(
+  FETCH_VIDEO_DATA_FAILED
+)();
 
 /**
  * Add fetched video id to ytapi redux store
@@ -128,13 +118,10 @@ export const fetchVideoDataFailedAction = createAction(FETCH_VIDEO_DATA_FAILED);
  */
 export const addFetchedVideoIdAction = createAction(
   ADD_FETCHED_VIDEO_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
+  (id: string) => ({
+    id,
+  })
+)();
 
 /**
  * Set given video URL
@@ -142,9 +129,9 @@ export const addFetchedVideoIdAction = createAction(
  * @param videoUrl
  * @return SET_VIDEO_URL action object for Redux
  */
-export const setVideoUrlAction = createAction(SET_VIDEO_URL, (action) => {
-  return (videoUrl: string) =>
-    action({
-      videoUrl,
-    });
-});
+export const setVideoUrlAction = createAction(
+  SET_VIDEO_URL,
+  (videoUrl: string) => ({
+    videoUrl,
+  })
+)();

@@ -18,13 +18,13 @@ import { VideosEntities } from "./types";
  * @param result Normalized videos result from videos states
  * @returns ADD_FETCHED_VIDEO action object
  */
-export const addVideoAction = createAction(ADD_VIDEO, (action) => {
-  return (entities: VideosEntities, result: string[]) =>
-    action({
-      entities,
-      result,
-    });
-});
+export const addVideoAction = createAction(
+  ADD_VIDEO,
+  (entities: VideosEntities, result: string[]) => ({
+    entities,
+    result,
+  })
+)();
 
 /**
  * Add all items in the specified playlist into listToPlay
@@ -36,13 +36,10 @@ export const addVideoAction = createAction(ADD_VIDEO, (action) => {
  */
 export const addVideoToListToPlayAction = createAction(
   ADD_VIDEO_TO_LIST_TO_PLAY,
-  (action) => {
-    return (videoId: string) =>
-      action({
-        videoId,
-      });
-  }
-);
+  (videoId: string) => ({
+    videoId,
+  })
+)();
 
 /**
  * Batch addition of videos to listToPlay
@@ -54,13 +51,10 @@ export const addVideoToListToPlayAction = createAction(
  */
 export const addVideosToListToPlayAction = createAction(
   ADD_VIDEOS_TO_LIST_TO_PLAY,
-  (action) => {
-    return (videoIds: string[]) =>
-      action({
-        videoIds,
-      });
-  }
-);
+  (videoIds: string[]) => ({
+    videoIds,
+  })
+)();
 
 /**
  * Update video name by id
@@ -71,14 +65,11 @@ export const addVideosToListToPlayAction = createAction(
  */
 export const updateVideoNameByIdAction = createAction(
   UPDATE_VIDEO_NAME_BY_ID,
-  (action) => {
-    return (id: string, name: string) =>
-      action({
-        id,
-        name,
-      });
-  }
-);
+  (id: string, name: string) => ({
+    id,
+    name,
+  })
+)();
 
 /**
  * Delete per video from store by id
@@ -88,13 +79,10 @@ export const updateVideoNameByIdAction = createAction(
  */
 export const deleteVideoByIdAction = createAction(
   DELETE_VIDEO_BY_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
+  (id: string) => ({
+    id,
+  })
+)();
 
 /**
  * Remove video item from listToPlay
@@ -106,13 +94,10 @@ export const deleteVideoByIdAction = createAction(
  */
 export const removeVideoFromListToPlayAction = createAction(
   REMOVE_VIDEO_FROM_LIST_TO_PLAY,
-  (action) => {
-    return (videoId: string) =>
-      action({
-        videoId,
-      });
-  }
-);
+  (videoId: string) => ({
+    videoId,
+  })
+)();
 
 /**
  * Batch remove video items from listToPlay
@@ -124,10 +109,7 @@ export const removeVideoFromListToPlayAction = createAction(
  */
 export const removeVideosFromListToPlayAction = createAction(
   REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
-  (action) => {
-    return (videoIds: string[]) =>
-      action({
-        videoIds,
-      });
-  }
-);
+  (videoIds: string[]) => ({
+    videoIds,
+  })
+)();

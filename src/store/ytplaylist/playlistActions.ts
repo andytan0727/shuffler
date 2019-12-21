@@ -27,13 +27,13 @@ import { PlaylistsEntities } from "./types";
  * @param result Normalized states result of playlists
  * @returns ADD_FETCHED_PLAYLIST action object
  */
-export const addPlaylistAction = createAction(ADD_PLAYLIST, (action) => {
-  return (entities: PlaylistsEntities, result: string[]) =>
-    action({
-      entities,
-      result,
-    });
-});
+export const addPlaylistAction = createAction(
+  ADD_PLAYLIST,
+  (entities: PlaylistsEntities, result: string[]) => ({
+    entities,
+    result,
+  })
+)();
 
 /**
  * Add all items in the specified playlist into listToPlay
@@ -45,13 +45,10 @@ export const addPlaylistAction = createAction(ADD_PLAYLIST, (action) => {
  */
 export const addPlaylistToListToPlayAction = createAction(
   ADD_PLAYLIST_TO_LIST_TO_PLAY,
-  (action) => {
-    return (playlistId: string) =>
-      action({
-        playlistId,
-      });
-  }
-);
+  (playlistId: string) => ({
+    playlistId,
+  })
+)();
 
 /**
  * Remove all items in the specified playlist from listToPlay
@@ -63,13 +60,10 @@ export const addPlaylistToListToPlayAction = createAction(
  */
 export const removePlaylistFromListToPlayAction = createAction(
   REMOVE_PLAYLIST_FROM_LIST_TO_PLAY,
-  (action) => {
-    return (playlistId: string) =>
-      action({
-        playlistId,
-      });
-  }
-);
+  (playlistId: string) => ({
+    playlistId,
+  })
+)();
 
 /**
  * Remove all items associating with each playlistId in playlistIds array from listToPlay
@@ -82,13 +76,10 @@ export const removePlaylistFromListToPlayAction = createAction(
  */
 export const removePlaylistsFromListToPlayAction = createAction(
   REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
-  (action) => {
-    return (playlistIds: string[]) =>
-      action({
-        playlistIds,
-      });
-  }
-);
+  (playlistIds: string[]) => ({
+    playlistIds,
+  })
+)();
 
 /**
  * Delete playlist by id
@@ -98,13 +89,10 @@ export const removePlaylistsFromListToPlayAction = createAction(
  */
 export const deletePlaylistByIdAction = createAction(
   DELETE_PLAYLIST_BY_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
+  (id: string) => ({
+    id,
+  })
+)();
 
 /**
  * Delete playlist's item and snippet by specifying itemId with the id of
@@ -116,14 +104,11 @@ export const deletePlaylistByIdAction = createAction(
  */
 export const deletePlaylistItemByIdAction = createAction(
   DELETE_PLAYLIST_ITEM_BY_ID,
-  (action) => {
-    return (playlistId: string, itemId: string) =>
-      action({
-        playlistId,
-        itemId,
-      });
-  }
-);
+  (playlistId: string, itemId: string) => ({
+    playlistId,
+    itemId,
+  })
+)();
 
 /**
  * Batch deletion version of deletePlaylistItemByIdAction
@@ -134,14 +119,11 @@ export const deletePlaylistItemByIdAction = createAction(
  */
 export const deletePlaylistItemsByIdAction = createAction(
   DELETE_PLAYLIST_ITEMS_BY_ID,
-  (action) => {
-    return (playlistId: string, itemIds: string[]) =>
-      action({
-        playlistId,
-        itemIds,
-      });
-  }
-);
+  (playlistId: string, itemIds: string[]) => ({
+    playlistId,
+    itemIds,
+  })
+)();
 
 /**
  * Synchronize whole playlist with YouTube by fetching
@@ -155,10 +137,8 @@ export const deletePlaylistItemsByIdAction = createAction(
  */
 export const syncPlaylistFromYTByIdAction = createAction(
   SYNC_PLAYLIST_FROM_YT_BY_ID,
-  (action) => {
-    return (playlistId: string) => action({ playlistId });
-  }
-);
+  (playlistId: string) => ({ playlistId })
+)();
 
 /**
  * Action to dispatch when synchronization is successful
@@ -168,10 +148,8 @@ export const syncPlaylistFromYTByIdAction = createAction(
  */
 export const syncPlaylistFromYTByIdSuccessAction = createAction(
   SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
-  (action) => {
-    return (playlistId: string) => action({ playlistId });
-  }
-);
+  (playlistId: string) => ({ playlistId })
+)();
 
 /**
  * Action to dispatch when synchronization is failed
@@ -180,7 +158,7 @@ export const syncPlaylistFromYTByIdSuccessAction = createAction(
  */
 export const syncPlaylistFromYTByIdFailedAction = createAction(
   SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED
-);
+)();
 
 /**
  * Update playlist name by id
@@ -191,14 +169,11 @@ export const syncPlaylistFromYTByIdFailedAction = createAction(
  */
 export const updatePlaylistNameByIdAction = createAction(
   UPDATE_PLAYLIST_NAME_BY_ID,
-  (action) => {
-    return (id: string, name: string) =>
-      action({
-        id,
-        name,
-      });
-  }
-);
+  (id: string, name: string) => ({
+    id,
+    name,
+  })
+)();
 
 /**
  * Add allInPlaying label to the playlist in listToPlay (if all of
@@ -208,8 +183,8 @@ export const updatePlaylistNameByIdAction = createAction(
  */
 export const addAllInPlayingLabelByIdAction = createAction(
   ADD_ALL_IN_PLAYING_LABEL_BY_ID,
-  (action) => (id: string) => action({ id })
-);
+  (id: string) => ({ id })
+)();
 
 /**
  * Remove allInPlaying label of playlist, after removing it from listToPlay
@@ -217,8 +192,8 @@ export const addAllInPlayingLabelByIdAction = createAction(
  */
 export const removeAllInPlayingLabelByIdAction = createAction(
   REMOVE_ALL_IN_PLAYING_LABEL_BY_ID,
-  (action) => (id: string) => action({ id })
-);
+  (id: string) => ({ id })
+)();
 
 /**
  * Add partialInPlaying label to particular playlist
@@ -228,8 +203,8 @@ export const removeAllInPlayingLabelByIdAction = createAction(
  */
 export const addPartialInPlayingLabelByIdAction = createAction(
   ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID,
-  (action) => (id: string) => action({ id })
-);
+  (id: string) => ({ id })
+)();
 
 /**
  * Remove partialInPlaying label of particular playlist
@@ -237,8 +212,8 @@ export const addPartialInPlayingLabelByIdAction = createAction(
  */
 export const removePartialInPlayingLabelByIdAction = createAction(
   REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID,
-  (action) => (id: string) => action({ id })
-);
+  (id: string) => ({ id })
+)();
 
 /**
  * Shuffle playlist items by playlist id
@@ -246,5 +221,5 @@ export const removePartialInPlayingLabelByIdAction = createAction(
  */
 export const shufflePlaylistItems = createAction(
   SHUFFLE_PLAYLIST_ITEMS,
-  (action) => (id: string) => action({ id })
-);
+  (id: string) => ({ id })
+)();

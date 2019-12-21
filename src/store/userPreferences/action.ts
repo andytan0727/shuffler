@@ -8,10 +8,7 @@ import { SET_PREFER_DARK_THEME } from "utils/constants/actionConstants";
  */
 export const setPreferDarkTheme = createAction(
   SET_PREFER_DARK_THEME,
-  (action) => {
-    return (isPreferDarkTheme: boolean) =>
-      action({
-        isPreferDarkTheme,
-      });
-  }
-);
+  (isPreferDarkTheme: boolean) => ({
+    isPreferDarkTheme,
+  })
+)();

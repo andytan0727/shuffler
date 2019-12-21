@@ -14,12 +14,12 @@ import { ListToPlaySnippets } from "./types";
  * @param snippets An array of Playlist/video snippet
  * @returns CREATE_FUSE action object
  */
-export const createFuse = createAction(CREATE_FUSE, (action) => {
-  return (snippets: ListToPlaySnippets) =>
-    action({
-      snippets,
-    });
-});
+export const createFuse = createAction(
+  CREATE_FUSE,
+  (snippets: ListToPlaySnippets) => ({
+    snippets,
+  })
+)();
 
 /**
  * Fuzzy search snippets from created fuse
@@ -29,20 +29,17 @@ export const createFuse = createAction(CREATE_FUSE, (action) => {
  */
 export const fuzzySearchSnippetsByTitle = createAction(
   FUZZY_SEARCH_SNIPPETS_BY_TITLE,
-  (action) => {
-    return (title: string) =>
-      action({
-        title,
-      });
-  }
-);
+  (title: string) => ({
+    title,
+  })
+)();
 
 /**
  * Clear filtered snippets and set it to undefined
  *
  * @returns CLEAR_FILTERED_SNIPPETS action object
  */
-export const clearFilteredSnippets = createAction(CLEAR_FILTERED_SNIPPETS);
+export const clearFilteredSnippets = createAction(CLEAR_FILTERED_SNIPPETS)();
 
 /**
  * Remove filtered snippets by itemIds (when deleting items from original list)
@@ -52,10 +49,7 @@ export const clearFilteredSnippets = createAction(CLEAR_FILTERED_SNIPPETS);
  */
 export const removeFilteredSnippetsByItemIds = createAction(
   REMOVE_FILTERED_SNIPPETS_BY_ITEM_IDS,
-  (action) => {
-    return (itemIds: string[]) =>
-      action({
-        itemIds,
-      });
-  }
-);
+  (itemIds: string[]) => ({
+    itemIds,
+  })
+)();

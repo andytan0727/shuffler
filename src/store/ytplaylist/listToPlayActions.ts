@@ -25,13 +25,13 @@ import { ListToPlayEntities, ListToPlayResultItem } from "./types";
  * @param result Normalized result of listToPlay
  * @returns ADD_LIST_TO_PLAY action object
  */
-export const addListToPlayAction = createAction(ADD_LIST_TO_PLAY, (action) => {
-  return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
-    action({
-      entities,
-      result,
-    });
-});
+export const addListToPlayAction = createAction(
+  ADD_LIST_TO_PLAY,
+  (entities: ListToPlayEntities, result: ListToPlayResultItem[]) => ({
+    entities,
+    result,
+  })
+)();
 
 /**
  * Add listToPlay entities and result unique
@@ -44,14 +44,11 @@ export const addListToPlayAction = createAction(ADD_LIST_TO_PLAY, (action) => {
  */
 export const addUniqueListToPlay = createAction(
   ADD_UNIQUE_LIST_TO_PLAY,
-  (action) => {
-    return (entities: ListToPlayEntities, result: ListToPlayResultItem[]) =>
-      action({
-        entities,
-        result,
-      });
-  }
-);
+  (entities: ListToPlayEntities, result: ListToPlayResultItem[]) => ({
+    entities,
+    result,
+  })
+)();
 
 /**
  * Add per item to listToPlay
@@ -64,14 +61,11 @@ export const addUniqueListToPlay = createAction(
  */
 export const addListToPlayItemAction = createAction(
   ADD_LIST_TO_PLAY_ITEM,
-  (action) => {
-    return (resultItem: ListToPlayResultItem, foreignKey: string) =>
-      action({
-        resultItem,
-        foreignKey,
-      });
-  }
-);
+  (resultItem: ListToPlayResultItem, foreignKey: string) => ({
+    resultItem,
+    foreignKey,
+  })
+)();
 
 /**
  * Add items as a batch to listToPlay
@@ -85,18 +79,15 @@ export const addListToPlayItemAction = createAction(
  */
 export const addListToPlayItemsAction = createAction(
   ADD_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (
-      items: {
-        resultItem: ListToPlayResultItem;
-        foreignKey: string;
-      }[]
-    ) =>
-      action({
-        items,
-      });
-  }
-);
+  (
+    items: {
+      resultItem: ListToPlayResultItem;
+      foreignKey: string;
+    }[]
+  ) => ({
+    items,
+  })
+)();
 
 /**
  * Update entire listToPlay with full replacement to previous state
@@ -108,15 +99,12 @@ export const addListToPlayItemsAction = createAction(
  */
 export const updateListToPlayAction = createAction(
   UPDATE_LIST_TO_PLAY,
-  (action) => {
-    return (schema: SchemaType, foreignKey: string, itemIds: string[]) =>
-      action({
-        schema,
-        foreignKey,
-        itemIds,
-      });
-  }
-);
+  (schema: SchemaType, foreignKey: string, itemIds: string[]) => ({
+    schema,
+    foreignKey,
+    itemIds,
+  })
+)();
 
 /**
  * Delete per listToPlay item by itemId
@@ -126,13 +114,10 @@ export const updateListToPlayAction = createAction(
  */
 export const deleteListToPlayItemByIdAction = createAction(
   DELETE_LIST_TO_PLAY_ITEM_BY_ID,
-  (action) => {
-    return (id: string) =>
-      action({
-        id,
-      });
-  }
-);
+  (id: string) => ({
+    id,
+  })
+)();
 
 /**
  * Delete listToPlay items by itemIds
@@ -142,20 +127,17 @@ export const deleteListToPlayItemByIdAction = createAction(
  */
 export const deleteListToPlayItemsAction = createAction(
   DELETE_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (ids: string[]) =>
-      action({
-        ids,
-      });
-  }
-);
+  (ids: string[]) => ({
+    ids,
+  })
+)();
 
 /**
  * Clear current playing playlist
  *
  * @returns CLEAR_LIST_TO_PLAY action object for redux store
  */
-export const clearListToPlayAction = createAction(CLEAR_LIST_TO_PLAY);
+export const clearListToPlayAction = createAction(CLEAR_LIST_TO_PLAY)();
 
 /**
  * Shuffle listToPlay
@@ -166,13 +148,10 @@ export const clearListToPlayAction = createAction(CLEAR_LIST_TO_PLAY);
  */
 export const shuffleListToPlayAction = createAction(
   SHUFFLE_LIST_TO_PLAY,
-  (action) => {
-    return (itemIds?: string[]) =>
-      action({
-        itemIds,
-      });
-  }
-);
+  (itemIds?: string[]) => ({
+    itemIds,
+  })
+)();
 
 /**
  * Choose and fix first item, then shuffle the rest of the listToPlay result items
@@ -182,13 +161,10 @@ export const shuffleListToPlayAction = createAction(
  */
 export const chooseFirstItemAndShuffleListToPlayAction = createAction(
   CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY,
-  (action) => {
-    return (itemId: string) =>
-      action({
-        itemId,
-      });
-  }
-);
+  (itemId: string) => ({
+    itemId,
+  })
+)();
 
 /**
  * Filter out listToPlay items specified by itemId in itemIds array.
@@ -206,13 +182,10 @@ export const chooseFirstItemAndShuffleListToPlayAction = createAction(
  */
 export const filterListToPlayItemsAction = createAction(
   FILTER_LIST_TO_PLAY_ITEMS,
-  (action) => {
-    return (itemIds: string[]) =>
-      action({
-        itemIds,
-      });
-  }
-);
+  (itemIds: string[]) => ({
+    itemIds,
+  })
+)();
 
 /**
  * Queue the selected video after currently playing video in playing list
@@ -223,11 +196,8 @@ export const filterListToPlayItemsAction = createAction(
  */
 export const queueListToPlayItemAction = createAction(
   QUEUE_LIST_TO_PLAY_ITEM,
-  (action) => {
-    return (curSongIdx: number, itemId: string) =>
-      action({
-        curSongIdx,
-        itemId,
-      });
-  }
-);
+  (curSongIdx: number, itemId: string) => ({
+    curSongIdx,
+    itemId,
+  })
+)();
