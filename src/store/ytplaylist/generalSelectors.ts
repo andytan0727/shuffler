@@ -80,6 +80,7 @@ export const selectListToPlayPlaylistItemsCount = createCachedSelector(
   selectPlaylistItemIdsByPlaylistId,
   selectListToPlayPlaylistItems,
   (itemIds, listToPlayPlaylistItems) =>
-    itemIds.filter((itemId) => listToPlayPlaylistItems[itemId] !== undefined)
-      .length
+    itemIds.filter(
+      (itemId: string) => listToPlayPlaylistItems[itemId] !== undefined
+    ).length
 )((_, playlistId) => `listToPlayPlaylistItems-playlistId-${playlistId}`);
