@@ -29,7 +29,7 @@ export const useDeletePlaylist = (playlistIds: string[]) => {
     const result = await customSwal!.fire({
       title: "Remove playlist",
       text: "Are you sure?🤔",
-      type: "warning",
+      icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it please!🔥",
       cancelButtonText: "No!!!😱",

@@ -56,7 +56,7 @@ const VideoListPanelBtnGroup = (props: VideoListPanelBtnGroupProps) => {
       await customSwal!.fire({
         title: "You can only view one playlist at once",
         text: "Please select only one playlist!",
-        type: "warning",
+        icon: "warning",
       });
       clearChecked();
       return;

@@ -6,9 +6,11 @@
   z-index: 3000;
 }
 
+// added !important because old config (w/o important)
+// not working on sweetalert2 v9
 .swalPopup {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
 }
 
 .swalTitle,

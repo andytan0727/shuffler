@@ -28,7 +28,7 @@ const noVideoSelectedAlert = async () => {
   await customSwal!.fire({
     title: "No video is selected!💢",
     text: "Please select at least one video!",
-    type: "warning",
+    icon: "warning",
   });
 };
 
@@ -60,7 +60,7 @@ const VideosPanelBtnGroup = (props: VideosPanelBtnGroupProps) => {
     const result = await customSwal!.fire({
       title: "Remove video(s)",
       text: "Are you sure?🤔",
-      type: "warning",
+      icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it please!🔥",
       cancelButtonText: "No!!!😱",

@@ -33,11 +33,11 @@ export const generateCustomSwal = async (mixinOptions = {}) => {
 /**
  * Using sweetalert2 to show toast notification
  *
- * @param type Type of notification
+ * @param icon Icon (type) of notification
  * @param message Message that needs to be shown by notification
  */
 export const notify = async (
-  type: "error" | "info" | "warning" | "success",
+  icon: "error" | "info" | "warning" | "success",
   message: string
 ) => {
   let customSwal;
@@ -45,14 +45,14 @@ export const notify = async (
     customSwal = await generateCustomSwal({ toast: true });
 
     const swalDefaultConfig = {
-      type,
+      icon,
       title: message,
       position: "bottom-end" as const,
       showConfirmButton: false,
       timer: 3000,
     };
 
-    switch (type) {
+    switch (icon) {
       case "warning": {
         await customSwal!.fire({
           ...swalDefaultConfig,
@@ -104,6 +104,6 @@ export const noPlaylistProvidedAlert = async () => {
   await customSwal!.fire({
     title: "No playlist provided!💢",
     text: "Please select at least one playlist!",
-    type: "warning",
+    icon: "warning",
   });
 };
