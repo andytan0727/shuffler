@@ -29,8 +29,8 @@ const render = () => {
   );
 };
 
-if (module.hot) {
-  module.hot.accept(() => {
+if ((module as any).hot) {
+  (module as any).hot.accept(() => {
     ReactDOM.unmountComponentAtNode(rootNode);
     render();
   });

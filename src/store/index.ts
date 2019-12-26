@@ -66,8 +66,8 @@ const store =
 
 // Hot module replacement to persist previous store state
 // Mainly for states that are not persisted
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept(() => {
+if (process.env.NODE_ENV === "development" && (module as any).hot) {
+  (module as any).hot.accept(() => {
     // This fetch the new state of the above reducers.
     const nextRootReducer = rootReducer;
     store.replaceReducer(persistReducer(rootPersistConfig, nextRootReducer));
