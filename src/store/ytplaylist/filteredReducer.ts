@@ -11,8 +11,7 @@ import {
 import {
   DeepReadonlyFiltered,
   Filtered,
-  PlaylistItemSnippet,
-  VideoItemSnippet,
+  ListToPlaySnippets,
   YTPlaylistActions,
 } from "./types";
 
@@ -33,11 +32,7 @@ export const filteredReducer: Reducer<
       const { snippets } = action.payload;
       const options = original(draft.options);
 
-      if (options)
-        draft.fuse = new Fuse(
-          snippets as (PlaylistItemSnippet | VideoItemSnippet)[],
-          options
-        );
+      if (options) draft.fuse = new Fuse(snippets, options);
 
       return draft;
     }
@@ -49,7 +44,9 @@ export const filteredReducer: Reducer<
         throw new Error("Please create Fuse object first before search");
       }
 
-      draft.snippets = draft.fuse.search(title);
+      // settle the problem of improper return type
+      // inference of fuse search
+      draft.snippets = draft.fuse.search(title) as ListToPlaySnippets;
       return draft;
     }
 

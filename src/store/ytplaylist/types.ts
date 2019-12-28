@@ -186,9 +186,11 @@ export type DeepReadonlyListToPlay = DeepReadonly<ListToPlay>;
 // ====================================================
 // Filtered
 // ====================================================
+type ListToPlaySnippetFuseOptions = FuseOptions<ListToPlaySnippet>;
+
 export interface Filtered {
-  fuse: Fuse<PlaylistItemSnippet | VideoItemSnippet> | undefined;
-  options: FuseOptions<ListToPlaySnippet>;
+  fuse: Fuse<ListToPlaySnippet, ListToPlaySnippetFuseOptions> | undefined;
+  options: ListToPlaySnippetFuseOptions;
   snippets: ListToPlaySnippets | undefined;
 }
 
