@@ -18,8 +18,7 @@ export const useShowFilteredItems = (itemIds: string[]) => {
 
   const filteredItems = createItemData({
     ...checkboxHooks,
-    items: itemIds,
-    filteredSnippets,
+    itemIds: filteredSnippets?.map((snippet) => snippet.itemId!) ?? itemIds,
   });
 
   // clear checked mainly on source items deletion

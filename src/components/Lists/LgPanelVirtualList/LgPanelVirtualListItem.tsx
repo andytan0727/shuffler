@@ -56,17 +56,10 @@ export const withListItemSecondaryAction = (
     const {
       index,
       style,
-      data: {
-        checked,
-        handleCheckOrUncheckId,
-        items: itemIds,
-        filteredSnippets,
-      },
+      data: { checked, handleCheckOrUncheckId, itemIds },
     } = props;
     const classes = useStyles();
-    const currentItemId = filteredSnippets
-      ? filteredSnippets[index].itemId! // assume itemId is provided
-      : itemIds[index];
+    const currentItemId = itemIds[index];
     const currentSnippet = useSelector((state: AppState) =>
       selectSnippetByItemId(state, currentItemId)
     );

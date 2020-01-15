@@ -7,8 +7,6 @@ import memoizeOne from "memoize-one";
 import React, { MemoExoticComponent, useCallback } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
-import { ListToPlaySnippets } from "store/ytplaylist/types";
-import { DeepReadonly } from "utility-types";
 
 import { makeStyles } from "@material-ui/core";
 
@@ -30,17 +28,8 @@ export interface ItemData {
   clearChecked?: CheckboxHooksReturn["clearChecked"];
   setChecked?: CheckboxHooksReturn["setChecked"];
 
-  // main list items to render
-  items: string[];
-
-  // filtered list of snippets to be displayed
-  // if not supplied/undefined then items will be displayed instead
-  filteredSnippets?: DeepReadonly<ListToPlaySnippets>;
-}
-
-interface LgPanelVirtualListProps {
-  itemData: ItemData;
-  children: MemoExoticComponent<any>; // shut TS up with the usage of Memo on ListItem
+  // main list item ids to render
+  itemIds: string[];
 }
 
 /**
@@ -51,7 +40,7 @@ interface LgPanelVirtualListProps {
  * @returns Id as FixedSizeList item's key
  */
 const _getItemKey = (index: number, data: ItemData): string | number =>
-  data.filteredSnippets ? data.filteredSnippets[index].id! : data.items[index];
+  data.itemIds[index];
 
 /**
  * Memoized function to create itemData for react-window list
@@ -78,27 +67,17 @@ const useStyles = makeStyles({
  */
 const LgPanelVirtualList = (props: LgPanelVirtualListProps) => {
   const { itemData, children } = props;
-  const {
-    checked,
-    clearChecked,
-    setChecked,
-    filteredSnippets,
-    items,
-  } = itemData;
-  const itemCount = filteredSnippets ? filteredSnippets.length : items.length;
+  const { checked, clearChecked, setChecked, itemIds } = itemData;
+  const itemCount = itemIds.length;
   const classes = useStyles();
 
   // select (check) all filteredSnippets if they exist
   // else select all original items
   const handleSelectAll = useCallback(() => {
     if (setChecked) {
-      setChecked(
-        filteredSnippets
-          ? filteredSnippets.map((snippet) => snippet.itemId!)
-          : items
-      );
+      setChecked(itemIds);
     }
-  }, [filteredSnippets, items, setChecked]);
+  }, [itemIds, setChecked]);
 
   const handleClearSelected = useCallback(() => {
     if (clearChecked) {

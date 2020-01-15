@@ -20,7 +20,7 @@ const LgVideosPanel = () => {
   const checkboxHooks = useCheckbox();
   const videoItemData = createItemData({
     ...checkboxHooks,
-    items: videoItemIds,
+    itemIds: videoItemIds,
   });
 
   return (
