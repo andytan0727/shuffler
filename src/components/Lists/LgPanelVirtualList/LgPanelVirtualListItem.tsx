@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { SortableElement } from "react-sortable-hoc";
 import { areEqual } from "react-window";
 import { AppState } from "store";
 import { selectSnippetByItemId } from "store/ytplaylist/generalSelectors";
@@ -71,31 +72,7 @@ export const withListItemSecondaryAction = (
       selectSnippetByItemId(state, currentItemId)
     );
 
-    return !currentSnippet ? (
-      <ListItem
-        divider
-        className={classes.listItem}
-        ContainerProps={{
-          style: {
-            ...style,
-            listStyleType: "none",
-            border: "2px solid red",
-          },
-        }}
-      >
-        <ListItemIcon>
-          <CloseIcon color="error" />
-        </ListItemIcon>
-
-        <ListItemText
-          className={classes.listItemText}
-          primary={"Invalid item"}
-        />
-
-        {/* ListItemSecondaryAction is here to prevent broken ListItem UI */}
-        <ListItemSecondaryAction></ListItemSecondaryAction>
-      </ListItem>
-    ) : (
+    return (
       <ListItem
         button
         divider
@@ -105,29 +82,38 @@ export const withListItemSecondaryAction = (
           style: {
             ...style,
             listStyleType: "none",
+            border: currentSnippet ? "none" : "2px solid red",
           },
         }}
       >
-        <ListItemIcon>
-          <Checkbox
-            edge="start"
-            checked={checked.includes(currentItemId)}
-            disableRipple
-            inputProps={{ "aria-labelledby": currentSnippet.id }}
-          />
-        </ListItemIcon>
+        {currentSnippet ? (
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={checked.includes(currentItemId)}
+              disableRipple
+              inputProps={{ "aria-labelledby": currentSnippet.id }}
+            />
+          </ListItemIcon>
+        ) : (
+          <ListItemIcon>
+            <CloseIcon color="error" />
+          </ListItemIcon>
+        )}
 
         <ListItemText
           className={classes.listItemText}
-          primary={currentSnippet.title || "No title"}
+          primary={currentSnippet?.title || "No title"}
         />
 
         {/* ListItemSecondaryAction should be last child */}
         <ListItemSecondaryAction>
-          <WrappedSecondaryActionItems
-            itemId={currentItemId}
-            snippet={currentSnippet}
-          />
+          {currentSnippet && (
+            <WrappedSecondaryActionItems
+              itemId={currentItemId}
+              snippet={currentSnippet}
+            />
+          )}
         </ListItemSecondaryAction>
       </ListItem>
     );
