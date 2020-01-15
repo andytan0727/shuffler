@@ -6,8 +6,7 @@ import {
 import { FilterSnippetInput } from "components/Inputs";
 import {
   LgPanelVirtualList,
-  PlaylistVideoListItemSecondaryAction,
-  withListItemSecondaryAction,
+  LgPanelVirtualListPlaylistVideoItem,
 } from "components/Lists/LgPanelVirtualList";
 import SyncPlaylistLoader from "components/Loadings/SyncPlaylistLoader";
 import React from "react";
@@ -31,10 +30,6 @@ import {
 import { Divider, Typography } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
-
-const LgPanelVirtualListPlaylistItem = withListItemSecondaryAction(
-  PlaylistVideoListItemSecondaryAction
-);
 
 const LgPlaylistPanel: React.FC = () => {
   const {
@@ -83,7 +78,7 @@ const LgPlaylistPanel: React.FC = () => {
         </div>
         <Divider />
         <LgPanelVirtualList itemData={filteredItems}>
-          {LgPanelVirtualListPlaylistItem}
+          {LgPanelVirtualListPlaylistVideoItem}
         </LgPanelVirtualList>
       </div>
     </React.Fragment>

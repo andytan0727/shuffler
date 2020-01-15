@@ -3,8 +3,7 @@ import { makeLgPanelSearchInput } from "components/Inputs";
 import {
   createItemData,
   LgPanelVirtualList,
-  PlaylistVideoListItemSecondaryAction,
-  withListItemSecondaryAction,
+  LgPanelVirtualListPlaylistVideoItem,
 } from "components/Lists/LgPanelVirtualList";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -15,10 +14,6 @@ import { Divider, Typography } from "@material-ui/core";
 import styles from "./styles.module.scss";
 
 const SearchVideoInput = makeLgPanelSearchInput("videos");
-
-const LgPanelVirtualListVideoItem = withListItemSecondaryAction(
-  PlaylistVideoListItemSecondaryAction
-);
 
 const LgVideosPanel = () => {
   const videoItemIds = useSelector(selectAllVideoItemIds);
@@ -39,7 +34,7 @@ const LgVideosPanel = () => {
 
       <Divider className={styles.header} />
       <LgPanelVirtualList itemData={videoItemData}>
-        {LgPanelVirtualListVideoItem}
+        {LgPanelVirtualListPlaylistVideoItem}
       </LgPanelVirtualList>
     </div>
   );

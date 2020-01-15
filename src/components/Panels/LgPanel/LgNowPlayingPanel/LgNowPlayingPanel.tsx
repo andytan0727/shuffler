@@ -1,10 +1,7 @@
 import { FilterAndCtrlBar } from "components/Bars";
 import { ClearNowPlayingBtn } from "components/Buttons";
-import {
-  LgPanelVirtualList,
-  ListToPlayListItemSecondaryAction,
-  withListItemSecondaryAction,
-} from "components/Lists/LgPanelVirtualList";
+import { LgPanelVirtualList } from "components/Lists/LgPanelVirtualList";
+import { LgPanelVirtualListToPlayItem } from "components/Lists/LgPanelVirtualList/LgPanelVirtualListItem";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
@@ -19,10 +16,6 @@ import {
 import { Divider, Typography } from "@material-ui/core";
 
 import styles from "./styles.module.scss";
-
-const LgPanelVirtualListToPlayItem = withListItemSecondaryAction(
-  ListToPlayListItemSecondaryAction
-);
 
 const LgNowPlayingPanel: React.FC = () => {
   const listToPlayItemIds = useSelector(selectAllListToPlayItemIds);

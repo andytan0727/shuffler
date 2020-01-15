@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { SortableElement } from "react-sortable-hoc";
 import { areEqual } from "react-window";
 import { AppState } from "store";
 import { selectSnippetByItemId } from "store/ytplaylist/generalSelectors";
@@ -17,6 +16,8 @@ import {
 import { Close as CloseIcon } from "@material-ui/icons";
 
 import { ItemData } from "./LgPanelVirtualList";
+import ListToPlayListItemSecondaryAction from "./ListToPlayListItemSecondaryAction";
+import PlaylistVideoListItemSecondaryAction from "./PlaylistVideoListItemSecondaryAction";
 
 interface WrappedSecondaryActionItemsProps {
   itemId: string;
@@ -48,9 +49,7 @@ const useStyles = makeStyles({
  *
  */
 export const withListItemSecondaryAction = (
-  WrappedSecondaryActionItems: React.ComponentType<
-    WrappedSecondaryActionItemsProps
-  >
+  WrappedSecondaryActionItems: React.FC<WrappedSecondaryActionItemsProps>
 ) =>
   // eslint-disable-next-line react/display-name
   React.memo((props: LgPanelVirtualListItemProps) => {
@@ -76,6 +75,8 @@ export const withListItemSecondaryAction = (
       <ListItem
         button
         divider
+        disableRipple
+        disableTouchRipple
         className={classes.listItem}
         onClick={handleCheckOrUncheckId(currentItemId)}
         ContainerProps={{
@@ -118,3 +119,11 @@ export const withListItemSecondaryAction = (
       </ListItem>
     );
   }, areEqual);
+
+export const LgPanelVirtualListToPlayItem = withListItemSecondaryAction(
+  ListToPlayListItemSecondaryAction
+);
+
+export const LgPanelVirtualListPlaylistVideoItem = withListItemSecondaryAction(
+  PlaylistVideoListItemSecondaryAction
+);
