@@ -152,7 +152,7 @@ const DrawerNowPlayingNavListItem = (
  */
 const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
   const { playlistUrl } = props;
-  const classes = useStyles({});
+  const classes = useStyles();
   const playlists = useSelector(selectAllPlaylists);
   const playlistIds = Object.keys(playlists);
 
@@ -210,7 +210,7 @@ const DrawerPlaylistsNavList = (props: DrawerPlaylistsNavListProps) => {
  *
  */
 const LgPanelDrawer = ({ match }: LgPanelDrawerProps) => {
-  const classes = useStyles({});
+  const classes = useStyles();
   const panelUrl = match.url;
 
   return (

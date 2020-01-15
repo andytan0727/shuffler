@@ -51,6 +51,7 @@ export const withListItemSecondaryAction = (
     WrappedSecondaryActionItemsProps
   >
 ) =>
+  // eslint-disable-next-line react/display-name
   React.memo((props: LgPanelVirtualListItemProps) => {
     const {
       index,
@@ -62,7 +63,7 @@ export const withListItemSecondaryAction = (
         filteredSnippets,
       },
     } = props;
-    const classes = useStyles({});
+    const classes = useStyles();
     const currentItemId = filteredSnippets
       ? filteredSnippets[index].itemId! // assume itemId is provided
       : itemIds[index];
