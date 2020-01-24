@@ -4,10 +4,7 @@ import {
   SyncPlaylistBtn,
 } from "components/Buttons";
 import { FilterSnippetInput } from "components/Inputs";
-import {
-  LgPanelVirtualList,
-  LgPanelVirtualListPlaylistVideoItem,
-} from "components/Lists/LgPanelVirtualList";
+import { LgPanelVirtualList } from "components/Lists/LgPanelVirtualList";
 import SyncPlaylistLoader from "components/Loadings/SyncPlaylistLoader";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -26,6 +23,7 @@ import {
   useShufflePlaylist,
   useSyncPlaylist,
 } from "utils/hooks/playlistsHooks";
+import { useDragPlaylistItem } from "utils/hooks/playlistsHooks/useDragPlaylistItem";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -56,6 +54,8 @@ const LgPlaylistPanel: React.FC = () => {
   );
   const { handleSyncPlaylist } = useSyncPlaylist(playlistId);
 
+  const { handleOnDragEnd } = useDragPlaylistItem(playlistId);
+
   return (
     <React.Fragment>
       <SyncPlaylistLoader open={updating} />
@@ -77,9 +77,11 @@ const LgPlaylistPanel: React.FC = () => {
           <SyncPlaylistBtn handleSyncPlaylist={handleSyncPlaylist} />
         </div>
         <Divider />
-        <LgPanelVirtualList itemData={filteredItems}>
-          {LgPanelVirtualListPlaylistVideoItem}
-        </LgPanelVirtualList>
+        <LgPanelVirtualList
+          itemData={filteredItems}
+          snippetType="pv"
+          onDragEnd={handleOnDragEnd}
+        />
       </div>
     </React.Fragment>
   );

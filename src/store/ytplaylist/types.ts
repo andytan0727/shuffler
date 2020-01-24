@@ -183,6 +183,8 @@ export type ListToPlayItems = (PlaylistItem | VideoItem)[];
 
 export type DeepReadonlyListToPlay = DeepReadonly<ListToPlay>;
 
+export type SnippetType = "ltp" | "pv";
+
 // ====================================================
 // Filtered
 // ====================================================

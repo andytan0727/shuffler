@@ -3,7 +3,4 @@ export {
   createItemData,
 } from "./LgPanelVirtualList";
 
-export {
-  LgPanelVirtualListPlaylistVideoItem,
-  LgPanelVirtualListToPlayItem,
-} from "./LgPanelVirtualListItem";
+export { default as LgPanelVirtualListItem } from "./LgPanelVirtualListItem";

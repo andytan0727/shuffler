@@ -6,6 +6,7 @@ import {
   DELETE_VIDEO_BY_ID,
   REMOVE_VIDEO_FROM_LIST_TO_PLAY,
   REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
+  REORDER_VIDEO_ITEM,
   UPDATE_VIDEO_NAME_BY_ID,
 } from "utils/constants/actionConstants";
 
@@ -111,5 +112,21 @@ export const removeVideosFromListToPlayAction = createAction(
   REMOVE_VIDEOS_FROM_LIST_TO_PLAY,
   (videoIds: string[]) => ({
     videoIds,
+  })
+)();
+
+/**
+ * Reorder the position of video item, from fromIdx to toIdx
+ *
+ * @param fromIdx Source index
+ * @param toIdx Destination index
+ * @returns REORDER_VIDEO_ITEM action object
+ *
+ */
+export const reorderVideoItem = createAction(
+  REORDER_VIDEO_ITEM,
+  (fromIdx: number, toIdx: number) => ({
+    fromIdx,
+    toIdx,
   })
 )();

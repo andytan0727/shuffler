@@ -3,8 +3,10 @@ import { Reducer } from "typesafe-actions";
 import {
   ADD_VIDEO,
   DELETE_VIDEO_BY_ID,
+  REORDER_VIDEO_ITEM,
   UPDATE_VIDEO_NAME_BY_ID,
 } from "utils/constants/actionConstants";
+import { moveMutable } from "utils/helper/arrayHelper";
 
 import { DeepReadonlyVideos, Videos, YTPlaylistActions } from "./types";
 import {
@@ -46,6 +48,14 @@ export const videosReducer: Reducer<
       const { id } = action.payload;
 
       return deletePlaylistOrVideoById(draft, id);
+    }
+
+    case REORDER_VIDEO_ITEM: {
+      const { fromIdx, toIdx } = action.payload;
+
+      moveMutable(draft.result, fromIdx, toIdx);
+
+      return draft;
     }
 
     default: {

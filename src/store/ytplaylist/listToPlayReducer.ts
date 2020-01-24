@@ -10,9 +10,11 @@ import {
   DELETE_LIST_TO_PLAY_ITEM_BY_ID,
   DELETE_LIST_TO_PLAY_ITEMS,
   QUEUE_LIST_TO_PLAY_ITEM,
+  REORDER_LIST_TO_PLAY_ITEM,
   SHUFFLE_LIST_TO_PLAY,
   UPDATE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
+import { moveMutable } from "utils/helper/arrayHelper";
 
 import { DeepReadonlyListToPlay, ListToPlay, YTPlaylistActions } from "./types";
 import {
@@ -149,6 +151,14 @@ export const listToPlayReducer: Reducer<
       const removedItem = removeResultItem(draft.result, itemId);
 
       draft.result.splice(curSongIdx + 1, 0, removedItem);
+      return draft;
+    }
+
+    case REORDER_LIST_TO_PLAY_ITEM: {
+      const { fromIdx, toIdx } = action.payload;
+
+      moveMutable(draft.result, fromIdx, toIdx);
+
       return draft;
     }
 

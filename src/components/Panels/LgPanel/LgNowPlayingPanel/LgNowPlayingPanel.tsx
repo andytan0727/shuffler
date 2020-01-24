@@ -1,7 +1,6 @@
 import { FilterAndCtrlBar } from "components/Bars";
 import { ClearNowPlayingBtn } from "components/Buttons";
 import { LgPanelVirtualList } from "components/Lists/LgPanelVirtualList";
-import { LgPanelVirtualListToPlayItem } from "components/Lists/LgPanelVirtualList/LgPanelVirtualListItem";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
@@ -12,6 +11,7 @@ import {
   usePlayListToPlay,
   useShuffleListToPlay,
 } from "utils/hooks/listToPlayHooks";
+import { useDragListToPlayItem } from "utils/hooks/listToPlayHooks/useDragListToPlayItem";
 
 import { Divider, Typography } from "@material-ui/core";
 
@@ -30,6 +30,8 @@ const LgNowPlayingPanel: React.FC = () => {
   );
   const { handleClearListToPlay } = useClearListToPlay();
 
+  const { handleOnDragEnd } = useDragListToPlayItem();
+
   return (
     <div className={styles.lgNowPlayingPanelDiv}>
       <Typography variant="h4">Now Playing</Typography>
@@ -44,9 +46,11 @@ const LgNowPlayingPanel: React.FC = () => {
       </div>
 
       <Divider />
-      <LgPanelVirtualList itemData={filteredItems}>
-        {LgPanelVirtualListToPlayItem}
-      </LgPanelVirtualList>
+      <LgPanelVirtualList
+        itemData={filteredItems}
+        snippetType="ltp"
+        onDragEnd={handleOnDragEnd}
+      />
     </div>
   );
 };

@@ -8,6 +8,9 @@ import { getSnippetFromItemId } from "./utils";
 export const selectVideosEntities = (state: AppState) =>
   state.ytplaylist.videos.entities;
 
+export const selectVideosResult = (state: AppState) =>
+  state.ytplaylist.videos.result;
+
 export const selectAllVideoSnippets = createSelector(
   selectVideosEntities,
   (entities) => entities.snippets
@@ -18,9 +21,13 @@ export const selectAllVideoItems = createSelector(
   (entities) => entities.videoItems
 );
 
-export const selectAllVideoItemIds = createSelector(
-  selectVideosEntities,
-  (entities) => Object.keys(entities.videoItems)
+// using result array as the video itemIds for an easier
+// operation on reordering videos
+export const selectAllVideoItemIds = selectVideosResult;
+
+export const selectVideoItemCount = createSelector(
+  selectAllVideoItemIds,
+  (itemIds) => itemIds.length
 );
 
 export const selectVideoItemIdsByVideoId = createCachedSelector(

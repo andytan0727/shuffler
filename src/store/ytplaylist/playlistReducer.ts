@@ -10,12 +10,14 @@ import {
   DELETE_PLAYLIST_ITEMS_BY_ID,
   REMOVE_ALL_IN_PLAYING_LABEL_BY_ID,
   REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID,
+  REORDER_PLAYLIST_ITEM_BY_PLAYLIST_ID,
   SHUFFLE_PLAYLIST_ITEMS,
   SYNC_PLAYLIST_FROM_YT_BY_ID,
   SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED,
   SYNC_PLAYLIST_FROM_YT_BY_ID_SUCCESS,
   UPDATE_PLAYLIST_NAME_BY_ID,
 } from "utils/constants/actionConstants";
+import { moveMutable } from "utils/helper/arrayHelper";
 
 import { DeepReadonlyPlaylists, Playlists, YTPlaylistActions } from "./types";
 import {
@@ -141,6 +143,18 @@ export const playlistsReducer: Reducer<
       if (prevPlaylistItems) {
         draft.entities.playlists[id].items = shuffle(prevPlaylistItems);
       }
+
+      return draft;
+    }
+
+    case REORDER_PLAYLIST_ITEM_BY_PLAYLIST_ID: {
+      const { playlistId, fromIdx, toIdx } = action.payload;
+
+      const playlist = draft.entities.playlists[playlistId];
+
+      if (!playlist) return draft;
+
+      moveMutable(playlist.items, fromIdx, toIdx);
 
       return draft;
     }

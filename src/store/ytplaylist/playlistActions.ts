@@ -11,6 +11,7 @@ import {
   REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID,
   REMOVE_PLAYLIST_FROM_LIST_TO_PLAY,
   REMOVE_PLAYLISTS_FROM_LIST_TO_PLAY,
+  REORDER_PLAYLIST_ITEM_BY_PLAYLIST_ID,
   SHUFFLE_PLAYLIST_ITEMS,
   SYNC_PLAYLIST_FROM_YT_BY_ID,
   SYNC_PLAYLIST_FROM_YT_BY_ID_FAILED,
@@ -222,4 +223,22 @@ export const removePartialInPlayingLabelByIdAction = createAction(
 export const shufflePlaylistItems = createAction(
   SHUFFLE_PLAYLIST_ITEMS,
   (id: string) => ({ id })
+)();
+
+/**
+ * Reorder the position of playlist item, from fromIdx to toIdx by playlistId
+ *
+ * @param playlistId Playlist id
+ * @param fromIdx Source index
+ * @param toIdx Destination index
+ * @returns REORDER_PLAYLIST_ITEM_BY_PLAYLIST_ID action object
+ *
+ */
+export const reorderPlaylistItemByPlaylistIdAction = createAction(
+  REORDER_PLAYLIST_ITEM_BY_PLAYLIST_ID,
+  (playlistId: string, fromIdx: number, toIdx: number) => ({
+    playlistId,
+    fromIdx,
+    toIdx,
+  })
 )();

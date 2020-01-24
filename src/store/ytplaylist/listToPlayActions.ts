@@ -10,6 +10,7 @@ import {
   DELETE_LIST_TO_PLAY_ITEMS,
   FILTER_LIST_TO_PLAY_ITEMS,
   QUEUE_LIST_TO_PLAY_ITEM,
+  REORDER_LIST_TO_PLAY_ITEM,
   SHUFFLE_LIST_TO_PLAY,
   UPDATE_LIST_TO_PLAY,
 } from "utils/constants/actionConstants";
@@ -199,5 +200,20 @@ export const queueListToPlayItemAction = createAction(
   (curSongIdx: number, itemId: string) => ({
     curSongIdx,
     itemId,
+  })
+)();
+
+/**
+ * Reorder the position of list to play item, from fromIdx to toIdx
+ *
+ * @param fromIdx Source index
+ * @param toIdx Destination index
+ * @returns REORDER_LIST_TO_PLAY_ITEM action object
+ */
+export const reorderListToPlayItemAction = createAction(
+  REORDER_LIST_TO_PLAY_ITEM,
+  (fromIdx: number, toIdx: number) => ({
+    fromIdx,
+    toIdx,
   })
 )();

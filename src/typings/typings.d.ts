@@ -109,3 +109,22 @@ declare module "@material-ui/core/styles/createPalette" {
     softBlack: string;
   }
 }
+
+declare module "react-beautiful-dnd" {
+  type DroppableMode = "standard" | "virtual";
+  export type DraggableRubric = any;
+
+  export interface DroppableProps {
+    style?: React.CSSProperties | object;
+    mode: DroppableMode;
+    renderClone: (
+      provided: DraggableProvided,
+      snapshot: DraggableStateSnapshot,
+      rubric: DraggableRubric
+    ) => JSX.Element;
+  }
+
+  export interface DraggableStateSnapshot {
+    isClone?: boolean;
+  }
+}

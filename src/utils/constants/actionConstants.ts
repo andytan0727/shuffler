@@ -42,8 +42,8 @@ export const ADD_ALL_IN_PLAYING_LABEL_BY_ID = "ADD_ALL_IN_PLAYING_LABEL_BY_ID" a
 export const REMOVE_ALL_IN_PLAYING_LABEL_BY_ID =
   "REMOVE_ALL_IN_PLAYING_LABEL_BY_ID";
 export const ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID = "ADD_PARTIAL_IN_PLAYING_LABEL_BY_ID" as const;
-export const REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID =
-  "REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID";
+export const REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID = "REMOVE_PARTIAL_IN_PLAYING_LABEL_BY_ID" as const;
+export const REORDER_PLAYLIST_ITEM_BY_PLAYLIST_ID = "REORDER_PLAYLIST_ITEM_BY_PLAYLIST_ID" as const;
 
 // =========================
 // ytplaylist videos
@@ -56,6 +56,7 @@ export const REMOVE_VIDEOS_FROM_LIST_TO_PLAY = "REMOVE_VIDEOS_FROM_LIST_TO_PLAY"
 export const DELETE_VIDEO_BY_ID = "DELETE_VIDEO_BY_ID" as const;
 export const UPDATE_VIDEO_NAME_BY_ID = "UPDATE_VIDEO_NAME_BY_ID" as const;
 export const SHUFFLE_PLAYLIST_ITEMS = "SHUFFLE_PLAYLIST_ITEMS" as const;
+export const REORDER_VIDEO_ITEM = "REORDER_VIDEO_ITEM" as const;
 
 // =========================
 // ytplaylist listToPlay
@@ -72,6 +73,7 @@ export const SHUFFLE_LIST_TO_PLAY = "SHUFFLE_LIST_TO_PLAY" as const;
 export const CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY = "CHOOSE_FIRST_ITEM_AND_SHUFFLE_LIST_TO_PLAY" as const;
 export const FILTER_LIST_TO_PLAY_ITEMS = "FILTER_LIST_TO_PLAY_ITEMS" as const;
 export const QUEUE_LIST_TO_PLAY_ITEM = "QUEUE_LIST_TO_PLAY_ITEM" as const;
+export const REORDER_LIST_TO_PLAY_ITEM = "REORDER_LIST_TO_PLAY_ITEM" as const;
 
 // =========================
 // ytplaylist filtered
