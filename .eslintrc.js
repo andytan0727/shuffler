@@ -23,6 +23,16 @@ module.exports = {
     "@typescript-eslint/camelcase": ["error", { properties: "never" }],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
+    // must disable the base rule as it can report incorrect errors
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        vars: "all",
+        args: "after-used",
+        ignoreRestSiblings: true,
+      },
+    ],
 
     // hooks
     "react-hooks/rules-of-hooks": "error",
