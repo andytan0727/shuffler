@@ -173,6 +173,12 @@ const initialStates = {
         "Add feature to queue selected video after currently playing video",
       ],
     },
+    {
+      version: "4.3.0",
+      changes: [
+        "Add drag n drop to playlist in My Video, My Playlist and Now Playing",
+      ],
+    },
   ],
 };
 
