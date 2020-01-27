@@ -10,7 +10,7 @@ import { isFiltering } from "utils/helper/generalHelper";
 import { notify } from "utils/helper/notifyHelper";
 
 export const useOnDragEnd = (
-  curItemCount: number,
+  oriItemCount: number,
   reorderAction: (
     fromIdx: number,
     toIdx: number
@@ -24,10 +24,8 @@ export const useOnDragEnd = (
   const curSongIdx = useSelector(selectCurSongIdx);
   const dispatch = useDispatch();
 
-  console.log(curItemCount);
-
   const handleOnDragEnd = useCallback(
-    (oriItemCount: number) => (result: DropResult) => {
+    (curItemCount: number) => (result: DropResult) => {
       if (!result.destination) {
         return;
       }
@@ -55,7 +53,7 @@ export const useOnDragEnd = (
 
       dispatch(reorderAction(fromIdx, toIdx));
     },
-    [curItemCount, curSongIdx, dispatch, isPlayerPlaying, reorderAction]
+    [oriItemCount, curSongIdx, dispatch, isPlayerPlaying, reorderAction]
   );
 
   return {
