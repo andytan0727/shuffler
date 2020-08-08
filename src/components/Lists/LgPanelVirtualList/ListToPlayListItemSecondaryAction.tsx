@@ -2,12 +2,14 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setCurSongIdx } from "store/ytplayer/action";
+import { selectCurSongIdx } from "store/ytplayer/selector";
 import { removeFilteredSnippetsByItemIds } from "store/ytplaylist/filteredActions";
 import { selectFilteredSnippets } from "store/ytplaylist/filteredSelectors";
 import {
   chooseFirstItemAndShuffleListToPlayAction,
   deleteListToPlayItemByIdAction,
 } from "store/ytplaylist/listToPlayActions";
+import { selectAllListToPlayItemIds } from "store/ytplaylist/listToPlaySelectors";
 
 import { IconButton, Tooltip } from "@material-ui/core";
 import {
@@ -26,6 +28,8 @@ const ListToPlayListItemSecondaryAction: React.FC<ListToPlayListItemSecondaryAct
   const dispatch = useDispatch();
   const history = useHistory();
   const filteredSnippets = useSelector(selectFilteredSnippets);
+  const curSongIdx = useSelector(selectCurSongIdx);
+  const listToPlayItemIds = useSelector(selectAllListToPlayItemIds);
 
   // play this video then shuffle the rest of the list
   const handlePlayAndShuffle = useCallback(() => {
@@ -41,12 +45,18 @@ const ListToPlayListItemSecondaryAction: React.FC<ListToPlayListItemSecondaryAct
   }, [dispatch, history, itemId]);
 
   const handleDeleteItemFromListToPlay = useCallback(() => {
+    const itemIdxToDelete = listToPlayItemIds.indexOf(itemId);
+
     dispatch(deleteListToPlayItemByIdAction(itemId));
+
+    if (itemIdxToDelete !== -1 && itemIdxToDelete < curSongIdx) {
+      dispatch(setCurSongIdx(curSongIdx - 1));
+    }
 
     // remove listToPlay items from filteredSnippets
     // if user is filtering
     if (filteredSnippets) dispatch(removeFilteredSnippetsByItemIds([itemId]));
-  }, [dispatch, filteredSnippets, itemId]);
+  }, [curSongIdx, dispatch, filteredSnippets, itemId, listToPlayItemIds]);
 
   return (
     <div>
