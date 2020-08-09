@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurSongIdx } from "store/ytplayer/action";
-import { selectCurSongIdx, selectPlaying } from "store/ytplayer/selector";
+import { selectCurSongIdx } from "store/ytplayer/selector";
 import { reorderListToPlayItemAction } from "store/ytplaylist/listToPlayActions";
 import { reorderPlaylistItemByPlaylistIdAction } from "store/ytplaylist/playlistActions";
 import { reorderVideoItem } from "store/ytplaylist/videoActions";
@@ -59,7 +59,6 @@ export const useOnDragEnd = (
     | typeof reorderVideoItem
   >
 ) => {
-  const isPlayerPlaying = useSelector(selectPlaying);
   const curSongIdx = useSelector(selectCurSongIdx);
   const dispatch = useDispatch();
 
@@ -76,14 +75,6 @@ export const useOnDragEnd = (
         return;
       }
 
-      // NOTE: experimental.
-      // Test whether this condition is suitable or not
-      // to prohibit the drag action
-      if (fromIdx === curSongIdx && isPlayerPlaying) {
-        notify("warning", "Please don't move the first item while playing");
-        return;
-      }
-
       // disable drag n drop on filtering
       if (isFiltering(oriItemCount, curItemCount)) {
         notify("warning", "Please don't drag while filtering");
@@ -91,6 +82,11 @@ export const useOnDragEnd = (
       }
 
       dispatch(reorderAction(fromIdx, toIdx));
+
+      // if currently playing song is dragged
+      if (fromIdx === curSongIdx) {
+        dispatch(setCurSongIdx(toIdx));
+      }
 
       // the two statements below ensure current song
       // is unchanged after reorder
@@ -102,7 +98,7 @@ export const useOnDragEnd = (
         dispatch(setCurSongIdx(curSongIdx + 1));
       }
     },
-    [oriItemCount, curSongIdx, dispatch, isPlayerPlaying, reorderAction]
+    [oriItemCount, curSongIdx, dispatch, reorderAction]
   );
 
   return {
