@@ -179,6 +179,14 @@ const initialStates = {
         "Add drag n drop to playlist in My Video, My Playlist and Now Playing",
       ],
     },
+    {
+      version: "4.3.1",
+      changes: [
+        "Fix skipping currently playing song problem when deleting a song (#4)",
+        "Fix now playing song changed when queue changed bug (#5)",
+        "User is now able to drag currently playing song in Manage Playlists dialog",
+      ],
+    },
   ],
 };
 
