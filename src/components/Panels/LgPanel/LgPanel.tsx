@@ -10,13 +10,10 @@ const LgVideosPanel = lazy(() =>
   delayLazy(() => retryLazy(() => import("./LgVideosPanel")))
 );
 
-const LgRecentlyPlayedPanel = lazy(() =>
-  delayLazy(() => retryLazy(() => import("./LgRecentlyPlayedPanel")))
-);
-
 const LgNowPlayingPanel = lazy(() =>
   delayLazy(() => retryLazy(() => import("./LgNowPlayingPanel")))
 );
+
 const LgPlaylistsPanel = lazy(() =>
   delayLazy(() => retryLazy(() => import("./LgPlaylistsPanel")))
 );
@@ -43,10 +40,6 @@ const LgPanel: React.FC = () => {
       <Suspense fallback={<FullPageSpinner />}>
         <Switch>
           <Route path={`${lgPanelPath}/videos`} component={LgVideosPanel} />
-          <Route
-            path={`${lgPanelPath}/recent`}
-            component={LgRecentlyPlayedPanel}
-          />
           <Route
             path={`${lgPanelPath}/playing`}
             component={LgNowPlayingPanel}

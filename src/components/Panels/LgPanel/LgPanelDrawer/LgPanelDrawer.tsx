@@ -25,7 +25,6 @@ import {
   GridOn as GridOnIcon,
   List as ListIcon,
   PlayArrow as PlayArrowIcon,
-  PlayCircleOutline as PlayCircleOutlineIcon,
   VideoLibrary as VideoLibraryIcon,
 } from "@material-ui/icons";
 
@@ -221,11 +220,6 @@ const LgPanelDrawer = ({ match }: LgPanelDrawerProps) => {
             pathUrl={`${panelUrl}/videos`}
             icon={<VideoLibraryIcon />}
             primaryText="My video"
-          />
-          <DrawerNavListItem
-            pathUrl={`${panelUrl}/recent`}
-            icon={<PlayCircleOutlineIcon />}
-            primaryText="Recently Played"
           />
           <DrawerNowPlayingNavListItem panelUrl={panelUrl} />
         </List>
