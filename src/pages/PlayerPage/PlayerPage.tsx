@@ -8,7 +8,6 @@ interface PlayerPageProps {
 
 // suspense in root router
 const YTPlayerPage = lazy(() => retryLazy(() => import("./YTPlayerPage")));
-const MiniPlayerPage = lazy(() => retryLazy(() => import("./MiniPlayerPage")));
 
 const PlayerPage = ({ match }: PlayerPageProps) => {
   const playerPagePath = match.path;
@@ -17,10 +16,6 @@ const PlayerPage = ({ match }: PlayerPageProps) => {
     <React.Fragment>
       <Switch>
         <Route path={`${playerPagePath}/ytplayer`} component={YTPlayerPage} />
-        <Route
-          path={`${playerPagePath}/miniplayer`}
-          component={MiniPlayerPage}
-        />
         <Redirect to={`${playerPagePath}/ytplayer`} />
       </Switch>
     </React.Fragment>

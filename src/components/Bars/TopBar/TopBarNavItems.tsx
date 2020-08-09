@@ -26,21 +26,6 @@ const PlaylistInputDropdown = () => {
   );
 };
 
-const PlayerDropdown = () => {
-  return (
-    <div className={styles.dropdown}>
-      <NavLink className={styles.dropdownItemParent} to={defaultPlayerPgUrl}>
-        Player <ArrowDropDownIcon />
-      </NavLink>
-
-      <div className={styles.dropdownItem}>
-        <NavLink to={defaultPlayerPgUrl}>YT Player</NavLink>
-        <NavLink to="/player/miniplayer">Mini Player</NavLink>
-      </div>
-    </div>
-  );
-};
-
 const TopBarNavItems: React.FC = () => {
   return (
     <ul className={styles.navItems}>
@@ -48,7 +33,7 @@ const TopBarNavItems: React.FC = () => {
         <PlaylistInputDropdown />
       </li>
       <li>
-        <PlayerDropdown />
+        <NavLink to={defaultPlayerPgUrl}>Player</NavLink>
       </li>
       <li>
         <NavLink to="/about">About</NavLink>
