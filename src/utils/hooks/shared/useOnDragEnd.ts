@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
+import { setCurSongIdx } from "store/ytplayer/action";
 import { selectCurSongIdx, selectPlaying } from "store/ytplayer/selector";
 import { reorderListToPlayItemAction } from "store/ytplaylist/listToPlayActions";
 import { reorderPlaylistItemByPlaylistIdAction } from "store/ytplaylist/playlistActions";
@@ -8,6 +9,44 @@ import { reorderVideoItem } from "store/ytplaylist/videoActions";
 import { ActionType } from "typesafe-actions";
 import { isFiltering } from "utils/helper/generalHelper";
 import { notify } from "utils/helper/notifyHelper";
+
+/**
+ * Detect whether the item is dragged from after
+ * to before currently playing song.
+ *
+ * Note: the second condition, curSongIdx >= toIdx
+ *       is important to ensure the item is dragged
+ *       after to before current song, not just after
+ *       to before without passing through current song
+ *
+ * @param curSongIdx
+ * @param fromIdx
+ * @param toIdx
+ */
+const isDraggedFromAfterToBeforeCurSong = (
+  curSongIdx: number,
+  fromIdx: number,
+  toIdx: number
+) => fromIdx > curSongIdx && curSongIdx >= toIdx;
+
+/**
+ * Detect whether the item is dragged from before
+ * to after currently playing song.
+ *
+ * Note: the second condition, curSongIdx <= toIdx
+ *       is important to ensure the item is dragged
+ *       before to after current song, not just before
+ *       to after without passing through current song
+ *
+ * @param curSongIdx
+ * @param fromIdx
+ * @param toIdx
+ */
+const isDraggedFromBeforeToAfterCurSong = (
+  curSongIdx: number,
+  fromIdx: number,
+  toIdx: number
+) => fromIdx < curSongIdx && curSongIdx <= toIdx;
 
 export const useOnDragEnd = (
   oriItemCount: number,
@@ -52,6 +91,16 @@ export const useOnDragEnd = (
       }
 
       dispatch(reorderAction(fromIdx, toIdx));
+
+      // the two statements below ensure current song
+      // is unchanged after reorder
+      if (isDraggedFromBeforeToAfterCurSong(curSongIdx, fromIdx, toIdx)) {
+        dispatch(setCurSongIdx(curSongIdx - 1));
+      }
+
+      if (isDraggedFromAfterToBeforeCurSong(curSongIdx, fromIdx, toIdx)) {
+        dispatch(setCurSongIdx(curSongIdx + 1));
+      }
     },
     [oriItemCount, curSongIdx, dispatch, isPlayerPlaying, reorderAction]
   );
