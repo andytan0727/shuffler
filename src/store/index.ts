@@ -1,7 +1,7 @@
 import { setAutoFreeze } from "immer";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { createLogger } from "redux-logger";
+// import { createLogger } from "redux-logger";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
@@ -44,7 +44,7 @@ const ytplaylistPersistConfig = {
 
 const sagaMiddleware = createSagaMiddleware();
 
-const logger = createLogger();
+// const logger = createLogger();
 
 const rootReducer = combineReducers({
   appGeneral: appGeneralReducer,
@@ -60,7 +60,12 @@ const store =
   process.env.NODE_ENV === "development"
     ? createStore(
         persistedReducer,
-        composeWithDevTools(applyMiddleware(sagaMiddleware, logger))
+        composeWithDevTools(
+          applyMiddleware(
+            sagaMiddleware
+            // logger
+          )
+        )
       )
     : createStore(persistedReducer, compose(applyMiddleware(sagaMiddleware)));
 
