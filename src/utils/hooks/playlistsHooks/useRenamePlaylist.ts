@@ -1,6 +1,8 @@
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "store";
 import { updatePlaylistNameByIdAction } from "store/ytplaylist/playlistActions";
+import { selectPlaylistNameById } from "store/ytplaylist/playlistSelectors";
 import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 /**
@@ -12,14 +14,19 @@ import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
  */
 export const useRenamePlaylist = (playlistId: string) => {
   const dispatch = useDispatch();
+  const curPlaylistName = useSelector((state: AppState) =>
+    selectPlaylistNameById(state, playlistId)
+  );
 
   const handleRenamePlaylist = useCallback(async () => {
     const customSwal = await generateCustomSwal();
     const result = await customSwal!.fire({
       title: "Enter new playlist name",
+      icon: "info",
       input: "text",
+      inputValue: curPlaylistName || `Playlist-${playlistId}`,
       showCancelButton: true,
-      confirmButtonText: "Ok, Done! 🔥",
+      confirmButtonText: "Ok 🔥",
       cancelButtonText: "Cancel",
     });
     const newName = result.value;
@@ -28,7 +35,7 @@ export const useRenamePlaylist = (playlistId: string) => {
       dispatch(updatePlaylistNameByIdAction(playlistId, newName));
       notify("success", "Successfully renamed playlist 😎");
     }
-  }, [dispatch, playlistId]);
+  }, [curPlaylistName, dispatch, playlistId]);
 
   return {
     handleRenamePlaylist,
