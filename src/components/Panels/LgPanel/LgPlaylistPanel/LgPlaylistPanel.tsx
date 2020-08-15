@@ -60,9 +60,12 @@ const LgPlaylistPanel: React.FC = () => {
     <React.Fragment>
       <SyncPlaylistLoader open={updating} />
       <div className={styles.lgPlaylistPanelDiv}>
-        <Typography variant="h4" className={styles.title}>
-          {playlistName || `Playlist-${playlistId}`}
-        </Typography>
+        <div className={styles.titleDiv}>
+          <Typography variant="h4" className={styles.title}>
+            {playlistName || `Playlist-${playlistId}`}
+          </Typography>
+          <RenamePlaylistBtn handleRename={handleRenamePlaylist} />
+        </div>
         <div className={styles.ctrlPanelDiv}>
           <FilterSnippetInput
             itemIds={playlistItemIds}
@@ -73,7 +76,6 @@ const LgPlaylistPanel: React.FC = () => {
             handleShuffle={handleShufflePlaylist}
             handleDelete={handleDeletePlaylistItems}
           />
-          <RenamePlaylistBtn handleRename={handleRenamePlaylist} />
           <SyncPlaylistBtn handleSyncPlaylist={handleSyncPlaylist} />
         </div>
         <Divider />

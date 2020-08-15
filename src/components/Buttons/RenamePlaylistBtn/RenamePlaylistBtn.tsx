@@ -14,7 +14,12 @@ const RenamePlaylistBtn: React.FC<RenamePlaylistBtnProps> = (
 
   return (
     <Tooltip title="Rename">
-      <IconButton color="secondary" onClick={handleRename}>
+      <IconButton
+        color="secondary"
+        onClick={handleRename}
+        style={{ backgroundColor: "transparent" }} // disable hover bg
+        disableRipple
+      >
         <EditIcon />
       </IconButton>
     </Tooltip>
