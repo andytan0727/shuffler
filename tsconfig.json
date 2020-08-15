@@ -26,7 +26,7 @@
   },
   "typeRoots": [
     "./node_modules/@types",
-    "./typings"
+    "./src/typings"
   ],
   "include": [
     "./src/**/*"

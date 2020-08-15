@@ -4,29 +4,41 @@
 $ytPanelBg: var(--yt-player-bg);
 $ytListBg: var(--yt-player-list-bg);
 
+// TODO: add back small display support in the future
 .ytPlayerDiv {
+  // width: 100%;
+  // height: 100%;
+  // display: grid;
+  // grid-template-rows: 32em auto;
+  // grid-template-columns: auto;
+  // grid-template-areas:
+  //   "player"
+  //   "playlist";
+
+  // @media screen and (min-width: $large-display-width) {
+  //   grid-template-rows: auto;
+  //   grid-template-columns: 65% 35%;
+  //   grid-template-areas: "player playlist";
+  // }
+
+  // @media screen and (min-width: $extra-large-display-width) {
+  //   grid-template-columns: 70% 30%;
+  // }
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-rows: 32em auto;
-  grid-template-columns: auto;
-  grid-template-areas:
-    "player"
-    "playlist";
+  display: flex;
 
-  @media screen and (min-width: $large-display-width) {
-    grid-template-rows: auto;
-    grid-template-columns: 65% 35%;
-    grid-template-areas: "player playlist";
-  }
+  .gutter {
+    height: 100%;
+    background-color: #eee;
 
-  @media screen and (min-width: $extra-large-display-width) {
-    grid-template-columns: 70% 30%;
+    background-repeat: no-repeat;
+    background-position: 50%;
   }
 
   .player {
     height: 100%;
-    grid-area: player;
+    // grid-area: player;
     display: flex;
     flex-direction: column;
     background-image: $ytPanelBg;
@@ -66,7 +78,7 @@ $ytListBg: var(--yt-player-list-bg);
   .playlist {
     height: 100%;
     width: 100%;
-    grid-area: playlist;
+    // grid-area: playlist;
     background-color: $ytListBg;
 
     .playlistHeader {
