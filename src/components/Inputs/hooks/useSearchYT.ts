@@ -4,7 +4,8 @@ import {
   fetchPlaylistDataAction,
   fetchVideoDataAction,
 } from "store/ytapi/action";
-import { notify } from "utils/helper/notifyHelper";
+import { updatePlaylistNameByIdAction } from "store/ytplaylist/playlistActions";
+import { generateCustomSwal, notify } from "utils/helper/notifyHelper";
 
 const {
   apiKey,
@@ -48,7 +49,7 @@ const _validateInput = (inputType: MediaSourceType, value: string) => {
  *
  * @param value Input value
  */
-const _searchPlaylist = (value: string) => {
+const _searchPlaylist = async (value: string) => {
   const playlistId = _validateInput("playlists", value);
 
   if (!value) {
@@ -70,6 +71,27 @@ const _searchPlaylist = (value: string) => {
       apiKey,
     })
   );
+
+  // enable user to name their playlist after fetching
+  //
+  // NOTE: default playlist name will be in the form of
+  //       `Playlist-${playlistId}` if user choose not to
+  //       name it
+  const customSwal = await generateCustomSwal();
+  const result = await customSwal?.fire({
+    title: "Playlist name",
+    text: "You may name your new playlist",
+    icon: "info",
+    input: "text",
+    inputPlaceholder: "Enter here",
+    showCancelButton: true,
+    inputValidator: (value) => (!value ? "Please enter something!" : ""),
+  });
+  const playlistName = result?.value;
+
+  if (playlistName) {
+    store.dispatch(updatePlaylistNameByIdAction(playlistId, playlistName));
+  }
 };
 
 /**
