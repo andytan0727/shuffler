@@ -4,9 +4,6 @@ import { retryLazy } from "utils/helper/lazyImportHelper";
 
 import styles from "./styles.module.scss";
 
-const InputTabs = lazy(() =>
-  retryLazy(() => import("components/Tabs/InputTabs"))
-);
 const LgPanel = lazy(() =>
   retryLazy(() => import("components/Panels/LgPanel"))
 );
@@ -21,7 +18,6 @@ const PlaylistInputPage = () => {
     <div className={styles.playlistInputDiv}>
       <Suspense fallback={<div>loading...</div>}>
         <Switch>
-          <Route path="/tabs" component={InputTabs} />
           <Route path="/panel" component={LgPanel} />
           <Redirect to="/panel" />
         </Switch>
