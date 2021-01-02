@@ -2,10 +2,6 @@ import AddPlaylistToPlayingBtn from "./AddPlaylistToPlayingBtn";
 import { default as LgPanelCtrlBtnGroup } from "./BtnGroup/LgPanelCtrlBtnGroup/LgPanelCtrlBtnGroup";
 import LgPlaylistsPanelGridItemBtnGroup from "./BtnGroup/LgPlaylistsPanelGridItemBtnGroup";
 import PlayerBasicCtrlBtnGroup from "./BtnGroup/PlayerBasicCtrlBtnGroup";
-import PlayingPanelBtnGroup from "./BtnGroup/PlayingPanelBtnGroup";
-import SwitchPanelRadioBtn from "./BtnGroup/SwitchPanelRadioBtnGroup";
-import VideoListPanelBtnGroup from "./BtnGroup/VideoListPanelBtnGroup";
-import VideosPanelBtnGroup from "./BtnGroup/VideosPanelBtnGroup";
 import ClearNowPlayingBtn from "./ClearNowPlayingBtn";
 import CloseLgPanelDialogBtn from "./CloseLgPanelDialogBtn";
 import DeleteItemBtn from "./DeleteItemBtn";
@@ -23,13 +19,9 @@ export {
   LgPanelCtrlBtnGroup,
   LgPlaylistsPanelGridItemBtnGroup,
   PlayerBasicCtrlBtnGroup,
-  PlayingPanelBtnGroup,
   RemovePlaylistFromPlayingBtn,
   RenamePlaylistBtn,
-  SwitchPanelRadioBtn,
   ShowLgPanelDialogBtn,
   SearchPlaylistBtn,
   SyncPlaylistBtn,
-  VideoListPanelBtnGroup,
-  VideosPanelBtnGroup,
 };
