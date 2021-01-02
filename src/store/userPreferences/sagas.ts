@@ -80,15 +80,6 @@ export function* setPreferDarkThemeWatcher() {
     _setCSSWithPreferredMode("--switch-shadow-color");
     _setCSSWithPreferredMode("--switch-icon");
     _setCSSWithPreferredMode("--switch-text");
-
-    // ===============================
-    // /player/ytplayer route
-    // ===============================
-    // Set YT player bg color
-    _setCSSWithPreferredMode("--yt-player-bg");
-
-    // Set YT player playlist bg color
-    _setCSSWithPreferredMode("--yt-player-list-bg");
   }
 }
 

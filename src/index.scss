@@ -21,10 +21,6 @@
   --lightGrey: #{$lightGrey};
   --darkGrey: #{$darkGrey};
   --playing: #{$playing};
-  --dark-purple-gradient: #{$darkPurpleRadialGradient};
-  --light-purple-gradient: #{$lightPurpleRadialGradient};
-  --light-pink-gradient: #{$lightPinkLinearGradient};
-  --dark-pink-gradient: #{$darkPinkLinearGradient};
 
   /* Light mode */
   --light-text-color: #222430;
@@ -32,17 +28,15 @@
   --light-bg-color: #{$white};
   --light-contrast-bg-color: var(--dark-bg-color);
   --light-bg-color-rgb: var(--white-color-rgb);
-  --light-gradient-bg: var(--light-pink-gradient);
+  --light-gradient-bg: #{$lightBlueLinearGradient};
   --light-border-color: #{$black};
   --light-hover-bg: #{lighten($softBlack, 50%)};
   --light-panel-bg-color: rgba(255, 255, 255, 0.4);
-  --light-panel-gradient-bg: var(--light-pink-gradient);
+  --light-panel-gradient-bg: #{$lightPinkLinearGradient};
   --light-search-input-bg-color: var(--light-bg-color);
   --light-switch-shadow-color: #373d4e;
   --light-switch-icon: "🌚";
   --light-switch-text: "dark mode";
-  --light-yt-player-bg: var(--light-panel-gradient-bg);
-  --light-yt-player-list-bg: #{$white};
   --light-theme-color: #e593c2;
 
   /* Dark mode */
@@ -51,17 +45,15 @@
   --dark-bg-color: var(--black);
   --dark-contrast-bg-color: var(--light-bg-color);
   --dark-bg-color-rgb: var(--black-color-rgb);
-  --dark-gradient-bg: var(--light-purple-gradient);
+  --dark-gradient-bg: #{$darkBlueLinearGradient};
   --dark-border-color: #{$white};
   --dark-hover-bg: #{lighten(black, 15%)};
   --dark-panel-bg-color: rgba(0, 0, 0, 0.7);
-  --dark-panel-gradient-bg: var(--dark-purple-gradient);
+  --dark-panel-gradient-bg: #{$darkPurpleRadialGradient};
   --dark-search-input-bg-color: var(--dark-bg-color);
   --dark-switch-shadow-color: #fce477;
   --dark-switch-icon: "🌝";
   --dark-switch-text: "light mode";
-  --dark-yt-player-bg: #{$darkPurpleRadialGradient2};
-  --dark-yt-player-list-bg: inherit;
   --dark-theme-color: #7962d5;
 
   /* Default mode (dark) */
@@ -79,8 +71,6 @@
   --switch-shadow-color: var(--dark-switch-shadow-color);
   --switch-icon: var(--dark-switch-icon);
   --switch-text: var(--dark-switch-text);
-  --yt-player-bg: var(--dark-yt-player-bg);
-  --yt-player-list-bg: var(--dark-yt-player-list-bg);
   --theme-color: var(--dark-theme-color);
 }
 

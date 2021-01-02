@@ -1,9 +1,6 @@
 @import "../../../utils/styles/colors";
 @import "../../../utils/styles/variables";
 
-$ytPanelBg: var(--yt-player-bg);
-$ytListBg: var(--yt-player-list-bg);
-
 // TODO: add back small display support in the future
 .ytPlayerDiv {
   // width: 100%;
@@ -38,10 +35,8 @@ $ytListBg: var(--yt-player-list-bg);
 
   .player {
     height: 100%;
-    // grid-area: player;
     display: flex;
     flex-direction: column;
-    background-image: $ytPanelBg;
 
     > div:nth-of-type(1) {
       background-color: black;
@@ -78,8 +73,6 @@ $ytListBg: var(--yt-player-list-bg);
   .playlist {
     height: 100%;
     width: 100%;
-    // grid-area: playlist;
-    background-color: $ytListBg;
 
     .playlistHeader {
       display: flex;
