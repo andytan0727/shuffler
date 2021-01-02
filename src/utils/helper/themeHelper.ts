@@ -1,6 +1,6 @@
 import merge from "lodash/merge";
 
-import { purple } from "@material-ui/core/colors";
+import { amber, orange } from "@material-ui/core/colors";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeOptions } from "@material-ui/core/styles/createMuiTheme";
 
@@ -18,8 +18,8 @@ export const createShufflerMuiTheme = (options: ThemeOptions) => {
   return createMuiTheme(
     merge(options, {
       palette: {
-        primary: { main: purple[800] },
-        secondary: { main: purple["A200"] },
+        primary: { main: orange[800] },
+        secondary: { main: amber[700] },
         background: {
           black: getRootCssVariable("--black"),
           blackLight: getRootCssVariable("--blackLight"),

@@ -1,10 +1,10 @@
 // main colors
-$primary: #6a1b9a;
-$primaryLight: #9c4dcc;
-$primaryDark: #38006b;
-$secondary: #e040fb;
-$secondaryLight: #ff79ff;
-$secondaryDark: #aa00c7;
+$primary: #ef6c00;
+$primaryLight: lighten($primary, 10%);
+$primaryDark: darken($primary, 10%);
+$secondary: #ffa000;
+$secondaryLight: lighten($secondary, 10%);
+$secondaryDark: darken($secondary, 10%);
 $error: #eb064b;
 $playing: rgb(95, 228, 95);
 

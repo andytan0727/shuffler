@@ -1,4 +1,4 @@
-import { purple } from "@material-ui/core/colors";
+import { amber, orange } from "@material-ui/core/colors";
 
 import * as stylesHelper from "../stylesHelper";
 import { createShufflerMuiTheme } from "../themeHelper";
@@ -92,8 +92,8 @@ describe("testing stylesHelper", () => {
     expect(darkTheme).toMatchObject({
       palette: {
         type: "dark",
-        primary: { main: purple[800] },
-        secondary: { main: purple["A200"] },
+        primary: { main: orange[800] },
+        secondary: { main: amber[700] },
         background: bgPalette,
       },
       typography,
@@ -117,8 +117,8 @@ describe("testing stylesHelper", () => {
     expect(lightTheme).toMatchObject({
       palette: {
         type: "light",
-        primary: { main: purple[800] },
-        secondary: { main: purple["A200"] },
+        primary: { main: orange[800] },
+        secondary: { main: amber[700] },
         background: bgPalette,
       },
       typography,
