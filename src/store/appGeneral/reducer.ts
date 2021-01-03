@@ -187,6 +187,14 @@ const initialStates = {
         "User is now able to drag currently playing song in Manage Playlists dialog",
       ],
     },
+    {
+      version: "4.3.2",
+      changes: [
+        "Remove tabs",
+        "Change playlist UI",
+        "Fix some layout problems",
+      ],
+    },
   ],
 };
 

@@ -9,6 +9,14 @@
 
 A shuffler that randomize your YouTube playlist.
 
+> About this project on 2021:
+> 
+> This project is created by me on my early day of learning React, and you can see it comes with many unnecessary packages and spaghetti code written. Honestly, it becomes much harder to maintain since the normalized data structure comes in, which is one of my painful mistakes done in this project without proper planning.
+>
+> This project is still under inactive development. It's not ceased because some users (my friends) are still using it. Nevertheless, I wouldn't recommend one who encountered this project to use it as learning material, but feel free to use it if you want.
+
+--------------------------------
+
 Demo: <https://shuffler.surge.sh>
 
 ## Local Development
