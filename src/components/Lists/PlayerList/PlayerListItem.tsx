@@ -42,6 +42,7 @@ interface PlayerListItemWithRefProps {
 const useStyles = makeStyles({
   // show queue btn on hover, else hide it
   root: {
+    height: "100%",
     "& + .MuiListItemSecondaryAction-root": {
       display: "none",
 
