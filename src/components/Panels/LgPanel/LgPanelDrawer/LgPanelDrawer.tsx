@@ -1,3 +1,4 @@
+import { ReactComponent as ShufflerTextLogo } from "assets/shufflerTextLogo.svg";
 import {
   AddPlaylistToPlayingBtn,
   RemovePlaylistFromPlayingBtn,
@@ -14,6 +15,7 @@ import { selectAllPlaylists } from "store/ytplaylist/playlistSelectors";
 
 import {
   Divider,
+  Drawer,
   List,
   ListItem,
   ListItemIcon,
@@ -47,18 +49,21 @@ interface LgPanelDrawerProps {
   match: MatchRoute;
 }
 
+const drawerWidth = 250;
+
 const useStyles = makeStyles((theme) => ({
   drawerPlaceholder: {
     position: "relative",
-    width: "250px",
+    width: drawerWidth,
     zIndex: -100,
   },
   drawerNavList: {
-    position: "fixed",
-    left: "0%",
-    width: "250px",
+    flexShrink: 0,
     height: "100%",
-    borderRight: `2px solid ${theme.palette.divider}`,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+    backgroundColor: theme.palette.type === "dark" ? "#222133" : "#fff",
   },
   drawerNowPlayingSecondaryAction: {
     userSelect: "none",
@@ -84,6 +89,15 @@ const useStyles = makeStyles((theme) => ({
   },
   listItemIcon: {
     minWidth: 40,
+  },
+  shufflerLogo: {
+    marginLeft: 10,
+
+    "& svg": {
+      width: 150,
+      height: 50,
+      fill: "var(--text-color)",
+    },
   },
 }));
 
@@ -214,8 +228,17 @@ const LgPanelDrawer = ({ match }: LgPanelDrawerProps) => {
 
   return (
     <div>
-      <div className={classes.drawerNavList}>
+      <Drawer
+        className={classes.drawerNavList}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
         <List component="nav">
+          <div className={classes.shufflerLogo}>
+            <ShufflerTextLogo />
+          </div>
           <DrawerNavListItem
             pathUrl={`${panelUrl}/videos`}
             icon={<VideoLibraryIcon />}
@@ -225,7 +248,8 @@ const LgPanelDrawer = ({ match }: LgPanelDrawerProps) => {
         </List>
         <Divider />
         <DrawerPlaylistsNavList playlistUrl={`${panelUrl}/playlists`} />
-      </div>
+      </Drawer>
+
       <div className={classes.drawerPlaceholder}></div>
     </div>
   );

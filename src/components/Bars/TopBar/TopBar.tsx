@@ -1,7 +1,7 @@
 import { ReactComponent as ShufflerTextLogo } from "assets/shufflerTextLogo.svg";
 import { ToggleDarkModeSwitch } from "components/Switches";
-import React, { useCallback, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { Fragment, useCallback, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { animated, useTransition } from "react-spring";
 
 import { IconButton, useMediaQuery } from "@material-ui/core";
@@ -27,6 +27,7 @@ const TopBar: React.FC = () => {
     enter: { opacity: 1 },
     leave: { opacity: 0 },
   });
+  const location = useLocation();
 
   const handleToggleNavOverlay = useCallback((e: OnClickEvent) => {
     // prevent event being dispatched two times
@@ -36,7 +37,7 @@ const TopBar: React.FC = () => {
     setShow((prevShow) => !prevShow);
   }, []);
 
-  return (
+  return !/\/panel/gi.test(location.pathname) ? (
     <nav className={styles.nav}>
       <ShufflerTextLogoAnchor />
 
@@ -77,6 +78,8 @@ const TopBar: React.FC = () => {
         <ToggleDarkModeSwitch />
       </div>
     </nav>
+  ) : (
+    <Fragment />
   );
 };
 
